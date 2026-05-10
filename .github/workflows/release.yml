@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | cut -d'+' -f1 | tr -d '[:space:]')
+          echo "semver=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check tag
+        id: tag
+        run: |
+          if git rev-parse "${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Write .env
+        if: steps.tag.outputs.exists == 'false'
+        run: echo "ANILIST_CLIENT_ID=${{ secrets.ANILIST_CLIENT_ID }}" > .env
+
+      - name: Build
+        if: steps.tag.outputs.exists == 'false'
+        run: |
+          docker compose -f docker/docker-compose.yml run --rm build sh -c \
+            "flutter pub get && flutter build apk --release && flutter build appbundle --release"
+
+      - name: Stage artifacts
+        if: steps.tag.outputs.exists == 'false'
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk \
+             goodanime_v${{ steps.version.outputs.semver }}.apk
+          cp build/app/outputs/bundle/release/app-release.aab \
+             goodanime_v${{ steps.version.outputs.semver }}.aab
+
+      - name: Create release
+        if: steps.tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          files: |
+            goodanime_v${{ steps.version.outputs.semver }}.apk
+            goodanime_v${{ steps.version.outputs.semver }}.aab
