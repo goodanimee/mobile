@@ -1,0 +1,12 @@
+.git/
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+android/.gradle/
+android/app/.cxx/
+android/app/build/
+backend/libbackend.*
+tools/
+.idea/
+.vscode/

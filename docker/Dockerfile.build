@@ -1,0 +1,11 @@
+FROM golang:1.23 AS go-sdk
+
+FROM ghcr.io/cirruslabs/flutter:stable
+
+COPY --from=go-sdk /usr/local/go /usr/local/go
+
+ENV PATH="$PATH:/usr/local/go/bin"
+
+RUN yes | sdkmanager --licenses > /dev/null 2>&1 || true
+
+WORKDIR /app

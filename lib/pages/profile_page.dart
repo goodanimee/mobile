@@ -1,0 +1,114 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../theme/theme.dart';
+import '../components/user_profile.dart';
+import '../utils/backend_helper.dart';
+import '../services/auth_service.dart';
+
+const _keyCachedUser = 'cached_viewer';
+const _keyCachedAt = 'cached_viewer_at';
+const _cacheTtl = Duration(hours: 1);
+
+class ProfilePage extends StatefulWidget {
+  final VoidCallback onSignOut;
+
+  const ProfilePage({super.key, required this.onSignOut});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  Map<String, dynamic>? _userData;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cachedJson = prefs.getString(_keyCachedUser);
+    final cachedAt = prefs.getInt(_keyCachedAt);
+
+    final isFresh =
+        cachedAt != null &&
+        DateTime.now().millisecondsSinceEpoch - cachedAt <
+            _cacheTtl.inMilliseconds;
+
+    if (cachedJson != null && isFresh) {
+      if (mounted) {
+        setState(() {
+          _userData = jsonDecode(cachedJson);
+          _isLoading = false;
+        });
+      }
+      return;
+    }
+
+    await _fetchAndCache(prefs);
+  }
+
+  Future<void> _fetchAndCache(SharedPreferences prefs) async {
+    try {
+      final token = await AuthService.getValidToken();
+      final response = await BackendHelper.fetchViewer(token);
+      final viewer = response.viewer;
+      final viewerMap = <String, dynamic>{
+        'id': viewer.id,
+        'name': viewer.name,
+        'createdAt': viewer.createdAt,
+        'avatar': {'medium': viewer.avatarMedium},
+      };
+
+      await prefs.setString(_keyCachedUser, jsonEncode(viewerMap));
+      await prefs.setInt(_keyCachedAt, DateTime.now().millisecondsSinceEpoch);
+
+      if (mounted) {
+        setState(() {
+          _userData = viewerMap;
+          _isLoading = false;
+        });
+      }
+    } on AuthExpiredException {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Session expired. Please sign in again.'),
+          ),
+        );
+        widget.onSignOut();
+      }
+    } catch (e) {
+      debugPrint('Backend Error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to load profile.')),
+        );
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _handleSignOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    await AuthService.clearToken();
+    await prefs.remove(_keyCachedUser);
+    await prefs.remove(_keyCachedAt);
+    widget.onSignOut();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: _isLoading
+            ? const CircularProgressIndicator(color: borderColor)
+            : UserProfile(userData: _userData!, onSignOut: _handleSignOut),
+      ),
+    );
+  }
+}

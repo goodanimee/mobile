@@ -1,0 +1,19 @@
+services:
+  proto:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.proto
+    volumes:
+      - ..:/workspace
+
+  build:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.build
+    volumes:
+      - ..:/app
+      - pub-cache:/root/.pub-cache
+    command: sh -c "flutter pub get && flutter build apk --release"
+
+volumes:
+  pub-cache:
