@@ -30,6 +30,6 @@ add_custom_command(
             "CC=${CMAKE_C_COMPILER}"
             "CGO_CFLAGS=${CGO_FLAGS}"
             "CGO_LDFLAGS=${CGO_LDFLAGS}"
-            go build -buildmode=c-shared -o $<TARGET_FILE:backend> .
+            go build -buildmode=c-shared -buildvcs=false -o $<TARGET_FILE:backend> .
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/../../backend
 )
