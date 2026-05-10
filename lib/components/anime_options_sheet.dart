@@ -76,6 +76,29 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     setState(() => _status = newStatus);
   }
 
+  void _updateProgress(int newProgress) {
+    setState(() {
+      final oldProgress = _progress;
+      final oldStatus = _status;
+
+      _progress = newProgress;
+
+      if (_episodes != null && _progress >= _episodes!) {
+        _status = 'COMPLETED';
+      } else {
+        _status = 'CURRENT';
+      }
+
+      final now = DateTime.now();
+      if (oldProgress == 0 && newProgress > 0) {
+        _startDate = now;
+      }
+      if (oldStatus != 'COMPLETED' && _status == 'COMPLETED') {
+        _finishDate = now;
+      }
+    });
+  }
+
   Widget _buildSection(String title, Widget child) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -331,7 +354,9 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            onPressed: _progress > 0 ? () => setState(() => _progress--) : null,
+            onPressed: _progress > 0
+                ? () => _updateProgress(_progress - 1)
+                : null,
             icon: const Icon(Icons.remove_circle_outline_rounded),
             color: Colors.white70,
             iconSize: 32,
@@ -348,7 +373,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
           const SizedBox(width: 24),
           IconButton(
             onPressed: (_episodes == null || _progress < _episodes!)
-                ? () => setState(() => _progress++)
+                ? () => _updateProgress(_progress + 1)
                 : null,
             icon: const Icon(Icons.add_circle_outline_rounded),
             color: Colors.white70,
