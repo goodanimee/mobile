@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mix/mix.dart';
 import 'package:app_links/app_links.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,8 +8,6 @@ import '../services/auth_service.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/theme.dart';
 import '../components/app_button.dart';
-
-const String _clientId = "40920";
 
 class LoginPage extends StatefulWidget {
   final void Function(String token) onAuthenticated;
@@ -65,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _launchAnilistAuth() async {
     final Uri url = Uri.parse(
-      'https://anilist.co/api/v2/oauth/authorize?client_id=$_clientId&response_type=token',
+      'https://anilist.co/api/v2/oauth/authorize?client_id=${dotenv.env['ANILIST_CLIENT_ID']}&response_type=token',
     );
 
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
