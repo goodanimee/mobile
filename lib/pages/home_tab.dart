@@ -8,6 +8,7 @@ import '../services/auth_service.dart';
 import '../theme/theme.dart';
 import '../components/anime_list_card.dart';
 import '../components/anime_options_sheet.dart';
+import 'anime_page.dart';
 
 class HomeTab extends StatefulWidget {
   final bool isGridMode;
@@ -505,6 +506,19 @@ class _HomeTabState extends State<HomeTab> {
                 return AnimeListCard(
                   entry: activeEntries[index - 1] as Map<String, dynamic>,
                   onEntryUpdated: _handleEntryUpdated,
+                  onTap: () {
+                    final e = activeEntries[index - 1] as Map<String, dynamic>;
+                    final mediaId =
+                        (e['media'] as Map<String, dynamic>?)?['id'] as int?;
+                    if (mediaId != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AnimePage(mediaId: mediaId),
+                        ),
+                      );
+                    }
+                  },
                   onLongPress: () => _showItemOptions(
                     context,
                     activeEntries[index - 1] as Map<String, dynamic>,
@@ -532,7 +546,15 @@ class _HomeTabState extends State<HomeTab> {
 
     return GestureDetector(
       onTap: () {
-        // Optional: Open a detail view, or do nothing.
+        final mediaId = media['id'] as int?;
+        if (mediaId != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AnimePage(mediaId: mediaId),
+            ),
+          );
+        }
       },
       onLongPress: () => _showItemOptions(context, entry),
       child: Container(

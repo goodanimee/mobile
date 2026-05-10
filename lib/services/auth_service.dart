@@ -1,6 +1,5 @@
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+import '../utils/backend_helper.dart';
 
 const _keyToken = 'anilist_access_token';
 const _keyExpiry = 'anilist_token_expiry';
@@ -84,18 +83,11 @@ class AuthService {
 
   /// Sends a minimal GraphQL query to AniList to verify the token is accepted.
   ///
-  /// Returns true if the server responds with HTTP 200, false otherwise.
+  /// Returns true if the server responds with a valid Viewer object, false otherwise.
   static Future<bool> _probe(String token) async {
     try {
-      final response = await http.post(
-        Uri.parse('https://graphql.anilist.co'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({'query': '{ Viewer { id } }'}),
-      );
-      return response.statusCode == 200;
+      final response = await BackendHelper.fetchViewer(token);
+      return response.viewer.id != 0;
     } catch (_) {
       return false;
     }

@@ -1129,6 +1129,102 @@ func (x *SaveMediaListEntryResponse) GetError() string {
 	return ""
 }
 
+type FetchMediaDetailsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MediaId       int32                  `protobuf:"varint,1,opt,name=media_id,json=mediaId,proto3" json:"media_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaDetailsRequest) Reset() {
+	*x = FetchMediaDetailsRequest{}
+	mi := &file_proto_medialist_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaDetailsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaDetailsRequest) ProtoMessage() {}
+
+func (x *FetchMediaDetailsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_medialist_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaDetailsRequest.ProtoReflect.Descriptor instead.
+func (*FetchMediaDetailsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_medialist_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *FetchMediaDetailsRequest) GetMediaId() int32 {
+	if x != nil {
+		return x.MediaId
+	}
+	return 0
+}
+
+type FetchMediaDetailsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RawJson       string                 `protobuf:"bytes,1,opt,name=raw_json,json=rawJson,proto3" json:"raw_json,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaDetailsResponse) Reset() {
+	*x = FetchMediaDetailsResponse{}
+	mi := &file_proto_medialist_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaDetailsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaDetailsResponse) ProtoMessage() {}
+
+func (x *FetchMediaDetailsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_medialist_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaDetailsResponse.ProtoReflect.Descriptor instead.
+func (*FetchMediaDetailsResponse) Descriptor() ([]byte, []int) {
+	return file_proto_medialist_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *FetchMediaDetailsResponse) GetRawJson() string {
+	if x != nil {
+		return x.RawJson
+	}
+	return ""
+}
+
+func (x *FetchMediaDetailsResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_proto_medialist_proto protoreflect.FileDescriptor
 
 const file_proto_medialist_proto_rawDesc = "" +
@@ -1240,7 +1336,12 @@ const file_proto_medialist_proto_rawDesc = "" +
 	"\n" +
 	"started_at\x18\x06 \x01(\v2\x14.goodanime.FuzzyDateR\tstartedAt\x127\n" +
 	"\fcompleted_at\x18\a \x01(\v2\x14.goodanime.FuzzyDateR\vcompletedAt\x12\x14\n" +
-	"\x05error\x18\b \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x05error\x18\b \x01(\tR\x05error\"5\n" +
+	"\x18FetchMediaDetailsRequest\x12\x19\n" +
+	"\bmedia_id\x18\x01 \x01(\x05R\amediaId\"L\n" +
+	"\x19FetchMediaDetailsResponse\x12\x19\n" +
+	"\braw_json\x18\x01 \x01(\tR\arawJson\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_proto_medialist_proto_rawDescOnce sync.Once
@@ -1254,7 +1355,7 @@ func file_proto_medialist_proto_rawDescGZIP() []byte {
 	return file_proto_medialist_proto_rawDescData
 }
 
-var file_proto_medialist_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_proto_medialist_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_proto_medialist_proto_goTypes = []any{
 	(*FuzzyDate)(nil),                  // 0: goodanime.FuzzyDate
 	(*Trailer)(nil),                    // 1: goodanime.Trailer
@@ -1271,6 +1372,8 @@ var file_proto_medialist_proto_goTypes = []any{
 	(*FuzzyDateInput)(nil),             // 12: goodanime.FuzzyDateInput
 	(*SaveMediaListEntryRequest)(nil),  // 13: goodanime.SaveMediaListEntryRequest
 	(*SaveMediaListEntryResponse)(nil), // 14: goodanime.SaveMediaListEntryResponse
+	(*FetchMediaDetailsRequest)(nil),   // 15: goodanime.FetchMediaDetailsRequest
+	(*FetchMediaDetailsResponse)(nil),  // 16: goodanime.FetchMediaDetailsResponse
 }
 var file_proto_medialist_proto_depIdxs = []int32{
 	3,  // 0: goodanime.Media.title:type_name -> goodanime.Title
@@ -1307,7 +1410,7 @@ func file_proto_medialist_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_medialist_proto_rawDesc), len(file_proto_medialist_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

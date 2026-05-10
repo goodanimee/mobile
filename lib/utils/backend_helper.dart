@@ -1,4 +1,5 @@
 import 'dart:ffi' as ffi;
+import 'dart:isolate';
 import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
 import '../proto/medialist.pb.dart';
@@ -23,6 +24,21 @@ typedef _FetchViewerC =
     );
 typedef _FetchViewerDart =
     ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+typedef _FetchMediaDetailsC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+typedef _FetchMediaDetailsDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
       ffi.Pointer<Utf8> token,
       ffi.Pointer<ffi.Int32> outLen,
     );
@@ -55,6 +71,7 @@ class BackendHelper {
   static late ffi.DynamicLibrary _lib;
   static late _FetchMediaListDart _fetchMediaList;
   static late _FetchViewerDart _fetchViewer;
+  static late _FetchMediaDetailsDart _fetchMediaDetails;
   static late _SaveMediaListEntryDart _saveMediaListEntry;
   static late _FreeBufferDart _freeBuffer;
   static bool _initialized = false;
@@ -74,6 +91,10 @@ class BackendHelper {
     _fetchViewer = _lib.lookupFunction<_FetchViewerC, _FetchViewerDart>(
       'FetchViewer',
     );
+    _fetchMediaDetails = _lib
+        .lookupFunction<_FetchMediaDetailsC, _FetchMediaDetailsDart>(
+          'FetchMediaDetails',
+        );
     _saveMediaListEntry = _lib
         .lookupFunction<_SaveMediaListEntryC, _SaveMediaListEntryDart>(
           'SaveMediaListEntry',
@@ -115,18 +136,20 @@ class BackendHelper {
     int userId,
     String token,
   ) async {
-    init();
-    final tokenPtr = token.toNativeUtf8();
-    try {
-      final bytes = _call(
-        (outLenPtr) => _fetchMediaList(userId, tokenPtr, outLenPtr),
-      );
-      final response = FetchMediaListResponse.fromBuffer(bytes);
-      if (response.error.isNotEmpty) throw Exception(response.error);
-      return response;
-    } finally {
-      calloc.free(tokenPtr);
-    }
+    return Isolate.run(() {
+      init();
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        final bytes = _call(
+          (outLenPtr) => _fetchMediaList(userId, tokenPtr, outLenPtr),
+        );
+        final response = FetchMediaListResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
+      } finally {
+        calloc.free(tokenPtr);
+      }
+    });
   }
 
   /// Fetches the authenticated user's profile (id, name, avatar, createdAt).
@@ -134,16 +157,18 @@ class BackendHelper {
   /// [token] is the Bearer access token.
   /// Throws if the native call fails or if the response contains an error.
   static Future<FetchViewerResponse> fetchViewer(String token) async {
-    init();
-    final tokenPtr = token.toNativeUtf8();
-    try {
-      final bytes = _call((outLenPtr) => _fetchViewer(tokenPtr, outLenPtr));
-      final response = FetchViewerResponse.fromBuffer(bytes);
-      if (response.error.isNotEmpty) throw Exception(response.error);
-      return response;
-    } finally {
-      calloc.free(tokenPtr);
-    }
+    return Isolate.run(() {
+      init();
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        final bytes = _call((outLenPtr) => _fetchViewer(tokenPtr, outLenPtr));
+        final response = FetchViewerResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
+      } finally {
+        calloc.free(tokenPtr);
+      }
+    });
   }
 
   /// Saves or updates an anime list entry on AniList.
@@ -155,24 +180,54 @@ class BackendHelper {
     SaveMediaListEntryRequest request,
     String token,
   ) async {
-    init();
     final reqBytes = request.writeToBuffer();
-    final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
-    final tokenPtr = token.toNativeUtf8();
-    try {
-      for (var i = 0; i < reqBytes.length; i++) {
-        reqPtr[i] = reqBytes[i];
+    return Isolate.run(() {
+      init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = _call(
+          (outLenPtr) =>
+              _saveMediaListEntry(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
+        );
+        final response = SaveMediaListEntryResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
       }
-      final bytes = _call(
-        (outLenPtr) =>
-            _saveMediaListEntry(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
-      );
-      final response = SaveMediaListEntryResponse.fromBuffer(bytes);
-      if (response.error.isNotEmpty) throw Exception(response.error);
-      return response;
-    } finally {
-      calloc.free(reqPtr);
-      calloc.free(tokenPtr);
-    }
+    });
+  }
+
+  /// Fetches full anime details by using a media ID
+  static Future<FetchMediaDetailsResponse> fetchMediaDetails(
+    FetchMediaDetailsRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = _call(
+          (outLenPtr) =>
+              _fetchMediaDetails(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
+        );
+        final response = FetchMediaDetailsResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
   }
 }

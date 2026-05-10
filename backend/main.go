@@ -94,11 +94,11 @@ type AniListResponse struct {
 			} `json:"avatar"`
 		} `json:"Viewer"`
 		SaveMediaListEntry struct {
-			ID       int32   `json:"id"`
-			Status   string  `json:"status"`
-			Progress int32   `json:"progress"`
-			Score    float64 `json:"score"`
-			Repeat   int32   `json:"repeat"`
+			ID        int32   `json:"id"`
+			Status    string  `json:"status"`
+			Progress  int32   `json:"progress"`
+			Score     float64 `json:"score"`
+			Repeat    int32   `json:"repeat"`
 			StartedAt struct {
 				Day   *int32 `json:"day"`
 				Month *int32 `json:"month"`
@@ -226,10 +226,240 @@ mutation SaveMediaListEntry(
 }
 `
 
-// graphqlRequest sends a GraphQL query or mutation to the AniList API.
-// If token is non-empty it is attached as a Bearer Authorization header.
-// Returns a parsed AniListResponse or an error if the request or AniList itself fails.
-func graphqlRequest(token, query string, variables map[string]interface{}) (*AniListResponse, error) {
+const mediaDetailsQuery = `
+query Media($mediaId: Int) {
+  Media(id: $mediaId) {
+    airingSchedule {
+      nodes {
+        airingAt
+        episode
+        id
+        mediaId
+        timeUntilAiring
+      }
+      pageInfo {
+        currentPage
+        hasNextPage
+        total
+      }
+    }
+    averageScore
+    bannerImage
+    chapters
+    countryOfOrigin
+    coverImage {
+      color
+      extraLarge
+      large
+      medium
+    }
+    description(asHtml: false)
+    duration
+    endDate {
+      day
+      month
+      year
+    }
+    episodes
+    favourites
+    format
+    genres
+    hashtag
+    id
+    idMal
+    isAdult
+    isFavourite
+    isFavouriteBlocked
+    isLicensed
+    isLocked
+    isRecommendationBlocked
+    isReviewBlocked
+    mediaListEntry {
+      mediaId
+      progress
+      repeat
+      score(format: POINT_10_DECIMAL)
+      startedAt {
+        day
+        month
+        year
+      }
+      completedAt {
+        day
+        month
+        year
+      }
+      status
+      private
+    }
+    nextAiringEpisode {
+      airingAt
+      episode
+      timeUntilAiring
+      mediaId
+    }
+    popularity
+    rankings {
+      allTime
+      context
+      format
+      id
+      rank
+      season
+      type
+      year
+    }
+    season
+    seasonYear
+    siteUrl
+    source
+    startDate {
+      day
+      month
+      year
+    }
+    title {
+      english
+      native
+      romaji
+      userPreferred
+    }
+    trailer {
+      id
+      site
+      thumbnail
+    }
+    trending
+    type
+    volumes
+    synonyms
+    status
+    characters {
+      nodes {
+        age
+        description
+        gender
+        image {
+          medium
+          large
+        }
+        name {
+          userPreferred
+          native
+          middle
+          last
+          full
+          first
+          alternativeSpoiler
+          alternative
+        }
+        siteUrl
+        isFavourite
+        dateOfBirth {
+          day
+          month
+          year
+        }
+      }
+    }
+    externalLinks {
+      color
+      icon
+      id
+      isDisabled
+      language
+      notes
+      site
+      siteId
+      type
+      url
+    }
+    relations {
+      edges {
+        relationType
+        node {
+          coverImage {
+            color
+            extraLarge
+            large
+            medium
+          }
+          bannerImage
+          averageScore
+          episodes
+          id
+          title {
+            english
+            native
+            romaji
+            userPreferred
+          }
+        }
+      }
+    }
+    studios {
+      edges {
+        isMain
+        node {
+          id
+          name
+          siteUrl
+        }
+      }
+    }
+    staff {
+      edges {
+        role
+        node {
+          age
+          dateOfBirth {
+            day
+            month
+            year
+          }
+          description
+          gender
+          image {
+            medium
+            large
+          }
+          name {
+            alternative
+            first
+            full
+            last
+            middle
+            native
+            userPreferred
+          }
+          siteUrl
+          yearsActive
+        }
+      }
+    }
+    streamingEpisodes {
+      site
+      thumbnail
+      title
+      url
+    }
+    tags {
+      category
+      description
+      id
+      isAdult
+      isGeneralSpoiler
+      isMediaSpoiler
+      name
+      rank
+    }
+    meanScore
+  }
+}
+`
+
+// rawGraphqlRequest sends a GraphQL query and returns the raw unparsed response body.
+func rawGraphqlRequest(token, query string, variables map[string]interface{}) ([]byte, error) {
 	q := GraphQLQuery{Query: query, Variables: variables}
 	body, err := json.Marshal(q)
 	if err != nil {
@@ -254,6 +484,18 @@ func graphqlRequest(token, query string, variables map[string]interface{}) (*Ani
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response: %w", err)
+	}
+
+	return respBody, nil
+}
+
+// graphqlRequest sends a GraphQL query or mutation to the AniList API.
+// If token is non-empty it is attached as a Bearer Authorization header.
+// Returns a parsed AniListResponse or an error if the request or AniList itself fails.
+func graphqlRequest(token, query string, variables map[string]interface{}) (*AniListResponse, error) {
+	respBody, err := rawGraphqlRequest(token, query, variables)
+	if err != nil {
+		return nil, err
 	}
 
 	var aniResp AniListResponse
@@ -453,6 +695,51 @@ func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 	pbResponse.StartedAt = fuzzyDate(s.StartedAt.Year, s.StartedAt.Month, s.StartedAt.Day)
 	pbResponse.CompletedAt = fuzzyDate(s.CompletedAt.Year, s.CompletedAt.Month, s.CompletedAt.Day)
 
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// FetchMediaDetails fetches the full details for a given media ID.
+// The request payload is a protobuf-encoded FetchMediaDetailsRequest.
+// Returns a C-allocated byte buffer containing a FetchMediaDetailsResponse
+// with the raw JSON result.
+// The caller must free the buffer with FreeBuffer.
+//
+//export FetchMediaDetails
+func FetchMediaDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.FetchMediaDetailsResponse{}
+
+	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+	var req pb.FetchMediaDetailsRequest
+	if err := proto.Unmarshal(reqBytes, &req); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]interface{}{"mediaId": req.MediaId}
+
+	respBody, err := rawGraphqlRequest(tk, mediaDetailsQuery, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	// We can optionally check for anilist errors here, but for now we'll just pass the JSON string.
+	// Actually let's check for errors real quick
+	var errCheck struct {
+		Errors []struct {
+			Message string `json:"message"`
+		} `json:"errors"`
+		Data struct {
+			Media json.RawMessage `json:"Media"`
+		} `json:"data"`
+	}
+	if err := json.Unmarshal(respBody, &errCheck); err == nil && len(errCheck.Errors) > 0 {
+		pbResponse.Error = errCheck.Errors[0].Message
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	pbResponse.RawJson = string(errCheck.Data.Media)
 	return marshalAndReturn(pbResponse, outLen)
 }
 

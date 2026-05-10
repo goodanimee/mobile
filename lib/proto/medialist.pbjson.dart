@@ -410,3 +410,31 @@ final $typed_data.Uint8List saveMediaListEntryResponseDescriptor = $convert.base
     'UgVzY29yZRIWCgZyZXBlYXQYBSABKAVSBnJlcGVhdBIzCgpzdGFydGVkX2F0GAYgASgLMhQuZ2'
     '9vZGFuaW1lLkZ1enp5RGF0ZVIJc3RhcnRlZEF0EjcKDGNvbXBsZXRlZF9hdBgHIAEoCzIULmdv'
     'b2RhbmltZS5GdXp6eURhdGVSC2NvbXBsZXRlZEF0EhQKBWVycm9yGAggASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use fetchMediaDetailsRequestDescriptor instead')
+const FetchMediaDetailsRequest$json = {
+  '1': 'FetchMediaDetailsRequest',
+  '2': [
+    {'1': 'media_id', '3': 1, '4': 1, '5': 5, '10': 'mediaId'},
+  ],
+};
+
+/// Descriptor for `FetchMediaDetailsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaDetailsRequestDescriptor =
+    $convert.base64Decode(
+        'ChhGZXRjaE1lZGlhRGV0YWlsc1JlcXVlc3QSGQoIbWVkaWFfaWQYASABKAVSB21lZGlhSWQ=');
+
+@$core.Deprecated('Use fetchMediaDetailsResponseDescriptor instead')
+const FetchMediaDetailsResponse$json = {
+  '1': 'FetchMediaDetailsResponse',
+  '2': [
+    {'1': 'raw_json', '3': 1, '4': 1, '5': 9, '10': 'rawJson'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchMediaDetailsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaDetailsResponseDescriptor =
+    $convert.base64Decode(
+        'ChlGZXRjaE1lZGlhRGV0YWlsc1Jlc3BvbnNlEhkKCHJhd19qc29uGAEgASgJUgdyYXdKc29uEh'
+        'QKBWVycm9yGAIgASgJUgVlcnJvcg==');

@@ -118,3 +118,12 @@ message SaveMediaListEntryResponse {
     FuzzyDate completed_at = 7;
     string error = 8;
 }
+
+message FetchMediaDetailsRequest {
+    int32 media_id = 1;
+}
+
+message FetchMediaDetailsResponse {
+    string raw_json = 1;
+    string error = 2;
+}

@@ -139,12 +139,14 @@ class AnimeListCard extends StatefulWidget {
   final void Function(int mediaId, Map<String, dynamic> updates)?
   onEntryUpdated;
   final VoidCallback? onLongPress;
+  final VoidCallback? onTap;
 
   const AnimeListCard({
     super.key,
     required this.entry,
     this.onEntryUpdated,
     this.onLongPress,
+    this.onTap,
   });
 
   @override
@@ -239,6 +241,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
         _status == 'CURRENT' || _status == 'PLANNING' || _status == 'PAUSED';
 
     return GestureDetector(
+      onTap: widget.onTap,
       onLongPress: widget.onLongPress,
       behavior: HitTestBehavior.opaque,
       child: Container(
