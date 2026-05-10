@@ -51,12 +51,26 @@ jobs:
           cp build/app/outputs/bundle/release/app-release.aab \
              goodanime_v${{ steps.version.outputs.semver }}.aab
 
+      - name: Resolve compare URL
+        id: compare
+        if: steps.tag.outputs.exists == 'false'
+        run: |
+          PREV=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          TAG=${{ steps.version.outputs.tag }}
+          if [ -n "$PREV" ]; then
+            echo "body=[Commits ${PREV} → ${TAG}](https://github.com/${{ github.repository }}/compare/${PREV}...${TAG})" >> $GITHUB_OUTPUT
+          else
+            echo "body=" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create release
         if: steps.tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           name: ${{ steps.version.outputs.tag }}
+          body: ${{ steps.compare.outputs.body }}
+          generate_release_notes: false
           files: |
             goodanime_v${{ steps.version.outputs.semver }}.apk
             goodanime_v${{ steps.version.outputs.semver }}.aab
