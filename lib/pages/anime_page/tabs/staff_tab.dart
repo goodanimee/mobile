@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../../../components/loading_indicator.dart';
 import '../../../components/error_view.dart';
+import '../../../utils/utils.dart';
+import '../../../components/app_entity_card.dart';
+import '../../../components/app_section.dart';
 import '../../../utils/backend_helper.dart';
 import '../../../services/auth_service.dart';
 import '../../../proto/medialist.pb.dart';
-import '../../../components/app_entity_card.dart';
-import '../../../components/app_section.dart';
 
 /// A tab displaying the production staff for an anime
 class AnimeStaffTab extends StatefulWidget {
@@ -164,11 +165,10 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
               ),
               itemCount: _staff.length,
               itemBuilder: (context, index) {
-                final edge = _staff[index];
-                final node = edge['node'];
-                final nameObj = node['name'] ?? {};
-                final fullName = nameObj['full'] ?? nameObj['userPreferred'] ?? 'Unknown';
-                final nativeName = nameObj['native'] ?? '';
+                final edge = _staff[index] as Map<String, dynamic>;
+                final node = edge['node'] as Map<String, dynamic>;
+                final fullName = node.fullName;
+                final nativeName = node['name']?['native'] ?? '';
                 final role = edge['role'] ?? 'Unknown Role';
                 final imageUrl = node['image']?['large'] ?? '';
 

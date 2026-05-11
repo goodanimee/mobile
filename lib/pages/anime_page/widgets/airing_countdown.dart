@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
+import '../../../utils/utils.dart';
 
 /// A widget that displays a countdown until the next episode airs
 class AiringCountdown extends StatelessWidget {
@@ -37,16 +38,7 @@ class AiringCountdown extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    String timeStr;
-    final duration = Duration(seconds: remainingSeconds);
-    if (duration.inDays >= 1) {
-      timeStr = '${duration.inDays} ${duration.inDays == 1 ? "day" : "days"}';
-    } else if (duration.inHours >= 1) {
-      timeStr =
-          '${duration.inHours} ${duration.inHours == 1 ? "hour" : "hours"}';
-    } else {
-      timeStr = 'an hour';
-    }
+    final timeStr = StringUtils.formatAiringDuration(remainingSeconds);
 
     return Container(
       width: double.infinity,

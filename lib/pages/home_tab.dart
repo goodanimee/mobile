@@ -11,9 +11,10 @@ import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
 import '../components/app_badges.dart';
 import '../components/app_media_card.dart';
-import 'anime_page.dart';
+import '../utils/utils.dart';
+import '../utils/app_navigation.dart';
 
-/// A tab displaying the user's anime lists
+/// Display user's anime lists
 class HomeTab extends StatefulWidget {
   /// Whether to display items in a grid
   final bool isGridMode;
@@ -51,12 +52,21 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     _fetchLists();
+    CacheUtils.homeNeedsRefresh.addListener(_onCacheInvalidated);
+  }
+
+  void _onCacheInvalidated() {
+    if (CacheUtils.homeNeedsRefresh.value) {
+      CacheUtils.homeNeedsRefresh.value = false;
+      _fetchLists(forceRefresh: true);
+    }
   }
 
   @override
-  /// Disposes the scroll controller
+  /// Disposes the scroll controller and removes cache listener
   void dispose() {
     _scrollController.dispose();
+    CacheUtils.homeNeedsRefresh.removeListener(_onCacheInvalidated);
     super.dispose();
   }
 
@@ -406,8 +416,10 @@ class _HomeTabState extends State<HomeTab> {
     );
 
     if (result != null && mounted) {
-      final mediaId = entry['media']?['id'] as int?;
-      if (mediaId != null) {
+      final media = entry['media'] as Map<String, dynamic>? ?? {};
+      final mediaId = media.mediaId;
+      if (mediaId != 0) {
+        CacheUtils.invalidateMedia(mediaId);
         _handleEntryUpdated(mediaId, result);
       }
     }
@@ -531,20 +543,16 @@ class _HomeTabState extends State<HomeTab> {
                 return AnimeListCard(
                   entry: activeEntries[index - 1] as Map<String, dynamic>,
                   onEntryUpdated: _handleEntryUpdated,
-                  onTap: () async {
+                  onTap: () {
                     final e = activeEntries[index - 1] as Map<String, dynamic>;
-                    final mediaId =
-                        (e['media'] as Map<String, dynamic>?)?['id'] as int?;
-                    if (mediaId != null) {
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AnimePage(mediaId: mediaId),
-                        ),
+                    final media = e['media'] as Map<String, dynamic>? ?? {};
+                    final mediaId = media.mediaId;
+                    if (mediaId != 0) {
+                      AppNavigation.toAnime(
+                        context, 
+                        mediaId, 
+                        onRefresh: () => _fetchLists(forceRefresh: true),
                       );
-                      if (result == true) {
-                        _fetchLists(forceRefresh: true);
-                      }
                     }
                   },
                   onLongPress: () => _showItemOptions(
@@ -556,38 +564,26 @@ class _HomeTabState extends State<HomeTab> {
             ),
     );
   }
-
   /// Builds an individual item for the grid view
   Widget _buildGridItem(Map<String, dynamic> entry) {
     final media = entry['media'] as Map<String, dynamic>? ?? {};
-    final title = media['title']?['userPreferred'] ?? 'Unknown';
-    final coverImage = media['coverImage'] as Map<String, dynamic>? ?? {};
-    final imageUrl = coverImage['large'] as String? ?? '';
-    final colorStr = coverImage['color'] as String?;
-
-    final isAdult = media['isAdult'] as bool? ?? false;
-    final isFavourite = media['isFavourite'] as bool? ?? false;
 
     return AppMediaCard(
-      imageUrl: imageUrl,
-      title: title,
-      colorStr: colorStr,
-      isAdult: isAdult,
-      isFavourite: isFavourite,
+      imageUrl: media.coverImage,
+      title: media.titleText,
+      colorStr: (media['coverImage'] as Map<String, dynamic>?)?['color'],
+      isAdult: media.isAdultMedia,
+      isFavourite: media.isFavouriteMedia,
       favouriteBadge: const AppFavouriteBadge(hasBackground: true),
       adultBadge: const AppAdultBadge(),
-      onTap: () async {
-        final mediaId = media['id'] as int?;
-        if (mediaId != null) {
-          final result = await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AnimePage(mediaId: mediaId),
-            ),
+      onTap: () {
+        final mediaId = media.mediaId;
+        if (mediaId != 0) {
+          AppNavigation.toAnime(
+            context, 
+            mediaId, 
+            onRefresh: () => _fetchLists(forceRefresh: true),
           );
-          if (result == true) {
-            _fetchLists(forceRefresh: true);
-          }
         }
       },
       onLongPress: () => _showItemOptions(context, entry),

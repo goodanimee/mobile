@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../../../components/loading_indicator.dart';
 import '../../../components/error_view.dart';
+import '../../../utils/utils.dart';
+import '../../../utils/app_navigation.dart';
+import '../../../components/app_entity_card.dart';
+import '../../../components/app_section.dart';
 import '../../../utils/backend_helper.dart';
 import '../../../services/auth_service.dart';
 import '../../../proto/medialist.pb.dart';
-import '../../../components/app_entity_card.dart';
-import '../../../components/app_section.dart';
-import '../widgets/character_sheet.dart';
 
 /// A tab displaying characters and cast for an anime
 class AnimeCharactersTab extends StatefulWidget {
@@ -165,13 +166,12 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
               ),
               itemCount: _characters.length,
               itemBuilder: (context, index) {
-                final edge = _characters[index];
-                final charNode = edge['node'];
-                final nameObj = charNode['name'] ?? {};
-                final fullName = nameObj['full'] ?? nameObj['userPreferred'] ?? 'Unknown';
-                final nativeName = nameObj['native'] ?? '';
+                final edge = _characters[index] as Map<String, dynamic>;
+                final node = edge['node'] as Map<String, dynamic>;
+                final fullName = node.fullName;
+                final nativeName = node['name']?['native'] ?? '';
                 final role = edge['role'] ?? '';
-                final charImageUrl = charNode['image']?['large'] ?? '';
+                final charImageUrl = node['image']?['large'] ?? '';
 
                 return AppEntityCard(
                   imageUrl: charImageUrl,
@@ -183,14 +183,7 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
                     size: 14,
                     color: Colors.white.withValues(alpha: 0.25),
                   ),
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) => CharacterSheet(character: edge),
-                    );
-                  },
+                  onTap: () => AppNavigation.toCharacter(context, edge),
                 );
               },
             ),

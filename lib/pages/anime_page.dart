@@ -9,6 +9,7 @@ import '../components/app_network_image.dart';
 import '../utils/backend_helper.dart';
 import '../services/auth_service.dart';
 import '../proto/medialist.pb.dart';
+import '../utils/utils.dart';
 
 import 'anime_page/tabs/info_tab.dart';
 import 'anime_page/tabs/characters_tab.dart';
@@ -157,19 +158,11 @@ class _AnimePageState extends State<AnimePage> {
 
     if (result != null && mounted) {
       _didUpdate = true;
-      setState(() {
-        final newMediaData = Map<String, dynamic>.from(_mediaData!);
-        
-        newMediaData['mediaListEntry'] = result;
-        
-        _mediaData = newMediaData;
-      });
+      
+      await CacheUtils.invalidateMedia(widget.mediaId);
+      CacheUtils.homeNeedsRefresh.value = true;
 
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-        '$_cachePrefix${widget.mediaId}',
-        json.encode(_mediaData),
-      );
+      await _fetchAnimeDetails(forceRefresh: true);
     }
   }
 
@@ -239,12 +232,9 @@ class _AnimePageState extends State<AnimePage> {
     }
 
     final media = _mediaData!;
-    final title = media['title']?['userPreferred'] ?? 'Unknown';
-    final coverImage = media['coverImage'] as Map<String, dynamic>? ?? {};
-    final imageUrl =
-        coverImage['extraLarge'] ?? coverImage['large'] as String? ?? '';
-
-    final bannerUrl = media['bannerImage'] as String? ?? '';
+    final title = media.titleText;
+    final imageUrl = media.coverImage;
+    final bannerUrl = media.bannerImage ?? '';
 
     final quickNavItems = [
       QuickNavSection(
