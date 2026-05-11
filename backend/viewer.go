@@ -14,14 +14,7 @@ import (
 //go:embed graphql/viewer.graphql
 var viewerQuery string
 
-// FetchViewer fetches the authenticated user's profile from AniList,
-// marshals it into a FetchViewerResponse protobuf, and returns it as a
-// C-allocated byte buffer. The caller must free the buffer with FreeBuffer.
-//
-// Parameters:
-//   - token:  Bearer token for the authenticated request.
-//   - outLen: Written with the byte length of the returned buffer.
-//
+// FetchViewer returns authenticated user profile from AniList
 //export FetchViewer
 func FetchViewer(token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)

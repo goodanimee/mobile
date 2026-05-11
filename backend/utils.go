@@ -18,7 +18,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-// rawGraphqlRequest sends a GraphQL query and returns the raw unparsed response body.
+// rawGraphqlRequest sends GraphQL query and returns raw body
 func rawGraphqlRequest(token, query string, variables map[string]interface{}) ([]byte, error) {
 	q := GraphQLQuery{Query: query, Variables: variables}
 	body, err := json.Marshal(q)
@@ -49,9 +49,7 @@ func rawGraphqlRequest(token, query string, variables map[string]interface{}) ([
 	return respBody, nil
 }
 
-// graphqlRequest sends a GraphQL query or mutation to the AniList API.
-// If token is non-empty it is attached as a Bearer Authorization header.
-// Returns a parsed AniListResponse or an error if the request or AniList itself fails.
+// graphqlRequest sends GraphQL query or mutation to AniList
 func graphqlRequest(token, query string, variables map[string]interface{}) (*AniListResponse, error) {
 	respBody, err := rawGraphqlRequest(token, query, variables)
 	if err != nil {
@@ -68,8 +66,7 @@ func graphqlRequest(token, query string, variables map[string]interface{}) (*Ani
 	return &aniResp, nil
 }
 
-// fuzzyDate converts the nullable day/month/year pointer fields from the API
-// into a pb.FuzzyDate, setting only the components that are present.
+// fuzzyDate converts nullable fields to pb.FuzzyDate
 func fuzzyDate(year, month, day *int32) *pb.FuzzyDate {
 	if year == nil {
 		return nil
@@ -84,9 +81,7 @@ func fuzzyDate(year, month, day *int32) *pb.FuzzyDate {
 	return d
 }
 
-// fuzzyDateInput converts a pb.FuzzyDateInput into the JSON map shape
-// expected by the AniList GraphQL FuzzyDateInput scalar.
-// Nil pointer fields are represented as JSON null.
+// fuzzyDateInput converts pb.FuzzyDateInput to JSON map
 func fuzzyDateInput(d *pb.FuzzyDateInput) map[string]interface{} {
 	m := map[string]interface{}{"year": nil, "month": nil, "day": nil}
 	if d.Year != nil {
@@ -101,9 +96,7 @@ func fuzzyDateInput(d *pb.FuzzyDateInput) map[string]interface{} {
 	return m
 }
 
-// marshalAndReturn serialises msg to protobuf wire format, copies it into a
-// C-heap buffer, writes the length to outLen, and returns the buffer pointer.
-// Returns nil and sets outLen to 0 on marshal failure.
+// marshalAndReturn marshals protobuf message to C buffer
 func marshalAndReturn(msg proto.Message, outLen *C.int) *C.uint8_t {
 	data, err := proto.Marshal(msg)
 	if err != nil {

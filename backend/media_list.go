@@ -22,15 +22,7 @@ var mediaListQuery string
 //go:embed graphql/save_media_list_entry.graphql
 var saveMediaListEntryMutation string
 
-// FetchMediaList fetches the authenticated user's anime media list from AniList,
-// marshals it into a FetchMediaListResponse protobuf, and returns it as a
-// C-allocated byte buffer. The caller must free the buffer with FreeBuffer.
-//
-// Parameters:
-//   - userId: AniList user ID to fetch lists for.
-//   - token:  Bearer token for the authenticated request.
-//   - outLen: Written with the byte length of the returned buffer.
-//
+// FetchMediaList returns authenticated user's anime list
 //export FetchMediaList
 func FetchMediaList(userId C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	uID := int32(userId)
@@ -91,17 +83,7 @@ func FetchMediaList(userId C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	return marshalAndReturn(pbResponse, outLen)
 }
 
-// SaveMediaListEntry saves or updates an anime list entry on AniList.
-// The request payload is a protobuf-encoded SaveMediaListEntryRequest.
-// Returns a C-allocated byte buffer containing a SaveMediaListEntryResponse.
-// The caller must free the buffer with FreeBuffer.
-//
-// Parameters:
-//   - reqPtr: Pointer to the serialised SaveMediaListEntryRequest bytes.
-//   - reqLen: Length of the request byte buffer.
-//   - token:  Bearer token for the authenticated request.
-//   - outLen: Written with the byte length of the returned buffer.
-//
+// SaveMediaListEntry updates anime list entry on AniList
 //export SaveMediaListEntry
 func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)

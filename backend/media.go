@@ -26,12 +26,7 @@ var mediaStaffQuery string
 //go:embed graphql/media_characters.graphql
 var mediaCharactersQuery string
 
-// FetchMediaDetails fetches the full details for a given media ID.
-// The request payload is a protobuf-encoded FetchMediaDetailsRequest.
-// Returns a C-allocated byte buffer containing a FetchMediaDetailsResponse
-// with the raw JSON result.
-// The caller must free the buffer with FreeBuffer.
-//
+// FetchMediaDetails returns full details for a media ID
 //export FetchMediaDetails
 func FetchMediaDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
@@ -72,10 +67,7 @@ func FetchMediaDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 	return marshalAndReturn(pbResponse, outLen)
 }
 
-// FetchMediaStaff fetches a paginated list of staff members for a given media ID.
-// The request payload is a protobuf-encoded FetchMediaStaffRequest.
-// Returns a C-allocated byte buffer containing a FetchMediaStaffResponse.
-//
+// FetchMediaStaff returns paginated staff for a media ID
 //export FetchMediaStaff
 func FetchMediaStaff(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
@@ -117,10 +109,7 @@ func FetchMediaStaff(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.i
 	return marshalAndReturn(pbResponse, outLen)
 }
 
-// FetchMediaCharacters fetches a paginated list of characters and their voice actors for a given media ID.
-// The request payload is a protobuf-encoded FetchMediaCharactersRequest.
-// Returns a C-allocated byte buffer containing a FetchMediaCharactersResponse.
-//
+// FetchMediaCharacters returns paginated characters for a media ID
 //export FetchMediaCharacters
 func FetchMediaCharacters(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)

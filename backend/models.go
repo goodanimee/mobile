@@ -1,13 +1,12 @@
 package main
 
-// GraphQLQuery is the JSON body sent to the AniList GraphQL endpoint.
+// GraphQLQuery is the JSON body for AniList endpoint
 type GraphQLQuery struct {
 	Query     string                 `json:"query"`
 	Variables map[string]interface{} `json:"variables"`
 }
 
-// AniListResponse is the top-level envelope returned by the AniList API.
-// Only the fields used by the three exported functions are declared.
+// AniListResponse is the top-level envelope from AniList API
 type AniListResponse struct {
 	Data struct {
 		MediaListCollection struct {
