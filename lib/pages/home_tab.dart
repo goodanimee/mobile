@@ -11,6 +11,7 @@ import '../components/section_title.dart';
 import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
 import '../components/app_network_image.dart';
+import '../components/app_badges.dart';
 import 'anime_page.dart';
 
 /// A tab displaying the user's anime lists
@@ -338,10 +339,7 @@ class _HomeTabState extends State<HomeTab> {
       final processedLists = <Map<String, dynamic>>[];
       for (final status in orderedStatuses) {
         final name = status == 'CURRENT' ? 'WATCHING' : status;
-        processedLists.add({
-          'name': name,
-          'entries': grouped[status] ?? [],
-        });
+        processedLists.add({'name': name, 'entries': grouped[status] ?? []});
       }
 
       for (final status in grouped.keys) {
@@ -359,7 +357,7 @@ class _HomeTabState extends State<HomeTab> {
           _lists = processedLists;
           _isLoading = false;
           _error = null;
-          
+
           if (_activeStatus == null) {
             final firstNonEmpty = processedLists.firstWhere(
               (l) => (l['entries'] as List).isNotEmpty,
@@ -495,69 +493,68 @@ class _HomeTabState extends State<HomeTab> {
               ],
             )
           : activeEntries.isEmpty
-              ? ListView(
-                  controller: _scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(top: 16, bottom: 100),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      child: SectionTitle(title: activeName, bottomPadding: 0),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      child: AppErrorView(
-                        message: 'No anime currently in $activeName',
-                        topPadding: 0,
-                      ),
-                    ),
-                  ],
-                )
-              : ListView.builder(
-                  controller: _scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(top: 16, bottom: 100),
-                  itemCount: activeEntries.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        child: SectionTitle(title: activeName, bottomPadding: 0),
-                      );
-                    }
-                    return AnimeListCard(
-                      entry: activeEntries[index - 1] as Map<String, dynamic>,
-                      onEntryUpdated: _handleEntryUpdated,
-                      onTap: () async {
-                        final e =
-                            activeEntries[index - 1] as Map<String, dynamic>;
-                        final mediaId =
-                            (e['media'] as Map<String, dynamic>?)?['id'] as int?;
-                        if (mediaId != null) {
-                          final result = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AnimePage(mediaId: mediaId),
-                            ),
-                          );
-                          if (result == true) {
-                            _fetchLists(forceRefresh: true);
-                          }
-                        }
-                      },
-                      onLongPress: () => _showItemOptions(
-                        context,
-                        activeEntries[index - 1] as Map<String, dynamic>,
-                      ),
-                    );
-                  },
+          ? ListView(
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.only(top: 16, bottom: 100),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: SectionTitle(title: activeName, bottomPadding: 0),
                 ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: AppErrorView(
+                    message: 'No anime currently in $activeName',
+                    topPadding: 0,
+                  ),
+                ),
+              ],
+            )
+          : ListView.builder(
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.only(top: 16, bottom: 100),
+              itemCount: activeEntries.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: SectionTitle(title: activeName, bottomPadding: 0),
+                  );
+                }
+                return AnimeListCard(
+                  entry: activeEntries[index - 1] as Map<String, dynamic>,
+                  onEntryUpdated: _handleEntryUpdated,
+                  onTap: () async {
+                    final e = activeEntries[index - 1] as Map<String, dynamic>;
+                    final mediaId =
+                        (e['media'] as Map<String, dynamic>?)?['id'] as int?;
+                    if (mediaId != null) {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AnimePage(mediaId: mediaId),
+                        ),
+                      );
+                      if (result == true) {
+                        _fetchLists(forceRefresh: true);
+                      }
+                    }
+                  },
+                  onLongPress: () => _showItemOptions(
+                    context,
+                    activeEntries[index - 1] as Map<String, dynamic>,
+                  ),
+                );
+              },
+            ),
     );
   }
 
@@ -568,6 +565,9 @@ class _HomeTabState extends State<HomeTab> {
     final coverImage = media['coverImage'] as Map<String, dynamic>? ?? {};
     final imageUrl = coverImage['large'] as String? ?? '';
     final colorStr = coverImage['color'] as String?;
+
+    final isAdult = media['isAdult'] as bool? ?? false;
+    final isFavourite = media['isFavourite'] as bool? ?? false;
 
     Color accentColor = borderColor;
     if (colorStr != null && colorStr.startsWith('#')) {
@@ -612,6 +612,18 @@ class _HomeTabState extends State<HomeTab> {
                 height: double.infinity,
                 borderRadius: BorderRadius.circular(10.5),
               ),
+              if (isFavourite)
+                const Positioned(
+                  top: 6,
+                  right: 6,
+                  child: AppFavouriteBadge(hasBackground: true),
+                ),
+              if (isAdult)
+                const Positioned(
+                  bottom: 47,
+                  right: 6,
+                  child: AppAdultBadge(),
+                ),
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -628,7 +640,7 @@ class _HomeTabState extends State<HomeTab> {
                       child: SizedBox(
                         height: 29.0,
                         child: Align(
-                           alignment: Alignment.topLeft,
+                          alignment: Alignment.topLeft,
                           child: Text(
                             title,
                             maxLines: 2,

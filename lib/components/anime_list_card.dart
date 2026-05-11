@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 import 'app_network_image.dart';
+import 'app_badges.dart';
 import '../utils/backend_helper.dart';
 import '../services/auth_service.dart';
 import '../proto/medialist.pb.dart';
@@ -30,6 +31,7 @@ Widget _buildRepeatBadge(int repeat) {
     ),
   );
 }
+
 
 /// Builds a badge showing progress and status
 Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
@@ -253,6 +255,9 @@ class _AnimeListCardState extends State<AnimeListCard> {
     final repeat = widget.entry['repeat'] as int? ?? 0;
     final score = (widget.entry['score'] as num?) ?? 0;
 
+    final isAdult = media['isAdult'] as bool? ?? false;
+    final isFavourite = media['isFavourite'] as bool? ?? false;
+
     final showPlayButton =
         _status == 'CURRENT' || _status == 'PLANNING' || _status == 'PAUSED';
 
@@ -371,6 +376,14 @@ class _AnimeListCardState extends State<AnimeListCard> {
                                     if (repeat > 0) ...[
                                       const SizedBox(width: 6),
                                       _buildRepeatBadge(repeat),
+                                    ],
+                                    if (isAdult) ...[
+                                      const SizedBox(width: 6),
+                                      const AppAdultBadge(),
+                                    ],
+                                    if (isFavourite) ...[
+                                      const SizedBox(width: 6),
+                                      const AppFavouriteBadge(size: 16),
                                     ],
                                   ],
                                 ),

@@ -8,49 +8,17 @@ query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
                 media {
                     id
                     title {
-                        english
-                        native
-                        romaji
                         userPreferred
                     }
                     averageScore
-                    bannerImage
                     coverImage {
-                        medium
                         large
-                        extraLarge
                         color
                     }
-                    description(asHtml: true)
-                    duration
                     episodes
                     format
-                    genres
                     isAdult
                     isFavourite
-                    popularity
-                    season
-                    seasonYear
-                    status
-                    synonyms
-                    meanScore
-                    favourites
-                    siteUrl
-                    startDate {
-                        day
-                        month
-                        year
-                    }
-                    endDate {
-                        day
-                        month
-                        year
-                    }
-                    trailer {
-                        id
-                        site
-                        thumbnail
-                    }
                 }
                 progress
                 repeat

@@ -19,49 +19,17 @@ type AniListResponse struct {
 					Media struct {
 						ID    int32 `json:"id"`
 						Title struct {
-							English       string `json:"english"`
-							Native        string `json:"native"`
-							Romaji        string `json:"romaji"`
 							UserPreferred string `json:"userPreferred"`
 						} `json:"title"`
-						AverageScore int32  `json:"averageScore"`
-						BannerImage  string `json:"bannerImage"`
+						AverageScore int32 `json:"averageScore"`
 						CoverImage   struct {
-							Medium     string `json:"medium"`
-							Large      string `json:"large"`
-							ExtraLarge string `json:"extraLarge"`
-							Color      string `json:"color"`
+							Large string `json:"large"`
+							Color string `json:"color"`
 						} `json:"coverImage"`
-						Description string   `json:"description"`
-						Duration    int32    `json:"duration"`
-						Episodes    int32    `json:"episodes"`
-						Format      string   `json:"format"`
-						Genres      []string `json:"genres"`
-						IsAdult     bool     `json:"isAdult"`
-						IsFavourite bool     `json:"isFavourite"`
-						Popularity  int32    `json:"popularity"`
-						Season      string   `json:"season"`
-						SeasonYear  int32    `json:"seasonYear"`
-						Status      string   `json:"status"`
-						Synonyms    []string `json:"synonyms"`
-						MeanScore   int32    `json:"meanScore"`
-						Favourites  int32    `json:"favourites"`
-						SiteUrl     string   `json:"siteUrl"`
-						StartDate   struct {
-							Day   *int32 `json:"day"`
-							Month *int32 `json:"month"`
-							Year  *int32 `json:"year"`
-						} `json:"startDate"`
-						EndDate struct {
-							Day   *int32 `json:"day"`
-							Month *int32 `json:"month"`
-							Year  *int32 `json:"year"`
-						} `json:"endDate"`
-						Trailer struct {
-							ID        string `json:"id"`
-							Site      string `json:"site"`
-							Thumbnail string `json:"thumbnail"`
-						} `json:"trailer"`
+						Episodes    int32  `json:"episodes"`
+						Format      string `json:"format"`
+						IsAdult     bool   `json:"isAdult"`
+						IsFavourite bool   `json:"isFavourite"`
 					} `json:"media"`
 					Progress  int32   `json:"progress"`
 					Repeat    int32   `json:"repeat"`
