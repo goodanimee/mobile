@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/backend_helper.dart';
@@ -10,8 +9,8 @@ import '../components/anime_options_sheet.dart';
 import '../components/section_title.dart';
 import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
-import '../components/app_network_image.dart';
 import '../components/app_badges.dart';
+import '../components/app_media_card.dart';
 import 'anime_page.dart';
 
 /// A tab displaying the user's anime lists
@@ -569,15 +568,14 @@ class _HomeTabState extends State<HomeTab> {
     final isAdult = media['isAdult'] as bool? ?? false;
     final isFavourite = media['isFavourite'] as bool? ?? false;
 
-    Color accentColor = borderColor;
-    if (colorStr != null && colorStr.startsWith('#')) {
-      final hex = colorStr.replaceAll('#', '');
-      if (hex.length == 6) {
-        accentColor = Color(int.parse('FF$hex', radix: 16));
-      }
-    }
-
-    return GestureDetector(
+    return AppMediaCard(
+      imageUrl: imageUrl,
+      title: title,
+      colorStr: colorStr,
+      isAdult: isAdult,
+      isFavourite: isFavourite,
+      favouriteBadge: const AppFavouriteBadge(hasBackground: true),
+      adultBadge: const AppAdultBadge(),
       onTap: () async {
         final mediaId = media['id'] as int?;
         if (mediaId != null) {
@@ -593,75 +591,6 @@ class _HomeTabState extends State<HomeTab> {
         }
       },
       onLongPress: () => _showItemOptions(context, entry),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: accentColor.withValues(alpha: 0.5),
-            width: 1.5,
-          ),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10.5),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              AppNetworkImage(
-                imageUrl: imageUrl,
-                width: double.infinity,
-                height: double.infinity,
-                borderRadius: BorderRadius.circular(10.5),
-              ),
-              if (isFavourite)
-                const Positioned(
-                  top: 6,
-                  right: 6,
-                  child: AppFavouriteBadge(hasBackground: true),
-                ),
-              if (isAdult)
-                const Positioned(
-                  bottom: 47,
-                  right: 6,
-                  child: AppAdultBadge(),
-                ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: ClipRect(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
-                    child: Container(
-                      color: Colors.black.withValues(alpha: 0.6),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 6.0,
-                      ),
-                      child: SizedBox(
-                        height: 29.0,
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            title,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

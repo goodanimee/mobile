@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import '../../../components/section_title.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../components/error_view.dart';
-import '../../../components/app_network_image.dart';
 import '../../../utils/backend_helper.dart';
 import '../../../services/auth_service.dart';
 import '../../../proto/medialist.pb.dart';
+import '../../../components/app_entity_card.dart';
+import '../../../components/app_section.dart';
 import '../widgets/character_sheet.dart';
 
 /// A tab displaying characters and cast for an anime
@@ -147,127 +147,54 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
     }
 
     final content = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-        const SectionTitle(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppSection(
           title: 'Characters & Cast',
-          bottomPadding: 16,
-        ),
-        GridView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1.8,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-          ),
-          itemCount: _characters.length,
-          itemBuilder: (context, index) {
-            final edge = _characters[index];
-            final charNode = edge['node'];
-            final nameObj = charNode['name'] ?? {};
-            final fullName = nameObj['full'] ?? nameObj['userPreferred'] ?? 'Unknown';
-            final nativeName = nameObj['native'] ?? '';
-            final role = edge['role'] ?? '';
-            final charImageUrl = charNode['image']?['large'] ?? '';
+          topSpacing: 0,
+          children: [
+            GridView.builder(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.8,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+              ),
+              itemCount: _characters.length,
+              itemBuilder: (context, index) {
+                final edge = _characters[index];
+                final charNode = edge['node'];
+                final nameObj = charNode['name'] ?? {};
+                final fullName = nameObj['full'] ?? nameObj['userPreferred'] ?? 'Unknown';
+                final nativeName = nameObj['native'] ?? '';
+                final role = edge['role'] ?? '';
+                final charImageUrl = charNode['image']?['large'] ?? '';
 
-
-            return InkWell(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor: Colors.transparent,
-                  builder: (context) => CharacterSheet(character: edge),
+                return AppEntityCard(
+                  imageUrl: charImageUrl,
+                  name: fullName,
+                  nativeName: nativeName,
+                  subtitle: role,
+                  trailing: Icon(
+                    Icons.info_outline_rounded,
+                    size: 14,
+                    color: Colors.white.withValues(alpha: 0.25),
+                  ),
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => CharacterSheet(character: edge),
+                    );
+                  },
                 );
               },
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.03),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.white12),
-                ),
-              child: Stack(
-                children: [
-                  Row(
-                    children: [
-                      AppNetworkImage(
-                        imageUrl: charImageUrl,
-                        width: 85,
-                        height: double.infinity,
-                        fallbackIcon: Icons.person,
-                        checkDefault: true,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(11),
-                          bottomLeft: Radius.circular(11),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10, right: 8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                fullName,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.2,
-                                ),
-                              ),
-                              if (nativeName.isNotEmpty) ...[
-                                const SizedBox(height: 2),
-                                Text(
-                                  nativeName,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.white38,
-                                    fontSize: 15,
-                                    height: 1.2,
-                                  ),
-                                ),
-                              ],
-                              const SizedBox(height: 8),
-                              Text(
-                                role,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  color: Colors.white54,
-                                  fontSize: 12,
-                                  height: 1.2,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    bottom: 6,
-                    right: 8,
-                    child: Icon(
-                      Icons.info_outline,
-                      size: 14,
-                      color: Colors.white.withValues(alpha: 0.25),
-                    ),
-                  ),
-                ],
-              ),
             ),
-          );
-        },
+          ],
         ),
         if (_isFetchingMore)
           const Padding(

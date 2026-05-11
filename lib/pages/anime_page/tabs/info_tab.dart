@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/airing_countdown.dart';
-import '../../../components/section_title.dart';
 import '../../../components/stat_item.dart';
 import '../../../components/html_description.dart';
 import '../../../components/app_pill.dart';
+import '../../../components/app_section.dart';
+import '../../../utils/utils.dart';
 
 /// A tab displaying general information and synopsis for an anime
 class AnimeInfoTab extends StatelessWidget {
@@ -77,14 +78,16 @@ class AnimeInfoTab extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 24),
-        if (media['description'] != null) ...[
-          const SectionTitle(title: 'Synopsis', bottomPadding: 8),
-          HtmlDescription(html: media['description'] as String),
-          const SizedBox(height: 24),
-        ],
-        if (media['genres'] != null &&
-            (media['genres'] as List).isNotEmpty) ...[
+        if (media['description'] != null)
+          AppSection(
+            title: 'Synopsis',
+            innerSpacing: 8,
+            children: [
+              HtmlDescription(html: media['description'] as String),
+            ],
+          ),
+        if (media['genres'] != null && (media['genres'] as List).isNotEmpty) ...[
+          const SizedBox(height: 12),
           Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
@@ -98,103 +101,76 @@ class AnimeInfoTab extends StatelessWidget {
               );
             }).toList(),
           ),
-          const SizedBox(height: 24),
         ],
         _buildStudiosSection(),
         _buildTitlesSection(),
-        if (tags.isNotEmpty) ...[
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        if (tags.isNotEmpty)
+          AppSection(
+            title: 'Community Tags',
+            trailing: hasSpoilers
+                ? TextButton.icon(
+                    onPressed: onToggleSpoilers,
+                    icon: Icon(
+                      showSpoilers ? Icons.expand_less : Icons.expand_more,
+                      color: Colors.white70,
+                      size: 20,
+                    ),
+                    label: Text(
+                      showSpoilers ? 'Hide spoilers' : 'Show spoilers',
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                  )
+                : null,
             children: [
-              const SectionTitle(title: 'Community Tags', bottomPadding: 0),
-              if (hasSpoilers)
-                TextButton.icon(
-                  onPressed: onToggleSpoilers,
-                  icon: Icon(
-                    showSpoilers ? Icons.expand_less : Icons.expand_more,
-                    color: Colors.white70,
-                    size: 20,
-                  ),
-                  label: Text(
-                    showSpoilers ? 'Hide spoilers' : 'Show spoilers',
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                ),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: visibleTags.map((tag) {
+                  return AppPill(
+                    label: tag['name']?.toString() ?? '',
+                    leadingText: '${tag['rank']}%',
+                    isSpoiler: tag['isMediaSpoiler'] as bool? ?? false,
+                  );
+                }).toList(),
+              ),
             ],
           ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: visibleTags.map((tag) {
-              return AppPill(
-                label: tag['name']?.toString() ?? '',
-                leadingText: '${tag['rank']}%',
-                isSpoiler: tag['isMediaSpoiler'] as bool? ?? false,
-              );
-            }).toList(),
+        if (externalLinks.isNotEmpty)
+          AppSection(
+            title: 'External Links',
+            children: [
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: externalLinks.map((link) {
+                  final site = link['site']?.toString() ?? 'Link';
+                  final url = link['url']?.toString() ?? '';
+                  final language = link['language']?.toString();
+                  
+                  return AppPill(
+                    label: site,
+                    leadingText: StringUtils.getLanguageAbbreviation(language),
+                    onTap: () async {
+                      if (url.isNotEmpty) {
+                        final uri = Uri.parse(url);
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(
+                            uri,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
+                      }
+                    },
+                  );
+                }).toList(),
+              ),
+            ],
           ),
-        ],
-        const SizedBox(height: 40),
-        if (externalLinks.isNotEmpty) ...[
-          const SectionTitle(title: 'External Links', bottomPadding: 16),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: externalLinks.map((link) {
-              final site = link['site']?.toString() ?? 'Link';
-              final url = link['url']?.toString() ?? '';
-              final language = link['language']?.toString();
-              
-              String? langAbbr;
-              if (language != null) {
-                final l = language.toLowerCase();
-                if (l.contains('japanese')) {
-                  langAbbr = 'JP';
-                } else if (l.contains('english')) {
-                  langAbbr = 'EN';
-                } else if (l.contains('chinese')) {
-                  langAbbr = 'CN';
-                } else if (l.contains('korean')) {
-                  langAbbr = 'KR';
-                } else if (l.contains('spanish')) {
-                  langAbbr = 'ES';
-                } else if (l.contains('french')) {
-                  langAbbr = 'FR';
-                } else if (l.contains('german')) {
-                  langAbbr = 'DE';
-                } else if (l.contains('italian')) {
-                  langAbbr = 'IT';
-                } else if (l.contains('portuguese')) {
-                  langAbbr = 'PT';
-                }
-              }
- 
-              return AppPill(
-                label: site,
-                leadingText: langAbbr,
-                onTap: () async {
-                  if (url.isNotEmpty) {
-                    final uri = Uri.parse(url);
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(
-                        uri,
-                        mode: LaunchMode.externalApplication,
-                      );
-                    }
-                  }
-                },
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 24),
-        ],
       ],
     );
 
@@ -211,7 +187,6 @@ class AnimeInfoTab extends StatelessWidget {
     );
   }
 
-
   /// Builds the studios section
   Widget _buildStudiosSection() {
     final studiosData = media['studios'];
@@ -224,10 +199,9 @@ class AnimeInfoTab extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return AppSection(
+      title: 'Studios',
       children: [
-        const SectionTitle(title: 'Studios', bottomPadding: 12),
         Wrap(
           spacing: 8.0,
           runSpacing: 8.0,
@@ -266,7 +240,6 @@ class AnimeInfoTab extends StatelessWidget {
             }).toList();
           })(),
         ),
-        const SizedBox(height: 24),
       ],
     );
   }
@@ -294,10 +267,9 @@ class AnimeInfoTab extends StatelessWidget {
 
     if (rows.isEmpty) return const SizedBox.shrink();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return AppSection(
+      title: 'Titles & Synonyms',
       children: [
-        const SectionTitle(title: 'Titles & Synonyms', bottomPadding: 12),
         Table(
           columnWidths: const {
             0: IntrinsicColumnWidth(),
