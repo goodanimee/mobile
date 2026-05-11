@@ -21,12 +21,16 @@ class AnimeCharactersTab extends StatefulWidget {
   /// Whether this tab is nested within another scroll view
   final bool isNested;
  
+  /// Initial data for the first page
+  final Map<String, dynamic>? initialData;
+
   /// Creates a characters tab
   const AnimeCharactersTab({
     super.key,
     required this.mediaId,
     this.scrollController,
     this.isNested = false,
+    this.initialData,
   });
 
   @override
@@ -47,7 +51,17 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
   @override
   void initState() {
     super.initState();
-    _fetchCharacters();
+    
+    if (widget.initialData != null) {
+      final edges = widget.initialData!['edges'] as List? ?? [];
+      final pageInfo = widget.initialData!['pageInfo'];
+      
+      _characters.addAll(edges);
+      _hasNextPage = pageInfo?['hasNextPage'] ?? false;
+      _isLoading = false;
+    } else {
+      _fetchCharacters();
+    }
   }
 
   @override

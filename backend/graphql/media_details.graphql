@@ -109,6 +109,53 @@ query Media($mediaId: Int, $notYetAired: Boolean) {
         }
       }
     }
+    characters(page: 1, perPage: 25, sort: [RELEVANCE]) {
+      pageInfo { ...pageInfoFields }
+      edges {
+        id
+        role
+        voiceActors(sort: [RELEVANCE]) {
+          image {
+            large
+            medium
+          }
+          name {
+            full
+          }
+          languageV2
+        }
+        node {
+          name {
+            full
+            native
+            alternative
+            alternativeSpoiler
+            userPreferred
+          }
+          image {
+            large
+            medium
+          }
+        }
+      }
+    }
+    staff(page: 1, perPage: 25, sort: [RELEVANCE]) {
+      pageInfo { ...pageInfoFields }
+      edges {
+        role
+        node {
+          name {
+            userPreferred
+            full
+            native
+          }
+          image {
+            large
+            medium
+          }
+        }
+      }
+    }
   }
 }
 

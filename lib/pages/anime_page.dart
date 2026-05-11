@@ -189,12 +189,14 @@ class _AnimePageState extends State<AnimePage> {
           mediaId: widget.mediaId,
           scrollController: _scrollController,
           isNested: true,
+          initialData: media['staff'] as Map<String, dynamic>?,
         );
       case 3:
         return AnimeCharactersTab(
           mediaId: widget.mediaId,
           scrollController: _scrollController,
           isNested: true,
+          initialData: media['characters'] as Map<String, dynamic>?,
         );
       case 4:
         return const PlaceholderTab(title: 'Relations Section');

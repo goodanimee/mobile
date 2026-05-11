@@ -20,12 +20,16 @@ class AnimeStaffTab extends StatefulWidget {
   /// Whether this tab is nested within another scroll view
   final bool isNested;
  
+  /// Initial data for the first page
+  final Map<String, dynamic>? initialData;
+
   /// Creates a staff tab
   const AnimeStaffTab({
     super.key,
     required this.mediaId,
     this.scrollController,
     this.isNested = false,
+    this.initialData,
   });
 
   @override
@@ -46,7 +50,17 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
   @override
   void initState() {
     super.initState();
-    _fetchStaff();
+    
+    if (widget.initialData != null) {
+      final edges = widget.initialData!['edges'] as List? ?? [];
+      final pageInfo = widget.initialData!['pageInfo'];
+      
+      _staff.addAll(edges);
+      _hasNextPage = pageInfo?['hasNextPage'] ?? false;
+      _isLoading = false;
+    } else {
+      _fetchStaff();
+    }
   }
 
   @override
