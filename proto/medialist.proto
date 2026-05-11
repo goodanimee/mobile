@@ -47,6 +47,12 @@ message Media {
     int32 season_year = 15;
     string status = 16;
     Trailer trailer = 17;
+    repeated string synonyms = 18;
+    FuzzyDate start_date = 19;
+    FuzzyDate end_date = 20;
+    int32 mean_score = 21;
+    int32 favourites = 22;
+    string site_url = 23;
 }
 
 message MediaListEntry {
@@ -124,6 +130,28 @@ message FetchMediaDetailsRequest {
 }
 
 message FetchMediaDetailsResponse {
+    string raw_json = 1;
+    string error = 2;
+}
+
+message FetchMediaStaffRequest {
+    int32 media_id = 1;
+    int32 page = 2;
+    int32 per_page = 3;
+}
+
+message FetchMediaStaffResponse {
+    string raw_json = 1;
+    string error = 2;
+}
+
+message FetchMediaCharactersRequest {
+    int32 media_id = 1;
+    int32 page = 2;
+    int32 per_page = 3;
+}
+
+message FetchMediaCharactersResponse {
     string raw_json = 1;
     string error = 2;
 }

@@ -1,10 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
+import 'app_network_image.dart';
 import '../utils/backend_helper.dart';
 import '../services/auth_service.dart';
 import '../proto/medialist.pb.dart';
 
+/// Builds a badge showing repeat count
 Widget _buildRepeatBadge(int repeat) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -30,6 +31,7 @@ Widget _buildRepeatBadge(int repeat) {
   );
 }
 
+/// Builds a badge showing progress and status
 Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
   const badgeDecoration = BoxDecoration(
     color: Colors.black38,
@@ -82,6 +84,7 @@ Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
   );
 }
 
+/// Builds a badge showing the score
 Widget _buildScoreBadge(num score) {
   final display = score % 1 == 0
       ? score.toInt().toString()
@@ -103,6 +106,7 @@ Widget _buildScoreBadge(num score) {
   );
 }
 
+/// Builds a button to increment progress
 Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
   return GestureDetector(
     onTap: onTap,
@@ -134,13 +138,22 @@ Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
   );
 }
 
+/// A card widget displaying an anime entry in a list
 class AnimeListCard extends StatefulWidget {
+  /// The anime list entry data
   final Map<String, dynamic> entry;
+
+  /// Callback when the entry is updated
   final void Function(int mediaId, Map<String, dynamic> updates)?
   onEntryUpdated;
+
+  /// Callback for long press
   final VoidCallback? onLongPress;
+
+  /// Callback for tap
   final VoidCallback? onTap;
 
+  /// Creates an anime list card
   const AnimeListCard({
     super.key,
     required this.entry,
@@ -153,6 +166,7 @@ class AnimeListCard extends StatefulWidget {
   State<AnimeListCard> createState() => _AnimeListCardState();
 }
 
+/// State for AnimeListCard
 class _AnimeListCardState extends State<AnimeListCard> {
   late int _progress;
   late String _status;
@@ -166,6 +180,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
   }
 
   @override
+  /// Updates state when widget properties change
   void didUpdateWidget(AnimeListCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.entry != widget.entry) {
@@ -174,6 +189,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
     }
   }
 
+  /// Increments the progress of the anime entry
   Future<void> _incrementProgress() async {
     if (_isUpdating) return;
 
@@ -270,15 +286,11 @@ class _AnimeListCardState extends State<AnimeListCard> {
                   fit: StackFit.expand,
                   children: [
                     Container(color: color.withValues(alpha: 0.2)),
-                    if (coverImage != null)
-                      CachedNetworkImage(
-                        imageUrl: coverImage,
-                        fit: BoxFit.cover,
-                        errorWidget: (_, _, _) => const Icon(
-                          Icons.broken_image,
-                          color: Colors.white54,
-                        ),
-                      ),
+                    AppNetworkImage(
+                      imageUrl: coverImage ?? '',
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
                   ],
                 ),
               ),

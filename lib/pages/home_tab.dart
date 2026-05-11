@@ -2,20 +2,30 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../utils/backend_helper.dart';
 import '../services/auth_service.dart';
 import '../theme/theme.dart';
 import '../components/anime_list_card.dart';
 import '../components/anime_options_sheet.dart';
+import '../components/section_title.dart';
+import '../components/loading_indicator.dart';
+import '../components/error_view.dart';
+import '../components/app_network_image.dart';
 import 'anime_page.dart';
 
+/// A tab displaying the user's anime lists
 class HomeTab extends StatefulWidget {
+  /// Whether to display items in a grid
   final bool isGridMode;
+
+  /// Callback for signing out
   final VoidCallback onSignOut;
+
+  /// Callback when the list of categories changes
   final void Function(List<String> statuses, void Function(String) scrollTo)?
   onSectionsChanged;
 
+  /// Creates a home tab
   const HomeTab({
     super.key,
     this.isGridMode = false,
@@ -27,6 +37,7 @@ class HomeTab extends StatefulWidget {
   State<HomeTab> createState() => _HomeTabState();
 }
 
+/// State for HomeTab
 class _HomeTabState extends State<HomeTab> {
   bool _isLoading = true;
   List<dynamic> _lists = [];
@@ -43,11 +54,13 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   @override
+  /// Disposes the scroll controller
   void dispose() {
     _scrollController.dispose();
     super.dispose();
   }
 
+  /// Notifies parent of the available list sections
   void _notifySections() {
     widget.onSectionsChanged?.call(
       _lists.map((l) => l['name'] as String).toList(),
@@ -55,6 +68,7 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
+  /// Selects a section by name and scrolls to top
   void _selectSection(String name) {
     if (_activeStatus == name) return;
     setState(() => _activeStatus = name);
@@ -63,12 +77,13 @@ class _HomeTabState extends State<HomeTab> {
     }
   }
 
+  /// Handles updates to an individual anime entry
   void _handleEntryUpdated(int mediaId, Map<String, dynamic> updates) {
     const orderedNames = [
       'WATCHING',
-      'REPEATING',
       'PLANNING',
       'COMPLETED',
+      'REPEATING',
       'PAUSED',
       'DROPPED',
     ];
@@ -114,8 +129,6 @@ class _HomeTabState extends State<HomeTab> {
       return section;
     }).toList();
 
-    updatedLists.removeWhere((s) => (s['entries'] as List).isEmpty);
-
     if (movedEntry != null && targetName != null) {
       final targetIdx = updatedLists.indexWhere((s) => s['name'] == targetName);
       if (targetIdx != -1) {
@@ -137,14 +150,14 @@ class _HomeTabState extends State<HomeTab> {
       }
     }
 
-    final validNames = updatedLists.map((s) => s['name'] as String).toSet();
-
     setState(() {
       _lists = updatedLists;
-      if (_activeStatus == null || !validNames.contains(_activeStatus)) {
-        _activeStatus = updatedLists.isNotEmpty
-            ? updatedLists.first['name'] as String
-            : null;
+      if (_activeStatus == null) {
+        final firstNonEmpty = updatedLists.firstWhere(
+          (s) => (s['entries'] as List).isNotEmpty,
+          orElse: () => updatedLists.first,
+        );
+        _activeStatus = firstNonEmpty['name'] as String;
       }
     });
 
@@ -156,6 +169,7 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
+  /// Retrieves the viewer's user ID from cache or network
   Future<int?> _getUserId() async {
     final prefs = await SharedPreferences.getInstance();
     final cachedJson = prefs.getString('cached_viewer');
@@ -187,6 +201,7 @@ class _HomeTabState extends State<HomeTab> {
     }
   }
 
+  /// Fetches the user's anime lists from cache or network
   Future<void> _fetchLists({bool forceRefresh = false}) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -199,9 +214,13 @@ class _HomeTabState extends State<HomeTab> {
             setState(() {
               _lists = lists;
               _isLoading = false;
-              _activeStatus ??= lists.isNotEmpty
-                  ? lists.first['name'] as String
-                  : null;
+              if (_activeStatus == null) {
+                final firstNonEmpty = lists.firstWhere(
+                  (l) => (l['entries'] as List).isNotEmpty,
+                  orElse: () => lists.first,
+                );
+                _activeStatus = firstNonEmpty['name'] as String;
+              }
             });
             _notifySections();
           }
@@ -309,19 +328,20 @@ class _HomeTabState extends State<HomeTab> {
 
       final orderedStatuses = [
         'CURRENT',
-        'REPEATING',
         'PLANNING',
         'COMPLETED',
+        'REPEATING',
         'PAUSED',
         'DROPPED',
       ];
 
       final processedLists = <Map<String, dynamic>>[];
       for (final status in orderedStatuses) {
-        if (grouped[status] != null && grouped[status]!.isNotEmpty) {
-          final name = status == 'CURRENT' ? 'WATCHING' : status;
-          processedLists.add({'name': name, 'entries': grouped[status]});
-        }
+        final name = status == 'CURRENT' ? 'WATCHING' : status;
+        processedLists.add({
+          'name': name,
+          'entries': grouped[status] ?? [],
+        });
       }
 
       for (final status in grouped.keys) {
@@ -335,17 +355,17 @@ class _HomeTabState extends State<HomeTab> {
       _hasFetchedThisSession = true;
 
       if (mounted) {
-        final validNames = processedLists
-            .map((l) => l['name'] as String)
-            .toSet();
         setState(() {
           _lists = processedLists;
           _isLoading = false;
           _error = null;
-          if (_activeStatus == null || !validNames.contains(_activeStatus)) {
-            _activeStatus = processedLists.isNotEmpty
-                ? processedLists.first['name'] as String
-                : null;
+          
+          if (_activeStatus == null) {
+            final firstNonEmpty = processedLists.firstWhere(
+              (l) => (l['entries'] as List).isNotEmpty,
+              orElse: () => processedLists.first,
+            );
+            _activeStatus = firstNonEmpty['name'] as String;
           }
         });
         _notifySections();
@@ -364,6 +384,7 @@ class _HomeTabState extends State<HomeTab> {
     }
   }
 
+  /// Shows the anime options bottom sheet
   void _showItemOptions(
     BuildContext context,
     Map<String, dynamic> entry,
@@ -371,8 +392,7 @@ class _HomeTabState extends State<HomeTab> {
     final result = await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
       isScrollControlled: true,
-      backgroundColor:
-          Colors.transparent, // Use transparent so we can draw our own border
+      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return DraggableScrollableSheet(
           initialChildSize: 0.5,
@@ -397,28 +417,21 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   @override
+  /// Builds the main home tab widget
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator(color: borderColor));
+      return const AppLoadingIndicator();
     }
 
     if (_error != null) {
-      return Center(
-        child: Text(
-          'Error: $_error',
-          style: const TextStyle(color: Colors.redAccent),
-          textAlign: TextAlign.center,
-        ),
+      return AppErrorView(
+        message: _error!,
+        onRetry: () => _fetchLists(forceRefresh: true),
       );
     }
 
     if (_lists.isEmpty) {
-      return const Center(
-        child: Text(
-          'No anime lists found.',
-          style: TextStyle(color: textColor),
-        ),
-      );
+      return const AppErrorView(message: 'No anime lists found.');
     }
 
     final activeList =
@@ -445,90 +458,110 @@ class _HomeTabState extends State<HomeTab> {
                       left: 16,
                       right: 16,
                       top: 24,
-                      bottom: 16,
                     ),
-                    child: Text(
-                      activeName,
-                      style: const TextStyle(
-                        color: sectionTitleColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: SectionTitle(title: activeName),
                   ),
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    bottom: 100,
+                if (activeEntries.isEmpty)
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: AppErrorView(
+                      message: 'No anime currently in $activeName',
+                      topPadding: 0,
+                    ),
+                  )
+                else
+                  SliverPadding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      bottom: 100,
+                    ),
+                    sliver: SliverGrid(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 8,
+                            crossAxisSpacing: 8,
+                            childAspectRatio: 0.7,
+                          ),
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        return _buildGridItem(
+                          activeEntries[index] as Map<String, dynamic>,
+                        );
+                      }, childCount: activeEntries.length),
+                    ),
                   ),
-                  sliver: SliverGrid(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
-                          childAspectRatio:
-                              0.7, // Portrait aspect ratio (usually ~2/3 or 0.7)
-                        ),
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      return _buildGridItem(
-                        activeEntries[index] as Map<String, dynamic>,
-                      );
-                    }, childCount: activeEntries.length),
-                  ),
-                ),
               ],
             )
-          : ListView.builder(
-              controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(top: 16, bottom: 100),
-              itemCount: activeEntries.length + 1,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+          : activeEntries.isEmpty
+              ? ListView(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(top: 16, bottom: 100),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: SectionTitle(title: activeName, bottomPadding: 0),
                     ),
-                    child: Text(
-                      activeName,
-                      style: const TextStyle(
-                        color: sectionTitleColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: AppErrorView(
+                        message: 'No anime currently in $activeName',
+                        topPadding: 0,
                       ),
                     ),
-                  );
-                }
-                return AnimeListCard(
-                  entry: activeEntries[index - 1] as Map<String, dynamic>,
-                  onEntryUpdated: _handleEntryUpdated,
-                  onTap: () {
-                    final e = activeEntries[index - 1] as Map<String, dynamic>;
-                    final mediaId =
-                        (e['media'] as Map<String, dynamic>?)?['id'] as int?;
-                    if (mediaId != null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AnimePage(mediaId: mediaId),
+                  ],
+                )
+              : ListView.builder(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(top: 16, bottom: 100),
+                  itemCount: activeEntries.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
                         ),
+                        child: SectionTitle(title: activeName, bottomPadding: 0),
                       );
                     }
+                    return AnimeListCard(
+                      entry: activeEntries[index - 1] as Map<String, dynamic>,
+                      onEntryUpdated: _handleEntryUpdated,
+                      onTap: () async {
+                        final e =
+                            activeEntries[index - 1] as Map<String, dynamic>;
+                        final mediaId =
+                            (e['media'] as Map<String, dynamic>?)?['id'] as int?;
+                        if (mediaId != null) {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AnimePage(mediaId: mediaId),
+                            ),
+                          );
+                          if (result == true) {
+                            _fetchLists(forceRefresh: true);
+                          }
+                        }
+                      },
+                      onLongPress: () => _showItemOptions(
+                        context,
+                        activeEntries[index - 1] as Map<String, dynamic>,
+                      ),
+                    );
                   },
-                  onLongPress: () => _showItemOptions(
-                    context,
-                    activeEntries[index - 1] as Map<String, dynamic>,
-                  ),
-                );
-              },
-            ),
+                ),
     );
   }
 
+  /// Builds an individual item for the grid view
   Widget _buildGridItem(Map<String, dynamic> entry) {
     final media = entry['media'] as Map<String, dynamic>? ?? {};
     final title = media['title']?['userPreferred'] ?? 'Unknown';
@@ -545,15 +578,18 @@ class _HomeTabState extends State<HomeTab> {
     }
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         final mediaId = media['id'] as int?;
         if (mediaId != null) {
-          Navigator.push(
+          final result = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => AnimePage(mediaId: mediaId),
             ),
           );
+          if (result == true) {
+            _fetchLists(forceRefresh: true);
+          }
         }
       },
       onLongPress: () => _showItemOptions(context, entry),
@@ -570,16 +606,12 @@ class _HomeTabState extends State<HomeTab> {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              imageUrl.isNotEmpty
-                  ? CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          Container(color: hoverBgColor),
-                      errorWidget: (context, url, error) =>
-                          Container(color: hoverBgColor),
-                    )
-                  : Container(color: hoverBgColor),
+              AppNetworkImage(
+                imageUrl: imageUrl,
+                width: double.infinity,
+                height: double.infinity,
+                borderRadius: BorderRadius.circular(10.5),
+              ),
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -594,10 +626,9 @@ class _HomeTabState extends State<HomeTab> {
                         vertical: 6.0,
                       ),
                       child: SizedBox(
-                        height:
-                            29.0, // Reserves space for exactly 2 lines (fontSize 12 * height 1.2 = 14.4 per line)
+                        height: 29.0,
                         child: Align(
-                          alignment: Alignment.topLeft,
+                           alignment: Alignment.topLeft,
                           child: Text(
                             title,
                             maxLines: 2,

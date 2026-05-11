@@ -9,15 +9,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/theme.dart';
 import '../components/app_button.dart';
 
+/// A page for user authentication via AniList
 class LoginPage extends StatefulWidget {
+  /// Callback when authentication is successful
   final void Function(String token) onAuthenticated;
 
+  /// Creates a login page
   const LoginPage({super.key, required this.onAuthenticated});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
+/// State for LoginPage
 class _LoginPageState extends State<LoginPage> {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
@@ -34,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  /// Initializes deep link listeners for OAuth callback
   Future<void> _initDeepLinks() async {
     _appLinks = AppLinks();
 
@@ -62,6 +67,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// Launches the AniList OAuth authorization page
   Future<void> _launchAnilistAuth() async {
     final Uri url = Uri.parse(
       'https://anilist.co/api/v2/oauth/authorize?client_id=${dotenv.env['ANILIST_CLIENT_ID']}&response_type=token',
@@ -77,6 +83,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  /// Builds the login page widget
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(

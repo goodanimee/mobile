@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
+import 'section_title.dart';
 import '../utils/backend_helper.dart';
 import '../services/auth_service.dart';
 import '../proto/medialist.pb.dart';
 
+/// A bottom sheet for editing anime list entry options
 class AnimeOptionsSheet extends StatefulWidget {
+  /// The anime list entry data
   final Map<String, dynamic> entry;
+
+  /// Optional scroll controller for the sheet
   final ScrollController? scrollController;
 
+  /// Creates an anime options sheet
   const AnimeOptionsSheet({
     super.key,
     required this.entry,
@@ -18,6 +24,7 @@ class AnimeOptionsSheet extends StatefulWidget {
   State<AnimeOptionsSheet> createState() => _AnimeOptionsSheetState();
 }
 
+/// State for AnimeOptionsSheet
 class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
   late String _status;
   late int _progress;
@@ -56,6 +63,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     _initialFinishDate = _finishDate;
   }
 
+  /// Parses a date map into a DateTime object
   DateTime? _parseDate(Map<String, dynamic>? dateMap) {
     if (dateMap == null) return null;
     final y = dateMap['year'] as int?;
@@ -67,6 +75,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     return null;
   }
 
+  /// Formats a DateTime into a string
   String _formatDate(DateTime? date) {
     if (date == null) return '--/--/----';
     return '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
@@ -99,21 +108,18 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     });
   }
 
+  /// Builds a section with a title
   Widget _buildSection(String title, Widget child) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: sectionTitleColor,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
+          SectionTitle(
+            title: title,
+            fontSize: 14,
+            bottomPadding: 12,
           ),
-          const SizedBox(height: 12),
           child,
         ],
       ),
@@ -175,6 +181,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     );
   }
 
+  /// Builds the save and cancel buttons
   Widget _buildActionButtons() {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 24),
@@ -229,6 +236,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     );
   }
 
+  /// Saves changes to the backend
   Future<void> _saveChanges() async {
     final mediaId = widget.entry['media']?['id'] as int?;
     if (mediaId == null) return;
@@ -303,6 +311,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     }
   }
 
+  /// Builds the status selection section
   Widget _buildStatusSection() {
     const statuses = [
       ('CURRENT', Icons.play_circle_rounded),
@@ -347,6 +356,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     );
   }
 
+  /// Builds the progress editing section
   Widget _buildProgressSection() {
     return _buildSection(
       'Progress',
@@ -384,6 +394,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     );
   }
 
+  /// Builds the date selection section
   Widget _buildDatesSection() {
     return _buildSection(
       'Dates',
@@ -405,6 +416,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     );
   }
 
+  /// Builds a clickable date box
   Widget _buildDateBox(
     String label,
     DateTime? date,
@@ -464,6 +476,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     );
   }
 
+  /// Builds the score rating section
   Widget _buildScoreSection() {
     return _buildSection(
       'Score',
@@ -530,11 +543,11 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     );
   }
 
+  /// Updates the score based on drag position
   void _updateScore(double dx, double maxWidth) {
     double rawScore = (dx / maxWidth) * 10;
     if (rawScore < 0) rawScore = 0;
     if (rawScore > 10) rawScore = 10;
-    // Round to nearest 0.1
     setState(() {
       _score = double.parse(rawScore.toStringAsFixed(1));
     });

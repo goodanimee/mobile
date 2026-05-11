@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'theme/theme.dart';
 import 'pages/home_page.dart';
 
+/// Application entry point
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
@@ -18,10 +19,13 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+/// Root widget of the application
 class MyApp extends StatelessWidget {
+  /// Creates the root application widget
   const MyApp({super.key});
 
   @override
+  /// Builds the main material application
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'GoodAnime',

@@ -3,17 +3,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../services/auth_service.dart';
 import '../theme/theme.dart';
 import '../components/floating_nav.dart';
+import '../components/loading_indicator.dart';
 import 'login_page.dart';
 import 'profile_page.dart';
 import 'home_tab.dart';
 
+/// The main container page for the application
 class HomePage extends StatefulWidget {
+  /// Creates the home page
   const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
+/// Returns an icon corresponding to a list status
 IconData _statusIcon(String status) => switch (status) {
   'WATCHING' => Icons.play_circle_rounded,
   'REPEATING' => Icons.repeat_rounded,
@@ -24,11 +28,12 @@ IconData _statusIcon(String status) => switch (status) {
   _ => Icons.list_rounded,
 };
 
+/// State for HomePage
 class _HomePageState extends State<HomePage> {
   String? _token;
   bool _isLoading = true;
   int _navIndex = 0;
-  bool _isGridMode = true; // default to true
+  bool _isGridMode = true;
   List<QuickNavSection> _quickNavSections = [];
 
   @override
@@ -37,6 +42,7 @@ class _HomePageState extends State<HomePage> {
     _loadTokenAndPreferences();
   }
 
+  /// Loads the auth token and user preferences from storage
   Future<void> _loadTokenAndPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     final isGridMode = prefs.getBool('cached_is_grid_mode') ?? true;
@@ -50,6 +56,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /// Toggles between grid and list display modes
   Future<void> _toggleGridMode() async {
     final newValue = !_isGridMode;
     setState(() => _isGridMode = newValue);
@@ -57,10 +64,12 @@ class _HomePageState extends State<HomePage> {
     await prefs.setBool('cached_is_grid_mode', newValue);
   }
 
+  /// Updates state with a new auth token
   void _handleAuthenticated(String token) {
     setState(() => _token = token);
   }
 
+  /// Resets state on sign out
   void _handleSignOut() {
     setState(() {
       _token = null;
@@ -68,6 +77,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /// Updates the quick navigation sections based on visible list categories
   void _handleSectionsChanged(
     List<String> statuses,
     void Function(String) scrollTo,
@@ -86,6 +96,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /// Builds the body content based on the selected navigation index
   Widget _buildBody() {
     switch (_navIndex) {
       case 0:
@@ -107,10 +118,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  /// Builds the main home page widget
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator(color: borderColor)),
+        body: AppLoadingIndicator(),
       );
     }
 

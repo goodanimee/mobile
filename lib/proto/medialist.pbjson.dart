@@ -121,6 +121,26 @@ const Media$json = {
       '6': '.goodanime.Trailer',
       '10': 'trailer'
     },
+    {'1': 'synonyms', '3': 18, '4': 3, '5': 9, '10': 'synonyms'},
+    {
+      '1': 'start_date',
+      '3': 19,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.FuzzyDate',
+      '10': 'startDate'
+    },
+    {
+      '1': 'end_date',
+      '3': 20,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.FuzzyDate',
+      '10': 'endDate'
+    },
+    {'1': 'mean_score', '3': 21, '4': 1, '5': 5, '10': 'meanScore'},
+    {'1': 'favourites', '3': 22, '4': 1, '5': 5, '10': 'favourites'},
+    {'1': 'site_url', '3': 23, '4': 1, '5': 9, '10': 'siteUrl'},
   ],
 };
 
@@ -135,7 +155,11 @@ final $typed_data.Uint8List mediaDescriptor = $convert.base64Decode(
     'aXNfYWR1bHQYCyABKAhSB2lzQWR1bHQSIQoMaXNfZmF2b3VyaXRlGAwgASgIUgtpc0Zhdm91cm'
     'l0ZRIeCgpwb3B1bGFyaXR5GA0gASgFUgpwb3B1bGFyaXR5EhYKBnNlYXNvbhgOIAEoCVIGc2Vh'
     'c29uEh8KC3NlYXNvbl95ZWFyGA8gASgFUgpzZWFzb25ZZWFyEhYKBnN0YXR1cxgQIAEoCVIGc3'
-    'RhdHVzEiwKB3RyYWlsZXIYESABKAsyEi5nb29kYW5pbWUuVHJhaWxlclIHdHJhaWxlcg==');
+    'RhdHVzEiwKB3RyYWlsZXIYESABKAsyEi5nb29kYW5pbWUuVHJhaWxlclIHdHJhaWxlchIaCghz'
+    'eW5vbnltcxgSIAMoCVIIc3lub255bXMSMwoKc3RhcnRfZGF0ZRgTIAEoCzIULmdvb2RhbmltZS'
+    '5GdXp6eURhdGVSCXN0YXJ0RGF0ZRIvCghlbmRfZGF0ZRgUIAEoCzIULmdvb2RhbmltZS5GdXp6'
+    'eURhdGVSB2VuZERhdGUSHQoKbWVhbl9zY29yZRgVIAEoBVIJbWVhblNjb3JlEh4KCmZhdm91cm'
+    'l0ZXMYFiABKAVSCmZhdm91cml0ZXMSGQoIc2l0ZV91cmwYFyABKAlSB3NpdGVVcmw=');
 
 @$core.Deprecated('Use mediaListEntryDescriptor instead')
 const MediaListEntry$json = {
@@ -438,3 +462,65 @@ final $typed_data.Uint8List fetchMediaDetailsResponseDescriptor =
     $convert.base64Decode(
         'ChlGZXRjaE1lZGlhRGV0YWlsc1Jlc3BvbnNlEhkKCHJhd19qc29uGAEgASgJUgdyYXdKc29uEh'
         'QKBWVycm9yGAIgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use fetchMediaStaffRequestDescriptor instead')
+const FetchMediaStaffRequest$json = {
+  '1': 'FetchMediaStaffRequest',
+  '2': [
+    {'1': 'media_id', '3': 1, '4': 1, '5': 5, '10': 'mediaId'},
+    {'1': 'page', '3': 2, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'per_page', '3': 3, '4': 1, '5': 5, '10': 'perPage'},
+  ],
+};
+
+/// Descriptor for `FetchMediaStaffRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaStaffRequestDescriptor =
+    $convert.base64Decode(
+        'ChZGZXRjaE1lZGlhU3RhZmZSZXF1ZXN0EhkKCG1lZGlhX2lkGAEgASgFUgdtZWRpYUlkEhIKBH'
+        'BhZ2UYAiABKAVSBHBhZ2USGQoIcGVyX3BhZ2UYAyABKAVSB3BlclBhZ2U=');
+
+@$core.Deprecated('Use fetchMediaStaffResponseDescriptor instead')
+const FetchMediaStaffResponse$json = {
+  '1': 'FetchMediaStaffResponse',
+  '2': [
+    {'1': 'raw_json', '3': 1, '4': 1, '5': 9, '10': 'rawJson'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchMediaStaffResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaStaffResponseDescriptor =
+    $convert.base64Decode(
+        'ChdGZXRjaE1lZGlhU3RhZmZSZXNwb25zZRIZCghyYXdfanNvbhgBIAEoCVIHcmF3SnNvbhIUCg'
+        'VlcnJvchgCIAEoCVIFZXJyb3I=');
+
+@$core.Deprecated('Use fetchMediaCharactersRequestDescriptor instead')
+const FetchMediaCharactersRequest$json = {
+  '1': 'FetchMediaCharactersRequest',
+  '2': [
+    {'1': 'media_id', '3': 1, '4': 1, '5': 5, '10': 'mediaId'},
+    {'1': 'page', '3': 2, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'per_page', '3': 3, '4': 1, '5': 5, '10': 'perPage'},
+  ],
+};
+
+/// Descriptor for `FetchMediaCharactersRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaCharactersRequestDescriptor =
+    $convert.base64Decode(
+        'ChtGZXRjaE1lZGlhQ2hhcmFjdGVyc1JlcXVlc3QSGQoIbWVkaWFfaWQYASABKAVSB21lZGlhSW'
+        'QSEgoEcGFnZRgCIAEoBVIEcGFnZRIZCghwZXJfcGFnZRgDIAEoBVIHcGVyUGFnZQ==');
+
+@$core.Deprecated('Use fetchMediaCharactersResponseDescriptor instead')
+const FetchMediaCharactersResponse$json = {
+  '1': 'FetchMediaCharactersResponse',
+  '2': [
+    {'1': 'raw_json', '3': 1, '4': 1, '5': 9, '10': 'rawJson'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchMediaCharactersResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaCharactersResponseDescriptor =
+    $convert.base64Decode(
+        'ChxGZXRjaE1lZGlhQ2hhcmFjdGVyc1Jlc3BvbnNlEhkKCHJhd19qc29uGAEgASgJUgdyYXdKc2'
+        '9uEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');

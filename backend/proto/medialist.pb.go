@@ -296,6 +296,12 @@ type Media struct {
 	SeasonYear    int32                  `protobuf:"varint,15,opt,name=season_year,json=seasonYear,proto3" json:"season_year,omitempty"`
 	Status        string                 `protobuf:"bytes,16,opt,name=status,proto3" json:"status,omitempty"`
 	Trailer       *Trailer               `protobuf:"bytes,17,opt,name=trailer,proto3" json:"trailer,omitempty"`
+	Synonyms      []string               `protobuf:"bytes,18,rep,name=synonyms,proto3" json:"synonyms,omitempty"`
+	StartDate     *FuzzyDate             `protobuf:"bytes,19,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	EndDate       *FuzzyDate             `protobuf:"bytes,20,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
+	MeanScore     int32                  `protobuf:"varint,21,opt,name=mean_score,json=meanScore,proto3" json:"mean_score,omitempty"`
+	Favourites    int32                  `protobuf:"varint,22,opt,name=favourites,proto3" json:"favourites,omitempty"`
+	SiteUrl       string                 `protobuf:"bytes,23,opt,name=site_url,json=siteUrl,proto3" json:"site_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -447,6 +453,48 @@ func (x *Media) GetTrailer() *Trailer {
 		return x.Trailer
 	}
 	return nil
+}
+
+func (x *Media) GetSynonyms() []string {
+	if x != nil {
+		return x.Synonyms
+	}
+	return nil
+}
+
+func (x *Media) GetStartDate() *FuzzyDate {
+	if x != nil {
+		return x.StartDate
+	}
+	return nil
+}
+
+func (x *Media) GetEndDate() *FuzzyDate {
+	if x != nil {
+		return x.EndDate
+	}
+	return nil
+}
+
+func (x *Media) GetMeanScore() int32 {
+	if x != nil {
+		return x.MeanScore
+	}
+	return 0
+}
+
+func (x *Media) GetFavourites() int32 {
+	if x != nil {
+		return x.Favourites
+	}
+	return 0
+}
+
+func (x *Media) GetSiteUrl() string {
+	if x != nil {
+		return x.SiteUrl
+	}
+	return ""
 }
 
 type MediaListEntry struct {
@@ -1225,6 +1273,230 @@ func (x *FetchMediaDetailsResponse) GetError() string {
 	return ""
 }
 
+type FetchMediaStaffRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MediaId       int32                  `protobuf:"varint,1,opt,name=media_id,json=mediaId,proto3" json:"media_id,omitempty"`
+	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	PerPage       int32                  `protobuf:"varint,3,opt,name=per_page,json=perPage,proto3" json:"per_page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaStaffRequest) Reset() {
+	*x = FetchMediaStaffRequest{}
+	mi := &file_proto_medialist_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaStaffRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaStaffRequest) ProtoMessage() {}
+
+func (x *FetchMediaStaffRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_medialist_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaStaffRequest.ProtoReflect.Descriptor instead.
+func (*FetchMediaStaffRequest) Descriptor() ([]byte, []int) {
+	return file_proto_medialist_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *FetchMediaStaffRequest) GetMediaId() int32 {
+	if x != nil {
+		return x.MediaId
+	}
+	return 0
+}
+
+func (x *FetchMediaStaffRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *FetchMediaStaffRequest) GetPerPage() int32 {
+	if x != nil {
+		return x.PerPage
+	}
+	return 0
+}
+
+type FetchMediaStaffResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RawJson       string                 `protobuf:"bytes,1,opt,name=raw_json,json=rawJson,proto3" json:"raw_json,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaStaffResponse) Reset() {
+	*x = FetchMediaStaffResponse{}
+	mi := &file_proto_medialist_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaStaffResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaStaffResponse) ProtoMessage() {}
+
+func (x *FetchMediaStaffResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_medialist_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaStaffResponse.ProtoReflect.Descriptor instead.
+func (*FetchMediaStaffResponse) Descriptor() ([]byte, []int) {
+	return file_proto_medialist_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *FetchMediaStaffResponse) GetRawJson() string {
+	if x != nil {
+		return x.RawJson
+	}
+	return ""
+}
+
+func (x *FetchMediaStaffResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type FetchMediaCharactersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MediaId       int32                  `protobuf:"varint,1,opt,name=media_id,json=mediaId,proto3" json:"media_id,omitempty"`
+	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	PerPage       int32                  `protobuf:"varint,3,opt,name=per_page,json=perPage,proto3" json:"per_page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaCharactersRequest) Reset() {
+	*x = FetchMediaCharactersRequest{}
+	mi := &file_proto_medialist_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaCharactersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaCharactersRequest) ProtoMessage() {}
+
+func (x *FetchMediaCharactersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_medialist_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaCharactersRequest.ProtoReflect.Descriptor instead.
+func (*FetchMediaCharactersRequest) Descriptor() ([]byte, []int) {
+	return file_proto_medialist_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *FetchMediaCharactersRequest) GetMediaId() int32 {
+	if x != nil {
+		return x.MediaId
+	}
+	return 0
+}
+
+func (x *FetchMediaCharactersRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *FetchMediaCharactersRequest) GetPerPage() int32 {
+	if x != nil {
+		return x.PerPage
+	}
+	return 0
+}
+
+type FetchMediaCharactersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RawJson       string                 `protobuf:"bytes,1,opt,name=raw_json,json=rawJson,proto3" json:"raw_json,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaCharactersResponse) Reset() {
+	*x = FetchMediaCharactersResponse{}
+	mi := &file_proto_medialist_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaCharactersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaCharactersResponse) ProtoMessage() {}
+
+func (x *FetchMediaCharactersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_medialist_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaCharactersResponse.ProtoReflect.Descriptor instead.
+func (*FetchMediaCharactersResponse) Descriptor() ([]byte, []int) {
+	return file_proto_medialist_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *FetchMediaCharactersResponse) GetRawJson() string {
+	if x != nil {
+		return x.RawJson
+	}
+	return ""
+}
+
+func (x *FetchMediaCharactersResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_proto_medialist_proto protoreflect.FileDescriptor
 
 const file_proto_medialist_proto_rawDesc = "" +
@@ -1249,7 +1521,7 @@ const file_proto_medialist_proto_rawDesc = "" +
 	"\aenglish\x18\x01 \x01(\tR\aenglish\x12\x16\n" +
 	"\x06native\x18\x02 \x01(\tR\x06native\x12\x16\n" +
 	"\x06romaji\x18\x03 \x01(\tR\x06romaji\x12%\n" +
-	"\x0euser_preferred\x18\x04 \x01(\tR\ruserPreferred\"\xa6\x04\n" +
+	"\x0euser_preferred\x18\x04 \x01(\tR\ruserPreferred\"\x82\x06\n" +
 	"\x05Media\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12&\n" +
 	"\x05title\x18\x02 \x01(\v2\x10.goodanime.TitleR\x05title\x12#\n" +
@@ -1272,7 +1544,17 @@ const file_proto_medialist_proto_rawDesc = "" +
 	"\vseason_year\x18\x0f \x01(\x05R\n" +
 	"seasonYear\x12\x16\n" +
 	"\x06status\x18\x10 \x01(\tR\x06status\x12,\n" +
-	"\atrailer\x18\x11 \x01(\v2\x12.goodanime.TrailerR\atrailer\"\x88\x02\n" +
+	"\atrailer\x18\x11 \x01(\v2\x12.goodanime.TrailerR\atrailer\x12\x1a\n" +
+	"\bsynonyms\x18\x12 \x03(\tR\bsynonyms\x123\n" +
+	"\n" +
+	"start_date\x18\x13 \x01(\v2\x14.goodanime.FuzzyDateR\tstartDate\x12/\n" +
+	"\bend_date\x18\x14 \x01(\v2\x14.goodanime.FuzzyDateR\aendDate\x12\x1d\n" +
+	"\n" +
+	"mean_score\x18\x15 \x01(\x05R\tmeanScore\x12\x1e\n" +
+	"\n" +
+	"favourites\x18\x16 \x01(\x05R\n" +
+	"favourites\x12\x19\n" +
+	"\bsite_url\x18\x17 \x01(\tR\asiteUrl\"\x88\x02\n" +
 	"\x0eMediaListEntry\x12&\n" +
 	"\x05media\x18\x01 \x01(\v2\x10.goodanime.MediaR\x05media\x12\x1a\n" +
 	"\bprogress\x18\x02 \x01(\x05R\bprogress\x12\x16\n" +
@@ -1341,6 +1623,20 @@ const file_proto_medialist_proto_rawDesc = "" +
 	"\bmedia_id\x18\x01 \x01(\x05R\amediaId\"L\n" +
 	"\x19FetchMediaDetailsResponse\x12\x19\n" +
 	"\braw_json\x18\x01 \x01(\tR\arawJson\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"b\n" +
+	"\x16FetchMediaStaffRequest\x12\x19\n" +
+	"\bmedia_id\x18\x01 \x01(\x05R\amediaId\x12\x12\n" +
+	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x19\n" +
+	"\bper_page\x18\x03 \x01(\x05R\aperPage\"J\n" +
+	"\x17FetchMediaStaffResponse\x12\x19\n" +
+	"\braw_json\x18\x01 \x01(\tR\arawJson\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"g\n" +
+	"\x1bFetchMediaCharactersRequest\x12\x19\n" +
+	"\bmedia_id\x18\x01 \x01(\x05R\amediaId\x12\x12\n" +
+	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x19\n" +
+	"\bper_page\x18\x03 \x01(\x05R\aperPage\"O\n" +
+	"\x1cFetchMediaCharactersResponse\x12\x19\n" +
+	"\braw_json\x18\x01 \x01(\tR\arawJson\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
@@ -1355,46 +1651,52 @@ func file_proto_medialist_proto_rawDescGZIP() []byte {
 	return file_proto_medialist_proto_rawDescData
 }
 
-var file_proto_medialist_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_proto_medialist_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_proto_medialist_proto_goTypes = []any{
-	(*FuzzyDate)(nil),                  // 0: goodanime.FuzzyDate
-	(*Trailer)(nil),                    // 1: goodanime.Trailer
-	(*CoverImage)(nil),                 // 2: goodanime.CoverImage
-	(*Title)(nil),                      // 3: goodanime.Title
-	(*Media)(nil),                      // 4: goodanime.Media
-	(*MediaListEntry)(nil),             // 5: goodanime.MediaListEntry
-	(*MediaList)(nil),                  // 6: goodanime.MediaList
-	(*MediaListCollection)(nil),        // 7: goodanime.MediaListCollection
-	(*FetchMediaListRequest)(nil),      // 8: goodanime.FetchMediaListRequest
-	(*FetchMediaListResponse)(nil),     // 9: goodanime.FetchMediaListResponse
-	(*Viewer)(nil),                     // 10: goodanime.Viewer
-	(*FetchViewerResponse)(nil),        // 11: goodanime.FetchViewerResponse
-	(*FuzzyDateInput)(nil),             // 12: goodanime.FuzzyDateInput
-	(*SaveMediaListEntryRequest)(nil),  // 13: goodanime.SaveMediaListEntryRequest
-	(*SaveMediaListEntryResponse)(nil), // 14: goodanime.SaveMediaListEntryResponse
-	(*FetchMediaDetailsRequest)(nil),   // 15: goodanime.FetchMediaDetailsRequest
-	(*FetchMediaDetailsResponse)(nil),  // 16: goodanime.FetchMediaDetailsResponse
+	(*FuzzyDate)(nil),                    // 0: goodanime.FuzzyDate
+	(*Trailer)(nil),                      // 1: goodanime.Trailer
+	(*CoverImage)(nil),                   // 2: goodanime.CoverImage
+	(*Title)(nil),                        // 3: goodanime.Title
+	(*Media)(nil),                        // 4: goodanime.Media
+	(*MediaListEntry)(nil),               // 5: goodanime.MediaListEntry
+	(*MediaList)(nil),                    // 6: goodanime.MediaList
+	(*MediaListCollection)(nil),          // 7: goodanime.MediaListCollection
+	(*FetchMediaListRequest)(nil),        // 8: goodanime.FetchMediaListRequest
+	(*FetchMediaListResponse)(nil),       // 9: goodanime.FetchMediaListResponse
+	(*Viewer)(nil),                       // 10: goodanime.Viewer
+	(*FetchViewerResponse)(nil),          // 11: goodanime.FetchViewerResponse
+	(*FuzzyDateInput)(nil),               // 12: goodanime.FuzzyDateInput
+	(*SaveMediaListEntryRequest)(nil),    // 13: goodanime.SaveMediaListEntryRequest
+	(*SaveMediaListEntryResponse)(nil),   // 14: goodanime.SaveMediaListEntryResponse
+	(*FetchMediaDetailsRequest)(nil),     // 15: goodanime.FetchMediaDetailsRequest
+	(*FetchMediaDetailsResponse)(nil),    // 16: goodanime.FetchMediaDetailsResponse
+	(*FetchMediaStaffRequest)(nil),       // 17: goodanime.FetchMediaStaffRequest
+	(*FetchMediaStaffResponse)(nil),      // 18: goodanime.FetchMediaStaffResponse
+	(*FetchMediaCharactersRequest)(nil),  // 19: goodanime.FetchMediaCharactersRequest
+	(*FetchMediaCharactersResponse)(nil), // 20: goodanime.FetchMediaCharactersResponse
 }
 var file_proto_medialist_proto_depIdxs = []int32{
 	3,  // 0: goodanime.Media.title:type_name -> goodanime.Title
 	2,  // 1: goodanime.Media.cover_image:type_name -> goodanime.CoverImage
 	1,  // 2: goodanime.Media.trailer:type_name -> goodanime.Trailer
-	4,  // 3: goodanime.MediaListEntry.media:type_name -> goodanime.Media
-	0,  // 4: goodanime.MediaListEntry.started_at:type_name -> goodanime.FuzzyDate
-	0,  // 5: goodanime.MediaListEntry.completed_at:type_name -> goodanime.FuzzyDate
-	5,  // 6: goodanime.MediaList.entries:type_name -> goodanime.MediaListEntry
-	6,  // 7: goodanime.MediaListCollection.lists:type_name -> goodanime.MediaList
-	7,  // 8: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	10, // 9: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
-	12, // 10: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
-	12, // 11: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	0,  // 12: goodanime.SaveMediaListEntryResponse.started_at:type_name -> goodanime.FuzzyDate
-	0,  // 13: goodanime.SaveMediaListEntryResponse.completed_at:type_name -> goodanime.FuzzyDate
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	0,  // 3: goodanime.Media.start_date:type_name -> goodanime.FuzzyDate
+	0,  // 4: goodanime.Media.end_date:type_name -> goodanime.FuzzyDate
+	4,  // 5: goodanime.MediaListEntry.media:type_name -> goodanime.Media
+	0,  // 6: goodanime.MediaListEntry.started_at:type_name -> goodanime.FuzzyDate
+	0,  // 7: goodanime.MediaListEntry.completed_at:type_name -> goodanime.FuzzyDate
+	5,  // 8: goodanime.MediaList.entries:type_name -> goodanime.MediaListEntry
+	6,  // 9: goodanime.MediaListCollection.lists:type_name -> goodanime.MediaList
+	7,  // 10: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	10, // 11: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	12, // 12: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
+	12, // 13: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
+	0,  // 14: goodanime.SaveMediaListEntryResponse.started_at:type_name -> goodanime.FuzzyDate
+	0,  // 15: goodanime.SaveMediaListEntryResponse.completed_at:type_name -> goodanime.FuzzyDate
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_proto_medialist_proto_init() }
@@ -1410,7 +1712,7 @@ func file_proto_medialist_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_medialist_proto_rawDesc), len(file_proto_medialist_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   17,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -3,10 +3,15 @@ import 'package:mix/mix.dart';
 import '../theme/theme.dart';
 import 'app_button.dart';
 
+/// A widget displaying user profile information
 class UserProfile extends StatelessWidget {
+  /// The user data to display
   final Map<String, dynamic> userData;
+
+  /// Callback for signing out
   final VoidCallback onSignOut;
 
+  /// Creates a user profile widget
   const UserProfile({
     super.key,
     required this.userData,
@@ -14,6 +19,7 @@ class UserProfile extends StatelessWidget {
   });
 
   @override
+  /// Builds the user profile component
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,

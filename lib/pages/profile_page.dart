@@ -10,15 +10,19 @@ const _keyCachedUser = 'cached_viewer';
 const _keyCachedAt = 'cached_viewer_at';
 const _cacheTtl = Duration(hours: 1);
 
+/// A page displaying the user's profile and account options
 class ProfilePage extends StatefulWidget {
+  /// Callback for signing out
   final VoidCallback onSignOut;
 
+  /// Creates a profile page
   const ProfilePage({super.key, required this.onSignOut});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
+/// State for ProfilePage
 class _ProfilePageState extends State<ProfilePage> {
   Map<String, dynamic>? _userData;
   bool _isLoading = true;
@@ -29,6 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _loadUserData();
   }
 
+  /// Loads user data from cache or network
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     final cachedJson = prefs.getString(_keyCachedUser);
@@ -52,6 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await _fetchAndCache(prefs);
   }
 
+  /// Fetches viewer data from the backend and updates cache
   Future<void> _fetchAndCache(SharedPreferences prefs) async {
     try {
       final token = await AuthService.getValidToken();
@@ -93,6 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  /// Clears auth token and local cache then signs out
   Future<void> _handleSignOut() async {
     final prefs = await SharedPreferences.getInstance();
     await AuthService.clearToken();
@@ -102,6 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
+  /// Builds the profile page widget
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(

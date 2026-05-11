@@ -367,6 +367,12 @@ class Media extends $pb.GeneratedMessage {
     $core.int? seasonYear,
     $core.String? status,
     Trailer? trailer,
+    $core.Iterable<$core.String>? synonyms,
+    FuzzyDate? startDate,
+    FuzzyDate? endDate,
+    $core.int? meanScore,
+    $core.int? favourites,
+    $core.String? siteUrl,
   }) {
     final result = create();
     if (id != null) result.id = id;
@@ -386,6 +392,12 @@ class Media extends $pb.GeneratedMessage {
     if (seasonYear != null) result.seasonYear = seasonYear;
     if (status != null) result.status = status;
     if (trailer != null) result.trailer = trailer;
+    if (synonyms != null) result.synonyms.addAll(synonyms);
+    if (startDate != null) result.startDate = startDate;
+    if (endDate != null) result.endDate = endDate;
+    if (meanScore != null) result.meanScore = meanScore;
+    if (favourites != null) result.favourites = favourites;
+    if (siteUrl != null) result.siteUrl = siteUrl;
     return result;
   }
 
@@ -421,6 +433,14 @@ class Media extends $pb.GeneratedMessage {
     ..aOS(16, _omitFieldNames ? '' : 'status')
     ..aOM<Trailer>(17, _omitFieldNames ? '' : 'trailer',
         subBuilder: Trailer.create)
+    ..pPS(18, _omitFieldNames ? '' : 'synonyms')
+    ..aOM<FuzzyDate>(19, _omitFieldNames ? '' : 'startDate',
+        subBuilder: FuzzyDate.create)
+    ..aOM<FuzzyDate>(20, _omitFieldNames ? '' : 'endDate',
+        subBuilder: FuzzyDate.create)
+    ..aI(21, _omitFieldNames ? '' : 'meanScore')
+    ..aI(22, _omitFieldNames ? '' : 'favourites')
+    ..aOS(23, _omitFieldNames ? '' : 'siteUrl')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -593,6 +613,58 @@ class Media extends $pb.GeneratedMessage {
   void clearTrailer() => $_clearField(17);
   @$pb.TagNumber(17)
   Trailer ensureTrailer() => $_ensure(16);
+
+  @$pb.TagNumber(18)
+  $pb.PbList<$core.String> get synonyms => $_getList(17);
+
+  @$pb.TagNumber(19)
+  FuzzyDate get startDate => $_getN(18);
+  @$pb.TagNumber(19)
+  set startDate(FuzzyDate value) => $_setField(19, value);
+  @$pb.TagNumber(19)
+  $core.bool hasStartDate() => $_has(18);
+  @$pb.TagNumber(19)
+  void clearStartDate() => $_clearField(19);
+  @$pb.TagNumber(19)
+  FuzzyDate ensureStartDate() => $_ensure(18);
+
+  @$pb.TagNumber(20)
+  FuzzyDate get endDate => $_getN(19);
+  @$pb.TagNumber(20)
+  set endDate(FuzzyDate value) => $_setField(20, value);
+  @$pb.TagNumber(20)
+  $core.bool hasEndDate() => $_has(19);
+  @$pb.TagNumber(20)
+  void clearEndDate() => $_clearField(20);
+  @$pb.TagNumber(20)
+  FuzzyDate ensureEndDate() => $_ensure(19);
+
+  @$pb.TagNumber(21)
+  $core.int get meanScore => $_getIZ(20);
+  @$pb.TagNumber(21)
+  set meanScore($core.int value) => $_setSignedInt32(20, value);
+  @$pb.TagNumber(21)
+  $core.bool hasMeanScore() => $_has(20);
+  @$pb.TagNumber(21)
+  void clearMeanScore() => $_clearField(21);
+
+  @$pb.TagNumber(22)
+  $core.int get favourites => $_getIZ(21);
+  @$pb.TagNumber(22)
+  set favourites($core.int value) => $_setSignedInt32(21, value);
+  @$pb.TagNumber(22)
+  $core.bool hasFavourites() => $_has(21);
+  @$pb.TagNumber(22)
+  void clearFavourites() => $_clearField(22);
+
+  @$pb.TagNumber(23)
+  $core.String get siteUrl => $_getSZ(22);
+  @$pb.TagNumber(23)
+  set siteUrl($core.String value) => $_setString(22, value);
+  @$pb.TagNumber(23)
+  $core.bool hasSiteUrl() => $_has(22);
+  @$pb.TagNumber(23)
+  void clearSiteUrl() => $_clearField(23);
 }
 
 class MediaListEntry extends $pb.GeneratedMessage {
@@ -1609,6 +1681,302 @@ class FetchMediaDetailsResponse extends $pb.GeneratedMessage {
   static FetchMediaDetailsResponse getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<FetchMediaDetailsResponse>(create);
   static FetchMediaDetailsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get rawJson => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set rawJson($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasRawJson() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRawJson() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class FetchMediaStaffRequest extends $pb.GeneratedMessage {
+  factory FetchMediaStaffRequest({
+    $core.int? mediaId,
+    $core.int? page,
+    $core.int? perPage,
+  }) {
+    final result = create();
+    if (mediaId != null) result.mediaId = mediaId;
+    if (page != null) result.page = page;
+    if (perPage != null) result.perPage = perPage;
+    return result;
+  }
+
+  FetchMediaStaffRequest._();
+
+  factory FetchMediaStaffRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchMediaStaffRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchMediaStaffRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'mediaId')
+    ..aI(2, _omitFieldNames ? '' : 'page')
+    ..aI(3, _omitFieldNames ? '' : 'perPage')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaStaffRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaStaffRequest copyWith(
+          void Function(FetchMediaStaffRequest) updates) =>
+      super.copyWith((message) => updates(message as FetchMediaStaffRequest))
+          as FetchMediaStaffRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaStaffRequest create() => FetchMediaStaffRequest._();
+  @$core.override
+  FetchMediaStaffRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaStaffRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaStaffRequest>(create);
+  static FetchMediaStaffRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get mediaId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set mediaId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasMediaId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMediaId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get perPage => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set perPage($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasPerPage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPerPage() => $_clearField(3);
+}
+
+class FetchMediaStaffResponse extends $pb.GeneratedMessage {
+  factory FetchMediaStaffResponse({
+    $core.String? rawJson,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (rawJson != null) result.rawJson = rawJson;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchMediaStaffResponse._();
+
+  factory FetchMediaStaffResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchMediaStaffResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchMediaStaffResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'rawJson')
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaStaffResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaStaffResponse copyWith(
+          void Function(FetchMediaStaffResponse) updates) =>
+      super.copyWith((message) => updates(message as FetchMediaStaffResponse))
+          as FetchMediaStaffResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaStaffResponse create() => FetchMediaStaffResponse._();
+  @$core.override
+  FetchMediaStaffResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaStaffResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaStaffResponse>(create);
+  static FetchMediaStaffResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get rawJson => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set rawJson($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasRawJson() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRawJson() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class FetchMediaCharactersRequest extends $pb.GeneratedMessage {
+  factory FetchMediaCharactersRequest({
+    $core.int? mediaId,
+    $core.int? page,
+    $core.int? perPage,
+  }) {
+    final result = create();
+    if (mediaId != null) result.mediaId = mediaId;
+    if (page != null) result.page = page;
+    if (perPage != null) result.perPage = perPage;
+    return result;
+  }
+
+  FetchMediaCharactersRequest._();
+
+  factory FetchMediaCharactersRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchMediaCharactersRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchMediaCharactersRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'mediaId')
+    ..aI(2, _omitFieldNames ? '' : 'page')
+    ..aI(3, _omitFieldNames ? '' : 'perPage')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaCharactersRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaCharactersRequest copyWith(
+          void Function(FetchMediaCharactersRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as FetchMediaCharactersRequest))
+          as FetchMediaCharactersRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaCharactersRequest create() =>
+      FetchMediaCharactersRequest._();
+  @$core.override
+  FetchMediaCharactersRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaCharactersRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaCharactersRequest>(create);
+  static FetchMediaCharactersRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get mediaId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set mediaId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasMediaId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMediaId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get perPage => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set perPage($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasPerPage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPerPage() => $_clearField(3);
+}
+
+class FetchMediaCharactersResponse extends $pb.GeneratedMessage {
+  factory FetchMediaCharactersResponse({
+    $core.String? rawJson,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (rawJson != null) result.rawJson = rawJson;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchMediaCharactersResponse._();
+
+  factory FetchMediaCharactersResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchMediaCharactersResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchMediaCharactersResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'rawJson')
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaCharactersResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaCharactersResponse copyWith(
+          void Function(FetchMediaCharactersResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as FetchMediaCharactersResponse))
+          as FetchMediaCharactersResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaCharactersResponse create() =>
+      FetchMediaCharactersResponse._();
+  @$core.override
+  FetchMediaCharactersResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaCharactersResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaCharactersResponse>(create);
+  static FetchMediaCharactersResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get rawJson => $_getSZ(0);

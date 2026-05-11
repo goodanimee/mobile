@@ -5,10 +5,12 @@ import 'package:ffi/ffi.dart';
 typedef HelloWorldFunc = ffi.Pointer<Utf8> Function();
 typedef HelloWorldDartFunc = ffi.Pointer<Utf8> Function();
 
+/// Backend interface for FFI calls
 class Backend {
   late ffi.DynamicLibrary _lib;
   late HelloWorldDartFunc _helloWorld;
 
+  /// Initializes the dynamic library based on the platform
   Backend() {
     String libraryPath;
     if (Platform.isWindows) {
@@ -29,6 +31,7 @@ class Backend {
     );
   }
 
+  /// Returns a hello world string from the backend
   String getHelloWorld() {
     final pointer = _helloWorld();
     return pointer.toDartString();
