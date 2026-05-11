@@ -20,7 +20,7 @@ class AnimeCharactersTab extends StatefulWidget {
 
   /// Whether this tab is nested within another scroll view
   final bool isNested;
- 
+
   /// Initial data for the first page
   final Map<String, dynamic>? initialData;
 
@@ -51,11 +51,11 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
   @override
   void initState() {
     super.initState();
-    
+
     if (widget.initialData != null) {
       final edges = widget.initialData!['edges'] as List? ?? [];
       final pageInfo = widget.initialData!['pageInfo'];
-      
+
       _characters.addAll(edges);
       _hasNextPage = pageInfo?['hasNextPage'] ?? false;
       _isLoading = false;
@@ -67,7 +67,8 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final newController = widget.scrollController ?? PrimaryScrollController.maybeOf(context);
+    final newController =
+        widget.scrollController ?? PrimaryScrollController.maybeOf(context);
     if (_activeScrollController != newController) {
       _activeScrollController?.removeListener(_scrollListener);
       _activeScrollController = newController;
@@ -151,10 +152,7 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
     }
 
     if (_error != null && _characters.isEmpty) {
-      return AppErrorView(
-        message: _error!,
-        onRetry: _fetchCharacters,
-      );
+      return AppErrorView(message: _error!, onRetry: _fetchCharacters);
     }
 
     if (_characters.isEmpty) {

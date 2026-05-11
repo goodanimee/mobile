@@ -54,14 +54,9 @@ class _CharacterSheetState extends State<CharacterSheet> {
           ),
           child: Column(
             children: [
-
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onVerticalDragUpdate: (details) {
-
-
-
-                },
+                onVerticalDragUpdate: (details) {},
                 child: Container(
                   height: 32,
                   width: double.infinity,
@@ -83,7 +78,6 @@ class _CharacterSheetState extends State<CharacterSheet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -132,9 +126,10 @@ class _CharacterSheetState extends State<CharacterSheet> {
                                   _buildInfoRow(
                                     gender.toString().toLowerCase() == 'male'
                                         ? Icons.male
-                                        : gender.toString().toLowerCase() == 'female'
-                                            ? Icons.female
-                                            : Icons.transgender,
+                                        : gender.toString().toLowerCase() ==
+                                              'female'
+                                        ? Icons.female
+                                        : Icons.transgender,
                                     gender.toString(),
                                   ),
                                 ],
@@ -157,9 +152,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(
-                                  alpha: 0.05,
-                                ),
+                                color: Colors.white.withValues(alpha: 0.05),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
@@ -187,14 +180,10 @@ class _CharacterSheetState extends State<CharacterSheet> {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.redAccent.withValues(
-                                alpha: 0.1,
-                              ),
+                              color: Colors.redAccent.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4),
                               border: Border.all(
-                                color: Colors.redAccent.withValues(
-                                  alpha: 0.3,
-                                ),
+                                color: Colors.redAccent.withValues(alpha: 0.3),
                               ),
                             ),
                             child: Row(
@@ -239,8 +228,8 @@ class _CharacterSheetState extends State<CharacterSheet> {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: voiceActors.length,
-                          separatorBuilder:
-                              (context, index) => const SizedBox(height: 12),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 12),
                           itemBuilder: (context, index) {
                             final va = voiceActors[index];
                             final vaName = va['name']?['full'] ?? 'Unknown';
@@ -260,7 +249,8 @@ class _CharacterSheetState extends State<CharacterSheet> {
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         vaName,
@@ -311,8 +301,19 @@ class _CharacterSheetState extends State<CharacterSheet> {
     String dateStr = '';
     if (day != null && month != null) {
       final months = [
-        '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        '',
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
       ];
       final monthStr = (month > 0 && month <= 12) ? months[month] : '';
       if (monthStr.isNotEmpty) {

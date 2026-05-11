@@ -11,6 +11,7 @@ typedef _FetchMediaListC =
       ffi.Pointer<Utf8> token,
       ffi.Pointer<ffi.Int32> outLen,
     );
+
 /// Dart function signature for fetching media list
 typedef _FetchMediaListDart =
     ffi.Pointer<ffi.Uint8> Function(
@@ -25,6 +26,7 @@ typedef _FetchViewerC =
       ffi.Pointer<Utf8> token,
       ffi.Pointer<ffi.Int32> outLen,
     );
+
 /// Dart function signature for fetching viewer profile
 typedef _FetchViewerDart =
     ffi.Pointer<ffi.Uint8> Function(
@@ -40,6 +42,7 @@ typedef _FetchMediaDetailsC =
       ffi.Pointer<Utf8> token,
       ffi.Pointer<ffi.Int32> outLen,
     );
+
 /// Dart function signature for fetching media details
 typedef _FetchMediaDetailsDart =
     ffi.Pointer<ffi.Uint8> Function(
@@ -57,6 +60,7 @@ typedef _SaveMediaListEntryC =
       ffi.Pointer<Utf8> token,
       ffi.Pointer<ffi.Int32> outLen,
     );
+
 /// Dart function signature for saving media list entries
 typedef _SaveMediaListEntryDart =
     ffi.Pointer<ffi.Uint8> Function(
@@ -74,6 +78,7 @@ typedef _FetchMediaCharactersC =
       ffi.Pointer<Utf8> token,
       ffi.Pointer<ffi.Int32> outLen,
     );
+
 /// Dart function signature for fetching media characters
 typedef _FetchMediaCharactersDart =
     ffi.Pointer<ffi.Uint8> Function(
@@ -91,6 +96,7 @@ typedef _FetchMediaStaffC =
       ffi.Pointer<Utf8> token,
       ffi.Pointer<ffi.Int32> outLen,
     );
+
 /// Dart function signature for fetching media staff
 typedef _FetchMediaStaffDart =
     ffi.Pointer<ffi.Uint8> Function(
@@ -102,6 +108,7 @@ typedef _FetchMediaStaffDart =
 
 /// Native function signature for freeing buffers
 typedef _FreeBufferC = ffi.Void Function(ffi.Pointer<ffi.Uint8> ptr);
+
 /// Dart function signature for freeing buffers
 typedef _FreeBufferDart = void Function(ffi.Pointer<ffi.Uint8> ptr);
 
@@ -280,8 +287,12 @@ class BackendHelper {
           reqPtr[i] = reqBytes[i];
         }
         final bytes = _call(
-          (outLenPtr) =>
-              _fetchMediaCharacters(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
+          (outLenPtr) => _fetchMediaCharacters(
+            reqPtr,
+            reqBytes.length,
+            tokenPtr,
+            outLenPtr,
+          ),
         );
         final response = FetchMediaCharactersResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);

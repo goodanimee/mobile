@@ -41,10 +41,7 @@ class AppSection extends StatelessWidget {
             Expanded(
               child: SectionTitle(title: title, bottomPadding: innerSpacing),
             ),
-            if (trailing != null) ...[
-              trailing!,
-              const SizedBox(width: 4),
-            ],
+            if (trailing != null) ...[trailing!, const SizedBox(width: 4)],
           ],
         ),
         ...children,

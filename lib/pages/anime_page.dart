@@ -15,9 +15,9 @@ import 'anime_page/tabs/info_tab.dart';
 import 'anime_page/tabs/characters_tab.dart';
 import 'anime_page/tabs/staff_tab.dart';
 import 'anime_page/tabs/media_tab.dart';
+import 'anime_page/tabs/relations_tab.dart';
 import 'anime_page/tabs/placeholder_tab.dart';
 import '../components/anime_options_sheet.dart';
-
 
 /// A page displaying detailed information about an anime
 class AnimePage extends StatefulWidget {
@@ -158,7 +158,7 @@ class _AnimePageState extends State<AnimePage> {
 
     if (result != null && mounted) {
       _didUpdate = true;
-      
+
       await CacheUtils.invalidateMedia(widget.mediaId);
       CacheUtils.homeNeedsRefresh.value = true;
 
@@ -199,7 +199,10 @@ class _AnimePageState extends State<AnimePage> {
           initialData: media['characters'] as Map<String, dynamic>?,
         );
       case 4:
-        return const PlaceholderTab(title: 'Relations Section');
+        return AnimeRelationsTab(
+          data: media['relations'] as Map<String, dynamic>?,
+          isNested: true,
+        );
       case 5:
         return const PlaceholderTab(title: 'Rankings Section');
       case 6:
@@ -244,9 +247,11 @@ class _AnimePageState extends State<AnimePage> {
         label: 'Overview',
         onTap: () {
           setState(() => _selectedTabIndex = 0);
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
         },
       ),
       QuickNavSection(
@@ -254,9 +259,11 @@ class _AnimePageState extends State<AnimePage> {
         label: 'Media',
         onTap: () {
           setState(() => _selectedTabIndex = 1);
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
         },
       ),
       QuickNavSection(
@@ -264,9 +271,11 @@ class _AnimePageState extends State<AnimePage> {
         label: 'Staff',
         onTap: () {
           setState(() => _selectedTabIndex = 2);
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
         },
       ),
       QuickNavSection(
@@ -274,9 +283,11 @@ class _AnimePageState extends State<AnimePage> {
         label: 'Characters',
         onTap: () {
           setState(() => _selectedTabIndex = 3);
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
         },
       ),
       QuickNavSection(
@@ -284,9 +295,11 @@ class _AnimePageState extends State<AnimePage> {
         label: 'Relations',
         onTap: () {
           setState(() => _selectedTabIndex = 4);
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
         },
       ),
       QuickNavSection(
@@ -294,9 +307,11 @@ class _AnimePageState extends State<AnimePage> {
         label: 'Rankings',
         onTap: () {
           setState(() => _selectedTabIndex = 5);
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
         },
       ),
       QuickNavSection(
@@ -304,9 +319,11 @@ class _AnimePageState extends State<AnimePage> {
         label: 'Reviews',
         onTap: () {
           setState(() => _selectedTabIndex = 6);
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
         },
       ),
     ];
@@ -327,6 +344,7 @@ class _AnimePageState extends State<AnimePage> {
               onRefresh: _handleRefresh,
               child: CustomScrollView(
                 controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(
                     child: _buildBannerAndHeader(
@@ -336,12 +354,8 @@ class _AnimePageState extends State<AnimePage> {
                       media,
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: _buildActiveTab(media),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: 60),
-                  ),
+                  SliverToBoxAdapter(child: _buildActiveTab(media)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 60)),
                 ],
               ),
             ),
@@ -384,11 +398,7 @@ class _AnimePageState extends State<AnimePage> {
         onTap: _showItemOptions,
         behavior: HitTestBehavior.opaque,
         child: const Center(
-          child: Icon(
-            Icons.edit_rounded,
-            color: Colors.white,
-            size: 22,
-          ),
+          child: Icon(Icons.edit_rounded, color: Colors.white, size: 22),
         ),
       ),
     );
@@ -477,16 +487,27 @@ class _AnimePageState extends State<AnimePage> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    _buildInfoRow(Icons.tv_outlined, '${media['format'] ?? 'TV'}'),
+                    _buildInfoRow(
+                      Icons.tv_outlined,
+                      '${media['format'] ?? 'TV'}',
+                    ),
                     const SizedBox(height: 8),
-                    _buildInfoRow(Icons.timer_outlined, '${media['episodes'] ?? '?'} Episodes'),
+                    _buildInfoRow(
+                      Icons.timer_outlined,
+                      '${media['episodes'] ?? '?'} Episodes',
+                    ),
                     const SizedBox(height: 8),
-                    _buildInfoRow(Icons.rss_feed_rounded, '${media['status'] ?? 'FINISHED'}'),
-                    if (media['season'] != null && media['seasonYear'] != null) ...[
+                    _buildInfoRow(
+                      Icons.rss_feed_rounded,
+                      '${media['status'] ?? 'FINISHED'}',
+                    ),
+                    if (media['season'] != null &&
+                        media['seasonYear'] != null) ...[
                       const SizedBox(height: 8),
                       _buildInfoRow(
                         Icons.calendar_today_rounded,
-                        '${media['season']} ${media['seasonYear']}'.toUpperCase(),
+                        '${media['season']} ${media['seasonYear']}'
+                            .toUpperCase(),
                       ),
                     ],
                   ],
@@ -521,5 +542,3 @@ class _AnimePageState extends State<AnimePage> {
     );
   }
 }
-
-

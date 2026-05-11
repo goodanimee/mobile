@@ -3,18 +3,25 @@ import 'package:mix/mix.dart';
 
 /// Main background color
 const bgColor = Color(0xFF111111);
+
 /// Default text color
 const textColor = Colors.white;
+
 /// Primary border and accent color
 const borderColor = Color(0xFF3B82F6);
+
 /// Default card border color
 const cardBorderColor = Color(0xFF2C2C2C);
+
 /// Background color for hover states
 const hoverBgColor = Color(0xFF1A1A1A);
+
 /// Background color for pressed states
 const pressBgColor = Color(0xFF252525);
+
 /// Default shadow color
 const shadowColor = Colors.black;
+
 /// Color for section titles and secondary text
 const sectionTitleColor = Color(0xFFAAAAAA);
 

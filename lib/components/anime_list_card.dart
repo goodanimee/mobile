@@ -32,7 +32,6 @@ Widget _buildRepeatBadge(int repeat) {
   );
 }
 
-
 /// Builds a badge showing progress and status
 Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
   const badgeDecoration = BoxDecoration(

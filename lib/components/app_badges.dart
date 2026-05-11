@@ -14,15 +14,10 @@ class AppAdultBadge extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 6.0, sigmaY: 6.0),
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 4,
-            vertical: 2,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
           decoration: BoxDecoration(
             color: Colors.redAccent.withValues(alpha: 0.2),
-            border: Border.all(
-              color: Colors.redAccent.withValues(alpha: 0.5),
-            ),
+            border: Border.all(color: Colors.redAccent.withValues(alpha: 0.5)),
             borderRadius: BorderRadius.circular(4),
           ),
           child: const Text(

@@ -10,23 +10,16 @@ class HtmlDescription extends StatelessWidget {
   final TextStyle? style;
 
   /// Creates an HTML description
-  const HtmlDescription({
-    super.key,
-    required this.html,
-    this.style,
-  });
+  const HtmlDescription({super.key, required this.html, this.style});
 
   @override
   /// Builds the HTML description widget
   Widget build(BuildContext context) {
     return Text(
       parse(html).body?.text ?? '',
-      style: style ??
-          const TextStyle(
-            color: Colors.white70,
-            fontSize: 14,
-            height: 1.5,
-          ),
+      style:
+          style ??
+          const TextStyle(color: Colors.white70, fontSize: 14, height: 1.5),
     );
   }
 }

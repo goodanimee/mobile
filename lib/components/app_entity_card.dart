@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'app_network_image.dart';
 
-/// A wide card for entities (staff/characters) with image on the left and info on the right
+/// Card for entities (staff/characters)
 class AppEntityCard extends StatelessWidget {
   /// The image URL for the entity
   final String imageUrl;
@@ -33,7 +33,6 @@ class AppEntityCard extends StatelessWidget {
   });
 
   @override
-  /// Builds the entity card widget
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,

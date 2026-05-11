@@ -20,7 +20,7 @@ class AnimeInfoTab extends StatelessWidget {
 
   /// Whether this tab is nested within another scroll view
   final bool isNested;
- 
+
   /// Creates an info tab
   const AnimeInfoTab({
     super.key,
@@ -82,11 +82,10 @@ class AnimeInfoTab extends StatelessWidget {
           AppSection(
             title: 'Synopsis',
             innerSpacing: 8,
-            children: [
-              HtmlDescription(html: media['description'] as String),
-            ],
+            children: [HtmlDescription(html: media['description'] as String)],
           ),
-        if (media['genres'] != null && (media['genres'] as List).isNotEmpty) ...[
+        if (media['genres'] != null &&
+            (media['genres'] as List).isNotEmpty) ...[
           const SizedBox(height: 12),
           Wrap(
             spacing: 8.0,
@@ -151,7 +150,7 @@ class AnimeInfoTab extends StatelessWidget {
                   final site = link['site']?.toString() ?? 'Link';
                   final url = link['url']?.toString() ?? '';
                   final language = link['language']?.toString();
-                  
+
                   return AppPill(
                     label: site,
                     leadingText: StringUtils.getLanguageAbbreviation(language),
@@ -271,10 +270,7 @@ class AnimeInfoTab extends StatelessWidget {
       title: 'Titles & Synonyms',
       children: [
         Table(
-          columnWidths: const {
-            0: IntrinsicColumnWidth(),
-            1: FlexColumnWidth(),
-          },
+          columnWidths: const {0: IntrinsicColumnWidth(), 1: FlexColumnWidth()},
           children: rows.map((entry) {
             return TableRow(
               children: [
@@ -299,10 +295,7 @@ class AnimeInfoTab extends StatelessWidget {
                   ).copyWith(right: 0),
                   child: Text(
                     entry.value,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                    ),
+                    style: const TextStyle(color: Colors.white, fontSize: 13),
                   ),
                 ),
               ],

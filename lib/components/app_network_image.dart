@@ -40,8 +40,8 @@ class AppNetworkImage extends StatelessWidget {
   @override
   /// Builds the network image widget
   Widget build(BuildContext context) {
-    final bool isDefaultImage = imageUrl.isEmpty ||
-        (checkDefault && imageUrl.contains('default.jpg'));
+    final bool isDefaultImage =
+        imageUrl.isEmpty || (checkDefault && imageUrl.contains('default.jpg'));
 
     Widget image = isDefaultImage
         ? _buildPlaceholder()
@@ -55,10 +55,7 @@ class AppNetworkImage extends StatelessWidget {
           );
 
     if (borderRadius != null) {
-      image = ClipRRect(
-        borderRadius: borderRadius!,
-        child: image,
-      );
+      image = ClipRRect(borderRadius: borderRadius!, child: image);
     }
 
     return image;
@@ -70,10 +67,7 @@ class AppNetworkImage extends StatelessWidget {
       height: height,
       color: Colors.white.withValues(alpha: 0.05),
       child: Center(
-        child: Icon(
-          fallbackIcon,
-          color: borderColor.withValues(alpha: 0.5),
-        ),
+        child: Icon(fallbackIcon, color: borderColor.withValues(alpha: 0.5)),
       ),
     );
   }

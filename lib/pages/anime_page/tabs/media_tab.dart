@@ -5,7 +5,6 @@ import '../../../components/section_title.dart';
 import '../../../components/app_network_image.dart';
 import '../../../components/error_view.dart';
 
-
 /// A tab displaying trailers and streaming episodes for an anime
 class AnimeMediaTab extends StatelessWidget {
   /// The anime media data
@@ -15,16 +14,13 @@ class AnimeMediaTab extends StatelessWidget {
   final bool isNested;
 
   /// Creates a media tab
-  const AnimeMediaTab({
-    super.key,
-    required this.media,
-    this.isNested = false,
-  });
+  const AnimeMediaTab({super.key, required this.media, this.isNested = false});
 
   @override
   Widget build(BuildContext context) {
     final trailer = media['trailer'] as Map<String, dynamic>?;
-    final hasYoutubeTrailer = trailer != null &&
+    final hasYoutubeTrailer =
+        trailer != null &&
         trailer['site']?.toString().toLowerCase() == 'youtube' &&
         trailer['id'] != null;
 
@@ -67,7 +63,8 @@ class AnimeMediaTab extends StatelessWidget {
     watchedEpisodes.sort((a, b) => getEpNum(b).compareTo(getEpNum(a)));
     continueWatching.sort((a, b) => getEpNum(a).compareTo(getEpNum(b)));
 
-    final bool showSplitView = progress > 0 &&
+    final bool showSplitView =
+        progress > 0 &&
         (epCount == null || progress < epCount) &&
         continueWatching.isNotEmpty;
 
@@ -139,8 +136,11 @@ class AnimeMediaTab extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: continueWatching.length,
               separatorBuilder: (context, index) => const SizedBox(width: 12),
-              itemBuilder: (context, index) =>
-                  _buildEpisodeCard(continueWatching[index], index, isWatched: false),
+              itemBuilder: (context, index) => _buildEpisodeCard(
+                continueWatching[index],
+                index,
+                isWatched: false,
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -152,8 +152,11 @@ class AnimeMediaTab extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: watchedEpisodes.length,
                 separatorBuilder: (context, index) => const SizedBox(width: 12),
-                itemBuilder: (context, index) =>
-                    _buildEpisodeCard(watchedEpisodes[index], index, isWatched: true),
+                itemBuilder: (context, index) => _buildEpisodeCard(
+                  watchedEpisodes[index],
+                  index,
+                  isWatched: true,
+                ),
               ),
             ),
             const SizedBox(height: 24),
@@ -166,17 +169,17 @@ class AnimeMediaTab extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: allEpisodes.length,
               separatorBuilder: (context, index) => const SizedBox(width: 12),
-              itemBuilder: (context, index) =>
-                  _buildEpisodeCard(allEpisodes[index], index, isWatched: false),
+              itemBuilder: (context, index) => _buildEpisodeCard(
+                allEpisodes[index],
+                index,
+                isWatched: false,
+              ),
             ),
           ),
           const SizedBox(height: 24),
         ],
         if (!hasYoutubeTrailer && allEpisodes.isEmpty)
-          const AppErrorView(
-            message: 'No media available',
-            topPadding: 40,
-          ),
+          const AppErrorView(message: 'No media available', topPadding: 40),
       ],
     );
 

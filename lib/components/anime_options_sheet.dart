@@ -115,11 +115,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SectionTitle(
-            title: title,
-            fontSize: 14,
-            bottomPadding: 12,
-          ),
+          SectionTitle(title: title, fontSize: 14, bottomPadding: 12),
           child,
         ],
       ),

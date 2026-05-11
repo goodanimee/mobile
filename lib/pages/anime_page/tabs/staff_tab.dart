@@ -19,7 +19,7 @@ class AnimeStaffTab extends StatefulWidget {
 
   /// Whether this tab is nested within another scroll view
   final bool isNested;
- 
+
   /// Initial data for the first page
   final Map<String, dynamic>? initialData;
 
@@ -50,11 +50,11 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
   @override
   void initState() {
     super.initState();
-    
+
     if (widget.initialData != null) {
       final edges = widget.initialData!['edges'] as List? ?? [];
       final pageInfo = widget.initialData!['pageInfo'];
-      
+
       _staff.addAll(edges);
       _hasNextPage = pageInfo?['hasNextPage'] ?? false;
       _isLoading = false;
@@ -66,7 +66,8 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final newController = widget.scrollController ?? PrimaryScrollController.maybeOf(context);
+    final newController =
+        widget.scrollController ?? PrimaryScrollController.maybeOf(context);
     if (_activeScrollController != newController) {
       _activeScrollController?.removeListener(_scrollListener);
       _activeScrollController = newController;
@@ -150,10 +151,7 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
     }
 
     if (_error != null && _staff.isEmpty) {
-      return AppErrorView(
-        message: _error!,
-        onRetry: _fetchStaff,
-      );
+      return AppErrorView(message: _error!, onRetry: _fetchStaff);
     }
 
     if (_staff.isEmpty) {

@@ -25,7 +25,7 @@ class StringUtils {
   /// Language name to short abbreviation
   static String getLanguageAbbreviation(String? language) {
     if (language == null) return 'Link';
-    
+
     final l = language.toLowerCase();
     if (l.contains('japanese')) return 'JP';
     if (l.contains('english')) return 'EN';
@@ -36,8 +36,20 @@ class StringUtils {
     if (l.contains('german')) return 'DE';
     if (l.contains('italian')) return 'IT';
     if (l.contains('portuguese')) return 'PT';
-    
+
     return 'Link';
+  }
+
+  /// Capitalize text
+  static String capitalize(String text) {
+    if (text.isEmpty) return text;
+    return text
+        .split(' ')
+        .map((word) {
+          if (word.isEmpty) return word;
+          return word[0].toUpperCase() + word.substring(1).toLowerCase();
+        })
+        .join(' ');
   }
 
   /// Format duration to human-readable airing string
@@ -65,9 +77,9 @@ class CacheUtils {
   static Future<void> invalidateMedia(int mediaId) async {
     final prefs = await SharedPreferences.getInstance();
     final idStr = mediaId.toString();
-    
+
     await prefs.remove('$_cachePrefix$idStr');
-    
+
     List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
     if (keys.contains(idStr)) {
       keys.remove(idStr);
@@ -81,10 +93,10 @@ extension MediaDataExtensions on Map<String, dynamic> {
   /// User preferred title
   String get titleText {
     final title = this['title'] as Map<String, dynamic>?;
-    return title?['userPreferred']?.toString() ?? 
-           title?['romaji']?.toString() ?? 
-           title?['english']?.toString() ?? 
-           'Unknown';
+    return title?['userPreferred']?.toString() ??
+        title?['romaji']?.toString() ??
+        title?['english']?.toString() ??
+        'Unknown';
   }
 
   /// Large cover image URL
@@ -117,8 +129,8 @@ extension EntityDataExtensions on Map<String, dynamic> {
   /// Character full name
   String get fullName {
     final name = this['name'] as Map<String, dynamic>?;
-    return name?['userPreferred']?.toString() ?? 
-           name?['full']?.toString() ?? 
-           'Unknown';
+    return name?['userPreferred']?.toString() ??
+        name?['full']?.toString() ??
+        'Unknown';
   }
 }

@@ -121,9 +121,7 @@ class _HomePageState extends State<HomePage> {
   /// Builds the main home page widget
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        body: AppLoadingIndicator(),
-      );
+      return const Scaffold(body: AppLoadingIndicator());
     }
 
     if (_token == null) {

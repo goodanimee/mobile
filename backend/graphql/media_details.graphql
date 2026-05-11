@@ -156,6 +156,17 @@ query Media($mediaId: Int, $notYetAired: Boolean) {
         }
       }
     }
+    relations {
+      edges {
+        relationType
+        node {
+          id
+          title { ...titleFields }
+          coverImage { ...coverImageFields }
+          format
+        }
+      }
+    }
   }
 }
 

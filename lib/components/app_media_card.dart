@@ -74,17 +74,9 @@ class AppMediaCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.5),
               ),
               if (isFavourite && favouriteBadge != null)
-                Positioned(
-                  top: 6,
-                  right: 6,
-                  child: favouriteBadge!,
-                ),
+                Positioned(top: 6, right: 6, child: favouriteBadge!),
               if (isAdult && adultBadge != null)
-                Positioned(
-                  bottom: 47,
-                  right: 6,
-                  child: adultBadge!,
-                ),
+                Positioned(bottom: 47, right: 6, child: adultBadge!),
               Positioned(
                 bottom: 0,
                 left: 0,

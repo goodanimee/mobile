@@ -7,15 +7,13 @@ import 'utils.dart';
 class AppNavigation {
   /// Navigate to Anime details
   static Future<void> toAnime(
-    BuildContext context, 
+    BuildContext context,
     int mediaId, {
     VoidCallback? onRefresh,
   }) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => AnimePage(mediaId: mediaId),
-      ),
+      MaterialPageRoute(builder: (context) => AnimePage(mediaId: mediaId)),
     );
 
     if (result == true || CacheUtils.homeNeedsRefresh.value) {
@@ -24,7 +22,10 @@ class AppNavigation {
   }
 
   /// Open character details sheet
-  static void toCharacter(BuildContext context, Map<String, dynamic> character) {
+  static void toCharacter(
+    BuildContext context,
+    Map<String, dynamic> character,
+  ) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

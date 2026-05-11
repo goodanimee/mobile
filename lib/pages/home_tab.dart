@@ -549,8 +549,8 @@ class _HomeTabState extends State<HomeTab> {
                     final mediaId = media.mediaId;
                     if (mediaId != 0) {
                       AppNavigation.toAnime(
-                        context, 
-                        mediaId, 
+                        context,
+                        mediaId,
                         onRefresh: () => _fetchLists(forceRefresh: true),
                       );
                     }
@@ -564,6 +564,7 @@ class _HomeTabState extends State<HomeTab> {
             ),
     );
   }
+
   /// Builds an individual item for the grid view
   Widget _buildGridItem(Map<String, dynamic> entry) {
     final media = entry['media'] as Map<String, dynamic>? ?? {};
@@ -580,8 +581,8 @@ class _HomeTabState extends State<HomeTab> {
         final mediaId = media.mediaId;
         if (mediaId != 0) {
           AppNavigation.toAnime(
-            context, 
-            mediaId, 
+            context,
+            mediaId,
             onRefresh: () => _fetchLists(forceRefresh: true),
           );
         }

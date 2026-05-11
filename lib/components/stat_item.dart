@@ -9,11 +9,7 @@ class StatItem extends StatelessWidget {
   final String value;
 
   /// Creates a statistic item
-  const StatItem({
-    super.key,
-    required this.label,
-    required this.value,
-  });
+  const StatItem({super.key, required this.label, required this.value});
 
   @override
   /// Builds the statistic item widget

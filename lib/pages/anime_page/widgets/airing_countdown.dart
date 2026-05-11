@@ -33,7 +33,6 @@ class AiringCountdown extends StatelessWidget {
     final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     final remainingSeconds = airingAt - now;
 
-
     if (remainingSeconds <= 0 || remainingSeconds > 604800) {
       return const SizedBox.shrink();
     }
