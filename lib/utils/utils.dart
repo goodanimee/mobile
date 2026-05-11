@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Utilities for working with colors
 class ColorUtils {
-  /// Parses a hex color string into a Flutter Color
+  /// Parse hex color string to Color
   static Color fromHex(String? hexString, {Color fallback = Colors.grey}) {
     if (hexString == null || hexString.isEmpty) return fallback;
 
@@ -21,7 +22,7 @@ class ColorUtils {
 
 /// Utilities for working with strings
 class StringUtils {
-  /// Maps a language name to its short abbreviation
+  /// Language name to short abbreviation
   static String getLanguageAbbreviation(String? language) {
     if (language == null) return 'Link';
     
@@ -37,5 +38,87 @@ class StringUtils {
     if (l.contains('portuguese')) return 'PT';
     
     return 'Link';
+  }
+
+  /// Format duration to human-readable airing string
+  static String formatAiringDuration(int remainingSeconds) {
+    final duration = Duration(seconds: remainingSeconds);
+    if (duration.inDays >= 1) {
+      return '${duration.inDays} ${duration.inDays == 1 ? "day" : "days"}';
+    } else if (duration.inHours >= 1) {
+      return '${duration.inHours} ${duration.inHours == 1 ? "hour" : "hours"}';
+    } else {
+      return 'an hour';
+    }
+  }
+}
+
+/// Utilities for cache management
+class CacheUtils {
+  static const String _cachePrefix = 'anime_cache_';
+  static const String _cacheKeysPref = 'anime_cache_keys';
+
+  /// Notification flag for HomeTab stale data
+  static final homeNeedsRefresh = ValueNotifier<bool>(false);
+
+  /// Remove media entry from disk cache
+  static Future<void> invalidateMedia(int mediaId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final idStr = mediaId.toString();
+    
+    await prefs.remove('$_cachePrefix$idStr');
+    
+    List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
+    if (keys.contains(idStr)) {
+      keys.remove(idStr);
+      await prefs.setStringList(_cacheKeysPref, keys);
+    }
+  }
+}
+
+/// Extensions for `Map<String, dynamic>` to easily access AniList data
+extension MediaDataExtensions on Map<String, dynamic> {
+  /// User preferred title
+  String get titleText {
+    final title = this['title'] as Map<String, dynamic>?;
+    return title?['userPreferred']?.toString() ?? 
+           title?['romaji']?.toString() ?? 
+           title?['english']?.toString() ?? 
+           'Unknown';
+  }
+
+  /// Large cover image URL
+  String get coverImage {
+    final cover = this['coverImage'] as Map<String, dynamic>?;
+    return cover?['large']?.toString() ?? '';
+  }
+
+  /// Banner image URL
+  String? get bannerImage => this['bannerImage']?.toString();
+
+  /// Accent color
+  Color get accentColor {
+    final cover = this['coverImage'] as Map<String, dynamic>?;
+    return ColorUtils.fromHex(cover?['color']?.toString());
+  }
+
+  /// Media ID
+  int get mediaId => this['id'] as int? ?? 0;
+
+  /// Whether the media is adult content
+  bool get isAdultMedia => this['isAdult'] as bool? ?? false;
+
+  /// Whether the media is marked as favorite
+  bool get isFavouriteMedia => this['isFavourite'] as bool? ?? false;
+}
+
+/// Extensions for Character and Staff data
+extension EntityDataExtensions on Map<String, dynamic> {
+  /// Character full name
+  String get fullName {
+    final name = this['name'] as Map<String, dynamic>?;
+    return name?['userPreferred']?.toString() ?? 
+           name?['full']?.toString() ?? 
+           'Unknown';
   }
 }
