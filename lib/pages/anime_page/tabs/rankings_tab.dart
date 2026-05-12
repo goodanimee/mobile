@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 import '../../../components/app_section.dart';
@@ -21,6 +22,7 @@ class AnimeRankingsTab extends StatefulWidget {
 class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
   final LayerLink _statusLink = LayerLink();
   final List<LayerLink> _scoreLinks = List.generate(10, (_) => LayerLink());
+  final List<LayerLink> _trendLinks = List.generate(14, (_) => LayerLink());
 
   @override
   void dispose() {
@@ -52,6 +54,8 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
           }),
         const SizedBox(height: 16),
         _buildStatsSection(context),
+        const SizedBox(height: 32),
+        _buildTrendsSection(context),
         const SizedBox(height: 40),
       ],
     );
@@ -109,32 +113,34 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
             const SizedBox(width: 4),
             const Text(
               'Tap for details',
-              style: TextStyle(color: Colors.white30, fontSize: 10),
+              style: TextStyle(color: Colors.white54, fontSize: 10),
             ),
           ],
         ),
         const SizedBox(height: 12),
-        GestureDetector(
-          onTap: () => _showStatusTooltip(context, distribution),
-          behavior: HitTestBehavior.opaque,
-          child: Container(
-            height: 16,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: hoverBgColor,
-              border: Border.all(color: cardBorderColor, width: 1),
-            ),
-            child: Row(
-              children: distribution.map((item) {
-                final status = item['status']?.toString() ?? '';
-                final amount = item['amount'] as int? ?? 0;
-                if (amount == 0) return const SizedBox.shrink();
-                return Flexible(
-                  flex: amount,
-                  child: Container(color: _getStatusColor(status)),
-                );
-              }).toList(),
+        Builder(
+          builder: (localContext) => GestureDetector(
+            onTap: () => _showStatusTooltip(localContext, distribution),
+            behavior: HitTestBehavior.opaque,
+            child: Container(
+              height: 16,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: hoverBgColor,
+                border: Border.all(color: cardBorderColor, width: 1),
+              ),
+              child: Row(
+                children: distribution.map((item) {
+                  final status = item['status']?.toString() ?? '';
+                  final amount = item['amount'] as int? ?? 0;
+                  if (amount == 0) return const SizedBox.shrink();
+                  return Flexible(
+                    flex: amount,
+                    child: Container(color: _getStatusColor(status)),
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ),
@@ -242,7 +248,7 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
             const SizedBox(width: 4),
             const Text(
               'Tap for details',
-              style: TextStyle(color: Colors.white30, fontSize: 10),
+              style: TextStyle(color: Colors.white54, fontSize: 10),
             ),
           ],
         ),
@@ -263,8 +269,9 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
                     Expanded(
                       child: CompositedTransformTarget(
                         link: _scoreLinks[index],
-                        child: GestureDetector(
-                          onTap: () => _showScoreTooltip(context, index, score, amount),
+                      child: Builder(
+                        builder: (localContext) => GestureDetector(
+                          onTap: () => _showScoreTooltip(localContext, index, score, amount),
                           behavior: HitTestBehavior.opaque,
                           child: FractionallySizedBox(
                             heightFactor: heightFactor.clamp(0.02, 1.0),
@@ -288,11 +295,12 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
                           ),
                         ),
                       ),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       '${(score / 10).toInt()}',
-                      style: const TextStyle(color: Colors.white38, fontSize: 10),
+                      style: const TextStyle(color: Colors.white54, fontSize: 10),
                     ),
                   ],
                 ),
@@ -363,4 +371,226 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
     if (status == 'CURRENT') return 'WATCHING';
     return status;
   }
+
+  Widget _buildTrendsSection(BuildContext context) {
+    final trendsNodes = widget.media['trends']?['nodes'] as List? ?? [];
+    if (trendsNodes.isEmpty) return const SizedBox.shrink();
+
+    final trends = trendsNodes.reversed.toList();
+
+    return AppSection(
+      title: 'Trends',
+      children: [
+        const SizedBox(height: 12),
+        _buildTrendLineChart(context, trends),
+        const SizedBox(height: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildLegendItem('Score', const Color(0xFFFFB300)),
+            const SizedBox(width: 16),
+            _buildLegendItem('Viewers', const Color(0xFF42A5F5)),
+            const SizedBox(width: 16),
+            _buildLegendItem('Popularity', const Color(0xFFAB47BC)),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLegendItem(String label, Color color) {
+    return Row(
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          label,
+          style: const TextStyle(color: Colors.white60, fontSize: 13),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTrendLineChart(BuildContext context, List trends) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        const height = 160.0;
+
+        return Stack(
+          children: [
+            SizedBox(
+              height: height,
+              width: width,
+              child: CustomPaint(
+                painter: _TrendLinePainter(trends: trends),
+              ),
+            ),
+            Positioned.fill(
+              child: Row(
+                children: List.generate(trends.length, (index) {
+                  return Expanded(
+                    child: CompositedTransformTarget(
+                      link: _trendLinks[index],
+                      child: Builder(
+                        builder: (localContext) => GestureDetector(
+                          onTap: () => _showTrendTooltip(localContext, index, trends[index]),
+                          behavior: HitTestBehavior.opaque,
+                          child: const SizedBox.expand(),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showTrendTooltip(BuildContext context, int index, dynamic node) {
+    final date = node['date'] as int? ?? 0;
+    final score = (node['averageScore'] as num?)?.toDouble() ?? 0.0;
+    final viewers = node['inProgress'] as int? ?? 0;
+    final popularity = node['popularity'] as int? ?? 0;
+
+    StatTooltip.show(
+      context: context,
+      link: _trendLinks[index],
+      width: 200,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _formatDate(date),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Table(
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            columnWidths: const {
+              0: FixedColumnWidth(20),
+              1: FlexColumnWidth(),
+              2: IntrinsicColumnWidth(),
+            },
+            children: [
+              _buildTrendTooltipRow('Score', (score / 10).toStringAsFixed(1), const Color(0xFFFFB300)),
+              _buildTrendTooltipRow('Viewers', viewers.toString(), const Color(0xFF42A5F5)),
+              _buildTrendTooltipRow('Popularity', popularity.toString(), const Color(0xFFAB47BC)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  TableRow _buildTrendTooltipRow(String label, String value, Color color) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Container(
+            width: 6,
+            height: 6,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          ),
+        ),
+        Text(
+          label,
+          style: const TextStyle(color: Colors.white70, fontSize: 14),
+        ),
+        Text(
+          value,
+          textAlign: TextAlign.right,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _formatDate(int timestamp) {
+    final date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return '${months[date.month - 1]} ${date.day}, ${date.year}';
+  }
+}
+
+class _TrendLinePainter extends CustomPainter {
+  final List trends;
+
+  _TrendLinePainter({required this.trends});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (trends.length < 2) return;
+
+    final scores = trends.map((n) => (n['averageScore'] as num?)?.toDouble() ?? 0.0).toList();
+    final viewers = trends.map((n) => (n['inProgress'] as num?)?.toDouble() ?? 0.0).toList();
+    final popularity = trends.map((n) => (n['popularity'] as num?)?.toDouble() ?? 0.0).toList();
+
+    _drawLine(canvas, size, scores, const Color(0xFFFFB300), forcedMin: 0, forcedMax: 100.0);
+    _drawLine(canvas, size, viewers, const Color(0xFF42A5F5), useExpScale: true);
+    _drawLine(canvas, size, popularity, const Color(0xFFAB47BC), useExpScale: true);
+  }
+
+  void _drawLine(Canvas canvas, Size size, List<double> values, Color color, {double? forcedMin, double? forcedMax, bool useExpScale = false}) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
+
+    final double maxVal = forcedMax ?? (values.reduce((a, b) => a > b ? a : b));
+    final double minVal = forcedMin ?? 0.0;
+    
+    double scale(double v) {
+      if (maxVal <= minVal) return 0.5;
+      final double normalized = (v - minVal).clamp(0.0, maxVal - minVal) / (maxVal - minVal);
+      
+      if (useExpScale) {
+        return math.pow(normalized, 10).toDouble();
+      } else {
+        return normalized;
+      }
+    }
+
+    final path = Path();
+    final stepX = size.width / (values.length - 1);
+
+    for (int i = 0; i < values.length; i++) {
+      final x = i * stepX;
+      final double yFactor = scale(values[i]);
+      final double y = size.height - (yFactor * size.height * 0.8 + size.height * 0.1);
+
+      if (i == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+
+      canvas.drawCircle(Offset(x, y), 3.5, Paint()..color = color);
+      canvas.drawCircle(Offset(x, y), 2, Paint()..color = Colors.white);
+    }
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

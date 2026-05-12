@@ -15,10 +15,22 @@ class StatTooltip {
 
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final Offset offset = renderBox.localToGlobal(Offset.zero);
-    final double screenHeight = MediaQuery.of(context).size.height;
+    final Size screenSize = MediaQuery.of(context).size;
+    
+    final double targetCenterX = offset.dx + renderBox.size.width / 2;
     final double targetCenterY = offset.dy + renderBox.size.height / 2;
 
-    final bool showAbove = targetCenterY > screenHeight / 2;
+    final bool showAbove = targetCenterY > screenSize.height / 2;
+
+    const double padding = 16.0;
+    double dx = 0;
+    if (targetCenterX - width / 2 < padding) {
+      dx = padding - (targetCenterX - width / 2);
+    } else if (targetCenterX + width / 2 > screenSize.width - padding) {
+      dx = (screenSize.width - padding) - (targetCenterX + width / 2);
+    }
+
+    final double beakX = width / 2 - dx;
 
     _currentEntry = OverlayEntry(
       builder: (context) => Stack(
@@ -33,12 +45,12 @@ class StatTooltip {
           CompositedTransformFollower(
             link: link,
             showWhenUnlinked: false,
-            offset: showAbove ? const Offset(0, -10) : const Offset(0, 10),
+            offset: Offset(dx, showAbove ? -10 : 10),
             followerAnchor: showAbove ? Alignment.bottomCenter : Alignment.topCenter,
             targetAnchor: showAbove ? Alignment.topCenter : Alignment.bottomCenter,
             child: Material(
               color: Colors.transparent,
-              child: _TooltipBubble(width: width, showAbove: showAbove, child: child),
+              child: _TooltipBubble(width: width, showAbove: showAbove, beakX: beakX, child: child),
             ),
           ),
         ],
@@ -59,18 +71,20 @@ class _TooltipBubble extends StatelessWidget {
   final double width;
   final Widget child;
   final bool showAbove;
+  final double beakX;
 
   const _TooltipBubble({
     required this.width,
     required this.child,
     required this.showAbove,
+    required this.beakX,
   });
 
   @override
   Widget build(BuildContext context) {
     final beak = CustomPaint(
-      size: const Size(16, 8),
-      painter: _BeakPainter(flip: showAbove),
+      size: Size(width, 8),
+      painter: _BeakPainter(flip: showAbove, beakX: beakX),
     );
 
     return Column(
@@ -102,8 +116,9 @@ class _TooltipBubble extends StatelessWidget {
 
 class _BeakPainter extends CustomPainter {
   final bool flip;
+  final double beakX;
 
-  _BeakPainter({required this.flip});
+  _BeakPainter({required this.flip, required this.beakX});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -111,15 +126,20 @@ class _BeakPainter extends CustomPainter {
       ..color = const Color(0xFF1E1E2C)
       ..style = PaintingStyle.fill;
 
+    const double beakWidth = 16.0;
+    final double left = (beakX - beakWidth / 2).clamp(16.0, size.width - 16.0 - beakWidth);
+    final double right = left + beakWidth;
+    final double center = left + beakWidth / 2;
+
     final path = Path();
     if (flip) {
-      path.moveTo(0, 0);
-      path.lineTo(size.width / 2, size.height);
-      path.lineTo(size.width, 0);
+      path.moveTo(left, 0);
+      path.lineTo(center, size.height);
+      path.lineTo(right, 0);
     } else {
-      path.moveTo(0, size.height);
-      path.lineTo(size.width / 2, 0);
-      path.lineTo(size.width, size.height);
+      path.moveTo(left, size.height);
+      path.lineTo(center, 0);
+      path.lineTo(right, size.height);
     }
     path.close();
 
@@ -131,11 +151,11 @@ class _BeakPainter extends CustomPainter {
       ..strokeWidth = 1;
       
     if (flip) {
-      canvas.drawLine(Offset(0, 0), Offset(size.width / 2, size.height), borderPaint);
-      canvas.drawLine(Offset(size.width / 2, size.height), Offset(size.width, 0), borderPaint);
+      canvas.drawLine(Offset(left, 0), Offset(center, size.height), borderPaint);
+      canvas.drawLine(Offset(center, size.height), Offset(right, 0), borderPaint);
     } else {
-      canvas.drawLine(Offset(0, size.height), Offset(size.width / 2, 0), borderPaint);
-      canvas.drawLine(Offset(size.width / 2, 0), Offset(size.width, size.height), borderPaint);
+      canvas.drawLine(Offset(left, size.height), Offset(center, 0), borderPaint);
+      canvas.drawLine(Offset(center, 0), Offset(right, size.height), borderPaint);
     }
   }
 
