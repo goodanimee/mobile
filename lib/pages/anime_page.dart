@@ -351,7 +351,7 @@ class _AnimePageState extends State<AnimePage> {
                 slivers: [
                   SliverToBoxAdapter(child: AnimePageHeader(media: media)),
                   SliverToBoxAdapter(child: _buildActiveTab(media)),
-                  const SliverToBoxAdapter(child: SizedBox(height: 64)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 96)),
                 ],
               ),
             ),
