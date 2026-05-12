@@ -1,0 +1,195 @@
+import 'package:flutter/material.dart';
+import 'stat_tooltip.dart';
+
+class ScoreHistogram extends StatefulWidget {
+  final List distribution;
+
+  const ScoreHistogram({super.key, required this.distribution});
+
+  @override
+  State<ScoreHistogram> createState() => _ScoreHistogramState();
+}
+
+class _ScoreHistogramState extends State<ScoreHistogram> {
+  final List<LayerLink> _scoreLinks = List.generate(10, (_) => LayerLink());
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.distribution.isEmpty) return const SizedBox.shrink();
+
+    final maxAmount = widget.distribution
+        .map((e) => e['amount'] as int)
+        .fold(0, (prev, element) => element > prev ? element : prev);
+
+    final Map<int, int> scoresMap = {
+      for (var e in widget.distribution) e['score'] as int: e['amount'] as int,
+    };
+    final List<int> allScores = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Row(
+          children: [
+            Text(
+              'Score Distribution',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(width: 8),
+            Icon(Icons.info_outline_rounded, size: 12, color: Colors.white30),
+            SizedBox(width: 4),
+            Text(
+              'Tap for details',
+              style: TextStyle(color: Colors.white54, fontSize: 10),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 140,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: List.generate(allScores.length, (index) {
+              final score = allScores[index];
+              final amount = scoresMap[score] ?? 0;
+              final heightFactor = maxAmount > 0 ? amount / maxAmount : 0.0;
+
+              return Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: CompositedTransformTarget(
+                        link: _scoreLinks[index],
+                        child: Builder(
+                          builder: (localContext) => GestureDetector(
+                            onTap: () => _showScoreTooltip(
+                              localContext,
+                              index,
+                              score,
+                              amount,
+                            ),
+                            behavior: HitTestBehavior.opaque,
+                            child: Builder(
+                              builder: (context) {
+                                final gradientColors = _getScoreGradient(score);
+                                final topColor = gradientColors[0];
+                                final bottomColor = gradientColors[1];
+
+                                return FractionallySizedBox(
+                                  widthFactor: 0.75,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.03,
+                                      ),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    alignment: Alignment.bottomCenter,
+                                    child: FractionallySizedBox(
+                                      heightFactor: heightFactor.clamp(
+                                        0.02,
+                                        1.0,
+                                      ),
+                                      widthFactor: 1.0,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [topColor, bottomColor],
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            6,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '${(score / 10).toInt()}',
+                      style: const TextStyle(
+                        color: Colors.white54,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showScoreTooltip(
+    BuildContext context,
+    int index,
+    int score,
+    int amount,
+  ) {
+    StatTooltip.show(
+      context: context,
+      link: _scoreLinks[index],
+      width: 180,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Score: ${(score / 10).toStringAsFixed(1)}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '$amount users',
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Color> _getScoreGradient(int score) {
+    const topRed = Color(0xFF963E3C);
+    const topYellow = Color(0xFF9C8C3A);
+    const topGreen = Color(0xFF417545);
+
+    const bottomRed = Color(0xFF702E2D);
+    const bottomYellow = Color(0xFF756A2B);
+    const bottomGreen = Color(0xFF315434);
+
+    Color topColor;
+    Color bottomColor;
+
+    if (score <= 50) {
+      topColor = Color.lerp(topRed, topYellow, (score - 10) / 40) ?? topYellow;
+      bottomColor =
+          Color.lerp(bottomRed, bottomYellow, (score - 10) / 40) ??
+          bottomYellow;
+    } else {
+      topColor = Color.lerp(topYellow, topGreen, (score - 50) / 50) ?? topGreen;
+      bottomColor =
+          Color.lerp(bottomYellow, bottomGreen, (score - 50) / 50) ??
+          bottomGreen;
+    }
+
+    return [topColor, bottomColor];
+  }
+}

@@ -5,11 +5,11 @@ import '../theme/theme.dart';
 import '../components/floating_nav.dart';
 import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
-import '../components/app_network_image.dart';
 import '../utils/backend_helper.dart';
 import '../services/auth_service.dart';
 import '../proto/medialist.pb.dart';
 import '../utils/utils.dart';
+import '../utils/app_options.dart';
 
 import 'anime_page/tabs/info_tab.dart';
 import 'anime_page/tabs/characters_tab.dart';
@@ -18,7 +18,7 @@ import 'anime_page/tabs/media_tab.dart';
 import 'anime_page/tabs/relations_tab.dart';
 import 'anime_page/tabs/rankings_tab.dart';
 import 'anime_page/tabs/placeholder_tab.dart';
-import '../components/anime_options_sheet.dart';
+import 'anime_page/widgets/anime_page_header.dart';
 
 /// A page displaying detailed information about an anime
 class AnimePage extends StatefulWidget {
@@ -137,32 +137,12 @@ class _AnimePageState extends State<AnimePage> {
     final entry = Map<String, dynamic>.from(media['mediaListEntry'] ?? {});
     entry['media'] = media;
 
-    final result = await showModalBottomSheet<Map<String, dynamic>>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.5,
-          minChildSize: 0.3,
-          maxChildSize: 0.95,
-          expand: false,
-          builder: (context, scrollController) {
-            return AnimeOptionsSheet(
-              entry: entry,
-              scrollController: scrollController,
-            );
-          },
-        );
-      },
-    );
+    final result = await showAnimeOptions(context, entry);
 
     if (result != null && mounted) {
       _didUpdate = true;
-
       await CacheUtils.invalidateMedia(widget.mediaId);
       CacheUtils.homeNeedsRefresh.value = true;
-
       await _fetchAnimeDetails(forceRefresh: true);
     }
   }
@@ -241,9 +221,6 @@ class _AnimePageState extends State<AnimePage> {
     }
 
     final media = _mediaData!;
-    final title = media.titleText;
-    final imageUrl = media.coverImage;
-    final bannerUrl = media.bannerImage ?? '';
 
     final quickNavItems = [
       QuickNavSection(
@@ -351,11 +328,9 @@ class _AnimePageState extends State<AnimePage> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(
-                    child: _buildBannerAndHeader(
-                      title,
-                      imageUrl,
-                      bannerUrl,
-                      media,
+                    child: AnimePageHeader(
+                      media: media,
+                      onBack: () => Navigator.of(context).pop(_didUpdate),
                     ),
                   ),
                   SliverToBoxAdapter(child: _buildActiveTab(media)),
@@ -405,144 +380,6 @@ class _AnimePageState extends State<AnimePage> {
           child: Icon(Icons.edit_rounded, color: Colors.white, size: 22),
         ),
       ),
-    );
-  }
-
-  /// Builds the banner and header information section
-  Widget _buildBannerAndHeader(
-    String title,
-    String imageUrl,
-    String bannerUrl,
-    Map<String, dynamic> media,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          children: [
-            Container(
-              height: 280,
-              width: double.infinity,
-              color: Colors.black,
-              child: bannerUrl.isNotEmpty
-                  ? AppNetworkImage(
-                      imageUrl: bannerUrl,
-                      width: double.infinity,
-                      height: 280,
-                    )
-                  : const SizedBox.shrink(),
-            ),
-            Container(
-              height: 281,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withValues(alpha: 0.3),
-                    Colors.transparent,
-                    bgColor.withValues(alpha: 0.8),
-                    bgColor,
-                  ],
-                  stops: const [0.0, 0.4, 0.8, 1.0],
-                ),
-              ),
-            ),
-            Positioned(
-              top: MediaQuery.of(context).padding.top + 8,
-              left: 16,
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).pop(_didUpdate),
-                child: const Icon(
-                  Icons.arrow_back_rounded,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (imageUrl.isNotEmpty)
-                AppNetworkImage(
-                  imageUrl: imageUrl,
-                  width: 120,
-                  height: 180,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        height: 1.2,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _buildInfoRow(
-                      Icons.tv_outlined,
-                      '${media['format'] ?? 'TV'}',
-                    ),
-                    const SizedBox(height: 8),
-                    _buildInfoRow(
-                      Icons.timer_outlined,
-                      '${media['episodes'] ?? '?'} Episodes',
-                    ),
-                    const SizedBox(height: 8),
-                    _buildInfoRow(
-                      Icons.rss_feed_rounded,
-                      '${media['status'] ?? 'FINISHED'}',
-                    ),
-                    if (media['season'] != null &&
-                        media['seasonYear'] != null) ...[
-                      const SizedBox(height: 8),
-                      _buildInfoRow(
-                        Icons.calendar_today_rounded,
-                        '${media['season']} ${media['seasonYear']}'
-                            .toUpperCase(),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// Builds a row of information with an icon and label
-  Widget _buildInfoRow(IconData icon, String label) {
-    return Row(
-      children: [
-        Icon(icon, color: Colors.white70, size: 18),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Colors.white70,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

@@ -5,7 +5,6 @@ import '../utils/backend_helper.dart';
 import '../services/auth_service.dart';
 import '../theme/theme.dart';
 import '../components/anime_list_card.dart';
-import '../components/anime_options_sheet.dart';
 import '../components/section_title.dart';
 import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
@@ -13,6 +12,7 @@ import '../components/app_badges.dart';
 import '../components/app_media_card.dart';
 import '../utils/utils.dart';
 import '../utils/app_navigation.dart';
+import '../utils/app_options.dart';
 
 /// Display user's anime lists
 class HomeTab extends StatefulWidget {
@@ -396,24 +396,7 @@ class _HomeTabState extends State<HomeTab> {
     BuildContext context,
     Map<String, dynamic> entry,
   ) async {
-    final result = await showModalBottomSheet<Map<String, dynamic>>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.5,
-          minChildSize: 0.3,
-          maxChildSize: 0.95,
-          builder: (context, scrollController) {
-            return AnimeOptionsSheet(
-              entry: entry,
-              scrollController: scrollController,
-            );
-          },
-        );
-      },
-    );
+    final result = await showAnimeOptions(context, entry);
 
     if (result != null && mounted) {
       final media = entry['media'] as Map<String, dynamic>? ?? {};
