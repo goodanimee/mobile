@@ -524,3 +524,34 @@ final $typed_data.Uint8List fetchMediaCharactersResponseDescriptor =
     $convert.base64Decode(
         'ChxGZXRjaE1lZGlhQ2hhcmFjdGVyc1Jlc3BvbnNlEhkKCHJhd19qc29uGAEgASgJUgdyYXdKc2'
         '9uEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use fetchMediaRecommendationsRequestDescriptor instead')
+const FetchMediaRecommendationsRequest$json = {
+  '1': 'FetchMediaRecommendationsRequest',
+  '2': [
+    {'1': 'media_id', '3': 1, '4': 1, '5': 5, '10': 'mediaId'},
+    {'1': 'page', '3': 2, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'per_page', '3': 3, '4': 1, '5': 5, '10': 'perPage'},
+  ],
+};
+
+/// Descriptor for `FetchMediaRecommendationsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaRecommendationsRequestDescriptor =
+    $convert.base64Decode(
+        'CiBGZXRjaE1lZGlhUmVjb21tZW5kYXRpb25zUmVxdWVzdBIZCghtZWRpYV9pZBgBIAEoBVIHbW'
+        'VkaWFJZBISCgRwYWdlGAIgASgFUgRwYWdlEhkKCHBlcl9wYWdlGAMgASgFUgdwZXJQYWdl');
+
+@$core.Deprecated('Use fetchMediaRecommendationsResponseDescriptor instead')
+const FetchMediaRecommendationsResponse$json = {
+  '1': 'FetchMediaRecommendationsResponse',
+  '2': [
+    {'1': 'raw_json', '3': 1, '4': 1, '5': 9, '10': 'rawJson'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchMediaRecommendationsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaRecommendationsResponseDescriptor =
+    $convert.base64Decode(
+        'CiFGZXRjaE1lZGlhUmVjb21tZW5kYXRpb25zUmVzcG9uc2USGQoIcmF3X2pzb24YASABKAlSB3'
+        'Jhd0pzb24SFAoFZXJyb3IYAiABKAlSBWVycm9y');

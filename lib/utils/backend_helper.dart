@@ -106,6 +106,24 @@ typedef _FetchMediaStaffDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for fetching media recommendations
+typedef _FetchMediaRecommendationsC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for fetching media recommendations
+typedef _FetchMediaRecommendationsDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// Native function signature for freeing buffers
 typedef _FreeBufferC = ffi.Void Function(ffi.Pointer<ffi.Uint8> ptr);
 
@@ -121,6 +139,7 @@ class BackendHelper {
   static late _SaveMediaListEntryDart _saveMediaListEntry;
   static late _FetchMediaCharactersDart _fetchMediaCharacters;
   static late _FetchMediaStaffDart _fetchMediaStaff;
+  static late _FetchMediaRecommendationsDart _fetchMediaRecommendations;
   static late _FreeBufferDart _freeBuffer;
   static bool _initialized = false;
 
@@ -130,10 +149,9 @@ class BackendHelper {
 
     _lib = ffi.DynamicLibrary.open('libbackend.so');
 
-    _fetchMediaList = _lib
-        .lookupFunction<_FetchMediaListC, _FetchMediaListDart>(
-          'FetchMediaList',
-        );
+    _fetchMediaList = _lib.lookupFunction<_FetchMediaListC, _FetchMediaListDart>(
+      'FetchMediaList',
+    );
     _fetchViewer = _lib.lookupFunction<_FetchViewerC, _FetchViewerDart>(
       'FetchViewer',
     );
@@ -149,10 +167,14 @@ class BackendHelper {
         .lookupFunction<_FetchMediaCharactersC, _FetchMediaCharactersDart>(
           'FetchMediaCharacters',
         );
-    _fetchMediaStaff = _lib
-        .lookupFunction<_FetchMediaStaffC, _FetchMediaStaffDart>(
-          'FetchMediaStaff',
-        );
+    _fetchMediaStaff = _lib.lookupFunction<_FetchMediaStaffC, _FetchMediaStaffDart>(
+      'FetchMediaStaff',
+    );
+    _fetchMediaRecommendations = _lib
+        .lookupFunction<
+          _FetchMediaRecommendationsC,
+          _FetchMediaRecommendationsDart
+        >('FetchMediaRecommendations');
     _freeBuffer = _lib.lookupFunction<_FreeBufferC, _FreeBufferDart>(
       'FreeBuffer',
     );
@@ -323,6 +345,38 @@ class BackendHelper {
               _fetchMediaStaff(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
         );
         final response = FetchMediaStaffResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
+  /// Fetches media recommendations
+  static Future<FetchMediaRecommendationsResponse> fetchMediaRecommendations(
+    FetchMediaRecommendationsRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = _call(
+          (outLenPtr) => _fetchMediaRecommendations(
+            reqPtr,
+            reqBytes.length,
+            tokenPtr,
+            outLenPtr,
+          ),
+        );
+        final response = FetchMediaRecommendationsResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
         return response;
       } finally {

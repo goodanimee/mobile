@@ -1997,6 +1997,160 @@ class FetchMediaCharactersResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(2);
 }
 
+class FetchMediaRecommendationsRequest extends $pb.GeneratedMessage {
+  factory FetchMediaRecommendationsRequest({
+    $core.int? mediaId,
+    $core.int? page,
+    $core.int? perPage,
+  }) {
+    final result = create();
+    if (mediaId != null) result.mediaId = mediaId;
+    if (page != null) result.page = page;
+    if (perPage != null) result.perPage = perPage;
+    return result;
+  }
+
+  FetchMediaRecommendationsRequest._();
+
+  factory FetchMediaRecommendationsRequest.fromBuffer(
+          $core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchMediaRecommendationsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchMediaRecommendationsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'mediaId')
+    ..aI(2, _omitFieldNames ? '' : 'page')
+    ..aI(3, _omitFieldNames ? '' : 'perPage')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaRecommendationsRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaRecommendationsRequest copyWith(
+          void Function(FetchMediaRecommendationsRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as FetchMediaRecommendationsRequest))
+          as FetchMediaRecommendationsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaRecommendationsRequest create() =>
+      FetchMediaRecommendationsRequest._();
+  @$core.override
+  FetchMediaRecommendationsRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaRecommendationsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaRecommendationsRequest>(
+          create);
+  static FetchMediaRecommendationsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get mediaId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set mediaId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasMediaId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMediaId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get perPage => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set perPage($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasPerPage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPerPage() => $_clearField(3);
+}
+
+class FetchMediaRecommendationsResponse extends $pb.GeneratedMessage {
+  factory FetchMediaRecommendationsResponse({
+    $core.String? rawJson,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (rawJson != null) result.rawJson = rawJson;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchMediaRecommendationsResponse._();
+
+  factory FetchMediaRecommendationsResponse.fromBuffer(
+          $core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchMediaRecommendationsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchMediaRecommendationsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'rawJson')
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaRecommendationsResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaRecommendationsResponse copyWith(
+          void Function(FetchMediaRecommendationsResponse) updates) =>
+      super.copyWith((message) =>
+              updates(message as FetchMediaRecommendationsResponse))
+          as FetchMediaRecommendationsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaRecommendationsResponse create() =>
+      FetchMediaRecommendationsResponse._();
+  @$core.override
+  FetchMediaRecommendationsResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaRecommendationsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaRecommendationsResponse>(
+          create);
+  static FetchMediaRecommendationsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get rawJson => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set rawJson($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasRawJson() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRawJson() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

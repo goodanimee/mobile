@@ -167,6 +167,20 @@ query Media($mediaId: Int, $notYetAired: Boolean) {
         }
       }
     }
+    recommendations(page: 1, perPage: 25, sort: [RATING_DESC]) {
+      pageInfo { ...pageInfoFields }
+      edges {
+        node {
+          rating
+          mediaRecommendation {
+            id
+            title { ...titleFields }
+            coverImage { ...coverImageFields }
+            format
+          }
+        }
+      }
+    }
   }
 }
 

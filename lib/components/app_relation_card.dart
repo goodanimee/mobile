@@ -16,6 +16,9 @@ class AppRelationCard extends StatelessWidget {
   /// The format and relation type string
   final String subtitle;
 
+  /// Optional icon next to subtitle
+  final Widget? subtitleIcon;
+
   /// The accent color for theme
   final Color? color;
 
@@ -32,6 +35,7 @@ class AppRelationCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     this.nativeTitle,
+    this.subtitleIcon,
     this.color,
     this.trailing,
     this.onTap,
@@ -119,16 +123,26 @@ class AppRelationCard extends StatelessWidget {
                           ],
                         ),
                         const Spacer(),
-                        Text(
-                          subtitle,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.7),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            height: 1.2,
-                          ),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                subtitle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.7),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.2,
+                                ),
+                              ),
+                            ),
+                            if (subtitleIcon != null) ...[
+                              const SizedBox(width: 4),
+                              subtitleIcon!,
+                            ],
+                          ],
                         ),
                       ],
                     ),
