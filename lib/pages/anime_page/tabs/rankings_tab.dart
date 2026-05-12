@@ -20,6 +20,7 @@ class AnimeRankingsTab extends StatefulWidget {
 
 class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
   final LayerLink _statusLink = LayerLink();
+  final List<LayerLink> _scoreLinks = List.generate(10, (_) => LayerLink());
 
   @override
   void dispose() {
@@ -80,6 +81,9 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
             widget.media['stats']?['statusDistribution'] as List? ?? [],
           ),
         ),
+        const SizedBox(height: 40),
+        _buildScoreHistogram(widget.media['stats']?['scoreDistribution'] as List? ?? []),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -206,6 +210,136 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
         ],
       ),
     );
+  }
+
+  Widget _buildScoreHistogram(List distribution) {
+    if (distribution.isEmpty) return const SizedBox.shrink();
+
+    final maxAmount = distribution
+        .map((e) => e['amount'] as int)
+        .fold(0, (prev, element) => element > prev ? element : prev);
+
+    final Map<int, int> scoresMap = {
+      for (var e in distribution) e['score'] as int: e['amount'] as int,
+    };
+    final List<int> allScores = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Text(
+              'Score Distribution',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(Icons.info_outline_rounded, size: 12, color: Colors.white30),
+            const SizedBox(width: 4),
+            const Text(
+              'Tap for details',
+              style: TextStyle(color: Colors.white30, fontSize: 10),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 140,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: List.generate(allScores.length, (index) {
+              final score = allScores[index];
+              final amount = scoresMap[score] ?? 0;
+              final heightFactor = maxAmount > 0 ? amount / maxAmount : 0.0;
+
+              return Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: CompositedTransformTarget(
+                        link: _scoreLinks[index],
+                        child: GestureDetector(
+                          onTap: () => _showScoreTooltip(context, index, score, amount),
+                          behavior: HitTestBehavior.opaque,
+                          child: FractionallySizedBox(
+                            heightFactor: heightFactor.clamp(0.02, 1.0),
+                            widthFactor: 0.8,
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: _getScoreColor(score),
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(4),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: _getScoreColor(score).withValues(alpha: 0.2),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '${(score / 10).toInt()}',
+                      style: const TextStyle(color: Colors.white38, fontSize: 10),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showScoreTooltip(BuildContext context, int index, int score, int amount) {
+    StatTooltip.show(
+      context: context,
+      link: _scoreLinks[index],
+      width: 180,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Score: ${(score / 10).toStringAsFixed(1)}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '$amount users',
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _getScoreColor(int score) {
+    const red = Color(0xFFEF5350);
+    const yellow = Color(0xFFFFEE58);
+    const green = Color(0xFF66BB6A);
+
+    if (score <= 50) {
+      return Color.lerp(red, yellow, (score - 10) / 40) ?? yellow;
+    } else {
+      return Color.lerp(yellow, green, (score - 50) / 50) ?? green;
+    }
   }
 
   Color _getStatusColor(String status) {
