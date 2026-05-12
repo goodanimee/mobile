@@ -85,10 +85,19 @@ class RankingPill extends StatelessWidget {
         : (isPopular ? Icons.favorite_border_rounded : Icons.info_outline);
 
     final List<Color> colors = isRated
-        ? [const Color(0xFFFFE082), const Color(0xFFFFB300)]
+        ? [
+            const Color(0xFF9C8C3A), // Desaturated Yellow (Matches Score chart)
+            const Color(0xFF756A2B), // Dark Desaturated Yellow
+          ]
         : (isPopular
-              ? [const Color(0xFFFF80AB), const Color(0xFFF50057)]
-              : [Colors.white70, Colors.white]);
+              ? [
+                  const Color(0xFF963E3C), // Muted Brick Red
+                  const Color(0xFF702E2D), // Dark Muted Brick Red
+                ]
+              : [
+                  const Color(0xFF6B7280), // Dim Gray
+                  const Color(0xFF4B5563), // Dark Dim Gray
+                ]);
 
     return SizedBox(
       width: 32,

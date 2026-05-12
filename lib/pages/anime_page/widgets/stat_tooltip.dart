@@ -91,105 +91,83 @@ class _TooltipBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final beak = CustomPaint(
-      size: Size(width, 8),
-      painter: _BeakPainter(flip: showAbove, beakX: beakX),
-    );
+    const beakHeight = 8.0;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (!showAbove) beak,
-        Container(
-          width: width,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E1E2C),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.1),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.4),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
-          child: child,
+    return CustomPaint(
+      painter: _TooltipPainter(showAbove: showAbove, beakX: beakX),
+      child: Container(
+        width: width,
+        padding: EdgeInsets.only(
+          top: 16.0 + (showAbove ? 0 : beakHeight),
+          bottom: 16.0 + (showAbove ? beakHeight : 0),
+          left: 16.0,
+          right: 16.0,
         ),
-        if (showAbove) beak,
-      ],
+        child: child,
+      ),
     );
   }
 }
 
-class _BeakPainter extends CustomPainter {
-  final bool flip;
+class _TooltipPainter extends CustomPainter {
+  final bool showAbove;
   final double beakX;
 
-  _BeakPainter({required this.flip, required this.beakX});
+  _TooltipPainter({required this.showAbove, required this.beakX});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF1E1E2C)
-      ..style = PaintingStyle.fill;
-
     const double beakWidth = 16.0;
+    const double beakHeight = 8.0;
+    const double radius = 16.0;
+
+    final rect = showAbove
+        ? Rect.fromLTWH(0, 0, size.width, size.height - beakHeight)
+        : Rect.fromLTWH(0, beakHeight, size.width, size.height - beakHeight);
+
+    final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(radius));
+    final pathRect = Path()..addRRect(rrect);
+
     final double left = (beakX - beakWidth / 2).clamp(
-      16.0,
-      size.width - 16.0 - beakWidth,
+      radius,
+      size.width - radius - beakWidth,
     );
     final double right = left + beakWidth;
     final double center = left + beakWidth / 2;
 
-    final path = Path();
-    if (flip) {
-      path.moveTo(left, 0);
-      path.lineTo(center, size.height);
-      path.lineTo(right, 0);
+    final pathBeak = Path();
+    if (showAbove) {
+      pathBeak.moveTo(left, size.height - beakHeight);
+      pathBeak.lineTo(center, size.height);
+      pathBeak.lineTo(right, size.height - beakHeight);
     } else {
-      path.moveTo(left, size.height);
-      path.lineTo(center, 0);
-      path.lineTo(right, size.height);
+      pathBeak.moveTo(left, beakHeight);
+      pathBeak.lineTo(center, 0);
+      pathBeak.lineTo(right, beakHeight);
     }
-    path.close();
+    pathBeak.close();
 
-    canvas.drawPath(path, paint);
+    final path = Path.combine(PathOperation.union, pathRect, pathBeak);
+
+    final shadowPaint = Paint()
+      ..color = Colors.black.withValues(alpha: 0.4)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
+    canvas.drawPath(path.shift(const Offset(0, 10)), shadowPaint);
+
+    final fillPaint = Paint()
+      ..color = const Color(0xFF1A1A1A)
+      ..style = PaintingStyle.fill;
+    canvas.drawPath(path, fillPaint);
 
     final borderPaint = Paint()
       ..color = Colors.white.withValues(alpha: 0.1)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
-
-    if (flip) {
-      canvas.drawLine(
-        Offset(left, 0),
-        Offset(center, size.height),
-        borderPaint,
-      );
-      canvas.drawLine(
-        Offset(center, size.height),
-        Offset(right, 0),
-        borderPaint,
-      );
-    } else {
-      canvas.drawLine(
-        Offset(left, size.height),
-        Offset(center, 0),
-        borderPaint,
-      );
-      canvas.drawLine(
-        Offset(center, 0),
-        Offset(right, size.height),
-        borderPaint,
-      );
-    }
+    canvas.drawPath(path, borderPaint);
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _TooltipPainter oldDelegate) {
+    return oldDelegate.showAbove != showAbove || oldDelegate.beakX != beakX;
+  }
 }

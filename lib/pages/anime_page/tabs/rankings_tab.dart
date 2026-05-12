@@ -31,7 +31,33 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
 
   @override
   Widget build(BuildContext context) {
-    final rankings = widget.media['rankings'] as List? ?? [];
+    final rawRankings = widget.media['rankings'] as List? ?? [];
+    final rankings = rawRankings.whereType<Map<String, dynamic>>().toList();
+
+    rankings.sort((a, b) {
+      int getWeight(Map<String, dynamic> ranking) {
+        int weight = 0;
+        final type = ranking['type']?.toString().toUpperCase() ?? '';
+
+        if (type == 'RATED') {
+          weight += 1000;
+        } else if (type == 'POPULAR') {
+          weight += 500;
+        }
+
+        if (ranking['allTime'] == true) {
+          weight += 100;
+        } else if (ranking['season'] == null && ranking['year'] != null) {
+          weight += 50;
+        } else if (ranking['season'] != null && ranking['year'] != null) {
+          weight += 10;
+        }
+
+        return weight;
+      }
+
+      return getWeight(b).compareTo(getWeight(a));
+    });
 
     final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,16 +74,13 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
           )
         else
           ...rankings.map((ranking) {
-            if (ranking is! Map<String, dynamic>) {
-              return const SizedBox.shrink();
-            }
             return RankingPill(ranking: ranking);
           }),
         const SizedBox(height: 16),
         _buildStatsSection(context),
         const SizedBox(height: 32),
         _buildTrendsSection(context),
-        const SizedBox(height: 40),
+        const SizedBox(height: 48),
       ],
     );
 
@@ -79,16 +102,16 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
       title: 'Stats',
       children: [
         const SizedBox(height: 8),
+        _buildScoreHistogram(
+          widget.media['stats']?['scoreDistribution'] as List? ?? [],
+        ),
+        const SizedBox(height: 40),
         CompositedTransformTarget(
           link: _statusLink,
           child: _buildStatusDistributionBar(
             context,
             widget.media['stats']?['statusDistribution'] as List? ?? [],
           ),
-        ),
-        const SizedBox(height: 40),
-        _buildScoreHistogram(
-          widget.media['stats']?['scoreDistribution'] as List? ?? [],
         ),
         const SizedBox(height: 20),
       ],
@@ -144,15 +167,9 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
                       final status = item['status']?.toString() ?? '';
                       final amount = item['amount'] as int? ?? 0;
 
-                      final color = _getStatusColor(status);
-                      final hsl = HSLColor.fromColor(color);
-
-                      final leftColor = hsl
-                          .withLightness((hsl.lightness + 0.1).clamp(0.0, 1.0))
-                          .toColor();
-                      final rightColor = hsl
-                          .withLightness((hsl.lightness - 0.12).clamp(0.0, 1.0))
-                          .toColor();
+                      final gradientColors = _getStatusGradient(status);
+                      final leftColor = gradientColors[0];
+                      final rightColor = gradientColors[1];
 
                       return Flexible(
                         flex: amount,
@@ -165,13 +182,6 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
                               colors: [leftColor, rightColor],
                             ),
                             borderRadius: BorderRadius.circular(4),
-                            boxShadow: [
-                              BoxShadow(
-                                color: rightColor.withValues(alpha: 0.3),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
                           ),
                         ),
                       );
@@ -320,27 +330,44 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
                               amount,
                             ),
                             behavior: HitTestBehavior.opaque,
-                            child: FractionallySizedBox(
-                              heightFactor: heightFactor.clamp(0.02, 1.0),
-                              widthFactor: 0.8,
-                              alignment: Alignment.bottomCenter,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: _getScoreColor(score),
-                                  borderRadius: const BorderRadius.vertical(
-                                    top: Radius.circular(4),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: _getScoreColor(
-                                        score,
-                                      ).withValues(alpha: 0.2),
-                                      blurRadius: 8,
-                                      offset: const Offset(0, 0),
+                            child: Builder(
+                              builder: (context) {
+                                final gradientColors = _getScoreGradient(score);
+                                final topColor = gradientColors[0];
+                                final bottomColor = gradientColors[1];
+
+                                return FractionallySizedBox(
+                                  widthFactor: 0.75,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.03,
+                                      ),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
-                                  ],
-                                ),
-                              ),
+                                    alignment: Alignment.bottomCenter,
+                                    child: FractionallySizedBox(
+                                      heightFactor: heightFactor.clamp(
+                                        0.02,
+                                        1.0,
+                                      ),
+                                      widthFactor: 1.0,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [topColor, bottomColor],
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            6,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),
@@ -395,32 +422,64 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
     );
   }
 
-  Color _getScoreColor(int score) {
-    const red = Color(0xFFEF5350);
-    const yellow = Color(0xFFFFEE58);
-    const green = Color(0xFF66BB6A);
+  List<Color> _getScoreGradient(int score) {
+    const topRed = Color(0xFF963E3C);
+    const topYellow = Color(0xFF9C8C3A);
+    const topGreen = Color(0xFF417545);
+
+    const bottomRed = Color(0xFF702E2D);
+    const bottomYellow = Color(0xFF756A2B);
+    const bottomGreen = Color(0xFF315434);
+
+    Color topColor;
+    Color bottomColor;
 
     if (score <= 50) {
-      return Color.lerp(red, yellow, (score - 10) / 40) ?? yellow;
+      topColor = Color.lerp(topRed, topYellow, (score - 10) / 40) ?? topYellow;
+      bottomColor =
+          Color.lerp(bottomRed, bottomYellow, (score - 10) / 40) ??
+          bottomYellow;
     } else {
-      return Color.lerp(yellow, green, (score - 50) / 50) ?? green;
+      topColor = Color.lerp(topYellow, topGreen, (score - 50) / 50) ?? topGreen;
+      bottomColor =
+          Color.lerp(bottomYellow, bottomGreen, (score - 50) / 50) ??
+          bottomGreen;
     }
+
+    return [topColor, bottomColor];
   }
 
   Color _getStatusColor(String status) {
     switch (status) {
       case 'CURRENT':
-        return const Color(0xFF66BB6A);
+        return const Color(0xFF417545);
       case 'COMPLETED':
-        return const Color(0xFF42A5F5);
+        return const Color(0xFF32668C);
       case 'PAUSED':
-        return const Color(0xFFFFA726);
+        return const Color(0xFF9E6B26);
       case 'DROPPED':
-        return const Color(0xFFEF5350);
+        return const Color(0xFF963E3C);
       case 'PLANNING':
-        return const Color(0xFFAB47BC);
+        return const Color(0xFF6B3473);
       default:
-        return Colors.grey;
+        return const Color(0xFF4F4F4F);
+    }
+  }
+
+  List<Color> _getStatusGradient(String status) {
+    switch (status) {
+      case 'CURRENT':
+        return [const Color(0xFF417545), const Color(0xFF315434)];
+      case 'COMPLETED':
+        return [const Color(0xFF32668C), const Color(0xFF234A66)];
+      case 'PAUSED':
+        return [const Color(0xFF9E6B26), const Color(0xFF75501C)];
+      case 'DROPPED':
+        return [const Color(0xFF963E3C), const Color(0xFF702E2D)];
+      case 'PLANNING':
+        return [const Color(0xFF6B3473), const Color(0xFF4C2552)];
+      default:
+        return [const Color(0xFF4F4F4F), const Color(0xFF383838)];
     }
   }
 
@@ -444,11 +503,11 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildLegendItem('Score', const Color(0xFFFFB300)),
+            _buildLegendItem('Score', const Color(0xFF9C8C3A)),
             const SizedBox(width: 16),
-            _buildLegendItem('Viewers', const Color(0xFF42A5F5)),
+            _buildLegendItem('Viewers', const Color(0xFF32668C)),
             const SizedBox(width: 16),
-            _buildLegendItem('Popularity', const Color(0xFFAB47BC)),
+            _buildLegendItem('Popularity', const Color(0xFF6B3473)),
           ],
         ),
       ],
@@ -473,39 +532,84 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
   }
 
   Widget _buildTrendLineChart(BuildContext context, List trends) {
+    if (trends.isEmpty) return const SizedBox.shrink();
+
+    final firstDate = trends.first['date'] as int? ?? 0;
+    final lastDate = trends.last['date'] as int? ?? 0;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
         const height = 160.0;
 
-        return Stack(
+        return Column(
           children: [
-            SizedBox(
-              height: height,
-              width: width,
-              child: CustomPaint(painter: _TrendLinePainter(trends: trends)),
-            ),
-            Positioned.fill(
-              child: Row(
-                children: List.generate(trends.length, (index) {
-                  return Expanded(
-                    child: CompositedTransformTarget(
-                      link: _trendLinks[index],
-                      child: Builder(
-                        builder: (localContext) => GestureDetector(
-                          onTap: () => _showTrendTooltip(
-                            localContext,
-                            index,
-                            trends[index],
-                          ),
-                          behavior: HitTestBehavior.opaque,
-                          child: const SizedBox.expand(),
+            Stack(
+              children: [
+                SizedBox(
+                  height: height,
+                  width: width,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.02),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border(
+                        top: BorderSide(
+                          color: Colors.white.withValues(alpha: 0.05),
+                          width: 1,
+                        ),
+                        bottom: BorderSide(
+                          color: Colors.white.withValues(alpha: 0.05),
+                          width: 1,
                         ),
                       ),
                     ),
-                  );
-                }),
-              ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: CustomPaint(
+                      painter: _TrendLinePainter(trends: trends),
+                    ),
+                  ),
+                ),
+                Positioned.fill(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: List.generate(trends.length, (index) {
+                        return Expanded(
+                          child: CompositedTransformTarget(
+                            link: _trendLinks[index],
+                            child: Builder(
+                              builder: (localContext) => GestureDetector(
+                                onTap: () => _showTrendTooltip(
+                                  localContext,
+                                  index,
+                                  trends[index],
+                                ),
+                                behavior: HitTestBehavior.opaque,
+                                child: const SizedBox.expand(),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  _formatDate(firstDate),
+                  style: const TextStyle(color: Colors.white54, fontSize: 11),
+                ),
+                Text(
+                  _formatDate(lastDate),
+                  style: const TextStyle(color: Colors.white54, fontSize: 11),
+                ),
+              ],
             ),
           ],
         );
@@ -547,17 +651,17 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
               _buildTrendTooltipRow(
                 'Score',
                 (score / 10).toStringAsFixed(1),
-                const Color(0xFFFFB300),
+                const Color(0xFF9C8C3A),
               ),
               _buildTrendTooltipRow(
                 'Viewers',
                 viewers.toString(),
-                const Color(0xFF42A5F5),
+                const Color(0xFF32668C),
               ),
               _buildTrendTooltipRow(
                 'Popularity',
                 popularity.toString(),
-                const Color(0xFFAB47BC),
+                const Color(0xFF6B3473),
               ),
             ],
           ),
@@ -623,6 +727,17 @@ class _TrendLinePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (trends.length < 2) return;
 
+    final gridPaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.05)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    const int horizontalLines = 4;
+    for (int i = 1; i < horizontalLines; i++) {
+      final double y = size.height * (i / horizontalLines);
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), gridPaint);
+    }
+
     final scores = trends
         .map((n) => (n['averageScore'] as num?)?.toDouble() ?? 0.0)
         .toList();
@@ -637,39 +752,40 @@ class _TrendLinePainter extends CustomPainter {
       canvas,
       size,
       scores,
-      const Color(0xFFFFB300),
+      [const Color(0xFF9C8C3A), const Color(0xFF756A2B)],
       forcedMin: 0,
       forcedMax: 100.0,
     );
-    _drawLine(
-      canvas,
-      size,
-      viewers,
-      const Color(0xFF42A5F5),
-      useExpScale: true,
-    );
-    _drawLine(
-      canvas,
-      size,
-      popularity,
-      const Color(0xFFAB47BC),
-      useExpScale: true,
-    );
+    _drawLine(canvas, size, viewers, [
+      const Color(0xFF32668C),
+      const Color(0xFF234A66),
+    ], useExpScale: true);
+    _drawLine(canvas, size, popularity, [
+      const Color(0xFF6B3473),
+      const Color(0xFF4C2552),
+    ], useExpScale: true);
   }
 
   void _drawLine(
     Canvas canvas,
     Size size,
     List<double> values,
-    Color color, {
+    List<Color> gradientColors, {
     double? forcedMin,
     double? forcedMax,
     bool useExpScale = false,
   }) {
+    final topColor = gradientColors[0];
+    final bottomColor = gradientColors[1];
+
     final paint = Paint()
-      ..color = color
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [topColor, bottomColor],
+      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.5
+      ..strokeWidth = 2
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
 
@@ -682,7 +798,7 @@ class _TrendLinePainter extends CustomPainter {
           (v - minVal).clamp(0.0, maxVal - minVal) / (maxVal - minVal);
 
       if (useExpScale) {
-        return math.pow(normalized, 10).toDouble();
+        return math.pow(normalized, 20).toDouble();
       } else {
         return normalized;
       }
@@ -703,7 +819,7 @@ class _TrendLinePainter extends CustomPainter {
         path.lineTo(x, y);
       }
 
-      canvas.drawCircle(Offset(x, y), 3.5, Paint()..color = color);
+      canvas.drawCircle(Offset(x, y), 3.5, Paint()..color = gradientColors[0]);
       canvas.drawCircle(Offset(x, y), 2, Paint()..color = Colors.white);
     }
 
