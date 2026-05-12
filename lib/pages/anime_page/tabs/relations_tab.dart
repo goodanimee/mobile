@@ -8,6 +8,7 @@ import '../../../utils/utils.dart';
 import '../../../utils/backend_helper.dart';
 import '../../../services/auth_service.dart';
 import '../../../proto/medialist.pb.dart';
+import '../../../theme/theme.dart';
 
 /// Tab displaying related and recommended media
 class AnimeRelationsTab extends StatefulWidget {
@@ -74,6 +75,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
     super.dispose();
   }
 
+  /// Listener for recommendations scroll to trigger pagination
   void _recommendationsScrollListener() {
     if (!_hasNextRecommendationPage || _isFetchingMore) return;
 
@@ -84,6 +86,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
     }
   }
 
+  /// Loads more recommendations from the backend
   Future<void> _loadMoreRecommendations() async {
     if (_isFetchingMore || !_hasNextRecommendationPage) return;
 
@@ -134,12 +137,12 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
               Icon(
                 Icons.shuffle_rounded,
                 size: 48,
-                color: Colors.white.withValues(alpha: 0.1),
+                color: textHint.withValues(alpha: 0.33),
               ),
               const SizedBox(height: 16),
               const Text(
                 'No relations or recommendations found',
-                style: TextStyle(color: Colors.white54, fontSize: 15),
+                style: TextStyle(color: textMuted, fontSize: 15),
               ),
             ],
           ),
@@ -219,7 +222,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
                       trailing: Icon(
                         Icons.chevron_right_rounded,
                         size: 16,
-                        color: Colors.white.withValues(alpha: 0.25),
+                        color: textHint,
                       ),
                       onTap: canNavigate
                           ? () => AppNavigation.toAnime(
@@ -242,67 +245,57 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
             children: [
               SizedBox(
                 height: carouselHeight,
-                child: GridView.builder(
+                child: ListView.builder(
                   controller: _recommendationsScrollController,
-                  padding: EdgeInsets.zero,
                   scrollDirection: Axis.horizontal,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1 / childAspectRatio,
-                    crossAxisSpacing: spacing,
-                    mainAxisSpacing: spacing,
-                  ),
-                  itemCount: _recommendations.length,
+                  padding: EdgeInsets.zero,
+                  itemCount:
+                      ((_recommendations.length / 2).ceil()) +
+                      (_isFetchingMore ? 1 : 0),
                   itemBuilder: (context, index) {
-                    final edge =
-                        _recommendations[index] as Map<String, dynamic>;
-                    final node = edge['node'] as Map<String, dynamic>;
-                    final media =
-                        node['mediaRecommendation'] as Map<String, dynamic>;
-                    final title = media['title'];
+                    if (index == (_recommendations.length / 2).ceil()) {
+                      return const Padding(
+                        padding: EdgeInsets.only(left: 16, right: 16),
+                        child: Center(
+                          child: AppLoadingIndicator(topPadding: 0),
+                        ),
+                      );
+                    }
 
-                    final name =
-                        title['english'] ??
-                        title['romaji'] ??
-                        title['userPreferred'] ??
-                        'Unknown';
-                    final nativeName = title['native'] ?? '';
-                    final format = media['format'] ?? '';
-                    final rating = node['rating']?.toString() ?? '0';
-                    final imageUrl = media['coverImage']?['large'] ?? '';
-                    final colorHex = media['coverImage']?['color'];
-                    final color = ColorUtils.fromHex(
-                      colorHex,
-                      fallback: Colors.transparent,
-                    );
+                    final firstIdx = index * 2;
+                    final secondIdx = firstIdx + 1;
 
-                    return AppRelationCard(
-                      imageUrl: imageUrl,
-                      title: name,
-                      nativeTitle: nativeName,
-                      subtitle: '$format \u00B7 $rating',
-                      subtitleIcon: Icon(
-                        Icons.thumb_up_rounded,
-                        size: 12,
-                        color: Colors.white.withValues(alpha: 0.7),
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        right:
+                            index == ((_recommendations.length / 2).ceil()) - 1
+                            ? 0
+                            : spacing,
                       ),
-                      color: color != Colors.transparent ? color : null,
-                      trailing: Icon(
-                        Icons.chevron_right_rounded,
-                        size: 16,
-                        color: Colors.white.withValues(alpha: 0.25),
+                      child: SizedBox(
+                        width: cardWidth,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: rowHeight,
+                              child: _buildRecommendationCard(firstIdx),
+                            ),
+                            if (secondIdx < _recommendations.length) ...[
+                              SizedBox(height: spacing),
+                              SizedBox(
+                                height: rowHeight,
+                                child: _buildRecommendationCard(secondIdx),
+                              ),
+                            ] else ...[
+                              const Spacer(),
+                            ],
+                          ],
+                        ),
                       ),
-                      onTap: () =>
-                          AppNavigation.toAnime(context, media['id'] as int),
                     );
                   },
                 ),
               ),
-              if (_isFetchingMore)
-                const Padding(
-                  padding: EdgeInsets.only(left: 16),
-                  child: Center(child: AppLoadingIndicator(topPadding: 0)),
-                ),
             ],
           ),
         ],
@@ -320,6 +313,43 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: content,
+    );
+  }
+
+  /// Builds an individual recommendation card
+  Widget _buildRecommendationCard(int index) {
+    if (index >= _recommendations.length) return const SizedBox.shrink();
+
+    final edge = _recommendations[index] as Map<String, dynamic>;
+    final node = edge['node'] as Map<String, dynamic>;
+    final media = node['mediaRecommendation'] as Map<String, dynamic>;
+    final title = media['title'];
+
+    final name =
+        title['english'] ??
+        title['romaji'] ??
+        title['userPreferred'] ??
+        'Unknown';
+    final nativeName = title['native'] ?? '';
+    final format = media['format'] ?? '';
+    final rating = node['rating']?.toString() ?? '0';
+    final imageUrl = media['coverImage']?['large'] ?? '';
+    final colorHex = media['coverImage']?['color'];
+    final color = ColorUtils.fromHex(colorHex, fallback: Colors.transparent);
+
+    return AppRelationCard(
+      imageUrl: imageUrl,
+      title: name,
+      nativeTitle: nativeName,
+      subtitle: '$format \u00B7 $rating',
+      subtitleIcon: Icon(
+        Icons.thumb_up_rounded,
+        size: 12,
+        color: textSecondary,
+      ),
+      color: color != Colors.transparent ? color : null,
+      trailing: Icon(Icons.chevron_right_rounded, size: 16, color: textHint),
+      onTap: () => AppNavigation.toAnime(context, media['id'] as int),
     );
   }
 }

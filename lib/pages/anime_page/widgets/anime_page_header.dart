@@ -8,11 +8,8 @@ class AnimePageHeader extends StatelessWidget {
   /// The anime media data
   final Map<String, dynamic> media;
 
-  /// Callback when the back button is pressed
-  final VoidCallback onBack;
-
   /// Creates an anime page header
-  const AnimePageHeader({super.key, required this.media, required this.onBack});
+  const AnimePageHeader({super.key, required this.media});
 
   @override
   /// Builds the anime page header widget
@@ -51,18 +48,6 @@ class AnimePageHeader extends StatelessWidget {
                     bgColor,
                   ],
                   stops: const [0.0, 0.4, 0.8, 1.0],
-                ),
-              ),
-            ),
-            Positioned(
-              top: MediaQuery.of(context).padding.top + 8,
-              left: 16,
-              child: GestureDetector(
-                onTap: onBack,
-                child: const Icon(
-                  Icons.arrow_back_rounded,
-                  color: textPrimary,
-                  size: 28,
                 ),
               ),
             ),

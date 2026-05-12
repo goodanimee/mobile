@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'dart:ui';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/theme.dart';
 import '../components/floating_nav.dart';
@@ -40,6 +42,9 @@ class _AnimePageState extends State<AnimePage> {
   bool _showSpoilers = false;
   int _selectedTabIndex = 0;
   bool _didUpdate = false;
+
+  /// Whether the sticky header bar is visible
+  bool _showStickyBar = false;
   final ScrollController _scrollController = ScrollController();
 
   static const int _cacheCapacity = 10;
@@ -50,6 +55,23 @@ class _AnimePageState extends State<AnimePage> {
   void initState() {
     super.initState();
     _fetchAnimeDetails();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  /// Listener for scroll changes to toggle sticky header visibility
+  void _scrollListener() {
+    if (_scrollController.offset > 200 && !_showStickyBar) {
+      setState(() => _showStickyBar = true);
+    } else if (_scrollController.offset <= 200 && _showStickyBar) {
+      setState(() => _showStickyBar = false);
+    }
   }
 
   /// Fetches anime details from cache or network
@@ -327,16 +349,17 @@ class _AnimePageState extends State<AnimePage> {
                 controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
-                  SliverToBoxAdapter(
-                    child: AnimePageHeader(
-                      media: media,
-                      onBack: () => Navigator.of(context).pop(_didUpdate),
-                    ),
-                  ),
+                  SliverToBoxAdapter(child: AnimePageHeader(media: media)),
                   SliverToBoxAdapter(child: _buildActiveTab(media)),
                   const SliverToBoxAdapter(child: SizedBox(height: 60)),
                 ],
               ),
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: _buildStickyHeader(media),
             ),
             Positioned(
               bottom: 24,
@@ -380,6 +403,130 @@ class _AnimePageState extends State<AnimePage> {
           child: Icon(Icons.edit_rounded, color: textPrimary, size: 22),
         ),
       ),
+    );
+  }
+
+  /// Builds the sticky header bar
+  Widget _buildStickyHeader(Map<String, dynamic> media) {
+    final topPadding = MediaQuery.of(context).padding.top;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          height: topPadding + 56,
+          padding: EdgeInsets.only(top: topPadding),
+          decoration: BoxDecoration(
+            color: _showStickyBar ? bgColor : Colors.transparent,
+            border: Border(
+              bottom: BorderSide(
+                color: _showStickyBar ? cardBorderColor : Colors.transparent,
+                width: 1.0,
+              ),
+            ),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                left: 16,
+                top: 0,
+                bottom: 0,
+                child: Center(
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(_didUpdate),
+                    child: ClipOval(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(
+                          sigmaX: _showStickyBar ? 0 : 10,
+                          sigmaY: _showStickyBar ? 0 : 10,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: _showStickyBar
+                                ? Colors.transparent
+                                : shadowColor.withValues(alpha: 0.4),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.arrow_back_rounded,
+                            color: textPrimary,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                left: 72,
+                right: 16,
+                child: AnimatedOpacity(
+                  opacity: _showStickyBar ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 200),
+                  child: Center(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            media.titleText,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: textPrimary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 16,
+                top: 0,
+                bottom: 0,
+                child: Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      final url = media['siteUrl']?.toString();
+                      if (url != null && url.isNotEmpty) {
+                        Share.share(url);
+                      }
+                    },
+                    child: ClipOval(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(
+                          sigmaX: _showStickyBar ? 0 : 10,
+                          sigmaY: _showStickyBar ? 0 : 10,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: _showStickyBar
+                                ? Colors.transparent
+                                : shadowColor.withValues(alpha: 0.4),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.share_rounded,
+                            color: textPrimary,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
