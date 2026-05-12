@@ -61,7 +61,6 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
         _buildStatsSection(context),
         const SizedBox(height: 8),
         _buildTrendsSection(context),
-        const SizedBox(height: 48),
       ],
     );
 
