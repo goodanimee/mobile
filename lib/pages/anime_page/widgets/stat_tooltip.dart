@@ -16,7 +16,7 @@ class StatTooltip {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     final Size screenSize = MediaQuery.of(context).size;
-    
+
     final double targetCenterX = offset.dx + renderBox.size.width / 2;
     final double targetCenterY = offset.dy + renderBox.size.height / 2;
 
@@ -46,11 +46,20 @@ class StatTooltip {
             link: link,
             showWhenUnlinked: false,
             offset: Offset(dx, showAbove ? -10 : 10),
-            followerAnchor: showAbove ? Alignment.bottomCenter : Alignment.topCenter,
-            targetAnchor: showAbove ? Alignment.topCenter : Alignment.bottomCenter,
+            followerAnchor: showAbove
+                ? Alignment.bottomCenter
+                : Alignment.topCenter,
+            targetAnchor: showAbove
+                ? Alignment.topCenter
+                : Alignment.bottomCenter,
             child: Material(
               color: Colors.transparent,
-              child: _TooltipBubble(width: width, showAbove: showAbove, beakX: beakX, child: child),
+              child: _TooltipBubble(
+                width: width,
+                showAbove: showAbove,
+                beakX: beakX,
+                child: child,
+              ),
             ),
           ),
         ],
@@ -97,7 +106,10 @@ class _TooltipBubble extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF1E1E2C),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.1), width: 1),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.1),
+              width: 1,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.4),
@@ -127,7 +139,10 @@ class _BeakPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     const double beakWidth = 16.0;
-    final double left = (beakX - beakWidth / 2).clamp(16.0, size.width - 16.0 - beakWidth);
+    final double left = (beakX - beakWidth / 2).clamp(
+      16.0,
+      size.width - 16.0 - beakWidth,
+    );
     final double right = left + beakWidth;
     final double center = left + beakWidth / 2;
 
@@ -144,18 +159,34 @@ class _BeakPainter extends CustomPainter {
     path.close();
 
     canvas.drawPath(path, paint);
-    
+
     final borderPaint = Paint()
       ..color = Colors.white.withValues(alpha: 0.1)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
-      
+
     if (flip) {
-      canvas.drawLine(Offset(left, 0), Offset(center, size.height), borderPaint);
-      canvas.drawLine(Offset(center, size.height), Offset(right, 0), borderPaint);
+      canvas.drawLine(
+        Offset(left, 0),
+        Offset(center, size.height),
+        borderPaint,
+      );
+      canvas.drawLine(
+        Offset(center, size.height),
+        Offset(right, 0),
+        borderPaint,
+      );
     } else {
-      canvas.drawLine(Offset(left, size.height), Offset(center, 0), borderPaint);
-      canvas.drawLine(Offset(center, 0), Offset(right, size.height), borderPaint);
+      canvas.drawLine(
+        Offset(left, size.height),
+        Offset(center, 0),
+        borderPaint,
+      );
+      canvas.drawLine(
+        Offset(center, 0),
+        Offset(right, size.height),
+        borderPaint,
+      );
     }
   }
 

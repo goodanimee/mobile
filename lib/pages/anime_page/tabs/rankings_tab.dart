@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import '../../../theme/theme.dart';
 import '../../../components/app_section.dart';
 import '../widgets/ranking_pill.dart';
 import '../widgets/stat_tooltip.dart';
@@ -49,7 +48,9 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
           )
         else
           ...rankings.map((ranking) {
-            if (ranking is! Map<String, dynamic>) return const SizedBox.shrink();
+            if (ranking is! Map<String, dynamic>) {
+              return const SizedBox.shrink();
+            }
             return RankingPill(ranking: ranking);
           }),
         const SizedBox(height: 16),
@@ -86,7 +87,9 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
           ),
         ),
         const SizedBox(height: 40),
-        _buildScoreHistogram(widget.media['stats']?['scoreDistribution'] as List? ?? []),
+        _buildScoreHistogram(
+          widget.media['stats']?['scoreDistribution'] as List? ?? [],
+        ),
         const SizedBox(height: 20),
       ],
     );
@@ -109,7 +112,11 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
               ),
             ),
             const SizedBox(width: 8),
-            const Icon(Icons.info_outline_rounded, size: 12, color: Colors.white30),
+            const Icon(
+              Icons.info_outline_rounded,
+              size: 12,
+              color: Colors.white30,
+            ),
             const SizedBox(width: 4),
             const Text(
               'Tap for details',
@@ -122,24 +129,55 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
           builder: (localContext) => GestureDetector(
             onTap: () => _showStatusTooltip(localContext, distribution),
             behavior: HitTestBehavior.opaque,
-            child: Container(
-              height: 16,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: hoverBgColor,
-                border: Border.all(color: cardBorderColor, width: 1),
-              ),
-              child: Row(
-                children: distribution.map((item) {
-                  final status = item['status']?.toString() ?? '';
-                  final amount = item['amount'] as int? ?? 0;
-                  if (amount == 0) return const SizedBox.shrink();
-                  return Flexible(
-                    flex: amount,
-                    child: Container(color: _getStatusColor(status)),
-                  );
-                }).toList(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: SizedBox(
+                height: 8,
+                child: Row(
+                  children: (() {
+                    final validItems = distribution
+                        .where((item) => (item['amount'] as int? ?? 0) > 0)
+                        .toList();
+                    return validItems.asMap().entries.map((entry) {
+                      final isLast = entry.key == validItems.length - 1;
+                      final item = entry.value;
+                      final status = item['status']?.toString() ?? '';
+                      final amount = item['amount'] as int? ?? 0;
+
+                      final color = _getStatusColor(status);
+                      final hsl = HSLColor.fromColor(color);
+
+                      final leftColor = hsl
+                          .withLightness((hsl.lightness + 0.1).clamp(0.0, 1.0))
+                          .toColor();
+                      final rightColor = hsl
+                          .withLightness((hsl.lightness - 0.12).clamp(0.0, 1.0))
+                          .toColor();
+
+                      return Flexible(
+                        flex: amount,
+                        child: Container(
+                          margin: EdgeInsets.only(right: isLast ? 0 : 3),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [leftColor, rightColor],
+                            ),
+                            borderRadius: BorderRadius.circular(4),
+                            boxShadow: [
+                              BoxShadow(
+                                color: rightColor.withValues(alpha: 0.3),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList();
+                  })(),
+                ),
               ),
             ),
           ),
@@ -244,7 +282,11 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
               ),
             ),
             const SizedBox(width: 8),
-            const Icon(Icons.info_outline_rounded, size: 12, color: Colors.white30),
+            const Icon(
+              Icons.info_outline_rounded,
+              size: 12,
+              color: Colors.white30,
+            ),
             const SizedBox(width: 4),
             const Text(
               'Tap for details',
@@ -269,38 +311,48 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
                     Expanded(
                       child: CompositedTransformTarget(
                         link: _scoreLinks[index],
-                      child: Builder(
-                        builder: (localContext) => GestureDetector(
-                          onTap: () => _showScoreTooltip(localContext, index, score, amount),
-                          behavior: HitTestBehavior.opaque,
-                          child: FractionallySizedBox(
-                            heightFactor: heightFactor.clamp(0.02, 1.0),
-                            widthFactor: 0.8,
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: _getScoreColor(score),
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(4),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: _getScoreColor(score).withValues(alpha: 0.2),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 0),
+                        child: Builder(
+                          builder: (localContext) => GestureDetector(
+                            onTap: () => _showScoreTooltip(
+                              localContext,
+                              index,
+                              score,
+                              amount,
+                            ),
+                            behavior: HitTestBehavior.opaque,
+                            child: FractionallySizedBox(
+                              heightFactor: heightFactor.clamp(0.02, 1.0),
+                              widthFactor: 0.8,
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: _getScoreColor(score),
+                                  borderRadius: const BorderRadius.vertical(
+                                    top: Radius.circular(4),
                                   ),
-                                ],
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: _getScoreColor(
+                                        score,
+                                      ).withValues(alpha: 0.2),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 0),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       '${(score / 10).toInt()}',
-                      style: const TextStyle(color: Colors.white54, fontSize: 10),
+                      style: const TextStyle(
+                        color: Colors.white54,
+                        fontSize: 10,
+                      ),
                     ),
                   ],
                 ),
@@ -312,7 +364,12 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
     );
   }
 
-  void _showScoreTooltip(BuildContext context, int index, int score, int amount) {
+  void _showScoreTooltip(
+    BuildContext context,
+    int index,
+    int score,
+    int amount,
+  ) {
     StatTooltip.show(
       context: context,
       link: _scoreLinks[index],
@@ -426,9 +483,7 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
             SizedBox(
               height: height,
               width: width,
-              child: CustomPaint(
-                painter: _TrendLinePainter(trends: trends),
-              ),
+              child: CustomPaint(painter: _TrendLinePainter(trends: trends)),
             ),
             Positioned.fill(
               child: Row(
@@ -438,7 +493,11 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
                       link: _trendLinks[index],
                       child: Builder(
                         builder: (localContext) => GestureDetector(
-                          onTap: () => _showTrendTooltip(localContext, index, trends[index]),
+                          onTap: () => _showTrendTooltip(
+                            localContext,
+                            index,
+                            trends[index],
+                          ),
                           behavior: HitTestBehavior.opaque,
                           child: const SizedBox.expand(),
                         ),
@@ -485,9 +544,21 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
               2: IntrinsicColumnWidth(),
             },
             children: [
-              _buildTrendTooltipRow('Score', (score / 10).toStringAsFixed(1), const Color(0xFFFFB300)),
-              _buildTrendTooltipRow('Viewers', viewers.toString(), const Color(0xFF42A5F5)),
-              _buildTrendTooltipRow('Popularity', popularity.toString(), const Color(0xFFAB47BC)),
+              _buildTrendTooltipRow(
+                'Score',
+                (score / 10).toStringAsFixed(1),
+                const Color(0xFFFFB300),
+              ),
+              _buildTrendTooltipRow(
+                'Viewers',
+                viewers.toString(),
+                const Color(0xFF42A5F5),
+              ),
+              _buildTrendTooltipRow(
+                'Popularity',
+                popularity.toString(),
+                const Color(0xFFAB47BC),
+              ),
             ],
           ),
         ],
@@ -525,7 +596,20 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
 
   String _formatDate(int timestamp) {
     final date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    final months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 }
@@ -539,16 +623,49 @@ class _TrendLinePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (trends.length < 2) return;
 
-    final scores = trends.map((n) => (n['averageScore'] as num?)?.toDouble() ?? 0.0).toList();
-    final viewers = trends.map((n) => (n['inProgress'] as num?)?.toDouble() ?? 0.0).toList();
-    final popularity = trends.map((n) => (n['popularity'] as num?)?.toDouble() ?? 0.0).toList();
+    final scores = trends
+        .map((n) => (n['averageScore'] as num?)?.toDouble() ?? 0.0)
+        .toList();
+    final viewers = trends
+        .map((n) => (n['inProgress'] as num?)?.toDouble() ?? 0.0)
+        .toList();
+    final popularity = trends
+        .map((n) => (n['popularity'] as num?)?.toDouble() ?? 0.0)
+        .toList();
 
-    _drawLine(canvas, size, scores, const Color(0xFFFFB300), forcedMin: 0, forcedMax: 100.0);
-    _drawLine(canvas, size, viewers, const Color(0xFF42A5F5), useExpScale: true);
-    _drawLine(canvas, size, popularity, const Color(0xFFAB47BC), useExpScale: true);
+    _drawLine(
+      canvas,
+      size,
+      scores,
+      const Color(0xFFFFB300),
+      forcedMin: 0,
+      forcedMax: 100.0,
+    );
+    _drawLine(
+      canvas,
+      size,
+      viewers,
+      const Color(0xFF42A5F5),
+      useExpScale: true,
+    );
+    _drawLine(
+      canvas,
+      size,
+      popularity,
+      const Color(0xFFAB47BC),
+      useExpScale: true,
+    );
   }
 
-  void _drawLine(Canvas canvas, Size size, List<double> values, Color color, {double? forcedMin, double? forcedMax, bool useExpScale = false}) {
+  void _drawLine(
+    Canvas canvas,
+    Size size,
+    List<double> values,
+    Color color, {
+    double? forcedMin,
+    double? forcedMax,
+    bool useExpScale = false,
+  }) {
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
@@ -558,11 +675,12 @@ class _TrendLinePainter extends CustomPainter {
 
     final double maxVal = forcedMax ?? (values.reduce((a, b) => a > b ? a : b));
     final double minVal = forcedMin ?? 0.0;
-    
+
     double scale(double v) {
       if (maxVal <= minVal) return 0.5;
-      final double normalized = (v - minVal).clamp(0.0, maxVal - minVal) / (maxVal - minVal);
-      
+      final double normalized =
+          (v - minVal).clamp(0.0, maxVal - minVal) / (maxVal - minVal);
+
       if (useExpScale) {
         return math.pow(normalized, 10).toDouble();
       } else {
@@ -576,7 +694,8 @@ class _TrendLinePainter extends CustomPainter {
     for (int i = 0; i < values.length; i++) {
       final x = i * stepX;
       final double yFactor = scale(values[i]);
-      final double y = size.height - (yFactor * size.height * 0.8 + size.height * 0.1);
+      final double y =
+          size.height - (yFactor * size.height * 0.8 + size.height * 0.1);
 
       if (i == 0) {
         path.moveTo(x, y);

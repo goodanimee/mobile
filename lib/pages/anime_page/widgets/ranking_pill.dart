@@ -87,8 +87,8 @@ class RankingPill extends StatelessWidget {
     final List<Color> colors = isRated
         ? [const Color(0xFFFFE082), const Color(0xFFFFB300)]
         : (isPopular
-            ? [const Color(0xFFFF80AB), const Color(0xFFF50057)]
-            : [Colors.white70, Colors.white]);
+              ? [const Color(0xFFFF80AB), const Color(0xFFF50057)]
+              : [Colors.white70, Colors.white]);
 
     return SizedBox(
       width: 32,
@@ -100,11 +100,7 @@ class RankingPill extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ).createShader(bounds),
-          child: Icon(
-            iconData,
-            color: Colors.white,
-            size: 24,
-          ),
+          child: Icon(iconData, color: Colors.white, size: 24),
         ),
       ),
     );
