@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/theme.dart';
 
 /// A standardized section title widget for consistent headings
 class SectionTitle extends StatelessWidget {
@@ -29,7 +30,7 @@ class SectionTitle extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: textPrimary,
         ),
       ),
     );

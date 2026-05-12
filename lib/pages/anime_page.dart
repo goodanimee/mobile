@@ -211,7 +211,7 @@ class _AnimePageState extends State<AnimePage> {
         backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: bgColor,
-          iconTheme: const IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: textPrimary),
         ),
         body: AppErrorView(
           message: _error ?? 'Anime not found',
@@ -377,7 +377,7 @@ class _AnimePageState extends State<AnimePage> {
         onTap: _showItemOptions,
         behavior: HitTestBehavior.opaque,
         child: const Center(
-          child: Icon(Icons.edit_rounded, color: Colors.white, size: 22),
+          child: Icon(Icons.edit_rounded, color: textPrimary, size: 22),
         ),
       ),
     );

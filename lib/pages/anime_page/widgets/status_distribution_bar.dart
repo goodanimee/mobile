@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
 class StatusDistributionBar extends StatefulWidget {
@@ -25,17 +26,17 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
             Text(
               'Status Distribution',
               style: TextStyle(
-                color: Colors.white70,
+                color: textSecondary,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(width: 8),
-            Icon(Icons.info_outline_rounded, size: 12, color: Colors.white30),
+            Icon(Icons.info_outline_rounded, size: 12, color: textHint),
             SizedBox(width: 4),
             Text(
               'Tap for details',
-              style: TextStyle(color: Colors.white54, fontSize: 10),
+              style: TextStyle(color: textMuted, fontSize: 10),
             ),
           ],
         ),
@@ -136,7 +137,7 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
                     child: Text(
                       _formatStatus(status),
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: textSecondary,
                         fontSize: 13,
                       ),
                     ),
@@ -165,34 +166,34 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
   Color _getStatusColor(String status) {
     switch (status) {
       case 'CURRENT':
-        return const Color(0xFF417545);
+        return statusWatching;
       case 'COMPLETED':
-        return const Color(0xFF32668C);
+        return statusCompleted;
       case 'PAUSED':
-        return const Color(0xFF9E6B26);
+        return statusPaused;
       case 'DROPPED':
-        return const Color(0xFF963E3C);
+        return statusDropped;
       case 'PLANNING':
-        return const Color(0xFF6B3473);
+        return statusPlanning;
       default:
-        return const Color(0xFF4F4F4F);
+        return statusOther;
     }
   }
 
   List<Color> _getStatusGradient(String status) {
     switch (status) {
       case 'CURRENT':
-        return [const Color(0xFF417545), const Color(0xFF315434)];
+        return [statusWatching, statusWatchingDark];
       case 'COMPLETED':
-        return [const Color(0xFF32668C), const Color(0xFF234A66)];
+        return [statusCompleted, statusCompletedDark];
       case 'PAUSED':
-        return [const Color(0xFF9E6B26), const Color(0xFF75501C)];
+        return [statusPaused, statusPausedDark];
       case 'DROPPED':
-        return [const Color(0xFF963E3C), const Color(0xFF702E2D)];
+        return [statusDropped, statusDroppedDark];
       case 'PLANNING':
-        return [const Color(0xFF6B3473), const Color(0xFF4C2552)];
+        return [statusPlanning, statusPlanningDark];
       default:
-        return [const Color(0xFF4F4F4F), const Color(0xFF383838)];
+        return [statusOther, statusOtherDark];
     }
   }
 

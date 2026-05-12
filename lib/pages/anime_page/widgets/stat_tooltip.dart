@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme/theme.dart';
 
 /// A manager and widget for displaying premium stat tooltips with a pointed beak.
 class StatTooltip {
@@ -150,17 +151,17 @@ class _TooltipPainter extends CustomPainter {
     final path = Path.combine(PathOperation.union, pathRect, pathBeak);
 
     final shadowPaint = Paint()
-      ..color = Colors.black.withValues(alpha: 0.4)
+      ..color = shadowColor.withValues(alpha: 0.4)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
     canvas.drawPath(path.shift(const Offset(0, 10)), shadowPaint);
 
     final fillPaint = Paint()
-      ..color = const Color(0xFF1A1A1A)
+      ..color = hoverBgColor
       ..style = PaintingStyle.fill;
     canvas.drawPath(path, fillPaint);
 
     final borderPaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.1)
+      ..color = textHint.withValues(alpha: 0.1)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
     canvas.drawPath(path, borderPaint);

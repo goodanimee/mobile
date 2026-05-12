@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme/theme.dart';
 import '../../../components/app_section.dart';
 import '../widgets/ranking_pill.dart';
 import '../widgets/score_histogram.dart';
@@ -43,7 +44,7 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
               padding: EdgeInsets.all(40),
               child: Text(
                 'No rankings available',
-                style: TextStyle(color: Colors.white54, fontSize: 16),
+                style: TextStyle(color: textMuted, fontSize: 16),
               ),
             ),
           )

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../theme/theme.dart';
 import 'app_network_image.dart';
 import '../utils/utils.dart';
 
@@ -85,7 +86,7 @@ class AppMediaCard extends StatelessWidget {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
                     child: Container(
-                      color: Colors.black.withValues(alpha: 0.6),
+                      color: shadowColor.withValues(alpha: 0.6),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8.0,
                         vertical: 6.0,
@@ -99,7 +100,7 @@ class AppMediaCard extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: textPrimary,
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               height: 1.2,

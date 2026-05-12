@@ -11,18 +11,18 @@ Widget _buildRepeatBadge(int repeat) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
     decoration: const BoxDecoration(
-      color: Colors.black38,
+      color: surfaceBackground,
       borderRadius: BorderRadius.all(Radius.circular(6)),
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Icons.repeat_rounded, size: 14, color: Colors.white70),
+        const Icon(Icons.repeat_rounded, size: 14, color: textSecondary),
         const SizedBox(width: 4),
         Text(
           repeat.toString(),
           style: const TextStyle(
-            color: Colors.white,
+            color: textPrimary,
             fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
@@ -40,7 +40,7 @@ Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
   );
   const badgePadding = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   const labelStyle = TextStyle(
-    color: Colors.white,
+    color: textPrimary,
     fontSize: 12,
     fontWeight: FontWeight.w600,
   );
@@ -77,7 +77,7 @@ Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 14, color: Colors.white70),
+        Icon(icon, size: 14, color: textSecondary),
         const SizedBox(width: 4),
         Text('$progress / $episodes', style: labelStyle),
       ],
@@ -93,7 +93,7 @@ Widget _buildScoreBadge(num score) {
   return Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      const Icon(Icons.star_rounded, size: 14, color: Colors.amber),
+      const Icon(Icons.star_rounded, size: 14, color: scoreStar),
       const SizedBox(width: 4),
       Text(
         display,
@@ -116,7 +116,7 @@ Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
       width: 55,
       height: 55,
       decoration: const BoxDecoration(
-        color: Colors.black38,
+        color: surfaceBackground,
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Center(
@@ -125,14 +125,14 @@ Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
-                  color: Colors.white70,
+                  color: textSecondary,
                   strokeWidth: 2,
                 ),
               )
             : const Icon(
                 Icons.play_arrow_rounded,
                 size: 28,
-                color: Colors.white70,
+                color: textSecondary,
               ),
       ),
     ),
@@ -246,7 +246,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
     final color = imageColorHex != null
         ? Color(int.parse(imageColorHex.replaceAll('#', '0xFF')))
         : borderColor;
-    final labelColor = Color.lerp(const Color(0xFFEEEEEE), color, 0.35)!;
+    final labelColor = Color.lerp(neutralLight, color, 0.35)!;
 
     final format = media['format']?.toString().replaceAll('_', ' ') ?? '';
     final averageScore = media['averageScore'] as int?;
@@ -313,7 +313,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: textPrimary,
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 height: 1.2,
@@ -346,7 +346,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
                                     const Icon(
                                       Icons.star_rounded,
                                       size: 12,
-                                      color: Colors.amber,
+                                      color: scoreStar,
                                     ),
                                     const SizedBox(width: 3),
                                     Text(

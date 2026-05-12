@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
 class ScoreHistogram extends StatefulWidget {
@@ -34,17 +35,17 @@ class _ScoreHistogramState extends State<ScoreHistogram> {
             Text(
               'Score Distribution',
               style: TextStyle(
-                color: Colors.white70,
+                color: textSecondary,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(width: 8),
-            Icon(Icons.info_outline_rounded, size: 12, color: Colors.white30),
+            Icon(Icons.info_outline_rounded, size: 12, color: textHint),
             SizedBox(width: 4),
             Text(
               'Tap for details',
-              style: TextStyle(color: Colors.white54, fontSize: 10),
+              style: TextStyle(color: textMuted, fontSize: 10),
             ),
           ],
         ),
@@ -120,10 +121,7 @@ class _ScoreHistogramState extends State<ScoreHistogram> {
                     const SizedBox(height: 8),
                     Text(
                       '${(score / 10).toInt()}',
-                      style: const TextStyle(
-                        color: Colors.white54,
-                        fontSize: 10,
-                      ),
+                      style: const TextStyle(color: textMuted, fontSize: 10),
                     ),
                   ],
                 ),
@@ -159,7 +157,7 @@ class _ScoreHistogramState extends State<ScoreHistogram> {
           const SizedBox(height: 8),
           Text(
             '$amount users',
-            style: const TextStyle(color: Colors.white70, fontSize: 13),
+            style: const TextStyle(color: textSecondary, fontSize: 13),
           ),
         ],
       ),
@@ -167,13 +165,13 @@ class _ScoreHistogramState extends State<ScoreHistogram> {
   }
 
   List<Color> _getScoreGradient(int score) {
-    const topRed = Color(0xFF963E3C);
-    const topYellow = Color(0xFF9C8C3A);
-    const topGreen = Color(0xFF417545);
+    const topRed = scoreRed;
+    const topYellow = scoreYellow;
+    const topGreen = scoreGreen;
 
-    const bottomRed = Color(0xFF702E2D);
-    const bottomYellow = Color(0xFF756A2B);
-    const bottomGreen = Color(0xFF315434);
+    const bottomRed = scoreRedDark;
+    const bottomYellow = scoreYellowDark;
+    const bottomGreen = scoreGreenDark;
 
     Color topColor;
     Color bottomColor;

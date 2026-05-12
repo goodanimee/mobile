@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../theme/theme.dart';
 
 /// A badge indicating adult/18+ content with glassmorphism effect
 class AppAdultBadge extends StatelessWidget {
@@ -16,21 +17,21 @@ class AppAdultBadge extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
           decoration: BoxDecoration(
-            color: Colors.redAccent.withValues(alpha: 0.2),
-            border: Border.all(color: Colors.redAccent.withValues(alpha: 0.5)),
+            color: adultBadge.withValues(alpha: 0.2),
+            border: Border.all(color: adultBadge.withValues(alpha: 0.5)),
             borderRadius: BorderRadius.circular(4),
           ),
           child: const Text(
             'ADULT',
             style: TextStyle(
-              color: Colors.white,
+              color: textPrimary,
               fontSize: 10,
               fontWeight: FontWeight.w900,
               shadows: [
                 Shadow(
                   offset: Offset(0, 1),
                   blurRadius: 2.0,
-                  color: Colors.black87,
+                  color: surfaceBackgroundDeep,
                 ),
               ],
             ),
@@ -59,18 +60,14 @@ class AppFavouriteBadge extends StatelessWidget {
   @override
   /// Builds the favorite badge widget
   Widget build(BuildContext context) {
-    final icon = Icon(
-      Icons.favorite_rounded,
-      size: size,
-      color: Colors.pinkAccent,
-    );
+    final icon = Icon(Icons.favorite_rounded, size: size, color: heartIcon);
 
     if (!hasBackground) return icon;
 
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: const BoxDecoration(
-        color: Colors.black54,
+        color: surfaceBackgroundDark,
         shape: BoxShape.circle,
       ),
       child: icon,

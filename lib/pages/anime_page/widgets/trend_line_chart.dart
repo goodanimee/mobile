@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import '../../../theme/theme.dart';
 import '../../../components/app_section.dart';
 import 'stat_tooltip.dart';
 
@@ -36,11 +37,11 @@ class _TrendLineChartState extends State<TrendLineChart> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildLegendItem('Score', const Color(0xFF9C8C3A)),
+            _buildLegendItem('Score', scoreYellow),
             const SizedBox(width: 16),
-            _buildLegendItem('Viewers', const Color(0xFF32668C)),
+            _buildLegendItem('Viewers', scoreBlue),
             const SizedBox(width: 16),
-            _buildLegendItem('Popularity', const Color(0xFF6B3473)),
+            _buildLegendItem('Popularity', scorePurple),
           ],
         ),
       ],
@@ -56,10 +57,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 6),
-        Text(
-          label,
-          style: const TextStyle(color: Colors.white60, fontSize: 13),
-        ),
+        Text(label, style: const TextStyle(color: textTitle, fontSize: 13)),
       ],
     );
   }
@@ -136,11 +134,11 @@ class _TrendLineChartState extends State<TrendLineChart> {
               children: [
                 Text(
                   _formatDate(firstDate),
-                  style: const TextStyle(color: Colors.white54, fontSize: 11),
+                  style: const TextStyle(color: textMuted, fontSize: 11),
                 ),
                 Text(
                   _formatDate(lastDate),
-                  style: const TextStyle(color: Colors.white54, fontSize: 11),
+                  style: const TextStyle(color: textMuted, fontSize: 11),
                 ),
               ],
             ),
@@ -184,17 +182,13 @@ class _TrendLineChartState extends State<TrendLineChart> {
               _buildTrendTooltipRow(
                 'Score',
                 (score / 10).toStringAsFixed(1),
-                const Color(0xFF9C8C3A),
+                scoreYellow,
               ),
-              _buildTrendTooltipRow(
-                'Viewers',
-                viewers.toString(),
-                const Color(0xFF32668C),
-              ),
+              _buildTrendTooltipRow('Viewers', viewers.toString(), scoreBlue),
               _buildTrendTooltipRow(
                 'Popularity',
                 popularity.toString(),
-                const Color(0xFF6B3473),
+                scorePurple,
               ),
             ],
           ),
@@ -214,10 +208,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
             decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           ),
         ),
-        Text(
-          label,
-          style: const TextStyle(color: Colors.white70, fontSize: 14),
-        ),
+        Text(label, style: const TextStyle(color: textSecondary, fontSize: 14)),
         Text(
           value,
           textAlign: TextAlign.right,
@@ -285,17 +276,17 @@ class _TrendLinePainter extends CustomPainter {
       canvas,
       size,
       scores,
-      [const Color(0xFF9C8C3A), const Color(0xFF756A2B)],
+      [scoreYellow, scoreYellowDark],
       forcedMin: 0,
       forcedMax: 100.0,
     );
     _drawLine(canvas, size, viewers, [
-      const Color(0xFF32668C),
-      const Color(0xFF234A66),
+      scoreBlue,
+      scoreBlueDark,
     ], useExpScale: true);
     _drawLine(canvas, size, popularity, [
-      const Color(0xFF6B3473),
-      const Color(0xFF4C2552),
+      scorePurple,
+      scorePurpleDark,
     ], useExpScale: true);
   }
 

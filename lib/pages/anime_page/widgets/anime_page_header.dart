@@ -23,7 +23,7 @@ class AnimePageHeader extends StatelessWidget {
             Container(
               height: 280,
               width: double.infinity,
-              color: Colors.black,
+              color: shadowColor,
               child: bannerUrl.isNotEmpty
                   ? AppNetworkImage(
                       imageUrl: bannerUrl,
@@ -39,7 +39,7 @@ class AnimePageHeader extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withValues(alpha: 0.3),
+                    shadowColor.withValues(alpha: 0.3),
                     Colors.transparent,
                     bgColor.withValues(alpha: 0.8),
                     bgColor,
@@ -55,7 +55,7 @@ class AnimePageHeader extends StatelessWidget {
                 onTap: onBack,
                 child: const Icon(
                   Icons.arrow_back_rounded,
-                  color: Colors.white,
+                  color: textPrimary,
                   size: 28,
                 ),
               ),
@@ -86,7 +86,7 @@ class AnimePageHeader extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: textPrimary,
                         height: 1.2,
                       ),
                     ),
@@ -127,7 +127,7 @@ class AnimePageHeader extends StatelessWidget {
   Widget _buildInfoRow(IconData icon, String label) {
     return Row(
       children: [
-        Icon(icon, color: Colors.white70, size: 18),
+        Icon(icon, color: textSecondary, size: 18),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
@@ -135,7 +135,7 @@ class AnimePageHeader extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              color: Colors.white70,
+              color: textSecondary,
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
