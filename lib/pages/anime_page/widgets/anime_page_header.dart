@@ -3,13 +3,19 @@ import '../../../theme/theme.dart';
 import '../../../components/app_network_image.dart';
 import '../../../utils/utils.dart';
 
+/// Header component for the anime details page
 class AnimePageHeader extends StatelessWidget {
+  /// The anime media data
   final Map<String, dynamic> media;
+
+  /// Callback when the back button is pressed
   final VoidCallback onBack;
 
+  /// Creates an anime page header
   const AnimePageHeader({super.key, required this.media, required this.onBack});
 
   @override
+  /// Builds the anime page header widget
   Widget build(BuildContext context) {
     final title = media.titleText;
     final imageUrl = media.coverImage;
@@ -124,6 +130,7 @@ class AnimePageHeader extends StatelessWidget {
     );
   }
 
+  /// Builds a single information row with an icon and label
   Widget _buildInfoRow(IconData icon, String label) {
     return Row(
       children: [

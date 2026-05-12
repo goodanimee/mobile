@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 
+/// A pill-shaped widget displaying ranking information for an anime
 class RankingPill extends StatelessWidget {
+  /// The ranking data
   final Map<String, dynamic> ranking;
 
+  /// Creates a ranking pill
   const RankingPill({super.key, required this.ranking});
 
   @override
+  /// Builds the ranking pill widget
   Widget build(BuildContext context) {
     final type = ranking['type']?.toString().toUpperCase() ?? '';
     final isRated = type == 'RATED';
@@ -79,6 +83,7 @@ class RankingPill extends StatelessWidget {
     );
   }
 
+  /// Builds a gradient icon based on the ranking type
   Widget _buildPremiumIcon(bool isRated, bool isPopular) {
     final IconData iconData = isRated
         ? Icons.star_outline_rounded
@@ -104,6 +109,7 @@ class RankingPill extends StatelessWidget {
     );
   }
 
+  /// Capitalizes the first letter of a string
   String _capitalize(String s) {
     if (s.isEmpty) return s;
     return s[0].toUpperCase() + s.substring(1).toLowerCase();

@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
+/// A widget displaying a horizontal bar showing the status distribution of an anime
 class StatusDistributionBar extends StatefulWidget {
+  /// The distribution data
   final List distribution;
 
+  /// Creates a status distribution bar
   const StatusDistributionBar({super.key, required this.distribution});
 
   @override
   State<StatusDistributionBar> createState() => _StatusDistributionBarState();
 }
 
+/// State for StatusDistributionBar
 class _StatusDistributionBarState extends State<StatusDistributionBar> {
   final LayerLink _statusLink = LayerLink();
 
   @override
+  /// Builds the status distribution bar widget
   Widget build(BuildContext context) {
     if (widget.distribution.isEmpty) return const SizedBox.shrink();
 
@@ -93,6 +98,7 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
     );
   }
 
+  /// Shows a tooltip with detailed status distribution information
   void _showStatusTooltip(BuildContext context, List distribution) {
     StatTooltip.show(
       context: context,
@@ -163,6 +169,7 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
     );
   }
 
+  /// Returns the primary color for a status
   Color _getStatusColor(String status) {
     switch (status) {
       case 'CURRENT':
@@ -180,6 +187,7 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
     }
   }
 
+  /// Returns the gradient colors for a status
   List<Color> _getStatusGradient(String status) {
     switch (status) {
       case 'CURRENT':
@@ -197,6 +205,7 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
     }
   }
 
+  /// Formats the status string for display
   String _formatStatus(String status) {
     if (status == 'CURRENT') return 'WATCHING';
     return status;

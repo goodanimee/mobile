@@ -4,15 +4,19 @@ import '../../../theme/theme.dart';
 import '../../../components/app_section.dart';
 import 'stat_tooltip.dart';
 
+/// A widget displaying a line chart of various anime trends
 class TrendLineChart extends StatefulWidget {
+  /// The trend data
   final List trends;
 
+  /// Creates a trend line chart
   const TrendLineChart({super.key, required this.trends});
 
   @override
   State<TrendLineChart> createState() => _TrendLineChartState();
 }
 
+/// State for TrendLineChart
 class _TrendLineChartState extends State<TrendLineChart> {
   late final List<LayerLink> _trendLinks;
 
@@ -23,6 +27,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
   }
 
   @override
+  /// Builds the trend line chart widget
   Widget build(BuildContext context) {
     if (widget.trends.isEmpty) return const SizedBox.shrink();
 
@@ -48,6 +53,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
     );
   }
 
+  /// Builds a single legend item with a color dot and label
   Widget _buildLegendItem(String label, Color color) {
     return Row(
       children: [
@@ -62,6 +68,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
     );
   }
 
+  /// Builds the main chart area
   Widget _buildChart(BuildContext context, List trends) {
     if (trends.isEmpty) return const SizedBox.shrink();
 
@@ -148,6 +155,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
     );
   }
 
+  /// Shows a tooltip with detailed trend information at a specific point
   void _showTrendTooltip(BuildContext context, int index, dynamic node) {
     final date = node['date'] as int? ?? 0;
     final score = (node['averageScore'] as num?)?.toDouble() ?? 0.0;
@@ -197,6 +205,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
     );
   }
 
+  /// Builds a row for the trend tooltip table
   TableRow _buildTrendTooltipRow(String label, String value, Color color) {
     return TableRow(
       children: [
@@ -222,6 +231,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
     );
   }
 
+  /// Formats a timestamp into a readable date string
   String _formatDate(int timestamp) {
     final date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
     final months = [
@@ -242,6 +252,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
   }
 }
 
+/// Painter for drawing the trend lines on the canvas
 class _TrendLinePainter extends CustomPainter {
   final List trends;
 
@@ -290,6 +301,7 @@ class _TrendLinePainter extends CustomPainter {
     ], useExpScale: true);
   }
 
+  /// Draws a single line for a set of values
   void _drawLine(
     Canvas canvas,
     Size size,

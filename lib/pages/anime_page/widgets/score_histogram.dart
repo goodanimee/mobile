@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
+/// A widget displaying a histogram of scores for an anime
 class ScoreHistogram extends StatefulWidget {
+  /// The score distribution data
   final List distribution;
 
+  /// Creates a score histogram
   const ScoreHistogram({super.key, required this.distribution});
 
   @override
   State<ScoreHistogram> createState() => _ScoreHistogramState();
 }
 
+/// State for ScoreHistogram
 class _ScoreHistogramState extends State<ScoreHistogram> {
   final List<LayerLink> _scoreLinks = List.generate(10, (_) => LayerLink());
 
   @override
+  /// Builds the score histogram widget
   Widget build(BuildContext context) {
     if (widget.distribution.isEmpty) return const SizedBox.shrink();
 
@@ -133,6 +138,7 @@ class _ScoreHistogramState extends State<ScoreHistogram> {
     );
   }
 
+  /// Shows a tooltip with detailed score information
   void _showScoreTooltip(
     BuildContext context,
     int index,
@@ -164,6 +170,7 @@ class _ScoreHistogramState extends State<ScoreHistogram> {
     );
   }
 
+  /// Calculates the gradient colors for a given score
   List<Color> _getScoreGradient(int score) {
     const topRed = scoreRed;
     const topYellow = scoreYellow;

@@ -7,10 +7,15 @@ import '../widgets/status_distribution_bar.dart';
 import '../widgets/trend_line_chart.dart';
 import '../widgets/stat_tooltip.dart';
 
+/// A tab displaying ranking and statistical information for an anime
 class AnimeRankingsTab extends StatefulWidget {
+  /// The anime media data
   final Map<String, dynamic> media;
+
+  /// Whether this tab is nested within another scroll view
   final bool isNested;
 
+  /// Creates an anime rankings tab
   const AnimeRankingsTab({
     super.key,
     required this.media,
@@ -21,6 +26,7 @@ class AnimeRankingsTab extends StatefulWidget {
   State<AnimeRankingsTab> createState() => _AnimeRankingsTabState();
 }
 
+/// State for AnimeRankingsTab
 class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
   @override
   void dispose() {
@@ -29,6 +35,7 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
   }
 
   @override
+  /// Builds the anime rankings tab widget
   Widget build(BuildContext context) {
     final rawRankings = widget.media['rankings'] as List? ?? [];
     final rankings = _sortRankings(
@@ -71,6 +78,7 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
     );
   }
 
+  /// Sorts rankings based on type and time scope
   List<Map<String, dynamic>> _sortRankings(
     List<Map<String, dynamic>> rankings,
   ) {
@@ -101,6 +109,7 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
     return rankings;
   }
 
+  /// Builds the statistical charts section
   Widget _buildStatsSection(BuildContext context) {
     final stats = widget.media['stats'];
     return AppSection(
@@ -118,6 +127,7 @@ class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
     );
   }
 
+  /// Builds the trend line chart section
   Widget _buildTrendsSection(BuildContext context) {
     final trendsNodes = widget.media['trends']?['nodes'] as List? ?? [];
     if (trendsNodes.isEmpty) return const SizedBox.shrink();
