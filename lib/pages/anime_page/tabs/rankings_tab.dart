@@ -57,8 +57,10 @@ class AnimeRankingsTab extends StatelessWidget {
     final year = ranking['year'];
     final rank = ranking['rank'];
 
-    String titleText = isRated ? 'Highest Rated' : (isPopular ? 'Most Popular' : 'Ranked');
-    
+    String titleText = isRated
+        ? 'Highest Rated'
+        : (isPopular ? 'Most Popular' : 'Ranked');
+
     String suffix = '';
     if (allTime) {
       suffix = 'of All Time';
@@ -84,8 +86,12 @@ class AnimeRankingsTab extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Icon(
-                isRated ? Icons.star_rounded : (isPopular ? Icons.favorite_rounded : Icons.info_outline),
-                color: isRated ? Colors.orangeAccent : (isPopular ? Colors.pinkAccent : Colors.white70),
+                isRated
+                    ? Icons.star_rounded
+                    : (isPopular ? Icons.favorite_rounded : Icons.info_outline),
+                color: isRated
+                    ? Colors.orangeAccent
+                    : (isPopular ? Colors.pinkAccent : Colors.white70),
                 size: 22,
               ),
             ),

@@ -54,7 +54,9 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
       _recommendations.addAll(edges);
       _hasNextRecommendationPage = pageInfo?['hasNextPage'] ?? false;
     }
-    _recommendationsScrollController.addListener(_recommendationsScrollListener);
+    _recommendationsScrollController.addListener(
+      _recommendationsScrollListener,
+    );
   }
 
   @override
@@ -94,7 +96,10 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
         page: _recommendationPage + 1,
         perPage: 25,
       );
-      final response = await BackendHelper.fetchMediaRecommendations(req, token);
+      final response = await BackendHelper.fetchMediaRecommendations(
+        req,
+        token,
+      );
       final data = json.decode(response.rawJson);
       final recommendations = data['recommendations'];
       final edges = recommendations['edges'] as List? ?? [];
@@ -180,7 +185,8 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
                     final node = edge['node'] as Map<String, dynamic>;
                     final title = node['title'];
 
-                    final name = title['english'] ??
+                    final name =
+                        title['english'] ??
                         title['romaji'] ??
                         title['userPreferred'] ??
                         'Unknown';
@@ -217,9 +223,9 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
                       ),
                       onTap: canNavigate
                           ? () => AppNavigation.toAnime(
-                                context,
-                                node['id'] as int,
-                              )
+                              context,
+                              node['id'] as int,
+                            )
                           : null,
                     );
                   },
@@ -248,13 +254,15 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
                   ),
                   itemCount: _recommendations.length,
                   itemBuilder: (context, index) {
-                    final edge = _recommendations[index] as Map<String, dynamic>;
+                    final edge =
+                        _recommendations[index] as Map<String, dynamic>;
                     final node = edge['node'] as Map<String, dynamic>;
                     final media =
                         node['mediaRecommendation'] as Map<String, dynamic>;
                     final title = media['title'];
 
-                    final name = title['english'] ??
+                    final name =
+                        title['english'] ??
                         title['romaji'] ??
                         title['userPreferred'] ??
                         'Unknown';
@@ -284,10 +292,8 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
                         size: 16,
                         color: Colors.white.withValues(alpha: 0.25),
                       ),
-                      onTap: () => AppNavigation.toAnime(
-                        context,
-                        media['id'] as int,
-                      ),
+                      onTap: () =>
+                          AppNavigation.toAnime(context, media['id'] as int),
                     );
                   },
                 ),

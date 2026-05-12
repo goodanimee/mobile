@@ -108,11 +108,7 @@ class AppEntityCard extends StatelessWidget {
               ],
             ),
             if (trailing != null)
-              Positioned(
-                bottom: 8,
-                right: 8,
-                child: trailing!,
-              ),
+              Positioned(bottom: 8, right: 8, child: trailing!),
           ],
         ),
       ),

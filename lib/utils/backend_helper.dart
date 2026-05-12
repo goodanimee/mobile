@@ -149,9 +149,10 @@ class BackendHelper {
 
     _lib = ffi.DynamicLibrary.open('libbackend.so');
 
-    _fetchMediaList = _lib.lookupFunction<_FetchMediaListC, _FetchMediaListDart>(
-      'FetchMediaList',
-    );
+    _fetchMediaList = _lib
+        .lookupFunction<_FetchMediaListC, _FetchMediaListDart>(
+          'FetchMediaList',
+        );
     _fetchViewer = _lib.lookupFunction<_FetchViewerC, _FetchViewerDart>(
       'FetchViewer',
     );
@@ -167,9 +168,10 @@ class BackendHelper {
         .lookupFunction<_FetchMediaCharactersC, _FetchMediaCharactersDart>(
           'FetchMediaCharacters',
         );
-    _fetchMediaStaff = _lib.lookupFunction<_FetchMediaStaffC, _FetchMediaStaffDart>(
-      'FetchMediaStaff',
-    );
+    _fetchMediaStaff = _lib
+        .lookupFunction<_FetchMediaStaffC, _FetchMediaStaffDart>(
+          'FetchMediaStaff',
+        );
     _fetchMediaRecommendations = _lib
         .lookupFunction<
           _FetchMediaRecommendationsC,

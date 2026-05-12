@@ -53,7 +53,10 @@ class AppRelationCard extends StatelessWidget {
                   colors: [
                     color!.withValues(alpha: 0.15),
                     Color.lerp(
-                        color!.withValues(alpha: 0.15), hoverBgColor, 0.75)!,
+                      color!.withValues(alpha: 0.15),
+                      hoverBgColor,
+                      0.75,
+                    )!,
                   ],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
@@ -86,7 +89,10 @@ class AppRelationCard extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 8,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -151,11 +157,7 @@ class AppRelationCard extends StatelessWidget {
               ],
             ),
             if (trailing != null)
-              Positioned(
-                bottom: 8,
-                right: 8,
-                child: trailing!,
-              ),
+              Positioned(bottom: 8, right: 8, child: trailing!),
           ],
         ),
       ),
