@@ -62,21 +62,14 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
     super.didChangeDependencies();
     final newController = PrimaryScrollController.maybeOf(context);
     if (_activeScrollController != newController) {
-      _activeScrollController?.removeListener(_scrollListener);
       _activeScrollController = newController;
-      _activeScrollController?.addListener(_scrollListener);
     }
   }
 
   @override
   void dispose() {
-    _activeScrollController?.removeListener(_scrollListener);
     _recommendationsScrollController.dispose();
     super.dispose();
-  }
-
-  void _scrollListener() {
-    // This listener is for the parent vertical scroll, not used for recommendations pagination anymore
   }
 
   void _recommendationsScrollListener() {

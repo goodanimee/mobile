@@ -16,6 +16,7 @@ import 'anime_page/tabs/characters_tab.dart';
 import 'anime_page/tabs/staff_tab.dart';
 import 'anime_page/tabs/media_tab.dart';
 import 'anime_page/tabs/relations_tab.dart';
+import 'anime_page/tabs/rankings_tab.dart';
 import 'anime_page/tabs/placeholder_tab.dart';
 import '../components/anime_options_sheet.dart';
 
@@ -207,7 +208,7 @@ class _AnimePageState extends State<AnimePage> {
           isNested: true,
         );
       case 5:
-        return const PlaceholderTab(title: 'Rankings Section');
+        return AnimeRankingsTab(media: media, isNested: true);
       case 6:
         return const PlaceholderTab(title: 'Reviews Section');
       default:
