@@ -1,40 +1,40 @@
 query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
-    MediaListCollection(userId: $userId, type: $type, sort: $sort) {
-        hasNextChunk
-        lists {
-            name
-            status
-            entries {
-                media {
-                    id
-                    title {
-                        userPreferred
-                    }
-                    averageScore
-                    coverImage {
-                        large
-                        color
-                    }
-                    episodes
-                    format
-                    isAdult
-                    isFavourite
-                }
-                progress
-                repeat
-                status
-                score
-                startedAt {
-                    day
-                    month
-                    year
-                }
-                completedAt {
-                    day
-                    month
-                    year
-                }
-            }
+  MediaListCollection(userId: $userId, type: $type, sort: $sort) {
+    hasNextChunk
+    lists {
+      name
+      status
+      entries {
+        media {
+          id
+          title {
+            userPreferred
+          }
+          averageScore
+          coverImage {
+            large
+            color
+          }
+          episodes
+          format
+          isAdult
+          isFavourite
         }
+        progress
+        repeat
+        status
+        score
+        startedAt {
+          day
+          month
+          year
+        }
+        completedAt {
+          day
+          month
+          year
+        }
+      }
     }
+  }
 }
