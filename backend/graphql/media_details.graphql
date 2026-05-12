@@ -1,311 +1,299 @@
-query Media($mediaId: Int, $notYetAired: Boolean) {
+query Media($mediaId: Int) {
     Media(id: $mediaId) {
-        id
-        bannerImage
-        nextAiringEpisode {
-            airingAt
-            episode
-            timeUntilAiring
-        }
-    mediaListEntry {
-      mediaId
-      progress
-      repeat
-      score(format: POINT_10_DECIMAL)
-      startedAt { ...fuzzyDateFields }
-      completedAt { ...fuzzyDateFields }
-      status
-      private
-    }
-    nextAiringEpisode {
-      airingAt
-      episode
-      timeUntilAiring
-      mediaId
-    }
-    rankings {
-      allTime
-      id
-      rank
-      season
-      type
-      year
-    }
-    externalLinks {
-      color
-      icon
-      id
-      isDisabled
-      language
-      notes
-      site
-      siteId
-      type
-      url
-    }
-    studios {
-      edges {
-        isMain
-        node {
-          id
-          name
-          siteUrl
-        }
-        mediaListEntry {
-            mediaId
-            progress
-            repeat
-            score(format: POINT_10_DECIMAL)
-            startedAt {
-                ...fuzzyDateFields
-            }
-            completedAt {
-                ...fuzzyDateFields
-            }
-            status
-            private
-        }
-        nextAiringEpisode {
-            airingAt
-            episode
-            timeUntilAiring
-            mediaId
-        }
-        rankings {
-            allTime
-            id
-            rank
-            season
-            type
-            year
-        }
-        externalLinks {
-            color
-            icon
-            id
-            isDisabled
-            language
-            notes
-            site
-            siteId
-            type
-            url
-        }
+        ...MediaFields
         studios {
-            edges {
-                isMain
-                node {
-                    id
-                    name
-                    siteUrl
-                }
-            }
-            pageInfo {
-                ...pageInfoFields
-            }
+            ...StudioFields
         }
-        streamingEpisodes {
-            site
-            thumbnail
-            title
-            url
+        title {
+            ...MediaTitleFields
         }
         tags {
-            category
-            id
-            isAdult
-            isGeneralSpoiler
-            isMediaSpoiler
-            name
-            rank
+            ...MediaTagFields
         }
-        stats {
-            scoreDistribution {
-                amount
-                score
-            }
-            statusDistribution {
-                status
-                amount
-            }
+        externalLinks {
+            ...ExternalLinkFields
         }
-        trends {
-            pageInfo {
-                ...pageInfoFields
-            }
-            edges {
-                node {
-                    averageScore
-                    episode
-                    inProgress
-                    popularity
-                    releasing
-                    trending
-                    date
-                }
-            }
+        mediaListEntry {
+            ...MediaListEntryFields
         }
-        characters(page: 1, perPage: 25, sort: [RELEVANCE]) {
-            pageInfo {
-                ...pageInfoFields
-            }
-            edges {
-                id
-                role
-                voiceActors(sort: [RELEVANCE]) {
-                    image {
-                        large
-                        medium
-                    }
-                    name {
-                        full
-                    }
-                    languageV2
-                }
-                node {
-                    name {
-                        full
-                        native
-                        alternative
-                        alternativeSpoiler
-                        userPreferred
-                    }
-                    image {
-                        large
-                        medium
-                    }
-                }
-            }
+        trailer {
+            ...MediaTrailerFields
         }
-        staff(page: 1, perPage: 25, sort: [RELEVANCE]) {
-            pageInfo {
-                ...pageInfoFields
-            }
-            edges {
-                role
-                node {
-                    name {
-                        userPreferred
-                        full
-                        native
-                    }
-                    image {
-                        large
-                        medium
-                    }
-                }
-            }
+        streamingEpisodes {
+            ...MediaStreamingEpisodeFields
+        }
+        staff(sort: [RELEVANCE], perPage: 25, page: 1) {
+            ...StaffFields
+        }
+        nextAiringEpisode {
+            ...NextAiringEpisodeFields
+        }
+        characters(sort: [RELEVANCE], page: 1, perPage: 25) {
+            ...CharacterFields
         }
         relations {
-            edges {
-                relationType
-                node {
-                    id
-                    title {
-                        ...titleFields
-                    }
-                    coverImage {
-                        ...coverImageFields
-                    }
-                    format
-                }
-            }
+            ...RelationsFields
         }
-        recommendations(page: 1, perPage: 25, sort: [RATING_DESC]) {
-            pageInfo {
-                ...pageInfoFields
-            }
-            edges {
-                node {
-                    rating
-                    mediaRecommendation {
-                        id
-                        title {
-                            ...titleFields
-                        }
-                        coverImage {
-                            ...coverImageFields
-                        }
-                        format
-                    }
-                }
-            }
+        recommendations(sort: [RATING_DESC], page: 1, perPage: 25) {
+            ...RecommendationFields
+        }
+        coverImage {
+            ...CoverImageFields
+        }
+        rankings {
+            ...RankingFields
+        }
+        stats {
+            ...MediaStatsFields
+        }
+        trends(sort: [DATE_DESC], page: 1, perPage: 14) {
+            ...MediaTrendsFields
         }
     }
 }
 
-fragment titleFields on MediaTitle {
+fragment MediaFields on Media {
+    id
+    type
+    bannerImage
+    format
+    episodes
+    status
+    seasonYear
+    season
+    averageScore
+    meanScore
+    favourites
+    popularity
+    description(asHtml: true)
+    genres
+    isFavourite
+    isAdult
+    siteUrl
+    synonyms
+}
+
+fragment StudioFields on StudioConnection {
+    edges {
+        isMain
+        node {
+            id
+            name
+        }
+    }
+}
+
+fragment MediaTitleFields on MediaTitle {
     english
     native
     romaji
     userPreferred
 }
 
-fragment coverImageFields on MediaCoverImage {
-    color
-    extraLarge
-    large
-    medium
+fragment MediaTagFields on MediaTag {
+    id
+    isGeneralSpoiler
+    isMediaSpoiler
+    name
+    rank
 }
 
-fragment pageInfoFields on PageInfo {
-    hasNextPage
-    currentPage
+fragment ExternalLinkFields on MediaExternalLink {
+    language
+    site
+    url
 }
 
-fragment fuzzyDateFields on FuzzyDate {
+fragment FuzzyDateFields on FuzzyDate {
     day
     month
     year
 }
 
-fragment mediaFullFields on Media {
-    id
-    idMal
-    title {
-        ...titleFields
+fragment MediaListEntryFields on MediaList {
+    completedAt {
+        ...FuzzyDateFields
     }
-    coverImage {
-        ...coverImageFields
+    progress
+    repeat
+    score(format: POINT_10_DECIMAL)
+    startedAt {
+        ...FuzzyDateFields
     }
-    bannerImage
-    description(asHtml: true)
-    format
     status
-    episodes
-    chapters
-    volumes
-    duration
-    season
-    seasonYear
-    averageScore
-    meanScore
-    popularity
-    favourites
-    source
-    hashtag
-    countryOfOrigin
-    isAdult
-    isFavourite
-    isFavouriteBlocked
-    isLicensed
-    isLocked
-    isRecommendationBlocked
-    isReviewBlocked
-    startDate {
-        ...fuzzyDateFields
+}
+
+fragment MediaTrailerFields on MediaTrailer {
+    id
+    site
+    thumbnail
+}
+
+fragment MediaStreamingEpisodeFields on MediaStreamingEpisode {
+    thumbnail
+    title
+    url
+}
+
+fragment StaffFields on StaffConnection {
+    edges {
+        role
+        node {
+            image {
+                ...StaffImageFields
+            }
+            name {
+                ...StaffNameFields
+            }
+        }
     }
-    endDate {
-        ...fuzzyDateFields
+    pageInfo {
+        ...PageInfoFields
     }
-    trailer {
+}
+
+fragment CharacterFields on CharacterConnection {
+    edges {
         id
-        site
-        thumbnail
+        role
+        name
+        voiceActors(sort: [RELEVANCE]) {
+            image {
+                ...StaffImageFields
+            }
+            name {
+                ...StaffNameFields
+            }
+            languageV2
+        }
+        node {
+            name {
+                ...CharNameFields
+            }
+            gender
+            age
+            dateOfBirth {
+                ...FuzzyDateFields
+            }
+            description(asHtml: true)
+            image {
+                ...CharImageFields
+            }
+        }
     }
-    siteUrl
-    trending
+    pageInfo {
+        ...PageInfoFields
+    }
+}
+
+fragment RelationsFields on MediaConnection {
+    edges {
+        relationType
+        node {
+            ...MediaMinFields
+        }
+    }
+}
+
+fragment RecommendationFields on RecommendationConnection {
+    pageInfo {
+        ...PageInfoFields
+    }
+    edges {
+        node {
+            rating
+            mediaRecommendation {
+                ...MediaMinFields
+            }
+        }
+    }
+}
+
+fragment RankingFields on MediaRank {
+    allTime
+    rank
+    season
     type
-    genres
-    synonyms
+    year
+}
+
+fragment MediaStatsFields on MediaStats {
+    scoreDistribution {
+        amount
+        score
+    }
+    statusDistribution {
+        amount
+        status
+    }
+}
+
+fragment MediaTrendsFields on MediaTrendConnection {
+    nodes {
+        averageScore
+        date
+        inProgress
+        popularity
+    }
+}
+
+fragment MediaMinFields on Media {
+    coverImage {
+        ...CoverImageFields
+    }
+    title {
+        ...TitleFields
+    }
+    format
+    id
+    siteUrl
+}
+
+fragment PageInfoFields on PageInfo {
+    hasNextPage
+    currentPage
+}
+
+fragment StaffImageFields on StaffImage {
+    large
+    medium
+}
+
+fragment StaffNameFields on StaffName {
+    full
+    native
+    userPreferred
+}
+
+fragment CharImageFields on CharacterImage {
+    large
+    medium
+}
+
+fragment CharNameFields on CharacterName {
+    full
+    native
+    userPreferred
+    alternative
+    alternativeSpoiler
+}
+
+fragment NextAiringEpisodeFields on AiringSchedule {
+    airingAt
+    episode
+    timeUntilAiring
+}
+
+fragment CoverImageFields on MediaCoverImage {
+    large
+    color
+    extraLarge
+    medium
+}
+
+fragment TitleFields on MediaTitle {
+    english
+    native
+    romaji
+    userPreferred
 }
