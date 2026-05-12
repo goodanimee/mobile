@@ -191,7 +191,7 @@ class AnimeMediaTab extends StatelessWidget {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(20, 24, 20, 48),
+      padding: const EdgeInsets.fromLTRB(20, 24, 20, 64),
       child: content,
     );
   }
