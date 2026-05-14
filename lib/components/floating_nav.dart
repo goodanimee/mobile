@@ -12,11 +12,15 @@ class QuickNavSection {
   /// Callback when the section is tapped
   final VoidCallback onTap;
 
+  /// Whether the section is currently active
+  final bool isSelected;
+
   /// Creates a quick nav section
   const QuickNavSection({
     required this.icon,
     required this.label,
     required this.onTap,
+    this.isSelected = false,
   });
 }
 
@@ -289,7 +293,9 @@ class _FloatingNavState extends State<FloatingNav>
                       child: Icon(
                         section.icon,
                         size: 20,
-                        color: Colors.white.withValues(alpha: 0.8),
+                        color: section.isSelected
+                            ? borderColor
+                            : Colors.white.withValues(alpha: 0.8),
                       ),
                     ),
                   ),

@@ -555,3 +555,34 @@ final $typed_data.Uint8List fetchMediaRecommendationsResponseDescriptor =
     $convert.base64Decode(
         'CiFGZXRjaE1lZGlhUmVjb21tZW5kYXRpb25zUmVzcG9uc2USGQoIcmF3X2pzb24YASABKAlSB3'
         'Jhd0pzb24SFAoFZXJyb3IYAiABKAlSBWVycm9y');
+
+@$core.Deprecated('Use toggleFavouriteAnimeRequestDescriptor instead')
+const ToggleFavouriteAnimeRequest$json = {
+  '1': 'ToggleFavouriteAnimeRequest',
+  '2': [
+    {'1': 'animeId', '3': 1, '4': 1, '5': 5, '10': 'animeId'},
+  ],
+};
+
+/// Descriptor for `ToggleFavouriteAnimeRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFavouriteAnimeRequestDescriptor =
+    $convert.base64Decode(
+        'ChtUb2dnbGVGYXZvdXJpdGVBbmltZVJlcXVlc3QSGAoHYW5pbWVJZBgBIAEoBVIHYW5pbWVJZA'
+        '==');
+
+@$core.Deprecated('Use toggleFavouriteAnimeResponseDescriptor instead')
+const ToggleFavouriteAnimeResponse$json = {
+  '1': 'ToggleFavouriteAnimeResponse',
+  '2': [
+    {'1': 'animeId', '3': 1, '4': 1, '5': 5, '10': 'animeId'},
+    {'1': 'isFavourite', '3': 2, '4': 1, '5': 8, '10': 'isFavourite'},
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `ToggleFavouriteAnimeResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFavouriteAnimeResponseDescriptor =
+    $convert.base64Decode(
+        'ChxUb2dnbGVGYXZvdXJpdGVBbmltZVJlc3BvbnNlEhgKB2FuaW1lSWQYASABKAVSB2FuaW1lSW'
+        'QSIAoLaXNGYXZvdXJpdGUYAiABKAhSC2lzRmF2b3VyaXRlEhQKBWVycm9yGAMgASgJUgVlcnJv'
+        'cg==');

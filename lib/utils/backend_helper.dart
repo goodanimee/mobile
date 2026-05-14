@@ -124,6 +124,24 @@ typedef _FetchMediaRecommendationsDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for toggling favourite anime
+typedef _ToggleFavouriteAnimeC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for toggling favourite anime
+typedef _ToggleFavouriteAnimeDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// Native function signature for freeing buffers
 typedef _FreeBufferC = ffi.Void Function(ffi.Pointer<ffi.Uint8> ptr);
 
@@ -141,6 +159,7 @@ class BackendHelper {
   static late _FetchMediaStaffDart _fetchMediaStaff;
   static late _FetchMediaRecommendationsDart _fetchMediaRecommendations;
   static late _FreeBufferDart _freeBuffer;
+  static late _ToggleFavouriteAnimeDart _toggleFavouriteAnime;
   static bool _initialized = false;
 
   /// Loads the native backend shared library and resolves symbols
@@ -180,6 +199,10 @@ class BackendHelper {
     _freeBuffer = _lib.lookupFunction<_FreeBufferC, _FreeBufferDart>(
       'FreeBuffer',
     );
+    _toggleFavouriteAnime = _lib
+        .lookupFunction<_ToggleFavouriteAnimeC, _ToggleFavouriteAnimeDart>(
+          'ToggleFavouriteAnime',
+        );
     _initialized = true;
   }
 
@@ -379,6 +402,37 @@ class BackendHelper {
           ),
         );
         final response = FetchMediaRecommendationsResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
+  static Future<ToggleFavouriteAnimeResponse> toggleFavouriteAnime(
+    ToggleFavouriteAnimeRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = _call(
+          (outLenPtr) => _toggleFavouriteAnime(
+            reqPtr,
+            reqBytes.length,
+            tokenPtr,
+            outLenPtr,
+          ),
+        );
+        final response = ToggleFavouriteAnimeResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
         return response;
       } finally {

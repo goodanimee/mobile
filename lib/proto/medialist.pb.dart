@@ -2151,6 +2151,144 @@ class FetchMediaRecommendationsResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(2);
 }
 
+class ToggleFavouriteAnimeRequest extends $pb.GeneratedMessage {
+  factory ToggleFavouriteAnimeRequest({
+    $core.int? animeId,
+  }) {
+    final result = create();
+    if (animeId != null) result.animeId = animeId;
+    return result;
+  }
+
+  ToggleFavouriteAnimeRequest._();
+
+  factory ToggleFavouriteAnimeRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ToggleFavouriteAnimeRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ToggleFavouriteAnimeRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'animeId', protoName: 'animeId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteAnimeRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteAnimeRequest copyWith(
+          void Function(ToggleFavouriteAnimeRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as ToggleFavouriteAnimeRequest))
+          as ToggleFavouriteAnimeRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteAnimeRequest create() =>
+      ToggleFavouriteAnimeRequest._();
+  @$core.override
+  ToggleFavouriteAnimeRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteAnimeRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteAnimeRequest>(create);
+  static ToggleFavouriteAnimeRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get animeId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set animeId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasAnimeId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAnimeId() => $_clearField(1);
+}
+
+class ToggleFavouriteAnimeResponse extends $pb.GeneratedMessage {
+  factory ToggleFavouriteAnimeResponse({
+    $core.int? animeId,
+    $core.bool? isFavourite,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (animeId != null) result.animeId = animeId;
+    if (isFavourite != null) result.isFavourite = isFavourite;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  ToggleFavouriteAnimeResponse._();
+
+  factory ToggleFavouriteAnimeResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ToggleFavouriteAnimeResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ToggleFavouriteAnimeResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'animeId', protoName: 'animeId')
+    ..aOB(2, _omitFieldNames ? '' : 'isFavourite', protoName: 'isFavourite')
+    ..aOS(3, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteAnimeResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteAnimeResponse copyWith(
+          void Function(ToggleFavouriteAnimeResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as ToggleFavouriteAnimeResponse))
+          as ToggleFavouriteAnimeResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteAnimeResponse create() =>
+      ToggleFavouriteAnimeResponse._();
+  @$core.override
+  ToggleFavouriteAnimeResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteAnimeResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteAnimeResponse>(create);
+  static ToggleFavouriteAnimeResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get animeId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set animeId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasAnimeId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAnimeId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get isFavourite => $_getBF(1);
+  @$pb.TagNumber(2)
+  set isFavourite($core.bool value) => $_setBool(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasIsFavourite() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearIsFavourite() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get error => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set error($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasError() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearError() => $_clearField(3);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

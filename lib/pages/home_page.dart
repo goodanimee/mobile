@@ -80,6 +80,7 @@ class _HomePageState extends State<HomePage> {
   /// Updates the quick navigation sections based on visible list categories
   void _handleSectionsChanged(
     List<String> statuses,
+    String activeStatus,
     void Function(String) scrollTo,
   ) {
     if (!mounted) return;
@@ -90,6 +91,7 @@ class _HomePageState extends State<HomePage> {
               icon: _statusIcon(s),
               label: s,
               onTap: () => scrollTo(s),
+              isSelected: s == activeStatus,
             ),
           )
           .toList();

@@ -72,6 +72,14 @@ type AniListResponse struct {
 				Year  *int32 `json:"year"`
 			} `json:"completedAt"`
 		} `json:"SaveMediaListEntry"`
+		ToggleFavourite struct {
+			Anime struct {
+				Nodes []struct {
+					ID	int32 `json:"id"`
+					IsFavourite bool  `json:"isFavourite"`
+				} `json:"nodes"`
+			} `json:"anime"`
+		} `json:"ToggleFavourite"`
 	} `json:"data"`
 	Errors []struct {
 		Message string `json:"message"`

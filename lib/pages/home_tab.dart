@@ -23,7 +23,11 @@ class HomeTab extends StatefulWidget {
   final VoidCallback onSignOut;
 
   /// Callback when the list of categories changes
-  final void Function(List<String> statuses, void Function(String) scrollTo)?
+  final void Function(
+    List<String> statuses,
+    String activeStatus,
+    void Function(String) scrollTo,
+  )?
   onSectionsChanged;
 
   /// Creates a home tab
@@ -74,6 +78,7 @@ class _HomeTabState extends State<HomeTab> {
   void _notifySections() {
     widget.onSectionsChanged?.call(
       _lists.map((l) => l['name'] as String).toList(),
+      _activeStatus ?? '',
       _selectSection,
     );
   }
@@ -82,6 +87,7 @@ class _HomeTabState extends State<HomeTab> {
   void _selectSection(String name) {
     if (_activeStatus == name) return;
     setState(() => _activeStatus = name);
+    _notifySections();
     if (_scrollController.hasClients) {
       _scrollController.jumpTo(0);
     }

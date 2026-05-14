@@ -23,6 +23,7 @@ var mediaListQuery string
 var saveMediaListEntryMutation string
 
 // FetchMediaList returns authenticated user's anime list
+//
 //export FetchMediaList
 func FetchMediaList(userId C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	uID := int32(userId)
@@ -84,6 +85,7 @@ func FetchMediaList(userId C.int, token *C.char, outLen *C.int) *C.uint8_t {
 }
 
 // SaveMediaListEntry updates anime list entry on AniList
+//
 //export SaveMediaListEntry
 func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)

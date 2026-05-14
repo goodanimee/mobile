@@ -42,6 +42,7 @@ class _AnimePageState extends State<AnimePage> {
   bool _showSpoilers = false;
   int _selectedTabIndex = 0;
   bool _didUpdate = false;
+  double _heartScale = 1.0;
 
   /// Whether the sticky header bar is visible
   bool _showStickyBar = false;
@@ -119,6 +120,46 @@ class _AnimePageState extends State<AnimePage> {
           _error = 'Failed to load details: $e';
           _isLoading = false;
         });
+      }
+    }
+  }
+
+  /// Toggles the anime's favourite status
+  Future<void> _toggleFavourite() async {
+    if (_mediaData == null) return;
+
+    final bool currentFav = _mediaData!['isFavourite'] == true;
+
+    try {
+      final token = await AuthService.getRawToken() ?? '';
+      final req = ToggleFavouriteAnimeRequest()..animeId = widget.mediaId;
+      await BackendHelper.toggleFavouriteAnime(req, token);
+
+      setState(() {
+        _mediaData!['isFavourite'] = !currentFav;
+        _heartScale = 1.4;
+      });
+
+      Future.delayed(const Duration(microseconds: 500), () {
+        if (mounted) setState(() => _heartScale = 1.0);
+      });
+
+      final prefs = await SharedPreferences.getInstance();
+      _saveToDiskCache(prefs, widget.mediaId, json.encode(_mediaData));
+
+      _didUpdate = true;
+      await CacheUtils.invalidateMedia(widget.mediaId);
+      CacheUtils.homeNeedsRefresh.value = true;
+    } catch (e) {
+      if (mounted) {
+        setState(() => _mediaData!['isFavourite'] = currentFav);
+        final prefs = await SharedPreferences.getInstance();
+        _saveToDiskCache(prefs, widget.mediaId, json.encode(_mediaData));
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to toggle favourite: $e')),
+          );
+        }
       }
     }
   }
@@ -248,6 +289,7 @@ class _AnimePageState extends State<AnimePage> {
       QuickNavSection(
         icon: Icons.info_outline,
         label: 'Overview',
+        isSelected: _selectedTabIndex == 0,
         onTap: () {
           setState(() => _selectedTabIndex = 0);
           _scrollController.animateTo(
@@ -260,6 +302,7 @@ class _AnimePageState extends State<AnimePage> {
       QuickNavSection(
         icon: Icons.perm_media_outlined,
         label: 'Media',
+        isSelected: _selectedTabIndex == 1,
         onTap: () {
           setState(() => _selectedTabIndex = 1);
           _scrollController.animateTo(
@@ -272,6 +315,7 @@ class _AnimePageState extends State<AnimePage> {
       QuickNavSection(
         icon: Icons.groups_outlined,
         label: 'Staff',
+        isSelected: _selectedTabIndex == 2,
         onTap: () {
           setState(() => _selectedTabIndex = 2);
           _scrollController.animateTo(
@@ -284,6 +328,7 @@ class _AnimePageState extends State<AnimePage> {
       QuickNavSection(
         icon: Icons.account_circle_outlined,
         label: 'Characters',
+        isSelected: _selectedTabIndex == 3,
         onTap: () {
           setState(() => _selectedTabIndex = 3);
           _scrollController.animateTo(
@@ -296,6 +341,7 @@ class _AnimePageState extends State<AnimePage> {
       QuickNavSection(
         icon: Icons.shuffle_rounded,
         label: 'Relations',
+        isSelected: _selectedTabIndex == 4,
         onTap: () {
           setState(() => _selectedTabIndex = 4);
           _scrollController.animateTo(
@@ -308,6 +354,7 @@ class _AnimePageState extends State<AnimePage> {
       QuickNavSection(
         icon: Icons.leaderboard_outlined,
         label: 'Rankings',
+        isSelected: _selectedTabIndex == 5,
         onTap: () {
           setState(() => _selectedTabIndex = 5);
           _scrollController.animateTo(
@@ -320,6 +367,7 @@ class _AnimePageState extends State<AnimePage> {
       QuickNavSection(
         icon: Icons.rate_review_outlined,
         label: 'Reviews',
+        isSelected: _selectedTabIndex == 6,
         onTap: () {
           setState(() => _selectedTabIndex = 6);
           _scrollController.animateTo(
@@ -371,7 +419,7 @@ class _AnimePageState extends State<AnimePage> {
                   _buildEditFab(),
                   const SizedBox(height: 8),
                   FloatingNav(
-                    selectedIndex: 0,
+                    selectedIndex: -1,
                     onTap: _handleNavTap,
                     quickNavSections: quickNavItems,
                     isGridMode: null,
@@ -491,35 +539,81 @@ class _AnimePageState extends State<AnimePage> {
                 top: 0,
                 bottom: 0,
                 child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      final url = media['siteUrl']?.toString();
-                      if (url != null && url.isNotEmpty) {
-                        Share.share(url);
-                      }
-                    },
-                    child: ClipOval(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(
-                          sigmaX: _showStickyBar ? 0 : 10,
-                          sigmaY: _showStickyBar ? 0 : 10,
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: _showStickyBar
-                                ? Colors.transparent
-                                : shadowColor.withValues(alpha: 0.4),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.share_rounded,
-                            color: textPrimary,
-                            size: 24,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        onTap: _toggleFavourite,
+                        child: AnimatedScale(
+                          scale: _heartScale,
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.elasticOut,
+                          child: ClipOval(
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(
+                                sigmaX: _showStickyBar ? 0 : 10,
+                                sigmaY: _showStickyBar ? 0 : 10,
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: _showStickyBar
+                                      ? Colors.transparent
+                                      : shadowColor.withValues(alpha: 0.4),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Builder(
+                                  builder: (context) {
+                                    final isFav =
+                                        _mediaData?['isFavourite'] == true;
+                                    return Icon(
+                                      isFav
+                                          ? Icons.favorite_rounded
+                                          : Icons.favorite_border_rounded,
+                                      color: isFav
+                                          ? Colors.redAccent.shade400
+                                          : textPrimary,
+                                      size: 24,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () {
+                          final url = media['siteUrl']?.toString();
+                          if (url != null && url.isNotEmpty) {
+                            Share.share(url);
+                          }
+                        },
+                        child: ClipOval(
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(
+                              sigmaX: _showStickyBar ? 0 : 10,
+                              sigmaY: _showStickyBar ? 0 : 10,
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: _showStickyBar
+                                    ? Colors.transparent
+                                    : shadowColor.withValues(alpha: 0.4),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.share_rounded,
+                                color: textPrimary,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

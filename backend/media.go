@@ -29,7 +29,11 @@ var mediaCharactersQuery string
 //go:embed graphql/media_recommendations.graphql
 var mediaRecommendationsQuery string
 
+//go:embed graphql/toggle_favourite.graphql
+var mediaToggleFavouriteMutation string
+
 // FetchMediaDetails returns full details for a media ID
+//
 //export FetchMediaDetails
 func FetchMediaDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
@@ -71,6 +75,7 @@ func FetchMediaDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 }
 
 // FetchMediaStaff returns paginated staff for a media ID
+//
 //export FetchMediaStaff
 func FetchMediaStaff(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
@@ -113,6 +118,7 @@ func FetchMediaStaff(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.i
 }
 
 // FetchMediaCharacters returns paginated characters for a media ID
+//
 //export FetchMediaCharacters
 func FetchMediaCharacters(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
@@ -155,6 +161,7 @@ func FetchMediaCharacters(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 }
 
 // FetchMediaRecommendations returns paginated recommendations for a media ID
+//
 //export FetchMediaRecommendations
 func FetchMediaRecommendations(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
@@ -193,5 +200,39 @@ func FetchMediaRecommendations(reqPtr *C.uint8_t, reqLen C.int, token *C.char, o
 	}
 
 	pbResponse.RawJson = string(errCheck.Data.Media)
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// ToggleFavouriteAnime toggles favourite status of an anime on AniList
+//
+//export ToggleFavouriteAnime
+func ToggleFavouriteAnime(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.ToggleFavouriteAnimeResponse{}
+
+	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+	var req pb.ToggleFavouriteAnimeRequest
+	if err := proto.Unmarshal(reqBytes, &req); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]interface{}{"animeId": req.AnimeId}
+
+	aniResp, err := graphqlRequest(tk, mediaToggleFavouriteMutation, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	s := aniResp.Data.ToggleFavourite
+
+	if len(s.Anime.Nodes) == 0 {
+		pbResponse.Error = "Empty response from AniList"
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	pbResponse.AnimeId = req.AnimeId
+	pbResponse.IsFavourite = s.Anime.Nodes[0].IsFavourite
 	return marshalAndReturn(pbResponse, outLen)
 }
