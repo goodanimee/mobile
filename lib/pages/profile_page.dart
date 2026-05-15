@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../api/user_api.dart';
 import '../theme/theme.dart';
 import '../components/user_profile.dart';
-import '../utils/backend_helper.dart';
 import '../services/auth_service.dart';
 
 const _keyCachedUser = 'cached_viewer';
@@ -61,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _fetchAndCache(SharedPreferences prefs) async {
     try {
       final token = await AuthService.getValidToken();
-      final response = await BackendHelper.fetchViewer(token);
+      final response = await UserApi.fetchViewer(token);
       final viewer = response.viewer;
       final viewerMap = <String, dynamic>{
         'id': viewer.id,

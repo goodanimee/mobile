@@ -6,7 +6,7 @@ import '../../../utils/utils.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
-import '../../../utils/backend_helper.dart';
+import '../../../api/media_details_api.dart';
 import '../../../services/auth_service.dart';
 import '../../../proto/medialist.pb.dart';
 
@@ -107,7 +107,7 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
         page: _currentPage,
         perPage: 25,
       );
-      final response = await BackendHelper.fetchMediaCharacters(req, token);
+      final response = await MediaApi.fetchMediaCharacters(req, token);
 
       final data = json.decode(response.rawJson);
       final charData = data['characters'];

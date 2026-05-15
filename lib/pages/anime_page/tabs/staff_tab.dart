@@ -5,7 +5,7 @@ import '../../../components/error_view.dart';
 import '../../../utils/utils.dart';
 import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
-import '../../../utils/backend_helper.dart';
+import '../../../api/media_details_api.dart';
 import '../../../services/auth_service.dart';
 import '../../../proto/medialist.pb.dart';
 
@@ -106,7 +106,7 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
         page: _currentPage,
         perPage: 25,
       );
-      final response = await BackendHelper.fetchMediaStaff(req, token);
+      final response = await MediaApi.fetchMediaStaff(req, token);
 
       final data = json.decode(response.rawJson);
       final staffData = data['staff'];

@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/backend_helper.dart';
+import '../api/user_api.dart';
+import '../api/media_list_api.dart';
 import '../services/auth_service.dart';
 import '../theme/theme.dart';
 import '../components/anime_list_card.dart';
@@ -198,7 +199,7 @@ class _HomeTabState extends State<HomeTab> {
 
     try {
       final token = await AuthService.getRawToken() ?? '';
-      final response = await BackendHelper.fetchViewer(token);
+      final response = await UserApi.fetchViewer(token);
       final viewer = response.viewer;
       final viewerMap = {
         'id': viewer.id,
@@ -261,7 +262,7 @@ class _HomeTabState extends State<HomeTab> {
 
       final token = await AuthService.getRawToken() ?? '';
 
-      final response = await BackendHelper.fetchMediaList(userId, token);
+      final response = await MediaListApi.fetchMediaList(userId, token);
       final rawLists = response.collection.lists;
 
       final allEntries = <dynamic>[];

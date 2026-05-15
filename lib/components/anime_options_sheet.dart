@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 import 'section_title.dart';
-import '../utils/backend_helper.dart';
 import '../services/auth_service.dart';
 import '../proto/medialist.pb.dart';
+import '../api/media_list_api.dart';
 
 /// A bottom sheet for editing anime list entry options
 class AnimeOptionsSheet extends StatefulWidget {
@@ -274,7 +274,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
         );
       }
 
-      await BackendHelper.saveMediaListEntry(req, token);
+      await MediaListApi.saveMediaListEntry(req, token);
 
       if (mounted) {
         Navigator.of(context).pop({

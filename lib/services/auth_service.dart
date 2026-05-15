@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/backend_helper.dart';
+import '../api/user_api.dart';
 
 const _keyToken = 'anilist_access_token';
 const _keyExpiry = 'anilist_token_expiry';
@@ -70,7 +70,7 @@ class AuthService {
   /// Verifies the token with a lightweight backend probe
   static Future<bool> _probe(String token) async {
     try {
-      final response = await BackendHelper.fetchViewer(token);
+      final response = await UserApi.fetchViewer(token);
       return response.viewer.id != 0;
     } catch (_) {
       return false;

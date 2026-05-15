@@ -5,7 +5,7 @@ import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../utils/utils.dart';
-import '../../../utils/backend_helper.dart';
+import '../../../api/media_details_api.dart';
 import '../../../services/auth_service.dart';
 import '../../../proto/medialist.pb.dart';
 import '../../../theme/theme.dart';
@@ -99,7 +99,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
         page: _recommendationPage + 1,
         perPage: 25,
       );
-      final response = await BackendHelper.fetchMediaRecommendations(
+      final response = await MediaApi.fetchMediaRecommendations(
         req,
         token,
       );

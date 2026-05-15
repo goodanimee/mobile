@@ -7,7 +7,7 @@ import '../theme/theme.dart';
 import '../components/floating_nav.dart';
 import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
-import '../utils/backend_helper.dart';
+import '../api/media_details_api.dart';
 import '../services/auth_service.dart';
 import '../proto/medialist.pb.dart';
 import '../utils/utils.dart';
@@ -102,7 +102,7 @@ class _AnimePageState extends State<AnimePage> {
     try {
       final token = await AuthService.getRawToken() ?? '';
       final req = FetchMediaDetailsRequest(mediaId: widget.mediaId);
-      final response = await BackendHelper.fetchMediaDetails(req, token);
+      final response = await MediaApi.fetchMediaDetails(req, token);
 
       if (mounted) {
         setState(() {
@@ -133,7 +133,7 @@ class _AnimePageState extends State<AnimePage> {
     try {
       final token = await AuthService.getRawToken() ?? '';
       final req = ToggleFavouriteAnimeRequest()..animeId = widget.mediaId;
-      await BackendHelper.toggleFavouriteAnime(req, token);
+      await MediaApi.toggleFavouriteAnime(req, token);
 
       setState(() {
         _mediaData!['isFavourite'] = !currentFav;
