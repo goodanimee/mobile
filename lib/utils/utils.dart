@@ -70,8 +70,8 @@ class CacheUtils {
   static const String _cachePrefix = 'anime_cache_';
   static const String _cacheKeysPref = 'anime_cache_keys';
 
-  /// Notification flag for HomeTab stale data
-  static final homeNeedsRefresh = ValueNotifier<bool>(false);
+  /// Notification flag for AnimeListTab stale data
+  static final animeListNeedsRefresh = ValueNotifier<bool>(false);
 
   /// Remove media entry from disk cache
   static Future<void> invalidateMedia(int mediaId) async {

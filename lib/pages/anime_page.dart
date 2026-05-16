@@ -137,7 +137,7 @@ class _AnimePageState extends State<AnimePage> {
     if (result != null && mounted) {
       _didUpdate = true;
       await CacheUtils.invalidateMedia(widget.mediaId);
-      CacheUtils.homeNeedsRefresh.value = true;
+      CacheUtils.animeListNeedsRefresh.value = true;
       await _fetchAnimeDetails(forceRefresh: true);
     }
   }

@@ -6,11 +6,11 @@ import '../components/error_view.dart';
 import '../utils/utils.dart';
 import '../utils/app_options.dart';
 
-import 'home_tab/widgets/grid_view.dart';
-import 'home_tab/widgets/list_view.dart';
+import 'anime_list_tab/widgets/grid_view.dart';
+import 'anime_list_tab/widgets/list_view.dart';
 
 /// Display user's anime lists
-class HomeTab extends StatefulWidget {
+class AnimeListTab extends StatefulWidget {
   /// Whether to display items in a grid
   final bool isGridMode;
 
@@ -26,7 +26,7 @@ class HomeTab extends StatefulWidget {
   onSectionsChanged;
 
   /// Creates a home tab
-  const HomeTab({
+  const AnimeListTab({
     super.key,
     this.isGridMode = false,
     required this.onSignOut,
@@ -34,11 +34,11 @@ class HomeTab extends StatefulWidget {
   });
 
   @override
-  State<HomeTab> createState() => _HomeTabState();
+  State<AnimeListTab> createState() => _AnimeListTabState();
 }
 
-/// State for HomeTab
-class _HomeTabState extends State<HomeTab> {
+/// State for AnimeListTab
+class _AnimeListTabState extends State<AnimeListTab> {
   bool _isLoading = true;
   List<dynamic> _lists = [];
   String? _error;
@@ -51,12 +51,12 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     _fetchLists();
-    CacheUtils.homeNeedsRefresh.addListener(_onCacheInvalidated);
+    CacheUtils.animeListNeedsRefresh.addListener(_onCacheInvalidated);
   }
 
   void _onCacheInvalidated() {
-    if (CacheUtils.homeNeedsRefresh.value) {
-      CacheUtils.homeNeedsRefresh.value = false;
+    if (CacheUtils.animeListNeedsRefresh.value) {
+      CacheUtils.animeListNeedsRefresh.value = false;
       _fetchLists(forceRefresh: true);
     }
   }
@@ -65,7 +65,7 @@ class _HomeTabState extends State<HomeTab> {
   /// Disposes the scroll controller and removes cache listener
   void dispose() {
     _scrollController.dispose();
-    CacheUtils.homeNeedsRefresh.removeListener(_onCacheInvalidated);
+    CacheUtils.animeListNeedsRefresh.removeListener(_onCacheInvalidated);
     super.dispose();
   }
 
@@ -206,14 +206,14 @@ class _HomeTabState extends State<HomeTab> {
       backgroundColor: hoverBgColor,
       onRefresh: () => _fetchLists(forceRefresh: true),
       child: widget.isGridMode
-          ? HomeGridView(
+          ? AnimeListGridView(
               activeName: activeName,
               entries: activeEntries,
               scrollController: _scrollController,
               onRefresh: () => _fetchLists(forceRefresh: true),
               onLongPress: _showItemOptions,
             )
-          : HomeListView(
+          : AnimeListView(
               activeName: activeName,
               entries: activeEntries,
               scrollController: _scrollController,

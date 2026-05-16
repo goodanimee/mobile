@@ -57,7 +57,7 @@ class AnimeRepo {
     await _saveToDiskCache(prefs, mediaId, json.encode(currentMediaData));
 
     await CacheUtils.invalidateMedia(mediaId);
-    CacheUtils.homeNeedsRefresh.value = true;
+    CacheUtils.animeListNeedsRefresh.value = true;
   }
 
   static Future<void> restoreFavouriteCache(

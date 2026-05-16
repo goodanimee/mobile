@@ -19,7 +19,7 @@ class AppNavigation {
       MaterialPageRoute(builder: (context) => AnimePage(mediaId: mediaId)),
     );
 
-    if (result == true || CacheUtils.homeNeedsRefresh.value) {
+    if (result == true || CacheUtils.animeListNeedsRefresh.value) {
       onRefresh?.call();
     }
   }

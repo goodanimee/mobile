@@ -4,7 +4,7 @@ import '../../../components/section_title.dart';
 import '../../../components/error_view.dart';
 import '../../../utils/app_navigation.dart';
 
-class HomeListView extends StatelessWidget {
+class AnimeListView extends StatelessWidget {
   final String activeName;
   final List<dynamic> entries;
   final ScrollController scrollController;
@@ -13,7 +13,7 @@ class HomeListView extends StatelessWidget {
   final void Function(BuildContext context, Map<String, dynamic> entry)
   onLongPress;
 
-  const HomeListView({
+  const AnimeListView({
     super.key,
     required this.activeName,
     required this.entries,

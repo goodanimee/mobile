@@ -5,7 +5,7 @@ import '../../../components/app_badges.dart';
 import '../../../components/section_title.dart';
 import '../../../components/error_view.dart';
 
-class HomeGridView extends StatelessWidget {
+class AnimeListGridView extends StatelessWidget {
   final String activeName;
   final List<dynamic> entries;
   final ScrollController scrollController;
@@ -13,7 +13,7 @@ class HomeGridView extends StatelessWidget {
   final void Function(BuildContext context, Map<String, dynamic> entry)
   onLongPress;
 
-  const HomeGridView({
+  const AnimeListGridView({
     super.key,
     required this.activeName,
     required this.entries,

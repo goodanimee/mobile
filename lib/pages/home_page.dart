@@ -7,7 +7,7 @@ import '../components/floating_nav.dart';
 import '../components/loading_indicator.dart';
 import 'login_page.dart';
 import 'profile_page.dart';
-import 'home_tab.dart';
+import 'anime_list_tab.dart';
 
 /// The main container page for the application
 class HomePage extends StatefulWidget {
@@ -116,12 +116,12 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBody() {
     switch (_navIndex) {
       case 0:
-        return HomeTab(
+        return AnimeListTab(
           isGridMode: _isGridMode,
           onSignOut: _handleSignOut,
           onSectionsChanged: _handleSectionsChanged,
         );
-      case 3:
+      case 2:
         return ProfilePage(onSignOut: _handleSignOut);
       default:
         return Center(

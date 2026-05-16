@@ -25,10 +25,9 @@ class QuickNavSection {
 }
 
 const _navItems = [
-  (icon: Icons.home_rounded, label: 'Home'),
+  (icon: Icons.tv_rounded, label: 'Anime List'),
   (icon: Icons.explore_rounded, label: 'Discover'),
-  (icon: Icons.download_rounded, label: 'Downloads'),
-  (icon: Icons.settings_rounded, label: 'Settings'),
+  (icon: Icons.person_rounded, label: 'Profile'),
 ];
 
 const _fabSize = 52.0;
