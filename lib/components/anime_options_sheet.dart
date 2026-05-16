@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
-import 'section_title.dart';
+import './anime_options/date_editor.dart';
+import './anime_options/score_slider.dart';
+import './anime_options/progress_editor.dart';
+import './anime_options/status_selector.dart';
 import '../services/auth_service.dart';
 import '../proto/medialist.pb.dart';
 import '../api/media_list_api.dart';
@@ -75,12 +78,6 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     return null;
   }
 
-  /// Formats a DateTime into a string
-  String _formatDate(DateTime? date) {
-    if (date == null) return '--/--/----';
-    return '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-  }
-
   void _setStatus(String newStatus) {
     setState(() => _status = newStatus);
   }
@@ -106,20 +103,6 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
         _finishDate = now;
       }
     });
-  }
-
-  /// Builds a section with a title
-  Widget _buildSection(String title, Widget child) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle(title: title, fontSize: 14, bottomPadding: 12),
-          child,
-        ],
-      ),
-    );
   }
 
   @override
@@ -162,10 +145,27 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  _buildStatusSection(),
-                  _buildProgressSection(),
-                  _buildDatesSection(),
-                  _buildScoreSection(),
+                  StatusSelector(
+                    currentStatus: _status,
+                    onStatusChanged: _setStatus,
+                  ),
+                  ProgressEditor(
+                    progress: _progress,
+                    onProgressChanged: _updateProgress,
+                    maximum: _episodes,
+                  ),
+                  DateEditor(
+                    startDate: _startDate,
+                    finishDate: _finishDate,
+                    onStartDateChanged: (date) =>
+                        setState(() => _startDate = date),
+                    onFinishDateChanged: (date) =>
+                        setState(() => _finishDate = date),
+                  ),
+                  ScoreSlider(
+                    score: _score,
+                    onScoreChanged: (score) => setState(() => _score = score),
+                  ),
                   const SizedBox(height: 24),
                 ],
               ),
@@ -305,247 +305,5 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
         ).showSnackBar(SnackBar(content: Text('Failed to save changes: $e')));
       }
     }
-  }
-
-  /// Builds the status selection section
-  Widget _buildStatusSection() {
-    const statuses = [
-      ('CURRENT', Icons.play_circle_rounded),
-      ('PLANNING', Icons.bookmark_rounded),
-      ('COMPLETED', Icons.check_circle_rounded),
-      ('PAUSED', Icons.pause_circle_rounded),
-      ('DROPPED', Icons.cancel_rounded),
-    ];
-
-    return _buildSection(
-      'Status',
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: statuses.map((s) {
-          final isSelected =
-              _status == s.$1 || (_status == 'WATCHING' && s.$1 == 'CURRENT');
-          return GestureDetector(
-            onTap: () => _setStatus(s.$1),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? borderColor.withValues(alpha: 0.2)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: isSelected
-                      ? borderColor
-                      : Colors.white.withValues(alpha: 0.1),
-                ),
-              ),
-              child: Icon(
-                s.$2,
-                color: isSelected ? borderColor : Colors.white54,
-                size: 28,
-              ),
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  /// Builds the progress editing section
-  Widget _buildProgressSection() {
-    return _buildSection(
-      'Progress',
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-            onPressed: _progress > 0
-                ? () => _updateProgress(_progress - 1)
-                : null,
-            icon: const Icon(Icons.remove_circle_outline_rounded),
-            color: Colors.white70,
-            iconSize: 32,
-          ),
-          const SizedBox(width: 24),
-          Text(
-            '$_progress / ${_episodes ?? '?'}',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(width: 24),
-          IconButton(
-            onPressed: (_episodes == null || _progress < _episodes!)
-                ? () => _updateProgress(_progress + 1)
-                : null,
-            icon: const Icon(Icons.add_circle_outline_rounded),
-            color: Colors.white70,
-            iconSize: 32,
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Builds the date selection section
-  Widget _buildDatesSection() {
-    return _buildSection(
-      'Dates',
-      Row(
-        children: [
-          Expanded(
-            child: _buildDateBox('Start Date', _startDate, (date) {
-              setState(() => _startDate = date);
-            }),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: _buildDateBox('Finish Date', _finishDate, (date) {
-              setState(() => _finishDate = date);
-            }),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Builds a clickable date box
-  Widget _buildDateBox(
-    String label,
-    DateTime? date,
-    ValueChanged<DateTime?> onChanged,
-  ) {
-    return InkWell(
-      onTap: () async {
-        final selected = await showDatePicker(
-          context: context,
-          initialDate: date ?? DateTime.now(),
-          firstDate: DateTime(1970),
-          lastDate: DateTime(2100),
-          builder: (context, child) {
-            return Theme(
-              data: ThemeData.dark().copyWith(
-                colorScheme: const ColorScheme.dark(
-                  primary: borderColor,
-                  surface: bgColor,
-                ),
-              ),
-              child: child!,
-            );
-          },
-        );
-        if (selected != null) onChanged(selected);
-      },
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.5),
-                fontSize: 12,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              _formatDate(date),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// Builds the score rating section
-  Widget _buildScoreSection() {
-    return _buildSection(
-      'Score',
-      Column(
-        children: [
-          Text(
-            _score.toStringAsFixed(1),
-            style: const TextStyle(
-              color: Colors.amber,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final starWidth = constraints.maxWidth / 10;
-              return GestureDetector(
-                onPanUpdate: (details) => _updateScore(
-                  details.localPosition.dx,
-                  constraints.maxWidth,
-                ),
-                onTapDown: (details) => _updateScore(
-                  details.localPosition.dx,
-                  constraints.maxWidth,
-                ),
-                child: Stack(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: List.generate(
-                        10,
-                        (index) => Icon(
-                          Icons.star_rounded,
-                          color: Colors.white.withValues(alpha: 0.1),
-                          size: starWidth,
-                        ),
-                      ),
-                    ),
-                    ClipRect(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: _score / 10.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(
-                            10,
-                            (index) => Icon(
-                              Icons.star_rounded,
-                              color: Colors.amber,
-                              size: starWidth,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Updates the score based on drag position
-  void _updateScore(double dx, double maxWidth) {
-    double rawScore = (dx / maxWidth) * 10;
-    if (rawScore < 0) rawScore = 0;
-    if (rawScore > 10) rawScore = 10;
-    setState(() {
-      _score = double.parse(rawScore.toStringAsFixed(1));
-    });
   }
 }

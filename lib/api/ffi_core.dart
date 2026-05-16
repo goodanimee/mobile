@@ -19,12 +19,16 @@ class FfiCore {
   static void init() {
     if (_initialized) return;
     lib = ffi.DynamicLibrary.open('libbackend.so');
-    _freeBuffer = lib.lookupFunction<_FreeBufferC, _FreeBufferDart>('FreeBuffer');
+    _freeBuffer = lib.lookupFunction<_FreeBufferC, _FreeBufferDart>(
+      'FreeBuffer',
+    );
     _initialized = true;
   }
 
   /// Executes a native call that returns a pointer to a byte buffer and its length
-  static Uint8List executeNativeCall(ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Int32> outLen) fn) {
+  static Uint8List executeNativeCall(
+    ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Int32> outLen) fn,
+  ) {
     init();
     final outLenPtr = calloc<ffi.Int32>();
     try {

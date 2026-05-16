@@ -99,10 +99,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
         page: _recommendationPage + 1,
         perPage: 25,
       );
-      final response = await MediaApi.fetchMediaRecommendations(
-        req,
-        token,
-      );
+      final response = await MediaApi.fetchMediaRecommendations(req, token);
       final data = json.decode(response.rawJson);
       final recommendations = data['recommendations'];
       final edges = recommendations['edges'] as List? ?? [];

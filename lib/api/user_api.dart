@@ -7,6 +7,7 @@ import 'ffi_core.dart';
 /// Native function signature for fetching viewer information
 typedef _FetchViewerC =
     ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<Utf8>, ffi.Pointer<ffi.Int32>);
+
 /// Dart function signature for fetching viewer information
 typedef _FetchViewerDart =
     ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<Utf8>, ffi.Pointer<ffi.Int32>);
