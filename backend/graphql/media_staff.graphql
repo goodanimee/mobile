@@ -1,25 +1,25 @@
 query Media($mediaId: Int, $page: Int, $perPage: Int) {
-  Media(id: $mediaId) {
-    id
-    staff(page: $page, perPage: $perPage, sort: [RELEVANCE]) {
-      pageInfo {
-        currentPage
-        hasNextPage
-      }
-      edges {
-        role
-        node {
-          name {
-            userPreferred
-            full
-            native
-          }
-          image {
-            large
-            medium
-          }
+    Media(id: $mediaId) {
+        id
+        staff(page: $page, perPage: $perPage, sort: [RELEVANCE]) {
+            pageInfo {
+                currentPage
+                hasNextPage
+            }
+            edges {
+                role
+                node {
+                    name {
+                        userPreferred
+                        full
+                        native
+                    }
+                    image {
+                        large
+                        medium
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }

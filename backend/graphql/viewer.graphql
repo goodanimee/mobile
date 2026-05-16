@@ -1,10 +1,10 @@
 query {
-  Viewer {
-    id
-    name
-    createdAt
-    avatar {
-      medium
+    Viewer {
+        id
+        name
+        createdAt
+        avatar {
+            medium
+        }
     }
-  }
 }

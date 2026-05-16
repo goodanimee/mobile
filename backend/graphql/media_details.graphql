@@ -1,299 +1,300 @@
 query Media($mediaId: Int) {
-  Media(id: $mediaId) {
-    ...MediaFields
-    studios {
-      ...StudioFields
+    Media(id: $mediaId) {
+        ...MediaFields
+        studios {
+            ...StudioFields
+        }
+        title {
+            ...MediaTitleFields
+        }
+        tags {
+            ...MediaTagFields
+        }
+        externalLinks {
+            ...ExternalLinkFields
+        }
+        mediaListEntry {
+            ...MediaListEntryFields
+        }
+        trailer {
+            ...MediaTrailerFields
+        }
+        streamingEpisodes {
+            ...MediaStreamingEpisodeFields
+        }
+        staff(sort: [RELEVANCE], perPage: 25, page: 1) {
+            ...StaffFields
+        }
+        nextAiringEpisode {
+            ...NextAiringEpisodeFields
+        }
+        characters(sort: [RELEVANCE], page: 1, perPage: 25) {
+            ...CharacterFields
+        }
+        relations {
+            ...RelationsFields
+        }
+        recommendations(sort: [RATING_DESC], page: 1, perPage: 25) {
+            ...RecommendationFields
+        }
+        coverImage {
+            ...CoverImageFields
+        }
+        rankings {
+            ...RankingFields
+        }
+        stats {
+            ...MediaStatsFields
+        }
+        trends(sort: [DATE_DESC], page: 1, perPage: 14) {
+            ...MediaTrendsFields
+        }
     }
-    title {
-      ...MediaTitleFields
-    }
-    tags {
-      ...MediaTagFields
-    }
-    externalLinks {
-      ...ExternalLinkFields
-    }
-    mediaListEntry {
-      ...MediaListEntryFields
-    }
-    trailer {
-      ...MediaTrailerFields
-    }
-    streamingEpisodes {
-      ...MediaStreamingEpisodeFields
-    }
-    staff(sort: [RELEVANCE], perPage: 25, page: 1) {
-      ...StaffFields
-    }
-    nextAiringEpisode {
-      ...NextAiringEpisodeFields
-    }
-    characters(sort: [RELEVANCE], page: 1, perPage: 25) {
-      ...CharacterFields
-    }
-    relations {
-      ...RelationsFields
-    }
-    recommendations(sort: [RATING_DESC], page: 1, perPage: 25) {
-      ...RecommendationFields
-    }
-    coverImage {
-      ...CoverImageFields
-    }
-    rankings {
-      ...RankingFields
-    }
-    stats {
-      ...MediaStatsFields
-    }
-    trends(sort: [DATE_DESC], page: 1, perPage: 14) {
-      ...MediaTrendsFields
-    }
-  }
 }
 
 fragment MediaFields on Media {
-  id
-  type
-  bannerImage
-  format
-  episodes
-  status
-  seasonYear
-  season
-  averageScore
-  meanScore
-  favourites
-  popularity
-  description(asHtml: true)
-  genres
-  isFavourite
-  isAdult
-  siteUrl
-  synonyms
+    id
+    type
+    bannerImage
+    format
+    episodes
+    status
+    seasonYear
+    season
+    averageScore
+    meanScore
+    favourites
+    popularity
+    description(asHtml: true)
+    genres
+    isFavourite
+    isAdult
+    siteUrl
+    synonyms
 }
 
 fragment StudioFields on StudioConnection {
-  edges {
-    isMain
-    node {
-      id
-      name
+    edges {
+        isMain
+        node {
+            id
+            name
+        }
     }
-  }
 }
 
 fragment MediaTitleFields on MediaTitle {
-  english
-  native
-  romaji
-  userPreferred
+    english
+    native
+    romaji
+    userPreferred
 }
 
 fragment MediaTagFields on MediaTag {
-  id
-  isGeneralSpoiler
-  isMediaSpoiler
-  name
-  rank
+    id
+    isGeneralSpoiler
+    isMediaSpoiler
+    name
+    rank
 }
 
 fragment ExternalLinkFields on MediaExternalLink {
-  language
-  site
-  url
+    language
+    site
+    url
 }
 
 fragment FuzzyDateFields on FuzzyDate {
-  day
-  month
-  year
+    day
+    month
+    year
 }
 
 fragment MediaListEntryFields on MediaList {
-  completedAt {
-    ...FuzzyDateFields
-  }
-  progress
-  repeat
-  score(format: POINT_10_DECIMAL)
-  startedAt {
-    ...FuzzyDateFields
-  }
-  status
+    completedAt {
+        ...FuzzyDateFields
+    }
+    progress
+    repeat
+    score(format: POINT_10_DECIMAL)
+    startedAt {
+        ...FuzzyDateFields
+    }
+    status
+    id
 }
 
 fragment MediaTrailerFields on MediaTrailer {
-  id
-  site
-  thumbnail
+    id
+    site
+    thumbnail
 }
 
 fragment MediaStreamingEpisodeFields on MediaStreamingEpisode {
-  thumbnail
-  title
-  url
+    thumbnail
+    title
+    url
 }
 
 fragment StaffFields on StaffConnection {
-  edges {
-    role
-    node {
-      image {
-        ...StaffImageFields
-      }
-      name {
-        ...StaffNameFields
-      }
+    edges {
+        role
+        node {
+            image {
+                ...StaffImageFields
+            }
+            name {
+                ...StaffNameFields
+            }
+        }
     }
-  }
-  pageInfo {
-    ...PageInfoFields
-  }
+    pageInfo {
+        ...PageInfoFields
+    }
 }
 
 fragment CharacterFields on CharacterConnection {
-  edges {
-    id
-    role
-    name
-    voiceActors(sort: [RELEVANCE]) {
-      image {
-        ...StaffImageFields
-      }
-      name {
-        ...StaffNameFields
-      }
-      languageV2
+    edges {
+        id
+        role
+        name
+        voiceActors(sort: [RELEVANCE]) {
+            image {
+                ...StaffImageFields
+            }
+            name {
+                ...StaffNameFields
+            }
+            languageV2
+        }
+        node {
+            name {
+                ...CharNameFields
+            }
+            gender
+            age
+            dateOfBirth {
+                ...FuzzyDateFields
+            }
+            description(asHtml: true)
+            image {
+                ...CharImageFields
+            }
+        }
     }
-    node {
-      name {
-        ...CharNameFields
-      }
-      gender
-      age
-      dateOfBirth {
-        ...FuzzyDateFields
-      }
-      description(asHtml: true)
-      image {
-        ...CharImageFields
-      }
+    pageInfo {
+        ...PageInfoFields
     }
-  }
-  pageInfo {
-    ...PageInfoFields
-  }
 }
 
 fragment RelationsFields on MediaConnection {
-  edges {
-    relationType
-    node {
-      ...MediaMinFields
+    edges {
+        relationType
+        node {
+            ...MediaMinFields
+        }
     }
-  }
 }
 
 fragment RecommendationFields on RecommendationConnection {
-  pageInfo {
-    ...PageInfoFields
-  }
-  edges {
-    node {
-      rating
-      mediaRecommendation {
-        ...MediaMinFields
-      }
+    pageInfo {
+        ...PageInfoFields
     }
-  }
+    edges {
+        node {
+            rating
+            mediaRecommendation {
+                ...MediaMinFields
+            }
+        }
+    }
 }
 
 fragment RankingFields on MediaRank {
-  allTime
-  rank
-  season
-  type
-  year
+    allTime
+    rank
+    season
+    type
+    year
 }
 
 fragment MediaStatsFields on MediaStats {
-  scoreDistribution {
-    amount
-    score
-  }
-  statusDistribution {
-    amount
-    status
-  }
+    scoreDistribution {
+        amount
+        score
+    }
+    statusDistribution {
+        amount
+        status
+    }
 }
 
 fragment MediaTrendsFields on MediaTrendConnection {
-  nodes {
-    averageScore
-    date
-    inProgress
-    popularity
-  }
+    nodes {
+        averageScore
+        date
+        inProgress
+        popularity
+    }
 }
 
 fragment MediaMinFields on Media {
-  coverImage {
-    ...CoverImageFields
-  }
-  title {
-    ...TitleFields
-  }
-  format
-  id
-  siteUrl
+    coverImage {
+        ...CoverImageFields
+    }
+    title {
+        ...TitleFields
+    }
+    format
+    id
+    siteUrl
 }
 
 fragment PageInfoFields on PageInfo {
-  hasNextPage
-  currentPage
+    hasNextPage
+    currentPage
 }
 
 fragment StaffImageFields on StaffImage {
-  large
-  medium
+    large
+    medium
 }
 
 fragment StaffNameFields on StaffName {
-  full
-  native
-  userPreferred
+    full
+    native
+    userPreferred
 }
 
 fragment CharImageFields on CharacterImage {
-  large
-  medium
+    large
+    medium
 }
 
 fragment CharNameFields on CharacterName {
-  full
-  native
-  userPreferred
-  alternative
-  alternativeSpoiler
+    full
+    native
+    userPreferred
+    alternative
+    alternativeSpoiler
 }
 
 fragment NextAiringEpisodeFields on AiringSchedule {
-  airingAt
-  episode
-  timeUntilAiring
+    airingAt
+    episode
+    timeUntilAiring
 }
 
 fragment CoverImageFields on MediaCoverImage {
-  large
-  color
-  extraLarge
-  medium
+    large
+    color
+    extraLarge
+    medium
 }
 
 fragment TitleFields on MediaTitle {
-  english
-  native
-  romaji
-  userPreferred
+    english
+    native
+    romaji
+    userPreferred
 }

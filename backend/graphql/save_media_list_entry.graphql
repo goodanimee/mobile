@@ -1,33 +1,33 @@
 mutation SaveMediaListEntry(
-  $mediaId: Int
-  $progress: Int
-  $status: MediaListStatus
-  $startedAt: FuzzyDateInput
-  $completedAt: FuzzyDateInput
-  $score: Float
+    $mediaId: Int
+    $progress: Int
+    $status: MediaListStatus
+    $startedAt: FuzzyDateInput
+    $completedAt: FuzzyDateInput
+    $score: Float
 ) {
-  SaveMediaListEntry(
-    mediaId: $mediaId
-    progress: $progress
-    status: $status
-    startedAt: $startedAt
-    completedAt: $completedAt
-    score: $score
-  ) {
-    id
-    status
-    progress
-    score(format: POINT_10_DECIMAL)
-    repeat
-    startedAt {
-      day
-      month
-      year
+    SaveMediaListEntry(
+        mediaId: $mediaId
+        progress: $progress
+        status: $status
+        startedAt: $startedAt
+        completedAt: $completedAt
+        score: $score
+    ) {
+        id
+        status
+        progress
+        score(format: POINT_10_DECIMAL)
+        repeat
+        startedAt {
+            day
+            month
+            year
+        }
+        completedAt {
+            day
+            month
+            year
+        }
     }
-    completedAt {
-      day
-      month
-      year
-    }
-  }
 }
