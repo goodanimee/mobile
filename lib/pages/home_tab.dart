@@ -1,19 +1,13 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../api/user_api.dart';
-import '../api/media_list_api.dart';
-import '../services/auth_service.dart';
+import '../services/anime_list_repo.dart';
 import '../theme/theme.dart';
-import '../components/anime_list_card.dart';
-import '../components/section_title.dart';
 import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
-import '../components/app_badges.dart';
-import '../components/app_media_card.dart';
 import '../utils/utils.dart';
-import '../utils/app_navigation.dart';
 import '../utils/app_options.dart';
+
+import 'home_tab/widgets/grid_view.dart';
+import 'home_tab/widgets/list_view.dart';
 
 /// Display user's anime lists
 class HomeTab extends StatefulWidget {
@@ -94,162 +88,17 @@ class _HomeTabState extends State<HomeTab> {
     }
   }
 
-  /// Handles updates to an individual anime entry
-  void _handleEntryUpdated(int mediaId, Map<String, dynamic> updates) {
-    const orderedNames = [
-      'WATCHING',
-      'PLANNING',
-      'COMPLETED',
-      'REPEATING',
-      'PAUSED',
-      'DROPPED',
-    ];
-
-    String? targetName;
-    if (updates.containsKey('status')) {
-      final st = updates['status'] as String;
-      targetName = st == 'CURRENT' ? 'WATCHING' : st;
-    }
-
-    Map<String, dynamic>? movedEntry;
-
-    final updatedLists = _lists.map((s) {
-      final section = Map<String, dynamic>.from(s as Map<String, dynamic>);
-      final entries = (section['entries'] as List<dynamic>)
-          .map((e) => Map<String, dynamic>.from(e as Map<String, dynamic>))
-          .toList();
-
-      final idx = entries.indexWhere(
-        (e) => (e['media'] as Map<String, dynamic>?)?['id'] == mediaId,
-      );
-
-      if (idx == -1) {
-        section['entries'] = entries;
-        return section;
-      }
-
-      final entry = entries[idx];
-      final oldStatus = entry['status'] as String?;
-
-      updates.forEach((key, value) {
-        entry[key] = value;
-      });
-
-      final newStatus = entry['status'] as String?;
-
-      if (targetName != null && oldStatus != newStatus) {
-        movedEntry = Map<String, dynamic>.from(entry);
-        entries.removeAt(idx);
-      }
-
-      section['entries'] = entries;
-      return section;
-    }).toList();
-
-    if (movedEntry != null && targetName != null) {
-      final targetIdx = updatedLists.indexWhere((s) => s['name'] == targetName);
-      if (targetIdx != -1) {
-        (updatedLists[targetIdx]['entries'] as List).add(movedEntry);
-      } else {
-        final insertAt = updatedLists.indexWhere((s) {
-          final pos = orderedNames.indexOf(s['name'] as String);
-          return pos > orderedNames.indexOf(targetName!);
-        });
-        final newSection = {
-          'name': targetName,
-          'entries': <dynamic>[movedEntry],
-        };
-        if (insertAt == -1) {
-          updatedLists.add(newSection);
-        } else {
-          updatedLists.insert(insertAt, newSection);
-        }
-      }
-    }
-
-    setState(() {
-      _lists = updatedLists;
-      if (_activeStatus == null) {
-        final firstNonEmpty = updatedLists.firstWhere(
-          (s) => (s['entries'] as List).isNotEmpty,
-          orElse: () => updatedLists.first,
-        );
-        _activeStatus = firstNonEmpty['name'] as String;
-      }
-    });
-
-    _notifySections();
-
-    SharedPreferences.getInstance().then(
-      (prefs) =>
-          prefs.setString('cached_anime_lists', jsonEncode(updatedLists)),
-    );
-  }
-
-  /// Retrieves the viewer's user ID from cache or network
-  Future<int?> _getUserId() async {
-    final prefs = await SharedPreferences.getInstance();
-    final cachedJson = prefs.getString('cached_viewer');
-    if (cachedJson != null) {
-      try {
-        final data = jsonDecode(cachedJson);
-        return data['id'] as int?;
-      } catch (_) {}
-    }
-
-    try {
-      final token = await AuthService.getRawToken() ?? '';
-      final response = await UserApi.fetchViewer(token);
-      final viewer = response.viewer;
-      final viewerMap = {
-        'id': viewer.id,
-        'name': viewer.name,
-        'createdAt': viewer.createdAt,
-        'avatar': {'medium': viewer.avatarMedium},
-      };
-      await prefs.setString('cached_viewer', jsonEncode(viewerMap));
-      await prefs.setInt(
-        'cached_viewer_at',
-        DateTime.now().millisecondsSinceEpoch,
-      );
-      return viewer.id;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  /// Fetches the user's anime lists from cache or network
   Future<void> _fetchLists({bool forceRefresh = false}) async {
-    final prefs = await SharedPreferences.getInstance();
-
     if (!forceRefresh) {
-      final cachedJson = prefs.getString('cached_anime_lists');
-      if (cachedJson != null) {
-        try {
-          final lists = jsonDecode(cachedJson) as List<dynamic>;
-          if (mounted) {
-            setState(() {
-              _lists = lists;
-              _isLoading = false;
-              if (_activeStatus == null) {
-                final firstNonEmpty = lists.firstWhere(
-                  (l) => (l['entries'] as List).isNotEmpty,
-                  orElse: () => lists.first,
-                );
-                _activeStatus = firstNonEmpty['name'] as String;
-              }
-            });
-            _notifySections();
-          }
-          if (_hasFetchedThisSession) {
-            return;
-          }
-        } catch (_) {}
+      final cachedLists = await AnimeListRepo.getCachedLists();
+      if (cachedLists != null) {
+        _updateUIWithLists(cachedLists);
+        if (_hasFetchedThisSession) return;
       }
     }
 
     try {
-      final userId = await _getUserId();
+      final userId = await AnimeListRepo.getUserId();
       if (userId == null) {
         if (mounted && _lists.isEmpty) {
           setState(() {
@@ -260,131 +109,9 @@ class _HomeTabState extends State<HomeTab> {
         return;
       }
 
-      final token = await AuthService.getRawToken() ?? '';
-
-      final response = await MediaListApi.fetchMediaList(userId, token);
-      final rawLists = response.collection.lists;
-
-      final allEntries = <dynamic>[];
-      for (final list in rawLists) {
-        for (final entry in list.entries) {
-          final media = entry.media;
-          final entryMap = <String, dynamic>{
-            'status': entry.status,
-            'progress': entry.progress,
-            'repeat': entry.repeat,
-            'score': entry.score,
-            'id': entry.id,
-            'media': {
-              'id': media.id,
-              'title': {
-                'userPreferred': media.title.userPreferred,
-                'english': media.title.english,
-                'native': media.title.native,
-                'romaji': media.title.romaji,
-              },
-              'averageScore': media.averageScore,
-              'bannerImage': media.bannerImage.isNotEmpty
-                  ? media.bannerImage
-                  : null,
-              'coverImage': {
-                'medium': media.coverImage.medium,
-                'large': media.coverImage.large,
-                'extraLarge': media.coverImage.extraLarge,
-                'color': media.coverImage.color.isNotEmpty
-                    ? media.coverImage.color
-                    : null,
-              },
-              'description': media.description,
-              'duration': media.duration,
-              'episodes': media.episodes,
-              'format': media.format,
-              'genres': media.genres,
-              'isAdult': media.isAdult,
-              'isFavourite': media.isFavourite,
-              'popularity': media.popularity,
-              'season': media.season,
-              'seasonYear': media.seasonYear,
-              'status': media.status,
-            },
-          };
-
-          if (entry.hasStartedAt()) {
-            entryMap['startedAt'] = {
-              'year': entry.startedAt.year,
-              'month': entry.startedAt.month,
-              'day': entry.startedAt.day,
-            };
-          }
-
-          if (entry.hasCompletedAt()) {
-            entryMap['completedAt'] = {
-              'year': entry.completedAt.year,
-              'month': entry.completedAt.month,
-              'day': entry.completedAt.day,
-            };
-          }
-
-          allEntries.add(entryMap);
-        }
-      }
-
-      final Map<String, List<dynamic>> grouped = {
-        'CURRENT': [],
-        'REPEATING': [],
-        'PLANNING': [],
-        'COMPLETED': [],
-        'PAUSED': [],
-        'DROPPED': [],
-      };
-
-      for (final entry in allEntries) {
-        final status = entry['status'] as String? ?? 'UNKNOWN';
-        grouped[status] ??= [];
-        grouped[status]!.add(entry);
-      }
-
-      final orderedStatuses = [
-        'CURRENT',
-        'PLANNING',
-        'COMPLETED',
-        'REPEATING',
-        'PAUSED',
-        'DROPPED',
-      ];
-
-      final processedLists = <Map<String, dynamic>>[];
-      for (final status in orderedStatuses) {
-        final name = status == 'CURRENT' ? 'WATCHING' : status;
-        processedLists.add({'name': name, 'entries': grouped[status] ?? []});
-      }
-
-      for (final status in grouped.keys) {
-        if (!orderedStatuses.contains(status) && grouped[status]!.isNotEmpty) {
-          final name = status == 'CURRENT' ? 'WATCHING' : status;
-          processedLists.add({'name': name, 'entries': grouped[status]});
-        }
-      }
-
-      await prefs.setString('cached_anime_lists', jsonEncode(processedLists));
+      final freshLists = await AnimeListRepo.fetchNetworkLists(userId);
       _hasFetchedThisSession = true;
-
-      if (mounted) {
-        setState(() {
-          _lists = processedLists;
-          _isLoading = false;
-          _error = null;
-
-          if (_activeStatus == null) {
-            final firstNonEmpty = processedLists.firstWhere(
-              (l) => (l['entries'] as List).isNotEmpty,
-              orElse: () => processedLists.first,
-            );
-            _activeStatus = firstNonEmpty['name'] as String;
-          }
-        });
-        _notifySections();
-      }
+      _updateUIWithLists(freshLists);
     } catch (e) {
       if (mounted && _lists.isEmpty) {
         setState(() {
@@ -397,6 +124,37 @@ class _HomeTabState extends State<HomeTab> {
         ).showSnackBar(SnackBar(content: Text('Failed to refresh lists: $e')));
       }
     }
+  }
+
+  void _updateUIWithLists(List<dynamic> newLists) {
+    if (!mounted) return;
+
+    setState(() {
+      _lists = newLists;
+      _isLoading = false;
+      _error = null;
+
+      if (_activeStatus == null) {
+        final firstNonEmpty = newLists.firstWhere(
+          (l) => (l['entries'] as List).isNotEmpty,
+          orElse: () => newLists.first,
+        );
+        _activeStatus = firstNonEmpty['name'] as String;
+      }
+    });
+    _notifySections();
+  }
+
+  Future<void> _handleEntryUpdated(
+    int mediaId,
+    Map<String, dynamic> updates,
+  ) async {
+    final updatedLists = await AnimeListRepo.updateEntryInLists(
+      _lists,
+      mediaId,
+      updates,
+    );
+    _updateUIWithLists(updatedLists);
   }
 
   /// Shows the anime options bottom sheet
@@ -448,137 +206,21 @@ class _HomeTabState extends State<HomeTab> {
       backgroundColor: hoverBgColor,
       onRefresh: () => _fetchLists(forceRefresh: true),
       child: widget.isGridMode
-          ? CustomScrollView(
-              controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 16,
-                      right: 16,
-                      top: 24,
-                    ),
-                    child: SectionTitle(title: activeName),
-                  ),
-                ),
-                if (activeEntries.isEmpty)
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: AppErrorView(
-                      message: 'No anime currently in $activeName',
-                      topPadding: 0,
-                    ),
-                  )
-                else
-                  SliverPadding(
-                    padding: const EdgeInsets.only(
-                      left: 16,
-                      right: 16,
-                      bottom: 100,
-                    ),
-                    sliver: SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                            childAspectRatio: 0.7,
-                          ),
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        return _buildGridItem(
-                          activeEntries[index] as Map<String, dynamic>,
-                        );
-                      }, childCount: activeEntries.length),
-                    ),
-                  ),
-              ],
+          ? HomeGridView(
+              activeName: activeName,
+              entries: activeEntries,
+              scrollController: _scrollController,
+              onRefresh: () => _fetchLists(forceRefresh: true),
+              onLongPress: _showItemOptions,
             )
-          : activeEntries.isEmpty
-          ? ListView(
-              controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(top: 16, bottom: 100),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  child: SectionTitle(title: activeName, bottomPadding: 0),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  child: AppErrorView(
-                    message: 'No anime currently in $activeName',
-                    topPadding: 0,
-                  ),
-                ),
-              ],
-            )
-          : ListView.builder(
-              controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(top: 16, bottom: 100),
-              itemCount: activeEntries.length + 1,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    child: SectionTitle(title: activeName, bottomPadding: 0),
-                  );
-                }
-                return AnimeListCard(
-                  entry: activeEntries[index - 1] as Map<String, dynamic>,
-                  onEntryUpdated: _handleEntryUpdated,
-                  onTap: () {
-                    final e = activeEntries[index - 1] as Map<String, dynamic>;
-                    final media = e['media'] as Map<String, dynamic>? ?? {};
-                    final mediaId = media.mediaId;
-                    if (mediaId != 0) {
-                      AppNavigation.toAnime(
-                        context,
-                        mediaId,
-                        onRefresh: () => _fetchLists(forceRefresh: true),
-                      );
-                    }
-                  },
-                  onLongPress: () => _showItemOptions(
-                    context,
-                    activeEntries[index - 1] as Map<String, dynamic>,
-                  ),
-                );
-              },
+          : HomeListView(
+              activeName: activeName,
+              entries: activeEntries,
+              scrollController: _scrollController,
+              onRefresh: () => _fetchLists(forceRefresh: true),
+              onEntryUpdated: _handleEntryUpdated,
+              onLongPress: _showItemOptions,
             ),
-    );
-  }
-
-  /// Builds an individual item for the grid view
-  Widget _buildGridItem(Map<String, dynamic> entry) {
-    final media = entry['media'] as Map<String, dynamic>? ?? {};
-
-    return AppMediaCard(
-      imageUrl: media.coverImage,
-      title: media.titleText,
-      colorStr: (media['coverImage'] as Map<String, dynamic>?)?['color'],
-      isAdult: media.isAdultMedia,
-      isFavourite: media.isFavouriteMedia,
-      favouriteBadge: const AppFavouriteBadge(hasBackground: true),
-      adultBadge: const AppAdultBadge(),
-      onTap: () {
-        final mediaId = media.mediaId;
-        if (mediaId != 0) {
-          AppNavigation.toAnime(
-            context,
-            mediaId,
-            onRefresh: () => _fetchLists(forceRefresh: true),
-          );
-        }
-      },
-      onLongPress: () => _showItemOptions(context, entry),
     );
   }
 }
