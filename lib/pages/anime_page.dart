@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:goodanime/utils/app_navigation.dart';
-import 'dart:convert';
-import 'dart:ui';
-import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/theme.dart';
 import '../components/floating_nav.dart';
 import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
-import '../api/media_details_api.dart';
-import '../services/auth_service.dart';
-import '../proto/medialist.pb.dart';
+import '../services/anime_repo.dart';
 import '../utils/utils.dart';
 import '../utils/app_options.dart';
 
@@ -22,6 +16,8 @@ import 'anime_page/tabs/relations_tab.dart';
 import 'anime_page/tabs/rankings_tab.dart';
 import 'anime_page/tabs/placeholder_tab.dart';
 import 'anime_page/widgets/anime_page_header.dart';
+import 'anime_page/widgets/sticky_header.dart';
+import 'anime_page/widgets/edit_entry_fab.dart';
 
 /// A page displaying detailed information about an anime
 class AnimePage extends StatefulWidget {
@@ -43,15 +39,11 @@ class _AnimePageState extends State<AnimePage> {
   bool _showSpoilers = false;
   int _selectedTabIndex = 0;
   bool _didUpdate = false;
-  double _heartScale = 1.0;
+  bool _isTogglingFavourite = false;
 
   /// Whether the sticky header bar is visible
   bool _showStickyBar = false;
   final ScrollController _scrollController = ScrollController();
-
-  static const int _cacheCapacity = 10;
-  static const String _cacheKeysPref = 'anime_cache_keys';
-  static const String _cachePrefix = 'anime_cache_';
 
   @override
   void initState() {
@@ -78,42 +70,17 @@ class _AnimePageState extends State<AnimePage> {
 
   /// Fetches anime details from cache or network
   Future<void> _fetchAnimeDetails({bool forceRefresh = false}) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    if (!forceRefresh) {
-      final cachedStr = prefs.getString('$_cachePrefix${widget.mediaId}');
-      if (cachedStr != null) {
-        List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
-        keys.remove(widget.mediaId.toString());
-        keys.add(widget.mediaId.toString());
-        await prefs.setStringList(_cacheKeysPref, keys);
-
-        if (mounted) {
-          setState(() {
-            _mediaData = json.decode(cachedStr);
-            _isLoading = false;
-          });
-        }
-        return;
-      }
-    } else {
-      await prefs.remove('$_cachePrefix${widget.mediaId}');
-    }
-
     try {
-      final token = await AuthService.getRawToken() ?? '';
-      final req = FetchMediaDetailsRequest(mediaId: widget.mediaId);
-      final response = await MediaApi.fetchMediaDetails(req, token);
+      final data = await AnimeRepo.getAnimeDetails(
+        widget.mediaId,
+        forceRefresh: forceRefresh,
+      );
 
       if (mounted) {
         setState(() {
-          _mediaData = json.decode(response.rawJson);
+          _mediaData = data;
           _isLoading = false;
         });
-
-        if (_mediaData != null) {
-          _saveToDiskCache(prefs, widget.mediaId, response.rawJson);
-        }
       }
     } catch (e) {
       if (mounted) {
@@ -127,63 +94,28 @@ class _AnimePageState extends State<AnimePage> {
 
   /// Toggles the anime's favourite status
   Future<void> _toggleFavourite() async {
-    if (_mediaData == null) return;
-
+    if (_mediaData == null || _isTogglingFavourite) return;
     final bool currentFav = _mediaData!['isFavourite'] == true;
 
+    setState(() => _isTogglingFavourite = true);
+
     try {
-      final token = await AuthService.getRawToken() ?? '';
-      final req = ToggleFavouriteAnimeRequest()..animeId = widget.mediaId;
-      await MediaApi.toggleFavouriteAnime(req, token);
-
-      setState(() {
-        _mediaData!['isFavourite'] = !currentFav;
-        _heartScale = 1.4;
-      });
-
-      Future.delayed(const Duration(microseconds: 500), () {
-        if (mounted) setState(() => _heartScale = 1.0);
-      });
-
-      final prefs = await SharedPreferences.getInstance();
-      _saveToDiskCache(prefs, widget.mediaId, json.encode(_mediaData));
-
+      await AnimeRepo.toggleFavourite(widget.mediaId, _mediaData!);
+      setState(() => _mediaData!['isFavourite'] = !currentFav);
       _didUpdate = true;
-      await CacheUtils.invalidateMedia(widget.mediaId);
-      CacheUtils.homeNeedsRefresh.value = true;
     } catch (e) {
       if (mounted) {
         setState(() => _mediaData!['isFavourite'] = currentFav);
-        final prefs = await SharedPreferences.getInstance();
-        _saveToDiskCache(prefs, widget.mediaId, json.encode(_mediaData));
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to toggle favourite: $e')),
-          );
-        }
+        await AnimeRepo.restoreFavouriteCache(widget.mediaId, _mediaData!);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to toggle favourite: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isTogglingFavourite = false);
       }
     }
-  }
-
-  /// Saves anime data to disk cache
-  Future<void> _saveToDiskCache(
-    SharedPreferences prefs,
-    int mediaId,
-    String rawJson,
-  ) async {
-    List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
-    final idStr = mediaId.toString();
-
-    keys.remove(idStr);
-    keys.add(idStr);
-
-    if (keys.length > _cacheCapacity) {
-      final oldestKey = keys.removeAt(0);
-      await prefs.remove('$_cachePrefix$oldestKey');
-    }
-
-    await prefs.setStringList(_cacheKeysPref, keys);
-    await prefs.setString('$_cachePrefix$idStr', rawJson);
   }
 
   /// Handles navigation bar taps
@@ -407,7 +339,14 @@ class _AnimePageState extends State<AnimePage> {
               top: 0,
               left: 0,
               right: 0,
-              child: _buildStickyHeader(media),
+              child: StickyHeader(
+                media: media,
+                showStickyBar: _showStickyBar,
+                isFavourite: _mediaData?['isFavourite'] == true,
+                isFavouriteLoading: _isTogglingFavourite,
+                onBack: () => Navigator.of(context).pop(_didUpdate),
+                onToggleFavourite: _toggleFavourite,
+              ),
             ),
             Positioned(
               bottom: 24,
@@ -416,7 +355,7 @@ class _AnimePageState extends State<AnimePage> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildEditFab(),
+                  EditEntryFab(onTap: _showItemOptions),
                   const SizedBox(height: 8),
                   FloatingNav(
                     selectedIndex: -1,
@@ -431,196 +370,6 @@ class _AnimePageState extends State<AnimePage> {
           ],
         ),
       ),
-    );
-  }
-
-  /// Builds the edit floating action button
-  Widget _buildEditFab() {
-    return Container(
-      width: 52,
-      height: 52,
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: cardBorderColor, width: 1.0),
-      ),
-      child: GestureDetector(
-        onTap: _showItemOptions,
-        behavior: HitTestBehavior.opaque,
-        child: const Center(
-          child: Icon(Icons.edit_rounded, color: textPrimary, size: 22),
-        ),
-      ),
-    );
-  }
-
-  /// Builds the sticky header bar
-  Widget _buildStickyHeader(Map<String, dynamic> media) {
-    final topPadding = MediaQuery.of(context).padding.top;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          height: topPadding + 56,
-          padding: EdgeInsets.only(top: topPadding),
-          decoration: BoxDecoration(
-            color: _showStickyBar ? bgColor : Colors.transparent,
-            border: Border(
-              bottom: BorderSide(
-                color: _showStickyBar ? cardBorderColor : Colors.transparent,
-                width: 1.0,
-              ),
-            ),
-          ),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 16,
-                top: 0,
-                bottom: 0,
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(_didUpdate),
-                    child: ClipOval(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(
-                          sigmaX: _showStickyBar ? 0 : 10,
-                          sigmaY: _showStickyBar ? 0 : 10,
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: _showStickyBar
-                                ? Colors.transparent
-                                : shadowColor.withValues(alpha: 0.4),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.arrow_back_rounded,
-                            color: textPrimary,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                left: 72,
-                right: 16,
-                child: AnimatedOpacity(
-                  opacity: _showStickyBar ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 200),
-                  child: Center(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            media.titleText,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              color: textPrimary,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                right: 16,
-                top: 0,
-                bottom: 0,
-                child: Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      GestureDetector(
-                        onTap: _toggleFavourite,
-                        child: AnimatedScale(
-                          scale: _heartScale,
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.elasticOut,
-                          child: ClipOval(
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                sigmaX: _showStickyBar ? 0 : 10,
-                                sigmaY: _showStickyBar ? 0 : 10,
-                              ),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: _showStickyBar
-                                      ? Colors.transparent
-                                      : shadowColor.withValues(alpha: 0.4),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Builder(
-                                  builder: (context) {
-                                    final isFav =
-                                        _mediaData?['isFavourite'] == true;
-                                    return Icon(
-                                      isFav
-                                          ? Icons.favorite_rounded
-                                          : Icons.favorite_border_rounded,
-                                      color: isFav
-                                          ? Colors.redAccent.shade400
-                                          : textPrimary,
-                                      size: 24,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      GestureDetector(
-                        onTap: () {
-                          final url = media['siteUrl']?.toString();
-                          if (url != null && url.isNotEmpty) {
-                            Share.share(url);
-                          }
-                        },
-                        child: ClipOval(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(
-                              sigmaX: _showStickyBar ? 0 : 10,
-                              sigmaY: _showStickyBar ? 0 : 10,
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: _showStickyBar
-                                    ? Colors.transparent
-                                    : shadowColor.withValues(alpha: 0.4),
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.share_rounded,
-                                color: textPrimary,
-                                size: 24,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
