@@ -15,6 +15,7 @@ import (
 var viewerQuery string
 
 // FetchViewer returns authenticated user profile from AniList
+//
 //export FetchViewer
 func FetchViewer(token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)

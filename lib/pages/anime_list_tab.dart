@@ -137,7 +137,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
       if (_activeStatus == null) {
         final firstNonEmpty = newLists.firstWhere(
           (l) => (l['entries'] as List).isNotEmpty,
-          orElse: () => newLists.first,
+          orElse: () => newLists.first as Map<String, dynamic>,
         );
         _activeStatus = firstNonEmpty['name'] as String;
       }
