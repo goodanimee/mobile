@@ -8,23 +8,29 @@ query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
                 id
                 media {
                     id
-                    title {
-                        userPreferred
-                    }
                     averageScore
-                    coverImage {
-                        large
-                        color
-                    }
                     episodes
                     format
                     isAdult
                     isFavourite
+                    siteUrl
+                    title {
+                        english
+                        native
+                        romaji
+                        userPreferred
+                    }
+                    coverImage {
+                        color
+                        medium
+                        large
+                        extraLarge
+                    }
                 }
                 progress
                 repeat
                 status
-                score
+                score(format: POINT_10_DECIMAL)
                 startedAt {
                     day
                     month

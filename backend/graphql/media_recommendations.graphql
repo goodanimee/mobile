@@ -11,6 +11,12 @@ query Media($mediaId: Int, $page: Int, $perPage: Int) {
                     rating
                     mediaRecommendation {
                         id
+                        averageScore
+                        episodes
+                        format
+                        isAdult
+                        isFavourite
+                        siteUrl
                         title {
                             english
                             native
@@ -18,10 +24,11 @@ query Media($mediaId: Int, $page: Int, $perPage: Int) {
                             userPreferred
                         }
                         coverImage {
-                            large
                             color
+                            medium
+                            large
+                            extraLarge
                         }
-                        format
                     }
                 }
             }
