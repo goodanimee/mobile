@@ -38,10 +38,29 @@ typedef _SaveMediaListEntryDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for deleting media list entries
+typedef _DeleteMediaListEntryC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for deleting media list entries
+typedef _DeleteMediaListEntryDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// API class for media list operations
 class MediaListApi {
   static late _FetchMediaListDart _fetchMediaList;
   static late _SaveMediaListEntryDart _saveMediaListEntry;
+  static late _DeleteMediaListEntryDart _deleteMediaListEntry;
   static bool _initialized = false;
 
   static void _init() {
@@ -54,6 +73,10 @@ class MediaListApi {
     _saveMediaListEntry = FfiCore.lib
         .lookupFunction<_SaveMediaListEntryC, _SaveMediaListEntryDart>(
           'SaveMediaListEntry',
+        );
+    _deleteMediaListEntry = FfiCore.lib
+        .lookupFunction<_DeleteMediaListEntryC, _DeleteMediaListEntryDart>(
+          'DeleteMediaListEntry',
         );
     _initialized = true;
   }
@@ -100,6 +123,38 @@ class MediaListApi {
               _saveMediaListEntry(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
         );
         final response = SaveMediaListEntryResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
+  /// Deletes a media list entry
+  static Future<DeleteMediaListEntryResponse> deleteMediaListEntry(
+    DeleteMediaListEntryRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      _init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = FfiCore.executeNativeCall(
+          (outLenPtr) => _deleteMediaListEntry(
+            reqPtr,
+            reqBytes.length,
+            tokenPtr,
+            outLenPtr,
+          ),
+        );
+        final response = DeleteMediaListEntryResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
         return response;
       } finally {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goodanime/utils/app_navigation.dart';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:share_plus/share_plus.dart';
@@ -187,9 +188,8 @@ class _AnimePageState extends State<AnimePage> {
 
   /// Handles navigation bar taps
   void _handleNavTap(int index) {
-    if (index != 0) {
-      Navigator.of(context).pop(index);
-    }
+    AppNavigation.currentTab.value = index;
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   /// Shows the anime options bottom sheet

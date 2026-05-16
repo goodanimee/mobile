@@ -676,6 +676,7 @@ class MediaListEntry extends $pb.GeneratedMessage {
     $core.double? score,
     FuzzyDate? startedAt,
     FuzzyDate? completedAt,
+    $core.int? id,
   }) {
     final result = create();
     if (media != null) result.media = media;
@@ -685,6 +686,7 @@ class MediaListEntry extends $pb.GeneratedMessage {
     if (score != null) result.score = score;
     if (startedAt != null) result.startedAt = startedAt;
     if (completedAt != null) result.completedAt = completedAt;
+    if (id != null) result.id = id;
     return result;
   }
 
@@ -710,6 +712,7 @@ class MediaListEntry extends $pb.GeneratedMessage {
         subBuilder: FuzzyDate.create)
     ..aOM<FuzzyDate>(7, _omitFieldNames ? '' : 'completedAt',
         subBuilder: FuzzyDate.create)
+    ..aI(8, _omitFieldNames ? '' : 'id')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -799,6 +802,15 @@ class MediaListEntry extends $pb.GeneratedMessage {
   void clearCompletedAt() => $_clearField(7);
   @$pb.TagNumber(7)
   FuzzyDate ensureCompletedAt() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  $core.int get id => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set id($core.int value) => $_setSignedInt32(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasId() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearId() => $_clearField(8);
 }
 
 class MediaList extends $pb.GeneratedMessage {
@@ -2173,7 +2185,7 @@ class ToggleFavouriteAnimeRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ToggleFavouriteAnimeRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
       createEmptyInstance: create)
-    ..aI(1, _omitFieldNames ? '' : 'animeId', protoName: 'animeId')
+    ..aI(1, _omitFieldNames ? '' : 'animeId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -2234,8 +2246,8 @@ class ToggleFavouriteAnimeResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'ToggleFavouriteAnimeResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
       createEmptyInstance: create)
-    ..aI(1, _omitFieldNames ? '' : 'animeId', protoName: 'animeId')
-    ..aOB(2, _omitFieldNames ? '' : 'isFavourite', protoName: 'isFavourite')
+    ..aI(1, _omitFieldNames ? '' : 'animeId')
+    ..aOB(2, _omitFieldNames ? '' : 'isFavourite')
     ..aOS(3, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -2278,6 +2290,144 @@ class ToggleFavouriteAnimeResponse extends $pb.GeneratedMessage {
   $core.bool hasIsFavourite() => $_has(1);
   @$pb.TagNumber(2)
   void clearIsFavourite() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get error => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set error($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasError() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearError() => $_clearField(3);
+}
+
+class DeleteMediaListEntryRequest extends $pb.GeneratedMessage {
+  factory DeleteMediaListEntryRequest({
+    $core.int? entryId,
+  }) {
+    final result = create();
+    if (entryId != null) result.entryId = entryId;
+    return result;
+  }
+
+  DeleteMediaListEntryRequest._();
+
+  factory DeleteMediaListEntryRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DeleteMediaListEntryRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DeleteMediaListEntryRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'entryId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteMediaListEntryRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteMediaListEntryRequest copyWith(
+          void Function(DeleteMediaListEntryRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as DeleteMediaListEntryRequest))
+          as DeleteMediaListEntryRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeleteMediaListEntryRequest create() =>
+      DeleteMediaListEntryRequest._();
+  @$core.override
+  DeleteMediaListEntryRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static DeleteMediaListEntryRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteMediaListEntryRequest>(create);
+  static DeleteMediaListEntryRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get entryId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set entryId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasEntryId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearEntryId() => $_clearField(1);
+}
+
+class DeleteMediaListEntryResponse extends $pb.GeneratedMessage {
+  factory DeleteMediaListEntryResponse({
+    $core.int? entryId,
+    $core.bool? deleted,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (entryId != null) result.entryId = entryId;
+    if (deleted != null) result.deleted = deleted;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  DeleteMediaListEntryResponse._();
+
+  factory DeleteMediaListEntryResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DeleteMediaListEntryResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DeleteMediaListEntryResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'entryId')
+    ..aOB(2, _omitFieldNames ? '' : 'deleted')
+    ..aOS(3, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteMediaListEntryResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteMediaListEntryResponse copyWith(
+          void Function(DeleteMediaListEntryResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as DeleteMediaListEntryResponse))
+          as DeleteMediaListEntryResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeleteMediaListEntryResponse create() =>
+      DeleteMediaListEntryResponse._();
+  @$core.override
+  DeleteMediaListEntryResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static DeleteMediaListEntryResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteMediaListEntryResponse>(create);
+  static DeleteMediaListEntryResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get entryId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set entryId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasEntryId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearEntryId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get deleted => $_getBF(1);
+  @$pb.TagNumber(2)
+  set deleted($core.bool value) => $_setBool(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasDeleted() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDeleted() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get error => $_getSZ(2);

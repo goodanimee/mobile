@@ -5,6 +5,9 @@ import 'utils.dart';
 
 /// Centralized manager for app transitions and navigation
 class AppNavigation {
+  /// Global state for the active tab on the HomePage
+  static final ValueNotifier<int> currentTab = ValueNotifier<int>(0);
+
   /// Navigate to Anime details
   static Future<void> toAnime(
     BuildContext context,

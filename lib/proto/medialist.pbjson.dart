@@ -193,6 +193,7 @@ const MediaListEntry$json = {
       '6': '.goodanime.FuzzyDate',
       '10': 'completedAt'
     },
+    {'1': 'id', '3': 8, '4': 1, '5': 5, '10': 'id'},
   ],
 };
 
@@ -202,7 +203,8 @@ final $typed_data.Uint8List mediaListEntryDescriptor = $convert.base64Decode(
     'ESGgoIcHJvZ3Jlc3MYAiABKAVSCHByb2dyZXNzEhYKBnJlcGVhdBgDIAEoBVIGcmVwZWF0EhYK'
     'BnN0YXR1cxgEIAEoCVIGc3RhdHVzEhQKBXNjb3JlGAUgASgBUgVzY29yZRIzCgpzdGFydGVkX2'
     'F0GAYgASgLMhQuZ29vZGFuaW1lLkZ1enp5RGF0ZVIJc3RhcnRlZEF0EjcKDGNvbXBsZXRlZF9h'
-    'dBgHIAEoCzIULmdvb2RhbmltZS5GdXp6eURhdGVSC2NvbXBsZXRlZEF0');
+    'dBgHIAEoCzIULmdvb2RhbmltZS5GdXp6eURhdGVSC2NvbXBsZXRlZEF0Eg4KAmlkGAggASgFUg'
+    'JpZA==');
 
 @$core.Deprecated('Use mediaListDescriptor instead')
 const MediaList$json = {
@@ -560,22 +562,22 @@ final $typed_data.Uint8List fetchMediaRecommendationsResponseDescriptor =
 const ToggleFavouriteAnimeRequest$json = {
   '1': 'ToggleFavouriteAnimeRequest',
   '2': [
-    {'1': 'animeId', '3': 1, '4': 1, '5': 5, '10': 'animeId'},
+    {'1': 'anime_id', '3': 1, '4': 1, '5': 5, '10': 'animeId'},
   ],
 };
 
 /// Descriptor for `ToggleFavouriteAnimeRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List toggleFavouriteAnimeRequestDescriptor =
     $convert.base64Decode(
-        'ChtUb2dnbGVGYXZvdXJpdGVBbmltZVJlcXVlc3QSGAoHYW5pbWVJZBgBIAEoBVIHYW5pbWVJZA'
-        '==');
+        'ChtUb2dnbGVGYXZvdXJpdGVBbmltZVJlcXVlc3QSGQoIYW5pbWVfaWQYASABKAVSB2FuaW1lSW'
+        'Q=');
 
 @$core.Deprecated('Use toggleFavouriteAnimeResponseDescriptor instead')
 const ToggleFavouriteAnimeResponse$json = {
   '1': 'ToggleFavouriteAnimeResponse',
   '2': [
-    {'1': 'animeId', '3': 1, '4': 1, '5': 5, '10': 'animeId'},
-    {'1': 'isFavourite', '3': 2, '4': 1, '5': 8, '10': 'isFavourite'},
+    {'1': 'anime_id', '3': 1, '4': 1, '5': 5, '10': 'animeId'},
+    {'1': 'is_favourite', '3': 2, '4': 1, '5': 8, '10': 'isFavourite'},
     {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
   ],
 };
@@ -583,6 +585,36 @@ const ToggleFavouriteAnimeResponse$json = {
 /// Descriptor for `ToggleFavouriteAnimeResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List toggleFavouriteAnimeResponseDescriptor =
     $convert.base64Decode(
-        'ChxUb2dnbGVGYXZvdXJpdGVBbmltZVJlc3BvbnNlEhgKB2FuaW1lSWQYASABKAVSB2FuaW1lSW'
-        'QSIAoLaXNGYXZvdXJpdGUYAiABKAhSC2lzRmF2b3VyaXRlEhQKBWVycm9yGAMgASgJUgVlcnJv'
-        'cg==');
+        'ChxUb2dnbGVGYXZvdXJpdGVBbmltZVJlc3BvbnNlEhkKCGFuaW1lX2lkGAEgASgFUgdhbmltZU'
+        'lkEiEKDGlzX2Zhdm91cml0ZRgCIAEoCFILaXNGYXZvdXJpdGUSFAoFZXJyb3IYAyABKAlSBWVy'
+        'cm9y');
+
+@$core.Deprecated('Use deleteMediaListEntryRequestDescriptor instead')
+const DeleteMediaListEntryRequest$json = {
+  '1': 'DeleteMediaListEntryRequest',
+  '2': [
+    {'1': 'entry_id', '3': 1, '4': 1, '5': 5, '10': 'entryId'},
+  ],
+};
+
+/// Descriptor for `DeleteMediaListEntryRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List deleteMediaListEntryRequestDescriptor =
+    $convert.base64Decode(
+        'ChtEZWxldGVNZWRpYUxpc3RFbnRyeVJlcXVlc3QSGQoIZW50cnlfaWQYASABKAVSB2VudHJ5SW'
+        'Q=');
+
+@$core.Deprecated('Use deleteMediaListEntryResponseDescriptor instead')
+const DeleteMediaListEntryResponse$json = {
+  '1': 'DeleteMediaListEntryResponse',
+  '2': [
+    {'1': 'entry_id', '3': 1, '4': 1, '5': 5, '10': 'entryId'},
+    {'1': 'deleted', '3': 2, '4': 1, '5': 8, '10': 'deleted'},
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `DeleteMediaListEntryResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List deleteMediaListEntryResponseDescriptor =
+    $convert.base64Decode(
+        'ChxEZWxldGVNZWRpYUxpc3RFbnRyeVJlc3BvbnNlEhkKCGVudHJ5X2lkGAEgASgFUgdlbnRyeU'
+        'lkEhgKB2RlbGV0ZWQYAiABKAhSB2RlbGV0ZWQSFAoFZXJyb3IYAyABKAlSBWVycm9y');

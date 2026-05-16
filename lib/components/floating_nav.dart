@@ -193,7 +193,7 @@ class _FloatingNavState extends State<FloatingNav>
             transitionBuilder: (child, anim) =>
                 ScaleTransition(scale: anim, child: child),
             child: Icon(
-              isGrid ? Icons.list_rounded : Icons.grid_view_rounded,
+              isGrid ? Icons.view_list_rounded : Icons.grid_view_rounded,
               key: ValueKey(isGrid),
               color: Colors.white,
               size: 22,

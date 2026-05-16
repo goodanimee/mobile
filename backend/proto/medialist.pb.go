@@ -506,6 +506,7 @@ type MediaListEntry struct {
 	Score         float64                `protobuf:"fixed64,5,opt,name=score,proto3" json:"score,omitempty"`
 	StartedAt     *FuzzyDate             `protobuf:"bytes,6,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
 	CompletedAt   *FuzzyDate             `protobuf:"bytes,7,opt,name=completed_at,json=completedAt,proto3" json:"completed_at,omitempty"`
+	Id            int32                  `protobuf:"varint,8,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -587,6 +588,13 @@ func (x *MediaListEntry) GetCompletedAt() *FuzzyDate {
 		return x.CompletedAt
 	}
 	return nil
+}
+
+func (x *MediaListEntry) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
 }
 
 type MediaList struct {
@@ -1611,7 +1619,7 @@ func (x *FetchMediaRecommendationsResponse) GetError() string {
 
 type ToggleFavouriteAnimeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AnimeId       int32                  `protobuf:"varint,1,opt,name=animeId,proto3" json:"animeId,omitempty"`
+	AnimeId       int32                  `protobuf:"varint,1,opt,name=anime_id,json=animeId,proto3" json:"anime_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1655,8 +1663,8 @@ func (x *ToggleFavouriteAnimeRequest) GetAnimeId() int32 {
 
 type ToggleFavouriteAnimeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	AnimeId       int32                  `protobuf:"varint,1,opt,name=animeId,proto3" json:"animeId,omitempty"`
-	IsFavourite   bool                   `protobuf:"varint,2,opt,name=isFavourite,proto3" json:"isFavourite,omitempty"`
+	AnimeId       int32                  `protobuf:"varint,1,opt,name=anime_id,json=animeId,proto3" json:"anime_id,omitempty"`
+	IsFavourite   bool                   `protobuf:"varint,2,opt,name=is_favourite,json=isFavourite,proto3" json:"is_favourite,omitempty"`
 	Error         string                 `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1707,6 +1715,110 @@ func (x *ToggleFavouriteAnimeResponse) GetIsFavourite() bool {
 }
 
 func (x *ToggleFavouriteAnimeResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type DeleteMediaListEntryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EntryId       int32                  `protobuf:"varint,1,opt,name=entry_id,json=entryId,proto3" json:"entry_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMediaListEntryRequest) Reset() {
+	*x = DeleteMediaListEntryRequest{}
+	mi := &file_proto_medialist_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMediaListEntryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMediaListEntryRequest) ProtoMessage() {}
+
+func (x *DeleteMediaListEntryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_medialist_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMediaListEntryRequest.ProtoReflect.Descriptor instead.
+func (*DeleteMediaListEntryRequest) Descriptor() ([]byte, []int) {
+	return file_proto_medialist_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *DeleteMediaListEntryRequest) GetEntryId() int32 {
+	if x != nil {
+		return x.EntryId
+	}
+	return 0
+}
+
+type DeleteMediaListEntryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EntryId       int32                  `protobuf:"varint,1,opt,name=entry_id,json=entryId,proto3" json:"entry_id,omitempty"`
+	Deleted       bool                   `protobuf:"varint,2,opt,name=deleted,proto3" json:"deleted,omitempty"`
+	Error         string                 `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMediaListEntryResponse) Reset() {
+	*x = DeleteMediaListEntryResponse{}
+	mi := &file_proto_medialist_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMediaListEntryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMediaListEntryResponse) ProtoMessage() {}
+
+func (x *DeleteMediaListEntryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_medialist_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMediaListEntryResponse.ProtoReflect.Descriptor instead.
+func (*DeleteMediaListEntryResponse) Descriptor() ([]byte, []int) {
+	return file_proto_medialist_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *DeleteMediaListEntryResponse) GetEntryId() int32 {
+	if x != nil {
+		return x.EntryId
+	}
+	return 0
+}
+
+func (x *DeleteMediaListEntryResponse) GetDeleted() bool {
+	if x != nil {
+		return x.Deleted
+	}
+	return false
+}
+
+func (x *DeleteMediaListEntryResponse) GetError() string {
 	if x != nil {
 		return x.Error
 	}
@@ -1770,7 +1882,7 @@ const file_proto_medialist_proto_rawDesc = "" +
 	"\n" +
 	"favourites\x18\x16 \x01(\x05R\n" +
 	"favourites\x12\x19\n" +
-	"\bsite_url\x18\x17 \x01(\tR\asiteUrl\"\x88\x02\n" +
+	"\bsite_url\x18\x17 \x01(\tR\asiteUrl\"\x98\x02\n" +
 	"\x0eMediaListEntry\x12&\n" +
 	"\x05media\x18\x01 \x01(\v2\x10.goodanime.MediaR\x05media\x12\x1a\n" +
 	"\bprogress\x18\x02 \x01(\x05R\bprogress\x12\x16\n" +
@@ -1779,7 +1891,8 @@ const file_proto_medialist_proto_rawDesc = "" +
 	"\x05score\x18\x05 \x01(\x01R\x05score\x123\n" +
 	"\n" +
 	"started_at\x18\x06 \x01(\v2\x14.goodanime.FuzzyDateR\tstartedAt\x127\n" +
-	"\fcompleted_at\x18\a \x01(\v2\x14.goodanime.FuzzyDateR\vcompletedAt\"l\n" +
+	"\fcompleted_at\x18\a \x01(\v2\x14.goodanime.FuzzyDateR\vcompletedAt\x12\x0e\n" +
+	"\x02id\x18\b \x01(\x05R\x02id\"l\n" +
 	"\tMediaList\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
 	"\x06status\x18\x02 \x01(\tR\x06status\x123\n" +
@@ -1860,12 +1973,18 @@ const file_proto_medialist_proto_rawDesc = "" +
 	"\bper_page\x18\x03 \x01(\x05R\aperPage\"T\n" +
 	"!FetchMediaRecommendationsResponse\x12\x19\n" +
 	"\braw_json\x18\x01 \x01(\tR\arawJson\x12\x14\n" +
-	"\x05error\x18\x02 \x01(\tR\x05error\"7\n" +
-	"\x1bToggleFavouriteAnimeRequest\x12\x18\n" +
-	"\aanimeId\x18\x01 \x01(\x05R\aanimeId\"p\n" +
-	"\x1cToggleFavouriteAnimeResponse\x12\x18\n" +
-	"\aanimeId\x18\x01 \x01(\x05R\aanimeId\x12 \n" +
-	"\visFavourite\x18\x02 \x01(\bR\visFavourite\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"8\n" +
+	"\x1bToggleFavouriteAnimeRequest\x12\x19\n" +
+	"\banime_id\x18\x01 \x01(\x05R\aanimeId\"r\n" +
+	"\x1cToggleFavouriteAnimeResponse\x12\x19\n" +
+	"\banime_id\x18\x01 \x01(\x05R\aanimeId\x12!\n" +
+	"\fis_favourite\x18\x02 \x01(\bR\visFavourite\x12\x14\n" +
+	"\x05error\x18\x03 \x01(\tR\x05error\"8\n" +
+	"\x1bDeleteMediaListEntryRequest\x12\x19\n" +
+	"\bentry_id\x18\x01 \x01(\x05R\aentryId\"i\n" +
+	"\x1cDeleteMediaListEntryResponse\x12\x19\n" +
+	"\bentry_id\x18\x01 \x01(\x05R\aentryId\x12\x18\n" +
+	"\adeleted\x18\x02 \x01(\bR\adeleted\x12\x14\n" +
 	"\x05error\x18\x03 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
@@ -1880,7 +1999,7 @@ func file_proto_medialist_proto_rawDescGZIP() []byte {
 	return file_proto_medialist_proto_rawDescData
 }
 
-var file_proto_medialist_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
+var file_proto_medialist_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_proto_medialist_proto_goTypes = []any{
 	(*FuzzyDate)(nil),                         // 0: goodanime.FuzzyDate
 	(*Trailer)(nil),                           // 1: goodanime.Trailer
@@ -1907,6 +2026,8 @@ var file_proto_medialist_proto_goTypes = []any{
 	(*FetchMediaRecommendationsResponse)(nil), // 22: goodanime.FetchMediaRecommendationsResponse
 	(*ToggleFavouriteAnimeRequest)(nil),       // 23: goodanime.ToggleFavouriteAnimeRequest
 	(*ToggleFavouriteAnimeResponse)(nil),      // 24: goodanime.ToggleFavouriteAnimeResponse
+	(*DeleteMediaListEntryRequest)(nil),       // 25: goodanime.DeleteMediaListEntryRequest
+	(*DeleteMediaListEntryResponse)(nil),      // 26: goodanime.DeleteMediaListEntryResponse
 }
 var file_proto_medialist_proto_depIdxs = []int32{
 	3,  // 0: goodanime.Media.title:type_name -> goodanime.Title
@@ -1945,7 +2066,7 @@ func file_proto_medialist_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_medialist_proto_rawDesc), len(file_proto_medialist_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   25,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

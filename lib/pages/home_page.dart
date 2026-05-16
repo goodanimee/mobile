@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goodanime/utils/app_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/auth_service.dart';
 import '../theme/theme.dart';
@@ -40,6 +41,19 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _loadTokenAndPreferences();
+    AppNavigation.currentTab.addListener(_onTabChanged);
+  }
+
+  void _onTabChanged() {
+    if (mounted && _navIndex != AppNavigation.currentTab.value) {
+      setState(() => _navIndex = AppNavigation.currentTab.value);
+    }
+  }
+
+  @override
+  void dispose() {
+    AppNavigation.currentTab.removeListener(_onTabChanged);
+    super.dispose();
   }
 
   /// Loads the auth token and user preferences from storage
@@ -140,7 +154,7 @@ class _HomePageState extends State<HomePage> {
               right: 20,
               child: FloatingNav(
                 selectedIndex: _navIndex,
-                onTap: (i) => setState(() => _navIndex = i),
+                onTap: (i) => AppNavigation.currentTab.value = i,
                 quickNavSections: _navIndex == 0 ? _quickNavSections : null,
                 isGridMode: _navIndex == 0 ? _isGridMode : null,
                 onToggleGridMode: _navIndex == 0 ? _toggleGridMode : null,

@@ -22,6 +22,9 @@ var mediaListQuery string
 //go:embed graphql/save_media_list_entry.graphql
 var saveMediaListEntryMutation string
 
+//go:embed graphql/delete_list_entry.graphql
+var deleteMediaListEntryMutation string
+
 // FetchMediaList returns authenticated user's anime list
 //
 //export FetchMediaList
@@ -57,6 +60,7 @@ func FetchMediaList(userId C.int, token *C.char, outLen *C.int) *C.uint8_t {
 				Repeat:      entry.Repeat,
 				Status:      entry.Status,
 				Score:       entry.Score,
+				Id:          entry.Id,
 				StartedAt:   fuzzyDate(entry.StartedAt.Year, entry.StartedAt.Month, entry.StartedAt.Day),
 				CompletedAt: fuzzyDate(entry.CompletedAt.Year, entry.CompletedAt.Month, entry.CompletedAt.Day),
 				Media: &pb.Media{
@@ -130,5 +134,37 @@ func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 	pbResponse.StartedAt = fuzzyDate(s.StartedAt.Year, s.StartedAt.Month, s.StartedAt.Day)
 	pbResponse.CompletedAt = fuzzyDate(s.CompletedAt.Year, s.CompletedAt.Month, s.CompletedAt.Day)
 
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// DeleteMediaListEntry deletes a list entry on AniList
+//
+//export DeleteMediaListEntry
+func DeleteMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.DeleteMediaListEntryResponse{}
+
+	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+	var req pb.DeleteMediaListEntryRequest
+	if err := proto.Unmarshal(reqBytes, &req); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]any{"mediaListEntryId": req.GetEntryId()}
+
+	aniResp, err := graphqlRequest(tk, deleteMediaListEntryMutation, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	if len(aniResp.Errors) > 0 {
+		pbResponse.Error = aniResp.Errors[0].Message
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	pbResponse.EntryId = req.GetEntryId()
+	pbResponse.Deleted = aniResp.Data.DeleteMediaListEntry.Deleted
 	return marshalAndReturn(pbResponse, outLen)
 }

@@ -2,8 +2,8 @@ package main
 
 // GraphQLQuery is the JSON body for AniList endpoint
 type GraphQLQuery struct {
-	Query     string                 `json:"query"`
-	Variables map[string]interface{} `json:"variables"`
+	Query     string         `json:"query"`
+	Variables map[string]any `json:"variables"`
 }
 
 // AniListResponse is the top-level envelope from AniList API
@@ -30,6 +30,7 @@ type AniListResponse struct {
 						IsAdult     bool   `json:"isAdult"`
 						IsFavourite bool   `json:"isFavourite"`
 					} `json:"media"`
+					Id        int32   `json:"id"`
 					Progress  int32   `json:"progress"`
 					Repeat    int32   `json:"repeat"`
 					Status    string  `json:"status"`
@@ -75,11 +76,14 @@ type AniListResponse struct {
 		ToggleFavourite struct {
 			Anime struct {
 				Nodes []struct {
-					ID	int32 `json:"id"`
+					ID          int32 `json:"id"`
 					IsFavourite bool  `json:"isFavourite"`
 				} `json:"nodes"`
 			} `json:"anime"`
 		} `json:"ToggleFavourite"`
+		DeleteMediaListEntry struct {
+			Deleted bool `json:"deleted"`
+		} `json:"DeleteMediaListEntry"`
 	} `json:"data"`
 	Errors []struct {
 		Message string `json:"message"`

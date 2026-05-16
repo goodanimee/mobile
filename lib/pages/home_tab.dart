@@ -274,6 +274,7 @@ class _HomeTabState extends State<HomeTab> {
             'progress': entry.progress,
             'repeat': entry.repeat,
             'score': entry.score,
+            'id': entry.id,
             'media': {
               'id': media.id,
               'title': {

@@ -47,7 +47,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
   @override
   void initState() {
     super.initState();
-    _status = widget.entry['status'] as String? ?? 'CURRENT';
+    _status = widget.entry['status'] as String? ?? '';
     _progress = widget.entry['progress'] as int? ?? 0;
     _score = (widget.entry['score'] as num?)?.toDouble() ?? 0.0;
 
@@ -179,57 +179,112 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
 
   /// Builds the save and cancel buttons
   Widget _buildActionButtons() {
+    final bool hasEntryId = widget.entry['id'] != null;
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 24),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          TextButton(
-            onPressed: _isSaving ? null : () => Navigator.of(context).pop(),
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+          if (hasEntryId)
+            TextButton(
+              onPressed: _isSaving ? null : _deleteEntry,
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.redAccent,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
               ),
-            ),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
+              child: const Text(
+                'Delete',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          ElevatedButton(
-            onPressed: _isSaving ? null : _saveChanges,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: borderColor,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            child: _isSaving
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
-                : const Text(
-                    'Save',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            )
+          else
+            const SizedBox(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: _isSaving ? null : () => Navigator.of(context).pop(),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
                   ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              ElevatedButton(
+                onPressed: _isSaving ? null : _saveChanges,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: borderColor,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: _isSaving
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : Text(
+                        hasEntryId ? 'Save' : 'Add',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+              ),
+            ],
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _deleteEntry() async {
+    final entryId = widget.entry['id'] as int?;
+    if (entryId == null) return;
+
+    setState(() => _isSaving = true);
+    try {
+      final token = await AuthService.getRawToken() ?? '';
+      final req = DeleteMediaListEntryRequest(entryId: entryId);
+      await MediaListApi.deleteMediaListEntry(req, token);
+
+      if (mounted) {
+        Navigator.of(context).pop({'deleted': true});
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isSaving = false);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to delete entry: $e')));
+      }
+    }
   }
 
   /// Saves changes to the backend
