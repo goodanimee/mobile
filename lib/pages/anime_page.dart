@@ -171,7 +171,7 @@ class _AnimePageState extends State<AnimePage> {
     switch (_selectedTabIndex) {
       case 0:
         return AnimeInfoTab(
-          media: media,
+          media: Media.fromJson(media),
           showSpoilers: _showSpoilers,
           onToggleSpoilers: () =>
               setState(() => _showSpoilers = !_showSpoilers),

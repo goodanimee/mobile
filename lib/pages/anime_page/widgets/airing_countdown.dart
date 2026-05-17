@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/utils.dart';
+import '../../../models/media.dart';
 
 /// A widget that displays a countdown until the next episode airs
 class AiringCountdown extends StatelessWidget {
   /// The anime media data
-  final Map<String, dynamic> media;
+  final Media media;
 
   /// Creates an airing countdown widget
   const AiringCountdown({super.key, required this.media});
@@ -13,20 +14,10 @@ class AiringCountdown extends StatelessWidget {
   @override
   /// Builds the airing countdown widget
   Widget build(BuildContext context) {
-    final nextAiring = media['nextAiringEpisode'] as Map<String, dynamic>?;
-    final schedule = media['airingSchedule'] as Map<String, dynamic>?;
-
-    int? airingAt;
-    if (nextAiring != null && nextAiring['airingAt'] != null) {
-      airingAt = (nextAiring['airingAt'] as num).toInt();
-    } else if (schedule != null &&
-        schedule['edges'] != null &&
-        (schedule['edges'] as List).isNotEmpty) {
-      final firstEdge = (schedule['edges'] as List)[0] as Map<String, dynamic>;
-      if (firstEdge['node'] != null && firstEdge['node']['airingAt'] != null) {
-        airingAt = (firstEdge['node']['airingAt'] as num).toInt();
-      }
-    }
+    final nextAiring = media.nextAiringEpisode;
+    final int? airingAt = nextAiring != null && nextAiring.airingAt > 0
+        ? nextAiring.airingAt
+        : null;
 
     if (airingAt == null) return const SizedBox.shrink();
 

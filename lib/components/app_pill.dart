@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/theme.dart';
 
 /// A versatile pill/chip widget for tags, links, and metadata
 class AppPill extends StatelessWidget {
@@ -17,6 +18,9 @@ class AppPill extends StatelessWidget {
   /// The horizontal and vertical padding
   final EdgeInsetsGeometry padding;
 
+  /// Optional trailing widget
+  final Widget? trailing;
+
   /// Creates an app pill
   const AppPill({
     super.key,
@@ -25,12 +29,12 @@ class AppPill extends StatelessWidget {
     this.isSpoiler = false,
     this.onTap,
     this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+    this.trailing,
   });
 
   @override
   /// Builds the app pill widget
   Widget build(BuildContext context) {
-    final spoilerColor = Color.lerp(Colors.white, Colors.redAccent, 0.25)!;
     final color = isSpoiler ? spoilerColor : Colors.white70;
 
     Widget content = Container(
@@ -76,6 +80,7 @@ class AppPill extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
+          if (trailing != null) ...[const SizedBox(width: 6), trailing!],
         ],
       ),
     );

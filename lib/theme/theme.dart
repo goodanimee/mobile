@@ -130,6 +130,9 @@ const heartIcon = Colors.pinkAccent;
 /// Color for adult badges
 const adultBadge = Colors.redAccent;
 
+/// Highlight color for spoiler tags and labels
+final spoilerColor = Color.lerp(Colors.white, Colors.redAccent, 0.25)!;
+
 /// Color for watching status
 const statusWatching = paletteGreen;
 

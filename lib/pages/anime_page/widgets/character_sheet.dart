@@ -183,31 +183,29 @@ class _CharacterSheetState extends State<CharacterSheet> {
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.redAccent.withValues(alpha: 0.1),
+                                color: spoilerColor.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(4),
                                 border: Border.all(
-                                  color: Colors.redAccent.withValues(
-                                    alpha: 0.3,
-                                  ),
+                                  color: spoilerColor.withValues(alpha: 0.3),
                                 ),
                               ),
-                              child: const Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(top: 2),
+                                    padding: const EdgeInsets.only(top: 2),
                                     child: Icon(
                                       Icons.warning_amber_rounded,
                                       size: 14,
-                                      color: Colors.redAccent,
+                                      color: spoilerColor,
                                     ),
                                   ),
-                                  SizedBox(width: 6),
+                                  const SizedBox(width: 6),
                                   Text(
                                     'Tap to reveal spoilers',
                                     style: TextStyle(
-                                      color: Colors.redAccent,
+                                      color: spoilerColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -233,20 +231,18 @@ class _CharacterSheetState extends State<CharacterSheet> {
                                     vertical: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.redAccent.withValues(
-                                      alpha: 0.1,
-                                    ),
+                                    color: spoilerColor.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(4),
                                     border: Border.all(
-                                      color: Colors.redAccent.withValues(
+                                      color: spoilerColor.withValues(
                                         alpha: 0.3,
                                       ),
                                     ),
                                   ),
                                   child: Text(
                                     name,
-                                    style: const TextStyle(
-                                      color: Colors.redAccent,
+                                    style: TextStyle(
+                                      color: spoilerColor,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                     ),
