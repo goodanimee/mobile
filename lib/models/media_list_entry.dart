@@ -6,7 +6,7 @@ class MediaListEntry {
   final int id;
 
   /// Watch status
-  final String status;
+  final MediaListStatus? status;
 
   /// Number of episodes watched
   final int progress;
@@ -26,7 +26,7 @@ class MediaListEntry {
   /// Creates a media list entry
   const MediaListEntry({
     required this.id,
-    required this.status,
+    this.status,
     required this.progress,
     required this.score,
     required this.repeat,
@@ -38,7 +38,7 @@ class MediaListEntry {
   factory MediaListEntry.fromJson(Map<String, dynamic> json) {
     return MediaListEntry(
       id: json['id'] as int,
-      status: json['status'] as String,
+      status: MediaListStatus.fromJson(json['status'] as String?),
       progress: json['progress'] as int,
       score: (json['score'] as num).toDouble(),
       repeat: json['repeat'] as int,

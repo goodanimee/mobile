@@ -1,3 +1,4 @@
+import 'common.dart';
 import 'media.dart';
 import 'media_list_entry.dart';
 
@@ -9,7 +10,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
   /// Creates a media list entry with media
   const MediaListEntryWithMedia({
     required super.id,
-    required super.status,
+    super.status,
     required super.progress,
     required super.score,
     required super.repeat,
@@ -40,23 +41,19 @@ class MediaList {
   final String name;
 
   /// List status
-  final String status;
+  final MediaListStatus? status;
 
   /// List entries
   final List<MediaListEntryWithMedia> entries;
 
   /// Creates a media list
-  const MediaList({
-    required this.name,
-    required this.status,
-    required this.entries,
-  });
+  const MediaList({required this.name, this.status, required this.entries});
 
   /// Creates a media list from a JSON map
   factory MediaList.fromJson(Map<String, dynamic> json) {
     return MediaList(
       name: json['name'] as String,
-      status: json['status'] as String,
+      status: MediaListStatus.fromJson(json['status'] as String?),
       entries: (json['entries'] as List)
           .map(
             (e) => MediaListEntryWithMedia.fromJson(e as Map<String, dynamic>),
