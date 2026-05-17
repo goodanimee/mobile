@@ -149,6 +149,7 @@ type MediaRank struct {
 	Context string `json:"context"`
 	Rank    int32  `json:"rank"`
 	Type    string `json:"type"`
+	Season  string `json:"season"`
 	Year    int32  `json:"year"`
 }
 
