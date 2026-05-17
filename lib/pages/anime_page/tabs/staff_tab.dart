@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../../../components/loading_indicator.dart';
 import '../../../components/error_view.dart';
-import '../../../utils/utils.dart';
 import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
 import '../../../api/media_details_api.dart';
 import '../../../services/auth_service.dart';
 import '../../../proto/medialist.pb.dart';
+import '../../../models/media.dart';
 
 /// A tab displaying the production staff for an anime
 class AnimeStaffTab extends StatefulWidget {
@@ -21,7 +21,7 @@ class AnimeStaffTab extends StatefulWidget {
   final bool isNested;
 
   /// Initial data for the first page
-  final Map<String, dynamic>? initialData;
+  final StaffConnection? initialData;
 
   /// Creates a staff tab
   const AnimeStaffTab({
@@ -40,7 +40,7 @@ class AnimeStaffTab extends StatefulWidget {
 class _AnimeStaffTabState extends State<AnimeStaffTab> {
   bool _isLoading = true;
   bool _isFetchingMore = false;
-  final List<dynamic> _staff = [];
+  final List<StaffEdge> _staff = [];
   int _currentPage = 1;
   bool _hasNextPage = false;
   String? _error;
@@ -52,11 +52,8 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
     super.initState();
 
     if (widget.initialData != null) {
-      final edges = widget.initialData!['edges'] as List? ?? [];
-      final pageInfo = widget.initialData!['pageInfo'];
-
-      _staff.addAll(edges);
-      _hasNextPage = pageInfo?['hasNextPage'] ?? false;
+      _staff.addAll(widget.initialData!.edges);
+      _hasNextPage = widget.initialData!.pageInfo.hasNextPage;
       _isLoading = false;
     } else {
       _fetchStaff();
@@ -109,14 +106,13 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
       final response = await MediaApi.fetchMediaStaff(req, token);
 
       final data = json.decode(response.rawJson);
-      final staffData = data['staff'];
-      final edges = staffData['edges'] as List? ?? [];
-      final pageInfo = staffData['pageInfo'];
+      final staffData = data['staff'] as Map<String, dynamic>;
+      final connection = StaffConnection.fromJson(staffData);
 
       if (mounted) {
         setState(() {
-          _staff.addAll(edges);
-          _hasNextPage = pageInfo['hasNextPage'] ?? false;
+          _staff.addAll(connection.edges);
+          _hasNextPage = connection.pageInfo.hasNextPage;
           _isLoading = false;
           _isFetchingMore = false;
         });
@@ -177,12 +173,12 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
               ),
               itemCount: _staff.length,
               itemBuilder: (context, index) {
-                final edge = _staff[index] as Map<String, dynamic>;
-                final node = edge['node'] as Map<String, dynamic>;
-                final fullName = node.fullName;
-                final nativeName = node['name']?['native'] ?? '';
-                final role = edge['role'] ?? 'Unknown Role';
-                final imageUrl = node['image']?['large'] ?? '';
+                final edge = _staff[index];
+                final node = edge.node;
+                final fullName = node?.name?.full ?? '';
+                final nativeName = node?.name?.native ?? '';
+                final role = edge.role.isNotEmpty ? edge.role : 'Unknown Role';
+                final imageUrl = node?.image?.large ?? '';
 
                 return AppEntityCard(
                   imageUrl: imageUrl,
