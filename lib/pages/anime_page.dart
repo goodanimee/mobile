@@ -213,7 +213,7 @@ class _AnimePageState extends State<AnimePage> {
           isNested: true,
         );
       case 5:
-        return AnimeRankingsTab(media: media, isNested: true);
+        return AnimeRankingsTab(media: Media.fromJson(media), isNested: true);
       case 6:
         return const PlaceholderTab(title: 'Reviews Section');
       default:
