@@ -9,6 +9,7 @@ import '../../../components/app_section.dart';
 import '../../../api/media_details_api.dart';
 import '../../../services/auth_service.dart';
 import '../../../proto/medialist.pb.dart';
+import '../../../models/media.dart';
 
 /// A tab displaying characters and cast for an anime
 class AnimeCharactersTab extends StatefulWidget {
@@ -195,7 +196,10 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
                     size: 14,
                     color: Colors.white.withValues(alpha: 0.25),
                   ),
-                  onTap: () => AppNavigation.toCharacter(context, edge),
+                  onTap: () => AppNavigation.toCharacter(
+                    context,
+                    CharacterEdge.fromJson(edge),
+                  ),
                 );
               },
             ),

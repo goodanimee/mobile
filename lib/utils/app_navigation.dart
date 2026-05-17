@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../pages/anime_page.dart';
 import '../pages/anime_page/widgets/character_sheet.dart';
+import '../models/media.dart';
 import 'utils.dart';
 
 /// Centralized manager for app transitions and navigation
@@ -25,10 +26,7 @@ class AppNavigation {
   }
 
   /// Open character details sheet
-  static void toCharacter(
-    BuildContext context,
-    Map<String, dynamic> character,
-  ) {
+  static void toCharacter(BuildContext context, CharacterEdge character) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

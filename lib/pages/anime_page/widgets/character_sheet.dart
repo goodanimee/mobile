@@ -3,11 +3,13 @@ import '../../../theme/theme.dart';
 import '../../../components/section_title.dart';
 import '../../../components/app_network_image.dart';
 import '../../../components/html_description.dart';
+import '../../../models/media.dart';
+import '../../../models/common.dart';
 
 /// A bottom sheet displaying detailed information about a character
 class CharacterSheet extends StatefulWidget {
   /// The character data to display
-  final Map<String, dynamic> character;
+  final CharacterEdge character;
 
   /// Creates a character sheet
   const CharacterSheet({super.key, required this.character});
@@ -23,22 +25,22 @@ class _CharacterSheetState extends State<CharacterSheet> {
   @override
   /// Builds the character sheet widget
   Widget build(BuildContext context) {
-    final charNode = widget.character['node'];
-    final name = charNode['name'] ?? {};
-    final fullName = name['userPreferred'] ?? name['full'] ?? 'Unknown';
-    final nativeName = name['native'] ?? '';
-    final altNames = name['alternative'] as List? ?? [];
-    final altSpoiler = name['alternativeSpoiler'] as List? ?? [];
-    final description = charNode['description'] ?? 'No description available.';
-    final imageUrl = charNode['image']?['large'] ?? '';
-    final role = widget.character['role'] ?? 'Unknown';
-    final age = charNode['age'] ?? '';
-    final gender = charNode['gender'] ?? '';
-    final dob = charNode['dateOfBirth'] as Map<String, dynamic>? ?? {};
+    final charNode = widget.character.node;
+    final name = charNode?.name;
+    final fullName = name?.userPreferred ?? name?.full ?? 'Unknown';
+    final nativeName = name?.native ?? '';
+    final altNames = name?.alternative ?? [];
+    final altSpoiler = name?.alternativeSpoiler ?? [];
+    final description = charNode?.description ?? 'No description available.';
+    final imageUrl = charNode?.image?.large ?? '';
+    final role = widget.character.role;
+    final age = charNode?.age ?? '';
+    final gender = charNode?.gender ?? '';
+    final dob = charNode?.dateOfBirth;
 
     final birthInfo = _formatBirthInfo(dob, age.toString());
 
-    final voiceActors = widget.character['voiceActors'] as List? ?? [];
+    final voiceActors = widget.character.voiceActors;
 
     return DraggableScrollableSheet(
       initialChildSize: 0.5,
@@ -168,42 +170,81 @@ class _CharacterSheetState extends State<CharacterSheet> {
                       ],
                       if (altSpoiler.isNotEmpty) ...[
                         const SizedBox(height: 12),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isSpoilerVisible = !_isSpoilerVisible;
-                            });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.redAccent.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                color: Colors.redAccent.withValues(alpha: 0.3),
+                        if (!_isSpoilerVisible)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isSpoilerVisible = true;
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
                               ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 2),
-                                  child: Icon(
-                                    Icons.warning_amber_rounded,
-                                    size: 14,
-                                    color: Colors.redAccent,
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                  color: Colors.redAccent.withValues(
+                                    alpha: 0.3,
                                   ),
                                 ),
-                                const SizedBox(width: 6),
-                                Flexible(
+                              ),
+                              child: const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 2),
+                                    child: Icon(
+                                      Icons.warning_amber_rounded,
+                                      size: 14,
+                                      color: Colors.redAccent,
+                                    ),
+                                  ),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    'Tap to reveal spoilers',
+                                    style: TextStyle(
+                                      color: Colors.redAccent,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        else
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 6,
+                            children: altSpoiler.map<Widget>((name) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isSpoilerVisible = false;
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.redAccent.withValues(
+                                      alpha: 0.1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      color: Colors.redAccent.withValues(
+                                        alpha: 0.3,
+                                      ),
+                                    ),
+                                  ),
                                   child: Text(
-                                    _isSpoilerVisible
-                                        ? altSpoiler.join(', ')
-                                        : 'Tap to reveal spoilers',
+                                    name,
                                     style: const TextStyle(
                                       color: Colors.redAccent,
                                       fontSize: 12,
@@ -211,10 +252,9 @@ class _CharacterSheetState extends State<CharacterSheet> {
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              );
+                            }).toList(),
                           ),
-                        ),
                       ],
                       const SizedBox(height: 32),
 
@@ -232,9 +272,9 @@ class _CharacterSheetState extends State<CharacterSheet> {
                               const SizedBox(height: 12),
                           itemBuilder: (context, index) {
                             final va = voiceActors[index];
-                            final vaName = va['name']?['full'] ?? 'Unknown';
-                            final vaLang = va['languageV2'] ?? '';
-                            final vaImageUrl = va['image']?['large'] ?? '';
+                            final vaName = va.name?.full ?? 'Unknown';
+                            final vaLang = va.languageV2 ?? '';
+                            final vaImageUrl = va.image?.large ?? '';
 
                             return Row(
                               children: [
@@ -293,10 +333,16 @@ class _CharacterSheetState extends State<CharacterSheet> {
   }
 
   /// Formats birth date and age into a readable string
-  String _formatBirthInfo(Map<String, dynamic> dob, String age) {
-    final day = dob['day'];
-    final month = dob['month'];
-    final year = dob['year'];
+  String _formatBirthInfo(FuzzyDate? dob, String age) {
+    if (dob == null) {
+      if (age.isNotEmpty && age != 'null') {
+        return age;
+      }
+      return '';
+    }
+    final day = dob.day;
+    final month = dob.month;
+    final year = dob.year;
 
     String dateStr = '';
     if (day != null && month != null) {
