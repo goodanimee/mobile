@@ -2,10 +2,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../theme/theme.dart';
-import '../../../utils/utils.dart';
+import '../../../models/media.dart';
 
 class StickyHeader extends StatelessWidget {
-  final Map<String, dynamic> media;
+  final Media media;
   final bool showStickyBar;
   final bool isFavourite;
   final bool isFavouriteLoading;
@@ -25,6 +25,14 @@ class StickyHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
+    final title = media.title;
+    final titleText = title.userPreferred.isNotEmpty
+        ? title.userPreferred
+        : title.romaji.isNotEmpty
+        ? title.romaji
+        : title.english.isNotEmpty
+        ? title.english
+        : 'Unknown';
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -72,7 +80,7 @@ class StickyHeader extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            media.titleText,
+                            titleText,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -124,8 +132,8 @@ class StickyHeader extends StatelessWidget {
                       const SizedBox(width: 8),
                       GestureDetector(
                         onTap: () {
-                          final url = media['siteUrl']?.toString();
-                          if (url != null && url.isNotEmpty) {
+                          final url = media.siteUrl;
+                          if (url.isNotEmpty) {
                             Share.share(url);
                           }
                         },
@@ -164,6 +172,7 @@ class StickyHeader extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: child,
+          // ignore: deprecated_member_use_from_same_package
         ),
       ),
     );

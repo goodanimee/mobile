@@ -167,53 +167,41 @@ class _AnimePageState extends State<AnimePage> {
   }
 
   /// Builds the content of the currently selected tab
-  Widget _buildActiveTab(Map<String, dynamic> media) {
+  Widget _buildActiveTab(Media media) {
     switch (_selectedTabIndex) {
       case 0:
         return AnimeInfoTab(
-          media: Media.fromJson(media),
+          media: media,
           showSpoilers: _showSpoilers,
           onToggleSpoilers: () =>
               setState(() => _showSpoilers = !_showSpoilers),
           isNested: true,
         );
       case 1:
-        return AnimeMediaTab(media: Media.fromJson(media), isNested: true);
+        return AnimeMediaTab(media: media, isNested: true);
       case 2:
-        final rawStaff = media['staff'] as Map<String, dynamic>?;
         return AnimeStaffTab(
           mediaId: widget.mediaId,
           scrollController: _scrollController,
           isNested: true,
-          initialData: rawStaff != null
-              ? StaffConnection.fromJson(rawStaff)
-              : null,
+          initialData: media.staff,
         );
       case 3:
-        final rawCharacters = media['characters'] as Map<String, dynamic>?;
         return AnimeCharactersTab(
           mediaId: widget.mediaId,
           scrollController: _scrollController,
           isNested: true,
-          initialData: rawCharacters != null
-              ? CharacterConnection.fromJson(rawCharacters)
-              : null,
+          initialData: media.characters,
         );
       case 4:
-        final rawRelations = media['relations'] as Map<String, dynamic>?;
-        final rawRecs = media['recommendations'] as Map<String, dynamic>?;
         return AnimeRelationsTab(
           mediaId: widget.mediaId,
-          relationsData: rawRelations != null
-              ? MediaConnection.fromJson(rawRelations)
-              : null,
-          initialRecommendations: rawRecs != null
-              ? RecommendationConnection.fromJson(rawRecs)
-              : null,
+          relationsData: media.relations,
+          initialRecommendations: media.recommendations,
           isNested: true,
         );
       case 5:
-        return AnimeRankingsTab(media: Media.fromJson(media), isNested: true);
+        return AnimeRankingsTab(media: media, isNested: true);
       case 6:
         return const PlaceholderTab(title: 'Reviews Section');
       default:
@@ -222,7 +210,6 @@ class _AnimePageState extends State<AnimePage> {
   }
 
   @override
-  /// Builds the main anime page widget
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(
@@ -245,7 +232,8 @@ class _AnimePageState extends State<AnimePage> {
       );
     }
 
-    final media = _mediaData!;
+    final rawMedia = _mediaData!;
+    final media = Media.fromJson(rawMedia);
 
     final quickNavItems = [
       QuickNavSection(
@@ -359,9 +347,7 @@ class _AnimePageState extends State<AnimePage> {
                 controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
-                  SliverToBoxAdapter(
-                    child: AnimePageHeader(media: Media.fromJson(media)),
-                  ),
+                  SliverToBoxAdapter(child: AnimePageHeader(media: media)),
                   SliverToBoxAdapter(child: _buildActiveTab(media)),
                   const SliverToBoxAdapter(child: SizedBox(height: 128)),
                 ],
