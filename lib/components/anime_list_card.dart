@@ -5,6 +5,8 @@ import 'app_badges.dart';
 import '../services/auth_service.dart';
 import '../proto/medialist.pb.dart';
 import '../api/media_list_api.dart';
+import '../models/common.dart';
+import '../models/media_list.dart';
 
 /// Builds a badge showing repeat count
 Widget _buildRepeatBadge(int repeat) {
@@ -33,7 +35,11 @@ Widget _buildRepeatBadge(int repeat) {
 }
 
 /// Builds a badge showing progress and status
-Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
+Widget _buildProgressBadge(
+  MediaListStatus? status,
+  int progress,
+  dynamic episodes,
+) {
   const badgeDecoration = BoxDecoration(
     color: Colors.black38,
     borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -45,7 +51,7 @@ Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
     fontWeight: FontWeight.w600,
   );
 
-  if (status == 'PLANNING') {
+  if (status == MediaListStatus.PLANNING) {
     return Container(
       padding: badgePadding,
       decoration: badgeDecoration,
@@ -65,9 +71,9 @@ Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
   }
 
   final icon = switch (status) {
-    'COMPLETED' => Icons.check_circle_rounded,
-    'PAUSED' => Icons.pause_circle_rounded,
-    'DROPPED' => Icons.cancel_rounded,
+    MediaListStatus.COMPLETED => Icons.check_circle_rounded,
+    MediaListStatus.PAUSED => Icons.pause_circle_rounded,
+    MediaListStatus.DROPPED => Icons.cancel_rounded,
     _ => Icons.play_circle_fill_rounded,
   };
 
@@ -142,7 +148,7 @@ Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
 /// A card widget displaying an anime entry in a list
 class AnimeListCard extends StatefulWidget {
   /// The anime list entry data
-  final Map<String, dynamic> entry;
+  final MediaListEntryWithMedia entry;
 
   /// Callback when the entry is updated
   final void Function(int mediaId, Map<String, dynamic> updates)?
@@ -170,14 +176,14 @@ class AnimeListCard extends StatefulWidget {
 /// State for AnimeListCard
 class _AnimeListCardState extends State<AnimeListCard> {
   late int _progress;
-  late String _status;
+  late MediaListStatus? _status;
   bool _isUpdating = false;
 
   @override
   void initState() {
     super.initState();
-    _progress = widget.entry['progress'] as int? ?? 0;
-    _status = widget.entry['status'] as String? ?? '';
+    _progress = widget.entry.progress;
+    _status = widget.entry.status;
   }
 
   @override
@@ -185,8 +191,8 @@ class _AnimeListCardState extends State<AnimeListCard> {
   void didUpdateWidget(AnimeListCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.entry != widget.entry) {
-      _progress = widget.entry['progress'] as int? ?? 0;
-      _status = widget.entry['status'] as String? ?? '';
+      _progress = widget.entry.progress;
+      _status = widget.entry.status;
     }
   }
 
@@ -194,15 +200,12 @@ class _AnimeListCardState extends State<AnimeListCard> {
   Future<void> _incrementProgress() async {
     if (_isUpdating) return;
 
-    final media = widget.entry['media'] as Map<String, dynamic>? ?? {};
-    final mediaId = media['id'] as int?;
-    if (mediaId == null) return;
-
-    final epCount = media['episodes'] as int?;
+    final mediaId = widget.entry.media.id;
+    final epCount = widget.entry.media.episodes;
     final newProgress = _progress + 1;
-    final newStatus = (epCount != null && newProgress >= epCount)
-        ? 'COMPLETED'
-        : 'CURRENT';
+    final newStatus = (epCount > 0 && newProgress >= epCount)
+        ? MediaListStatus.COMPLETED
+        : MediaListStatus.CURRENT;
 
     setState(() {
       _progress = newProgress;
@@ -215,17 +218,17 @@ class _AnimeListCardState extends State<AnimeListCard> {
       final req = SaveMediaListEntryRequest(
         mediaId: mediaId,
         progress: newProgress,
-        status: newStatus,
+        status: newStatus.name,
       );
       await MediaListApi.saveMediaListEntry(req, token);
       widget.onEntryUpdated?.call(mediaId, {
         'progress': newProgress,
-        'status': newStatus,
+        'status': newStatus.name,
       });
     } catch (e) {
       setState(() {
-        _progress = widget.entry['progress'] as int? ?? 0;
-        _status = widget.entry['status'] as String? ?? '';
+        _progress = widget.entry.progress;
+        _status = widget.entry.status;
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -239,26 +242,29 @@ class _AnimeListCardState extends State<AnimeListCard> {
 
   @override
   Widget build(BuildContext context) {
-    final media = widget.entry['media'] as Map<String, dynamic>? ?? {};
-    final title = media['title']?['userPreferred'] ?? 'Unknown';
-    final coverImage = media['coverImage']?['large'];
-    final imageColorHex = media['coverImage']?['color'];
-    final color = imageColorHex != null
+    final title = widget.entry.media.title.userPreferred;
+    final coverImage = widget.entry.media.coverImage.large;
+    final imageColorHex = widget.entry.media.coverImage.color;
+    final color = imageColorHex.isNotEmpty
         ? Color(int.parse(imageColorHex.replaceAll('#', '0xFF')))
         : borderColor;
     final labelColor = Color.lerp(neutralLight, color, 0.35)!;
 
-    final format = media['format']?.toString().replaceAll('_', ' ') ?? '';
-    final averageScore = media['averageScore'] as int?;
-    final episodes = media['episodes'] ?? '?';
-    final repeat = widget.entry['repeat'] as int? ?? 0;
-    final score = (widget.entry['score'] as num?) ?? 0;
+    final format = widget.entry.media.format.replaceAll('_', ' ');
+    final averageScore = widget.entry.media.averageScore;
+    final episodes = widget.entry.media.episodes > 0
+        ? widget.entry.media.episodes
+        : '?';
+    final repeat = widget.entry.repeat;
+    final score = widget.entry.score;
 
-    final isAdult = media['isAdult'] as bool? ?? false;
-    final isFavourite = media['isFavourite'] as bool? ?? false;
+    final isAdult = widget.entry.media.isAdult;
+    final isFavourite = widget.entry.media.isFavourite;
 
     final showPlayButton =
-        _status == 'CURRENT' || _status == 'PLANNING' || _status == 'PAUSED';
+        _status == MediaListStatus.CURRENT ||
+        _status == MediaListStatus.PLANNING ||
+        _status == MediaListStatus.PAUSED;
 
     return GestureDetector(
       onTap: widget.onTap,
@@ -291,7 +297,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
                   children: [
                     Container(color: color.withValues(alpha: 0.2)),
                     AppNetworkImage(
-                      imageUrl: coverImage ?? '',
+                      imageUrl: coverImage,
                       width: double.infinity,
                       height: double.infinity,
                     ),
@@ -333,8 +339,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
                                       letterSpacing: 0.5,
                                     ),
                                   ),
-                                  if (averageScore != null &&
-                                      averageScore > 0) ...[
+                                  if (averageScore > 0) ...[
                                     Text(
                                       ' · ',
                                       style: TextStyle(
@@ -386,8 +391,8 @@ class _AnimeListCardState extends State<AnimeListCard> {
                                     ],
                                   ],
                                 ),
-                                if ((_status == 'COMPLETED' ||
-                                        _status == 'DROPPED') &&
+                                if ((_status == MediaListStatus.COMPLETED ||
+                                        _status == MediaListStatus.DROPPED) &&
                                     score > 0)
                                   _buildScoreBadge(score),
                               ],

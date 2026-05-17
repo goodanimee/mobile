@@ -3,6 +3,7 @@ import '../../../components/anime_list_card.dart';
 import '../../../components/section_title.dart';
 import '../../../components/error_view.dart';
 import '../../../utils/app_navigation.dart';
+import '../../../models/media_list.dart';
 
 class AnimeListView extends StatelessWidget {
   final String activeName;
@@ -60,9 +61,10 @@ class AnimeListView extends StatelessWidget {
         }
 
         final entry = entries[index - 1] as Map<String, dynamic>;
+        final typedEntry = MediaListEntryWithMedia.fromJson(entry);
 
         return AnimeListCard(
-          entry: entry,
+          entry: typedEntry,
           onEntryUpdated: onEntryUpdated,
           onTap: () {
             final media = entry['media'] as Map<String, dynamic>? ?? {};
