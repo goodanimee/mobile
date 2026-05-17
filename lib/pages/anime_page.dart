@@ -8,6 +8,7 @@ import '../services/anime_repo.dart';
 import '../utils/utils.dart';
 import '../utils/app_options.dart';
 import '../models/media_list.dart';
+import '../models/media.dart';
 
 import 'anime_page/tabs/info_tab.dart';
 import 'anime_page/tabs/characters_tab.dart';
@@ -347,7 +348,9 @@ class _AnimePageState extends State<AnimePage> {
                 controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
-                  SliverToBoxAdapter(child: AnimePageHeader(media: media)),
+                  SliverToBoxAdapter(
+                    child: AnimePageHeader(media: Media.fromJson(media)),
+                  ),
                   SliverToBoxAdapter(child: _buildActiveTab(media)),
                   const SliverToBoxAdapter(child: SizedBox(height: 128)),
                 ],

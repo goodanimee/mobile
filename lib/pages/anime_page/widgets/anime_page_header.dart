@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 import '../../../components/app_network_image.dart';
-import '../../../utils/utils.dart';
+import '../../../models/media.dart';
 
 /// Header component for the anime details page
 class AnimePageHeader extends StatelessWidget {
   /// The anime media data
-  final Map<String, dynamic> media;
+  final Media media;
 
   /// Creates an anime page header
   const AnimePageHeader({super.key, required this.media});
@@ -14,9 +14,15 @@ class AnimePageHeader extends StatelessWidget {
   @override
   /// Builds the anime page header widget
   Widget build(BuildContext context) {
-    final title = media.titleText;
-    final imageUrl = media.coverImage;
-    final bannerUrl = media.bannerImage ?? '';
+    final title = media.title.userPreferred.isNotEmpty
+        ? media.title.userPreferred
+        : media.title.romaji.isNotEmpty
+        ? media.title.romaji
+        : media.title.english.isNotEmpty
+        ? media.title.english
+        : 'Unknown';
+    final imageUrl = media.coverImage.large;
+    final bannerUrl = media.bannerImage;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,25 +90,23 @@ class AnimePageHeader extends StatelessWidget {
                     const SizedBox(height: 16),
                     _buildInfoRow(
                       Icons.tv_outlined,
-                      '${media['format'] ?? 'TV'}',
+                      media.format.isNotEmpty ? media.format : 'TV',
                     ),
                     const SizedBox(height: 8),
                     _buildInfoRow(
                       Icons.timer_outlined,
-                      '${media['episodes'] ?? '?'} Episodes',
+                      '${media.episodes > 0 ? media.episodes.toString() : '?'} Episodes',
                     ),
                     const SizedBox(height: 8),
                     _buildInfoRow(
                       Icons.rss_feed_rounded,
-                      '${media['status'] ?? 'FINISHED'}',
+                      media.status.isNotEmpty ? media.status : 'FINISHED',
                     ),
-                    if (media['season'] != null &&
-                        media['seasonYear'] != null) ...[
+                    if (media.season.isNotEmpty && media.seasonYear > 0) ...[
                       const SizedBox(height: 8),
                       _buildInfoRow(
                         Icons.calendar_today_rounded,
-                        '${media['season']} ${media['seasonYear']}'
-                            .toUpperCase(),
+                        '${media.season} ${media.seasonYear}'.toUpperCase(),
                       ),
                     ],
                   ],
