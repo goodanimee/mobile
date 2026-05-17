@@ -187,11 +187,14 @@ class _AnimePageState extends State<AnimePage> {
           initialData: media['staff'] as Map<String, dynamic>?,
         );
       case 3:
+        final rawCharacters = media['characters'] as Map<String, dynamic>?;
         return AnimeCharactersTab(
           mediaId: widget.mediaId,
           scrollController: _scrollController,
           isNested: true,
-          initialData: media['characters'] as Map<String, dynamic>?,
+          initialData: rawCharacters != null
+              ? CharacterConnection.fromJson(rawCharacters)
+              : null,
         );
       case 4:
         return AnimeRelationsTab(

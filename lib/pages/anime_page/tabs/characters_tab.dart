@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../../../components/loading_indicator.dart';
 import '../../../components/error_view.dart';
-import '../../../utils/utils.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
@@ -23,7 +22,7 @@ class AnimeCharactersTab extends StatefulWidget {
   final bool isNested;
 
   /// Initial data for the first page
-  final Map<String, dynamic>? initialData;
+  final CharacterConnection? initialData;
 
   /// Creates a characters tab
   const AnimeCharactersTab({
@@ -42,7 +41,7 @@ class AnimeCharactersTab extends StatefulWidget {
 class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
   bool _isLoading = true;
   bool _isFetchingMore = false;
-  final List<dynamic> _characters = [];
+  final List<CharacterEdge> _characters = [];
   int _currentPage = 1;
   bool _hasNextPage = false;
   String? _error;
@@ -54,11 +53,8 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
     super.initState();
 
     if (widget.initialData != null) {
-      final edges = widget.initialData!['edges'] as List? ?? [];
-      final pageInfo = widget.initialData!['pageInfo'];
-
-      _characters.addAll(edges);
-      _hasNextPage = pageInfo?['hasNextPage'] ?? false;
+      _characters.addAll(widget.initialData!.edges);
+      _hasNextPage = widget.initialData!.pageInfo.hasNextPage;
       _isLoading = false;
     } else {
       _fetchCharacters();
@@ -111,14 +107,13 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
       final response = await MediaApi.fetchMediaCharacters(req, token);
 
       final data = json.decode(response.rawJson);
-      final charData = data['characters'];
-      final edges = charData['edges'] as List? ?? [];
-      final pageInfo = charData['pageInfo'];
+      final charData = data['characters'] as Map<String, dynamic>;
+      final connection = CharacterConnection.fromJson(charData);
 
       if (mounted) {
         setState(() {
-          _characters.addAll(edges);
-          _hasNextPage = pageInfo['hasNextPage'] ?? false;
+          _characters.addAll(connection.edges);
+          _hasNextPage = connection.pageInfo.hasNextPage;
           _isLoading = false;
           _isFetchingMore = false;
         });
@@ -179,12 +174,12 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
               ),
               itemCount: _characters.length,
               itemBuilder: (context, index) {
-                final edge = _characters[index] as Map<String, dynamic>;
-                final node = edge['node'] as Map<String, dynamic>;
-                final fullName = node.fullName;
-                final nativeName = node['name']?['native'] ?? '';
-                final role = edge['role'] ?? '';
-                final charImageUrl = node['image']?['large'] ?? '';
+                final edge = _characters[index];
+                final node = edge.node;
+                final fullName = node?.name?.full ?? edge.name;
+                final nativeName = node?.name?.native ?? '';
+                final role = edge.role;
+                final charImageUrl = node?.image?.large ?? '';
 
                 return AppEntityCard(
                   imageUrl: charImageUrl,
@@ -196,10 +191,7 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
                     size: 14,
                     color: Colors.white.withValues(alpha: 0.25),
                   ),
-                  onTap: () => AppNavigation.toCharacter(
-                    context,
-                    CharacterEdge.fromJson(edge),
-                  ),
+                  onTap: () => AppNavigation.toCharacter(context, edge),
                 );
               },
             ),
