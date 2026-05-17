@@ -200,11 +200,16 @@ class _AnimePageState extends State<AnimePage> {
               : null,
         );
       case 4:
+        final rawRelations = media['relations'] as Map<String, dynamic>?;
+        final rawRecs = media['recommendations'] as Map<String, dynamic>?;
         return AnimeRelationsTab(
           mediaId: widget.mediaId,
-          relationsData: media['relations'] as Map<String, dynamic>?,
-          initialRecommendations:
-              media['recommendations'] as Map<String, dynamic>?,
+          relationsData: rawRelations != null
+              ? MediaConnection.fromJson(rawRelations)
+              : null,
+          initialRecommendations: rawRecs != null
+              ? RecommendationConnection.fromJson(rawRecs)
+              : null,
           isNested: true,
         );
       case 5:

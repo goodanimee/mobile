@@ -9,6 +9,7 @@ import '../../../api/media_details_api.dart';
 import '../../../services/auth_service.dart';
 import '../../../proto/medialist.pb.dart';
 import '../../../theme/theme.dart';
+import '../../../models/media.dart';
 
 /// Tab displaying related and recommended media
 class AnimeRelationsTab extends StatefulWidget {
@@ -16,10 +17,10 @@ class AnimeRelationsTab extends StatefulWidget {
   final int mediaId;
 
   /// Initial data for relations
-  final Map<String, dynamic>? relationsData;
+  final MediaConnection? relationsData;
 
   /// Initial data for recommendations
-  final Map<String, dynamic>? initialRecommendations;
+  final RecommendationConnection? initialRecommendations;
 
   /// Whether this tab is nested within another scroll view
   final bool isNested;
@@ -38,7 +39,7 @@ class AnimeRelationsTab extends StatefulWidget {
 }
 
 class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
-  final List<dynamic> _recommendations = [];
+  final List<RecommendationEdge> _recommendations = [];
   int _recommendationPage = 1;
   bool _hasNextRecommendationPage = false;
   bool _isFetchingMore = false;
@@ -50,10 +51,9 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
   void initState() {
     super.initState();
     if (widget.initialRecommendations != null) {
-      final edges = widget.initialRecommendations!['edges'] as List? ?? [];
-      final pageInfo = widget.initialRecommendations!['pageInfo'];
-      _recommendations.addAll(edges);
-      _hasNextRecommendationPage = pageInfo?['hasNextPage'] ?? false;
+      _recommendations.addAll(widget.initialRecommendations!.edges);
+      _hasNextRecommendationPage =
+          widget.initialRecommendations!.pageInfo.hasNextPage;
     }
     _recommendationsScrollController.addListener(
       _recommendationsScrollListener,
@@ -101,15 +101,15 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
       );
       final response = await MediaApi.fetchMediaRecommendations(req, token);
       final data = json.decode(response.rawJson);
-      final recommendations = data['recommendations'];
-      final edges = recommendations['edges'] as List? ?? [];
-      final pageInfo = recommendations['pageInfo'];
+      final recommendationsMap =
+          data['recommendations'] as Map<String, dynamic>;
+      final connection = RecommendationConnection.fromJson(recommendationsMap);
 
       if (mounted) {
         setState(() {
-          _recommendations.addAll(edges);
+          _recommendations.addAll(connection.edges);
           _recommendationPage++;
-          _hasNextRecommendationPage = pageInfo['hasNextPage'] ?? false;
+          _hasNextRecommendationPage = connection.pageInfo.hasNextPage;
           _isFetchingMore = false;
         });
       }
@@ -120,7 +120,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
 
   @override
   Widget build(BuildContext context) {
-    final relationEdges = widget.relationsData?['edges'] as List? ?? [];
+    final relationEdges = widget.relationsData?.edges ?? [];
     final hasRelations = relationEdges.isNotEmpty;
     final hasRecommendations = _recommendations.isNotEmpty;
 
@@ -181,23 +181,24 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
                   ),
                   itemCount: relationEdges.length,
                   itemBuilder: (context, index) {
-                    final edge = relationEdges[index] as Map<String, dynamic>;
-                    final node = edge['node'] as Map<String, dynamic>;
-                    final title = node['title'];
+                    final edge = relationEdges[index];
+                    final node = edge.node;
+                    final title = node?.title;
 
-                    final name =
-                        title['english'] ??
-                        title['romaji'] ??
-                        title['userPreferred'] ??
-                        'Unknown';
-                    final nativeName = title['native'] ?? '';
-                    final format = node['format'] ?? '';
+                    final name = title != null && title.english.isNotEmpty
+                        ? title.english
+                        : title != null && title.romaji.isNotEmpty
+                        ? title.romaji
+                        : title != null && title.userPreferred.isNotEmpty
+                        ? title.userPreferred
+                        : 'Unknown';
+                    final nativeName = title?.native ?? '';
+                    final format = node?.format ?? '';
                     final relation = StringUtils.capitalize(
-                      edge['relationType']?.toString().replaceAll('_', ' ') ??
-                          '',
+                      edge.relationType.replaceAll('_', ' '),
                     );
-                    final imageUrl = node['coverImage']?['large'] ?? '';
-                    final colorHex = node['coverImage']?['color'];
+                    final imageUrl = node?.coverImage.large ?? '';
+                    final colorHex = node?.coverImage.color;
                     final color = ColorUtils.fromHex(
                       colorHex,
                       fallback: Colors.transparent,
@@ -221,11 +222,8 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
                         size: 16,
                         color: textHint,
                       ),
-                      onTap: canNavigate
-                          ? () => AppNavigation.toAnime(
-                              context,
-                              node['id'] as int,
-                            )
+                      onTap: canNavigate && node != null
+                          ? () => AppNavigation.toAnime(context, node.id)
                           : null,
                     );
                   },
@@ -317,21 +315,23 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
   Widget _buildRecommendationCard(int index) {
     if (index >= _recommendations.length) return const SizedBox.shrink();
 
-    final edge = _recommendations[index] as Map<String, dynamic>;
-    final node = edge['node'] as Map<String, dynamic>;
-    final media = node['mediaRecommendation'] as Map<String, dynamic>;
-    final title = media['title'];
+    final edge = _recommendations[index];
+    final node = edge.node;
+    final media = node.mediaRecommendation;
+    final title = media?.title;
 
-    final name =
-        title['english'] ??
-        title['romaji'] ??
-        title['userPreferred'] ??
-        'Unknown';
-    final nativeName = title['native'] ?? '';
-    final format = media['format'] ?? '';
-    final rating = node['rating']?.toString() ?? '0';
-    final imageUrl = media['coverImage']?['large'] ?? '';
-    final colorHex = media['coverImage']?['color'];
+    final name = title != null && title.english.isNotEmpty
+        ? title.english
+        : title != null && title.romaji.isNotEmpty
+        ? title.romaji
+        : title != null && title.userPreferred.isNotEmpty
+        ? title.userPreferred
+        : 'Unknown';
+    final nativeName = title?.native ?? '';
+    final format = media?.format ?? '';
+    final rating = node.rating.toString();
+    final imageUrl = media?.coverImage.large ?? '';
+    final colorHex = media?.coverImage.color;
     final color = ColorUtils.fromHex(colorHex, fallback: Colors.transparent);
 
     return AppRelationCard(
@@ -346,7 +346,9 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
       ),
       color: color != Colors.transparent ? color : null,
       trailing: Icon(Icons.chevron_right_rounded, size: 16, color: textHint),
-      onTap: () => AppNavigation.toAnime(context, media['id'] as int),
+      onTap: media != null
+          ? () => AppNavigation.toAnime(context, media.id)
+          : null,
     );
   }
 }
