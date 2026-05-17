@@ -178,7 +178,7 @@ class _AnimePageState extends State<AnimePage> {
           isNested: true,
         );
       case 1:
-        return AnimeMediaTab(media: media, isNested: true);
+        return AnimeMediaTab(media: Media.fromJson(media), isNested: true);
       case 2:
         return AnimeStaffTab(
           mediaId: widget.mediaId,

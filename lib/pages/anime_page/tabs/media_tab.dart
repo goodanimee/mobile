@@ -4,11 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../components/section_title.dart';
 import '../../../components/app_network_image.dart';
 import '../../../components/error_view.dart';
+import '../../../models/media.dart';
 
 /// A tab displaying trailers and streaming episodes for an anime
 class AnimeMediaTab extends StatelessWidget {
   /// The anime media data
-  final Map<String, dynamic> media;
+  final Media media;
 
   /// Whether this tab is mounted within another scroll view
   final bool isNested;
@@ -18,22 +19,22 @@ class AnimeMediaTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final trailer = media['trailer'] as Map<String, dynamic>?;
+    final trailer = media.trailer;
     final hasYoutubeTrailer =
         trailer != null &&
-        trailer['site']?.toString().toLowerCase() == 'youtube' &&
-        trailer['id'] != null;
+        trailer.site.toLowerCase() == 'youtube' &&
+        trailer.id.isNotEmpty;
 
-    String trailerThumbnail = trailer?['thumbnail']?.toString() ?? '';
+    String trailerThumbnail = trailer?.thumbnail ?? '';
     if (trailerThumbnail.isEmpty && hasYoutubeTrailer) {
-      final id = trailer['id'].toString();
+      final id = trailer.id;
       trailerThumbnail = 'https://img.youtube.com/vi/$id/hqdefault.jpg';
     }
 
-    final rawEpisodes = media['streamingEpisodes'] as List? ?? [];
+    final rawEpisodes = media.streamingEpisodes;
 
-    int getEpNum(dynamic ep) {
-      final title = ep['title']?.toString() ?? '';
+    int getEpNum(StreamingEpisode ep) {
+      final title = ep.title;
       final match = RegExp(r'Episode\s+(\d+)').firstMatch(title);
       if (match != null) {
         return int.tryParse(match.group(1)!) ?? 0;
@@ -41,15 +42,15 @@ class AnimeMediaTab extends StatelessWidget {
       return 0;
     }
 
-    final allEpisodes = List<dynamic>.from(rawEpisodes)
+    final allEpisodes = List<StreamingEpisode>.from(rawEpisodes)
       ..sort((a, b) => getEpNum(a).compareTo(getEpNum(b)));
 
-    final mediaListEntry = media['mediaListEntry'] as Map<String, dynamic>?;
-    final progress = mediaListEntry?['progress'] as int? ?? 0;
-    final epCount = media['episodes'] as int?;
+    final mediaListEntry = media.mediaListEntry;
+    final progress = mediaListEntry?.progress ?? 0;
+    final epCount = media.episodes;
 
-    final watchedEpisodes = <dynamic>[];
-    final continueWatching = <dynamic>[];
+    final watchedEpisodes = <StreamingEpisode>[];
+    final continueWatching = <StreamingEpisode>[];
 
     for (final ep in allEpisodes) {
       final epNum = getEpNum(ep);
@@ -64,9 +65,7 @@ class AnimeMediaTab extends StatelessWidget {
     continueWatching.sort((a, b) => getEpNum(a).compareTo(getEpNum(b)));
 
     final bool showSplitView =
-        progress > 0 &&
-        (epCount == null || progress < epCount) &&
-        continueWatching.isNotEmpty;
+        progress > 0 && progress < epCount && continueWatching.isNotEmpty;
 
     final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +74,7 @@ class AnimeMediaTab extends StatelessWidget {
           const SectionTitle(title: 'Trailer', bottomPadding: 12),
           GestureDetector(
             onTap: () async {
-              final url = 'https://www.youtube.com/watch?v=${trailer['id']}';
+              final url = 'https://www.youtube.com/watch?v=${trailer.id}';
               final uri = Uri.parse(url);
               if (await canLaunchUrl(uri)) {
                 await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -197,13 +196,13 @@ class AnimeMediaTab extends StatelessWidget {
   }
 
   Widget _buildEpisodeCard(
-    Map<String, dynamic> ep,
+    StreamingEpisode ep,
     int index, {
     required bool isWatched,
   }) {
-    final epTitle = ep['title']?.toString() ?? 'Episode ${index + 1}';
-    final epThumb = ep['thumbnail']?.toString() ?? '';
-    final epUrl = ep['url']?.toString() ?? '';
+    final epTitle = ep.title.isNotEmpty ? ep.title : 'Episode ${index + 1}';
+    final epThumb = ep.thumbnail;
+    final epUrl = ep.url;
 
     return GestureDetector(
       onTap: () async {
