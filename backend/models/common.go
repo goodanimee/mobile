@@ -29,3 +29,15 @@ type PageInfo struct {
 	HasNextPage bool  `json:"hasNextPage"`
 	CurrentPage int32 `json:"currentPage"`
 }
+
+// MediaListStatus represents the status of a media list entry
+type MediaListStatus string
+
+const (
+	MediaListStatusCurrent   MediaListStatus = "CURRENT"
+	MediaListStatusPlanning  MediaListStatus = "PLANNING"
+	MediaListStatusCompleted MediaListStatus = "COMPLETED"
+	MediaListStatusDropped   MediaListStatus = "DROPPED"
+	MediaListStatusPaused    MediaListStatus = "PAUSED"
+	MediaListStatusRepeating MediaListStatus = "REPEATING"
+)

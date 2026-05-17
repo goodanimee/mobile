@@ -62,23 +62,38 @@ type MediaConnection struct {
 	Edges []MediaEdge `json:"edges"`
 }
 
+// CharacterName represents the names of a character
+type CharacterName struct {
+	Full               string   `json:"full"`
+	Native             *string  `json:"native"`
+	UserPreferred      *string  `json:"userPreferred"`
+	Alternative        []string `json:"alternative"`
+	AlternativeSpoiler []string `json:"alternativeSpoiler"`
+}
+
+// CharacterImage represents the images of a character
+type CharacterImage struct {
+	Large  *string `json:"large"`
+	Medium *string `json:"medium"`
+}
+
 // Character represents a character in a media
 type Character struct {
-	ID   int32 `json:"id"`
-	Name struct {
-		Full string `json:"full"`
-	} `json:"name"`
-	Image struct {
-		Medium string `json:"medium"`
-	} `json:"image"`
+	Name        *CharacterName  `json:"name"`
+	Image       *CharacterImage `json:"image"`
+	Gender      *string         `json:"gender"`
+	Age         *string         `json:"age"`
+	DateOfBirth *FuzzyDate      `json:"dateOfBirth"`
+	Description *string         `json:"description"`
 }
 
 // CharacterEdge represents a link between a media and a character
 type CharacterEdge struct {
-	ID   int32     `json:"id"`
-	Role string    `json:"role"`
-	Name string    `json:"name"`
-	Node Character `json:"node"`
+	ID          int32      `json:"id"`
+	Role        string     `json:"role"`
+	Name        string     `json:"name"`
+	Node        *Character `json:"node"`
+	VoiceActors []Staff    `json:"voiceActors"`
 }
 
 // CharacterConnection represents a paginated list of characters
@@ -87,22 +102,30 @@ type CharacterConnection struct {
 	PageInfo PageInfo        `json:"pageInfo"`
 }
 
+// StaffName represents the names of a staff member
+type StaffName struct {
+	Full          string  `json:"full"`
+	Native        *string `json:"native"`
+	UserPreferred *string `json:"userPreferred"`
+}
+
+// StaffImage represents the images of a staff member
+type StaffImage struct {
+	Large  *string `json:"large"`
+	Medium *string `json:"medium"`
+}
+
 // Staff represents a staff member
 type Staff struct {
-	ID   int32 `json:"id"`
-	Name struct {
-		Full string `json:"full"`
-	} `json:"name"`
-	Image struct {
-		Medium string `json:"medium"`
-	} `json:"image"`
+	Name       *StaffName  `json:"name"`
+	Image      *StaffImage `json:"image"`
+	LanguageV2 *string     `json:"languageV2"`
 }
 
 // StaffEdge represents a link between a media and a staff member
 type StaffEdge struct {
-	ID   int32  `json:"id"`
 	Role string `json:"role"`
-	Node Staff  `json:"node"`
+	Node *Staff `json:"node"`
 }
 
 // StaffConnection represents a paginated list of staff
@@ -113,7 +136,6 @@ type StaffConnection struct {
 
 // Recommendation represents a recommended media
 type Recommendation struct {
-	ID                  int32     `json:"id"`
 	Rating              int32     `json:"rating"`
 	MediaRecommendation *MediaMin `json:"mediaRecommendation"`
 }
@@ -131,13 +153,13 @@ type RecommendationEdge struct {
 
 // AiringSchedule represents an airing episode
 type AiringSchedule struct {
-	AiringAt int32 `json:"airingAt"`
-	Episode  int32 `json:"episode"`
+	AiringAt        int32 `json:"airingAt"`
+	Episode         int32 `json:"episode"`
+	TimeUntilAiring int32 `json:"timeUntilAiring"`
 }
 
 // StreamingEpisode represents a streaming link for an episode
 type StreamingEpisode struct {
-	Site      string `json:"site"`
 	Thumbnail string `json:"thumbnail"`
 	Title     string `json:"title"`
 	URL       string `json:"url"`
@@ -146,7 +168,6 @@ type StreamingEpisode struct {
 // MediaRank represents a ranking for a media
 type MediaRank struct {
 	AllTime bool   `json:"allTime"`
-	Context string `json:"context"`
 	Rank    int32  `json:"rank"`
 	Type    string `json:"type"`
 	Season  string `json:"season"`
@@ -197,15 +218,12 @@ type Media struct {
 	Description    string          `json:"description"`
 	BannerImage    string          `json:"bannerImage"`
 	Status         string          `json:"status"`
-	Duration       int32           `json:"duration"`
 	Genres         []string        `json:"genres"`
 	Popularity     int32           `json:"popularity"`
 	Season         string          `json:"season"`
 	SeasonYear     int32           `json:"seasonYear"`
 	Type           string          `json:"type"`
 	Trailer        *Trailer        `json:"trailer"`
-	StartDate      FuzzyDate       `json:"startDate"`
-	EndDate        FuzzyDate       `json:"endDate"`
 	MediaListEntry *MediaListEntry `json:"mediaListEntry"`
 	Studios        struct {
 		Edges []StudioEdge `json:"edges"`
@@ -221,6 +239,9 @@ type Media struct {
 	Rankings          []MediaRank              `json:"rankings"`
 	Stats             MediaStats               `json:"stats"`
 	Trends            MediaTrendConnection     `json:"trends"`
+	MeanScore         *int32                   `json:"meanScore"`
+	Favourites        *int32                   `json:"favourites"`
+	Synonyms          []string                 `json:"synonyms"`
 }
 
 // MediaDTO represents the DTO for a media query

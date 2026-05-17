@@ -11,7 +11,7 @@ type MediaListCollection struct {
 	HasNextChunk bool `json:"hasNextChunk"`
 	Lists        []struct {
 		Name    string                    `json:"name"`
-		Status  string                    `json:"status"`
+		Status  *MediaListStatus          `json:"status"`
 		Entries []MediaListEntryWithMedia `json:"entries"`
 	} `json:"lists"`
 }

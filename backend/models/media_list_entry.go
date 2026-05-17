@@ -2,13 +2,13 @@ package models
 
 // MediaListEntry represents a media list entry
 type MediaListEntry struct {
-	ID          int32     `json:"id"`
-	Status      string    `json:"status"`
-	Progress    int32     `json:"progress"`
-	Score       float64   `json:"score"`
-	Repeat      int32     `json:"repeat"`
-	StartedAt   FuzzyDate `json:"startedAt"`
-	CompletedAt FuzzyDate `json:"completedAt"`
+	ID          int32            `json:"id"`
+	Status      *MediaListStatus `json:"status"`
+	Progress    int32            `json:"progress"`
+	Score       float64          `json:"score"`
+	Repeat      int32            `json:"repeat"`
+	StartedAt   FuzzyDate        `json:"startedAt"`
+	CompletedAt FuzzyDate        `json:"completedAt"`
 }
 
 // SaveMediaListEntryDTO represents the DTO for saving a list entry
