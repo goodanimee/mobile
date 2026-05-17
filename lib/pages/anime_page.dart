@@ -7,6 +7,7 @@ import '../components/error_view.dart';
 import '../services/anime_repo.dart';
 import '../utils/utils.dart';
 import '../utils/app_options.dart';
+import '../models/media_list.dart';
 
 import 'anime_page/tabs/info_tab.dart';
 import 'anime_page/tabs/characters_tab.dart';
@@ -132,10 +133,27 @@ class _AnimePageState extends State<AnimePage> {
     final entry = Map<String, dynamic>.from(media['mediaListEntry'] ?? {});
     entry['media'] = media;
 
-    final result = await showAnimeOptions(context, entry);
+    final typedEntry = MediaListEntryWithMedia.fromJson(entry);
+    final result = await showAnimeOptions(context, typedEntry);
 
     if (result != null && mounted) {
       _didUpdate = true;
+      setState(() {
+        if (result['deleted'] == true) {
+          _mediaData!['mediaListEntry'] = null;
+        } else {
+          final entryMap =
+              _mediaData!['mediaListEntry'] as Map<String, dynamic>? ?? {};
+          final updatedEntry = Map<String, dynamic>.from(entryMap);
+          result.forEach((key, value) {
+            updatedEntry[key] = value;
+          });
+          _mediaData!['mediaListEntry'] = updatedEntry;
+        }
+      });
+
+      await AnimeRepo.restoreFavouriteCache(widget.mediaId, _mediaData!);
+
       await CacheUtils.invalidateMedia(widget.mediaId);
       CacheUtils.animeListNeedsRefresh.value = true;
       await _fetchAnimeDetails(forceRefresh: true);

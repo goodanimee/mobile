@@ -171,6 +171,26 @@ class AnimeListRepo {
     int mediaId,
     Map<String, dynamic> updates,
   ) async {
+    if (updates['deleted'] == true) {
+      final updatedLists = currentLists.map((s) {
+        final section = Map<String, dynamic>.from(s as Map<String, dynamic>);
+        final entries = (section['entries'] as List<dynamic>)
+            .map((e) => Map<String, dynamic>.from(e as Map<String, dynamic>))
+            .toList();
+
+        entries.removeWhere(
+          (e) => (e['media'] as Map<String, dynamic>?)?['id'] == mediaId,
+        );
+
+        section['entries'] = entries;
+        return section;
+      }).toList();
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_cacheKeyLists, jsonEncode(updatedLists));
+      return updatedLists;
+    }
+
     const orderedNames = [
       'WATCHING',
       'PLANNING',

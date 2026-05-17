@@ -5,13 +5,15 @@ import './anime_options/score_slider.dart';
 import './anime_options/progress_editor.dart';
 import './anime_options/status_selector.dart';
 import '../services/auth_service.dart';
-import '../proto/medialist.pb.dart';
+import '../proto/medialist.pb.dart' hide FuzzyDate;
 import '../api/media_list_api.dart';
+import '../models/common.dart';
+import '../models/media_list.dart';
 
 /// A bottom sheet for editing anime list entry options
 class AnimeOptionsSheet extends StatefulWidget {
   /// The anime list entry data
-  final Map<String, dynamic> entry;
+  final MediaListEntryWithMedia entry;
 
   /// Optional scroll controller for the sheet
   final ScrollController? scrollController;
@@ -47,17 +49,16 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
   @override
   void initState() {
     super.initState();
-    _status = widget.entry['status'] as String? ?? '';
-    _progress = widget.entry['progress'] as int? ?? 0;
-    _score = (widget.entry['score'] as num?)?.toDouble() ?? 0.0;
+    _status = widget.entry.status?.name ?? '';
+    _progress = widget.entry.progress;
+    _score = widget.entry.score;
 
-    final media = widget.entry['media'] as Map<String, dynamic>? ?? {};
-    _episodes = media['episodes'] as int?;
+    _episodes = widget.entry.media.episodes > 0
+        ? widget.entry.media.episodes
+        : null;
 
-    _startDate = _parseDate(widget.entry['startedAt'] as Map<String, dynamic>?);
-    _finishDate = _parseDate(
-      widget.entry['completedAt'] as Map<String, dynamic>?,
-    );
+    _startDate = _parseFuzzyDate(widget.entry.startedAt);
+    _finishDate = _parseFuzzyDate(widget.entry.completedAt);
 
     _initialStatus = _status;
     _initialProgress = _progress;
@@ -66,12 +67,12 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     _initialFinishDate = _finishDate;
   }
 
-  /// Parses a date map into a DateTime object
-  DateTime? _parseDate(Map<String, dynamic>? dateMap) {
-    if (dateMap == null) return null;
-    final y = dateMap['year'] as int?;
-    final m = dateMap['month'] as int?;
-    final d = dateMap['day'] as int?;
+  /// Parses a FuzzyDate into a DateTime object
+  DateTime? _parseFuzzyDate(FuzzyDate? fuzzyDate) {
+    if (fuzzyDate == null) return null;
+    final y = fuzzyDate.year;
+    final m = fuzzyDate.month;
+    final d = fuzzyDate.day;
     if (y != null && m != null && d != null) {
       return DateTime(y, m, d);
     }
@@ -179,7 +180,14 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
 
   /// Builds the save and cancel buttons
   Widget _buildActionButtons() {
-    final bool hasEntryId = widget.entry['id'] != null;
+    final bool hasEntryId = widget.entry.id > 0;
+    final bool hasChanges =
+        _status != _initialStatus ||
+        _progress != _initialProgress ||
+        _score != _initialScore ||
+        _startDate != _initialStartDate ||
+        _finishDate != _initialFinishDate;
+
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 24),
       child: Row(
@@ -227,7 +235,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
               ),
               const SizedBox(width: 12),
               ElevatedButton(
-                onPressed: _isSaving ? null : _saveChanges,
+                onPressed: (_isSaving || !hasChanges) ? null : _saveChanges,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: borderColor,
                   foregroundColor: Colors.white,
@@ -251,7 +259,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
                       )
                     : Text(
                         hasEntryId ? 'Save' : 'Add',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
@@ -265,8 +273,8 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
   }
 
   Future<void> _deleteEntry() async {
-    final entryId = widget.entry['id'] as int?;
-    if (entryId == null) return;
+    final entryId = widget.entry.id;
+    if (entryId <= 0) return;
 
     setState(() => _isSaving = true);
     try {
@@ -289,8 +297,8 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
 
   /// Saves changes to the backend
   Future<void> _saveChanges() async {
-    final mediaId = widget.entry['media']?['id'] as int?;
-    if (mediaId == null) return;
+    final mediaId = widget.entry.media.id;
+    if (mediaId <= 0) return;
 
     final bool hasChanges =
         _status != _initialStatus ||
@@ -307,10 +315,11 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     setState(() => _isSaving = true);
 
     try {
+      final finalStatus = _status.isEmpty ? 'CURRENT' : _status;
       final token = await AuthService.getRawToken() ?? '';
       final req = SaveMediaListEntryRequest(mediaId: mediaId);
 
-      if (_status != _initialStatus) req.status = _status;
+      if (finalStatus != _initialStatus) req.status = finalStatus;
       if (_progress != _initialProgress) req.progress = _progress;
       if (_score != _initialScore) req.score = _score;
 
@@ -329,11 +338,12 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
         );
       }
 
-      await MediaListApi.saveMediaListEntry(req, token);
+      final response = await MediaListApi.saveMediaListEntry(req, token);
 
       if (mounted) {
         Navigator.of(context).pop({
-          'status': _status,
+          'id': response.id,
+          'status': finalStatus,
           'progress': _progress,
           'score': _score,
           'startedAt': _startDate != null

@@ -5,6 +5,7 @@ import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
 import '../utils/utils.dart';
 import '../utils/app_options.dart';
+import '../models/media_list.dart';
 
 import 'anime_list_tab/widgets/grid_view.dart';
 import 'anime_list_tab/widgets/list_view.dart';
@@ -162,7 +163,8 @@ class _AnimeListTabState extends State<AnimeListTab> {
     BuildContext context,
     Map<String, dynamic> entry,
   ) async {
-    final result = await showAnimeOptions(context, entry);
+    final typedEntry = MediaListEntryWithMedia.fromJson(entry);
+    final result = await showAnimeOptions(context, typedEntry);
 
     if (result != null && mounted) {
       final media = entry['media'] as Map<String, dynamic>? ?? {};

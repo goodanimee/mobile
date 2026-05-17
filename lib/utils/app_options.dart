@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../components/anime_options_sheet.dart';
+import '../models/media_list.dart';
 
 /// Shows the anime options bottom sheet
 Future<Map<String, dynamic>?> showAnimeOptions(
   BuildContext context,
-  Map<String, dynamic> entry,
+  MediaListEntryWithMedia entry,
 ) {
   return showModalBottomSheet<Map<String, dynamic>>(
     context: context,
