@@ -27,6 +27,15 @@ class Trailer {
       thumbnail: json['thumbnail']?.toString() ?? '',
     );
   }
+
+  /// Converts the trailer to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'site': site,
+      'thumbnail': thumbnail,
+    };
+  }
 }
 
 /// Represents a media cover image
@@ -59,6 +68,16 @@ class CoverImage {
       extraLarge: json['extraLarge']?.toString() ?? '',
       color: json['color']?.toString() ?? '',
     );
+  }
+
+  /// Converts the cover image to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'medium': medium,
+      'large': large,
+      'extraLarge': extraLarge,
+      'color': color,
+    };
   }
 }
 
@@ -93,6 +112,16 @@ class Title {
       userPreferred: json['userPreferred']?.toString() ?? '',
     );
   }
+
+  /// Converts the title to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'english': english,
+      'native': native,
+      'romaji': romaji,
+      'userPreferred': userPreferred,
+    };
+  }
 }
 
 /// Represents a production studio
@@ -109,6 +138,14 @@ class Studio {
   /// Creates a studio from a JSON map
   factory Studio.fromJson(Map<String, dynamic> json) {
     return Studio(id: json['id'] as int, name: json['name'] as String);
+  }
+
+  /// Converts the studio to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+    };
   }
 }
 
@@ -129,6 +166,14 @@ class StudioEdge {
       isMain: json['isMain'] as bool,
       node: Studio.fromJson(json['node'] as Map<String, dynamic>),
     );
+  }
+
+  /// Converts the studio edge to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'isMain': isMain,
+      'node': node.toJson(),
+    };
   }
 }
 
@@ -168,6 +213,17 @@ class MediaTag {
       rank: json['rank'] as int,
     );
   }
+
+  /// Converts the media tag to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'isGeneralSpoiler': isGeneralSpoiler,
+      'isMediaSpoiler': isMediaSpoiler,
+      'name': name,
+      'rank': rank,
+    };
+  }
 }
 
 /// Represents a link to an external site
@@ -196,6 +252,15 @@ class ExternalLink {
       url: json['url'] as String,
     );
   }
+
+  /// Converts the external link to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'language': language,
+      'site': site,
+      'url': url,
+    };
+  }
 }
 
 /// Represents a link between two media
@@ -218,6 +283,14 @@ class MediaEdge {
           : null,
     );
   }
+
+  /// Converts the media edge to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'relationType': relationType,
+      'node': node?.toJson(),
+    };
+  }
 }
 
 /// Represents a paginated list of media relations
@@ -237,6 +310,13 @@ class MediaConnection {
               .toList() ??
           [],
     );
+  }
+
+  /// Converts the media connection to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'edges': edges.map((e) => e.toJson()).toList(),
+    };
   }
 }
 
@@ -277,6 +357,17 @@ class CharacterName {
           (json['alternativeSpoiler'] as List?)?.cast<String>() ?? [],
     );
   }
+
+  /// Converts the character name to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'full': full,
+      'native': native,
+      'userPreferred': userPreferred,
+      'alternative': alternative,
+      'alternativeSpoiler': alternativeSpoiler,
+    };
+  }
 }
 
 /// Represents the images of a character
@@ -296,6 +387,14 @@ class CharacterImage {
       large: json['large']?.toString(),
       medium: json['medium']?.toString(),
     );
+  }
+
+  /// Converts the character image to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'large': large,
+      'medium': medium,
+    };
   }
 }
 
@@ -346,6 +445,18 @@ class Character {
       description: json['description']?.toString(),
     );
   }
+
+  /// Converts the character to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name?.toJson(),
+      'image': image?.toJson(),
+      'gender': gender,
+      'age': age,
+      'dateOfBirth': dateOfBirth?.toJson(),
+      'description': description,
+    };
+  }
 }
 
 /// Represents a link between a media and a character
@@ -390,6 +501,17 @@ class CharacterEdge {
           [],
     );
   }
+
+  /// Converts the character edge to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'role': role,
+      'name': name,
+      'node': node?.toJson(),
+      'voiceActors': voiceActors.map((v) => v.toJson()).toList(),
+    };
+  }
 }
 
 /// Represents a paginated list of characters
@@ -413,6 +535,14 @@ class CharacterConnection {
           [],
       pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
     );
+  }
+
+  /// Converts the character connection to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'edges': edges.map((e) => e.toJson()).toList(),
+      'pageInfo': pageInfo.toJson(),
+    };
   }
 }
 
@@ -438,6 +568,15 @@ class StaffName {
       userPreferred: json['userPreferred']?.toString(),
     );
   }
+
+  /// Converts the staff name to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'full': full,
+      'native': native,
+      'userPreferred': userPreferred,
+    };
+  }
 }
 
 /// Represents the images of a staff member
@@ -457,6 +596,14 @@ class StaffImage {
       large: json['large']?.toString(),
       medium: json['medium']?.toString(),
     );
+  }
+
+  /// Converts the staff image to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'large': large,
+      'medium': medium,
+    };
   }
 }
 
@@ -486,6 +633,15 @@ class Staff {
       languageV2: json['languageV2']?.toString(),
     );
   }
+
+  /// Converts the staff member to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name?.toJson(),
+      'image': image?.toJson(),
+      'languageV2': languageV2,
+    };
+  }
 }
 
 /// Represents a link between a media and a staff member
@@ -507,6 +663,14 @@ class StaffEdge {
           ? Staff.fromJson(json['node'] as Map<String, dynamic>)
           : null,
     );
+  }
+
+  /// Converts the staff edge to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'role': role,
+      'node': node?.toJson(),
+    };
   }
 }
 
@@ -532,6 +696,14 @@ class StaffConnection {
       pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
     );
   }
+
+  /// Converts the staff connection to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'edges': edges.map((e) => e.toJson()).toList(),
+      'pageInfo': pageInfo.toJson(),
+    };
+  }
 }
 
 /// Represents a recommended media
@@ -556,6 +728,14 @@ class Recommendation {
           : null,
     );
   }
+
+  /// Converts the recommendation to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'rating': rating,
+      'mediaRecommendation': mediaRecommendation?.toJson(),
+    };
+  }
 }
 
 /// Represents a recommendation edge
@@ -571,6 +751,13 @@ class RecommendationEdge {
     return RecommendationEdge(
       node: Recommendation.fromJson(json['node'] as Map<String, dynamic>),
     );
+  }
+
+  /// Converts the recommendation edge to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'node': node.toJson(),
+    };
   }
 }
 
@@ -597,6 +784,14 @@ class RecommendationConnection {
               .toList() ??
           [],
     );
+  }
+
+  /// Converts the recommendation connection to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'pageInfo': pageInfo.toJson(),
+      'edges': edges.map((e) => e.toJson()).toList(),
+    };
   }
 }
 
@@ -626,6 +821,15 @@ class AiringSchedule {
       timeUntilAiring: json['timeUntilAiring'] as int? ?? 0,
     );
   }
+
+  /// Converts the airing schedule to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'airingAt': airingAt,
+      'episode': episode,
+      'timeUntilAiring': timeUntilAiring,
+    };
+  }
 }
 
 /// Represents a streaming link for an episode
@@ -653,6 +857,15 @@ class StreamingEpisode {
       title: json['title']?.toString() ?? '',
       url: json['url']?.toString() ?? '',
     );
+  }
+
+  /// Converts the streaming episode to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'thumbnail': thumbnail,
+      'title': title,
+      'url': url,
+    };
   }
 }
 
@@ -692,6 +905,17 @@ class MediaRank {
       year: json['year'] as int? ?? 0,
     );
   }
+
+  /// Converts the media rank to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'allTime': allTime,
+      'rank': rank,
+      'season': season,
+      'type': type,
+      'year': year,
+    };
+  }
 }
 
 /// Represents a score distribution entry
@@ -712,6 +936,14 @@ class ScoreDistribution {
       score: json['score'] as int? ?? 0,
     );
   }
+
+  /// Converts the score distribution to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'amount': amount,
+      'score': score,
+    };
+  }
 }
 
 /// Represents a status distribution entry
@@ -731,6 +963,14 @@ class StatusDistribution {
       amount: json['amount'] as int? ?? 0,
       status: json['status']?.toString() ?? '',
     );
+  }
+
+  /// Converts the status distribution to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'amount': amount,
+      'status': status,
+    };
   }
 }
 
@@ -767,6 +1007,14 @@ class MediaStats {
           [],
     );
   }
+
+  /// Converts the media stats to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'scoreDistribution': scoreDistribution.map((s) => s.toJson()).toList(),
+      'statusDistribution': statusDistribution.map((s) => s.toJson()).toList(),
+    };
+  }
 }
 
 /// Represents a trend data point
@@ -800,6 +1048,16 @@ class MediaTrend {
       popularity: json['popularity'] as int? ?? 0,
     );
   }
+
+  /// Converts the media trend to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'averageScore': averageScore,
+      'date': date,
+      'inProgress': inProgress,
+      'popularity': popularity,
+    };
+  }
 }
 
 /// Represents a list of trends
@@ -819,6 +1077,13 @@ class MediaTrendConnection {
               .toList() ??
           [],
     );
+  }
+
+  /// Converts the media trend connection to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'nodes': nodes.map((n) => n.toJson()).toList(),
+    };
   }
 }
 
@@ -879,6 +1144,21 @@ class MediaMin {
       isFavourite: json['isFavourite'] as bool? ?? false,
       siteUrl: json['siteUrl']?.toString() ?? '',
     );
+  }
+
+  /// Converts the minimal media to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title.toJson(),
+      'averageScore': averageScore,
+      'coverImage': coverImage.toJson(),
+      'episodes': episodes,
+      'format': format,
+      'isAdult': isAdult,
+      'isFavourite': isFavourite,
+      'siteUrl': siteUrl,
+    };
   }
 }
 
@@ -1088,6 +1368,39 @@ class Media extends MediaMin {
           : null,
     );
   }
+
+  /// Converts the media to a JSON map
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      ...super.toJson(),
+      'type': type,
+      'bannerImage': bannerImage,
+      'status': status,
+      'seasonYear': seasonYear,
+      'season': season,
+      'meanScore': meanScore,
+      'favourites': favourites,
+      'popularity': popularity,
+      'description': description,
+      'genres': genres,
+      'synonyms': synonyms,
+      'trailer': trailer?.toJson(),
+      'studios': {'edges': studios.map((e) => e.toJson()).toList()},
+      'tags': tags.map((e) => e.toJson()).toList(),
+      'externalLinks': externalLinks.map((e) => e.toJson()).toList(),
+      'mediaListEntry': mediaListEntry?.toJson(),
+      'streamingEpisodes': streamingEpisodes.map((e) => e.toJson()).toList(),
+      'staff': staff?.toJson(),
+      'nextAiringEpisode': nextAiringEpisode?.toJson(),
+      'characters': characters?.toJson(),
+      'relations': relations?.toJson(),
+      'recommendations': recommendations?.toJson(),
+      'rankings': rankings.map((e) => e.toJson()).toList(),
+      'stats': stats?.toJson(),
+      'trends': trends?.toJson(),
+    };
+  }
 }
 
 /// Represents the response for a favourite toggle
@@ -1112,5 +1425,21 @@ class ToggleFavourite {
           )
           .toList(),
     );
+  }
+
+  /// Converts the toggle favourite to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'anime': {
+        'nodes': animeNodes
+            .map(
+              (n) => {
+                'id': n.id,
+                'isFavourite': n.isFavourite,
+              },
+            )
+            .toList(),
+      },
+    };
   }
 }

@@ -30,4 +30,16 @@ class Viewer {
       createdAt: json['createdAt'] as int,
     );
   }
+
+  /// Converts the viewer to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'avatar': {
+        'medium': avatarMedium,
+      },
+      'createdAt': createdAt,
+    };
+  }
 }

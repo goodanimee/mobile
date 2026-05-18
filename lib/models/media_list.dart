@@ -33,6 +33,15 @@ class MediaListEntryWithMedia extends MediaListEntry {
       media: MediaMin.fromJson(json['media'] as Map<String, dynamic>),
     );
   }
+
+  /// Converts the entry with media to a JSON map
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      ...super.toJson(),
+      'media': media.toJson(),
+    };
+  }
 }
 
 /// Represents a single media list
@@ -61,6 +70,15 @@ class MediaList {
           .toList(),
     );
   }
+
+  /// Converts the media list to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'status': status?.toJson(),
+      'entries': entries.map((e) => e.toJson()).toList(),
+    };
+  }
 }
 
 /// Represents a collection of media lists for a user
@@ -82,5 +100,13 @@ class MediaListCollection {
           .map((l) => MediaList.fromJson(l as Map<String, dynamic>))
           .toList(),
     );
+  }
+
+  /// Converts the collection to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'hasNextChunk': hasNextChunk,
+      'lists': lists.map((l) => l.toJson()).toList(),
+    };
   }
 }

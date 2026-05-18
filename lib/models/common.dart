@@ -30,6 +30,11 @@ class FuzzyDate {
     if (day == null) return '$year-$month';
     return '$year-$month-$day';
   }
+
+  /// Converts the fuzzy date to a JSON map
+  Map<String, dynamic> toJson() {
+    return {'year': year, 'month': month, 'day': day};
+  }
 }
 
 /// Contains pagination information
@@ -49,6 +54,11 @@ class PageInfo {
       hasNextPage: json['hasNextPage'] as bool,
       currentPage: json['currentPage'] as int,
     );
+  }
+
+  /// Converts the page info to a JSON map
+  Map<String, dynamic> toJson() {
+    return {'hasNextPage': hasNextPage, 'currentPage': currentPage};
   }
 }
 

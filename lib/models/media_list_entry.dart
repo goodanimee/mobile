@@ -50,4 +50,17 @@ class MediaListEntry {
           : null,
     );
   }
+
+  /// Converts the media list entry to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'status': status?.toJson(),
+      'progress': progress,
+      'score': score,
+      'repeat': repeat,
+      'startedAt': startedAt?.toJson(),
+      'completedAt': completedAt?.toJson(),
+    };
+  }
 }
