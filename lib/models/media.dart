@@ -137,7 +137,10 @@ class Studio {
 
   /// Creates a studio from a JSON map
   factory Studio.fromJson(Map<String, dynamic> json) {
-    return Studio(id: json['id'] as int, name: json['name'] as String);
+    return Studio(
+      id: json['id'] as int? ?? 0,
+      name: json['name']?.toString() ?? '',
+    );
   }
 
   /// Converts the studio to a JSON map
@@ -162,9 +165,12 @@ class StudioEdge {
 
   /// Creates a studio edge from a JSON map
   factory StudioEdge.fromJson(Map<String, dynamic> json) {
+    final nodeData = json['node'] as Map?;
     return StudioEdge(
-      isMain: json['isMain'] as bool,
-      node: Studio.fromJson(json['node'] as Map<String, dynamic>),
+      isMain: json['isMain'] as bool? ?? false,
+      node: Studio.fromJson(
+        nodeData != null ? Map<String, dynamic>.from(nodeData) : const {},
+      ),
     );
   }
 
@@ -206,11 +212,11 @@ class MediaTag {
   /// Creates a media tag from a JSON map
   factory MediaTag.fromJson(Map<String, dynamic> json) {
     return MediaTag(
-      id: json['id'] as int,
-      isGeneralSpoiler: json['isGeneralSpoiler'] as bool,
-      isMediaSpoiler: json['isMediaSpoiler'] as bool,
-      name: json['name'] as String,
-      rank: json['rank'] as int,
+      id: json['id'] as int? ?? 0,
+      isGeneralSpoiler: json['isGeneralSpoiler'] as bool? ?? false,
+      isMediaSpoiler: json['isMediaSpoiler'] as bool? ?? false,
+      name: json['name']?.toString() ?? '',
+      rank: json['rank'] as int? ?? 0,
     );
   }
 
@@ -248,8 +254,8 @@ class ExternalLink {
   factory ExternalLink.fromJson(Map<String, dynamic> json) {
     return ExternalLink(
       language: json['language']?.toString() ?? '',
-      site: json['site'] as String,
-      url: json['url'] as String,
+      site: json['site']?.toString() ?? '',
+      url: json['url']?.toString() ?? '',
     );
   }
 
@@ -276,10 +282,11 @@ class MediaEdge {
 
   /// Creates a media edge from a JSON map
   factory MediaEdge.fromJson(Map<String, dynamic> json) {
+    final nodeData = json['node'] as Map?;
     return MediaEdge(
-      relationType: json['relationType'] as String,
-      node: json['node'] != null
-          ? MediaMin.fromJson(json['node'] as Map<String, dynamic>)
+      relationType: json['relationType']?.toString() ?? '',
+      node: nodeData != null
+          ? MediaMin.fromJson(Map<String, dynamic>.from(nodeData))
           : null,
     );
   }
@@ -303,12 +310,15 @@ class MediaConnection {
 
   /// Creates a media connection from a JSON map
   factory MediaConnection.fromJson(Map<String, dynamic> json) {
+    final edgesList = json['edges'] as List?;
     return MediaConnection(
-      edges:
-          (json['edges'] as List?)
-              ?.map((e) => MediaEdge.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      edges: edgesList != null
+          ? List<MediaEdge>.from(
+              edgesList.map(
+                (e) => MediaEdge.fromJson(Map<String, dynamic>.from(e as Map)),
+              ),
+            )
+          : const [],
     );
   }
 
@@ -430,17 +440,20 @@ class Character {
 
   /// Creates a character from a JSON map
   factory Character.fromJson(Map<String, dynamic> json) {
+    final nameData = json['name'] as Map?;
+    final imageData = json['image'] as Map?;
+    final dobData = json['dateOfBirth'] as Map?;
     return Character(
-      name: json['name'] != null
-          ? CharacterName.fromJson(json['name'] as Map<String, dynamic>)
+      name: nameData != null
+          ? CharacterName.fromJson(Map<String, dynamic>.from(nameData))
           : null,
-      image: json['image'] != null
-          ? CharacterImage.fromJson(json['image'] as Map<String, dynamic>)
+      image: imageData != null
+          ? CharacterImage.fromJson(Map<String, dynamic>.from(imageData))
           : null,
       gender: json['gender']?.toString(),
       age: json['age']?.toString(),
-      dateOfBirth: json['dateOfBirth'] != null
-          ? FuzzyDate.fromJson(json['dateOfBirth'] as Map<String, dynamic>)
+      dateOfBirth: dobData != null
+          ? FuzzyDate.fromJson(Map<String, dynamic>.from(dobData))
           : null,
       description: json['description']?.toString(),
     );
@@ -487,18 +500,22 @@ class CharacterEdge {
 
   /// Creates a character edge from a JSON map
   factory CharacterEdge.fromJson(Map<String, dynamic> json) {
+    final nodeData = json['node'] as Map?;
+    final vaList = json['voiceActors'] as List?;
     return CharacterEdge(
       id: json['id'] as int? ?? 0,
       role: json['role']?.toString() ?? '',
       name: json['name']?.toString() ?? '',
-      node: json['node'] != null
-          ? Character.fromJson(json['node'] as Map<String, dynamic>)
+      node: nodeData != null
+          ? Character.fromJson(Map<String, dynamic>.from(nodeData))
           : null,
-      voiceActors:
-          (json['voiceActors'] as List?)
-              ?.map((v) => Staff.fromJson(v as Map<String, dynamic>))
-              .toList() ??
-          [],
+      voiceActors: vaList != null
+          ? List<Staff>.from(
+              vaList.map(
+                (v) => Staff.fromJson(Map<String, dynamic>.from(v as Map)),
+              ),
+            )
+          : const [],
     );
   }
 
@@ -527,13 +544,23 @@ class CharacterConnection {
 
   /// Creates a character connection from a JSON map
   factory CharacterConnection.fromJson(Map<String, dynamic> json) {
+    final edgesList = json['edges'] as List?;
+    final pageInfoData = json['pageInfo'] as Map?;
     return CharacterConnection(
-      edges:
-          (json['edges'] as List?)
-              ?.map((e) => CharacterEdge.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
+      edges: edgesList != null
+          ? List<CharacterEdge>.from(
+              edgesList.map(
+                (e) => CharacterEdge.fromJson(
+                  Map<String, dynamic>.from(e as Map),
+                ),
+              ),
+            )
+          : const [],
+      pageInfo: PageInfo.fromJson(
+        pageInfoData != null
+            ? Map<String, dynamic>.from(pageInfoData)
+            : const {},
+      ),
     );
   }
 
@@ -623,12 +650,14 @@ class Staff {
 
   /// Creates a staff member from a JSON map
   factory Staff.fromJson(Map<String, dynamic> json) {
+    final nameData = json['name'] as Map?;
+    final imageData = json['image'] as Map?;
     return Staff(
-      name: json['name'] != null
-          ? StaffName.fromJson(json['name'] as Map<String, dynamic>)
+      name: nameData != null
+          ? StaffName.fromJson(Map<String, dynamic>.from(nameData))
           : null,
-      image: json['image'] != null
-          ? StaffImage.fromJson(json['image'] as Map<String, dynamic>)
+      image: imageData != null
+          ? StaffImage.fromJson(Map<String, dynamic>.from(imageData))
           : null,
       languageV2: json['languageV2']?.toString(),
     );
@@ -657,10 +686,11 @@ class StaffEdge {
 
   /// Creates a staff edge from a JSON map
   factory StaffEdge.fromJson(Map<String, dynamic> json) {
+    final nodeData = json['node'] as Map?;
     return StaffEdge(
       role: json['role']?.toString() ?? '',
-      node: json['node'] != null
-          ? Staff.fromJson(json['node'] as Map<String, dynamic>)
+      node: nodeData != null
+          ? Staff.fromJson(Map<String, dynamic>.from(nodeData))
           : null,
     );
   }
@@ -687,13 +717,21 @@ class StaffConnection {
 
   /// Creates a staff connection from a JSON map
   factory StaffConnection.fromJson(Map<String, dynamic> json) {
+    final edgesList = json['edges'] as List?;
+    final pageInfoData = json['pageInfo'] as Map?;
     return StaffConnection(
-      edges:
-          (json['edges'] as List?)
-              ?.map((e) => StaffEdge.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
+      edges: edgesList != null
+          ? List<StaffEdge>.from(
+              edgesList.map(
+                (e) => StaffEdge.fromJson(Map<String, dynamic>.from(e as Map)),
+              ),
+            )
+          : const [],
+      pageInfo: PageInfo.fromJson(
+        pageInfoData != null
+            ? Map<String, dynamic>.from(pageInfoData)
+            : const {},
+      ),
     );
   }
 
@@ -719,12 +757,11 @@ class Recommendation {
 
   /// Creates a recommendation from a JSON map
   factory Recommendation.fromJson(Map<String, dynamic> json) {
+    final mediaRecData = json['mediaRecommendation'] as Map?;
     return Recommendation(
       rating: json['rating'] as int? ?? 0,
-      mediaRecommendation: json['mediaRecommendation'] != null
-          ? MediaMin.fromJson(
-              json['mediaRecommendation'] as Map<String, dynamic>,
-            )
+      mediaRecommendation: mediaRecData != null
+          ? MediaMin.fromJson(Map<String, dynamic>.from(mediaRecData))
           : null,
     );
   }
@@ -748,8 +785,11 @@ class RecommendationEdge {
 
   /// Creates a recommendation edge from a JSON map
   factory RecommendationEdge.fromJson(Map<String, dynamic> json) {
+    final nodeData = json['node'] as Map?;
     return RecommendationEdge(
-      node: Recommendation.fromJson(json['node'] as Map<String, dynamic>),
+      node: Recommendation.fromJson(
+        nodeData != null ? Map<String, dynamic>.from(nodeData) : const {},
+      ),
     );
   }
 
@@ -774,15 +814,23 @@ class RecommendationConnection {
 
   /// Creates a recommendation connection from a JSON map
   factory RecommendationConnection.fromJson(Map<String, dynamic> json) {
+    final pageInfoData = json['pageInfo'] as Map?;
+    final edgesList = json['edges'] as List?;
     return RecommendationConnection(
-      pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
-      edges:
-          (json['edges'] as List?)
-              ?.map(
-                (e) => RecommendationEdge.fromJson(e as Map<String, dynamic>),
-              )
-              .toList() ??
-          [],
+      pageInfo: PageInfo.fromJson(
+        pageInfoData != null
+            ? Map<String, dynamic>.from(pageInfoData)
+            : const {},
+      ),
+      edges: edgesList != null
+          ? List<RecommendationEdge>.from(
+              edgesList.map(
+                (e) => RecommendationEdge.fromJson(
+                  Map<String, dynamic>.from(e as Map),
+                ),
+              ),
+            )
+          : const [],
     );
   }
 
@@ -990,21 +1038,27 @@ class MediaStats {
 
   /// Creates media stats from a JSON map
   factory MediaStats.fromJson(Map<String, dynamic> json) {
+    final scoreList = json['scoreDistribution'] as List?;
+    final statusList = json['statusDistribution'] as List?;
     return MediaStats(
-      scoreDistribution:
-          (json['scoreDistribution'] as List?)
-              ?.map(
-                (s) => ScoreDistribution.fromJson(s as Map<String, dynamic>),
-              )
-              .toList() ??
-          [],
-      statusDistribution:
-          (json['statusDistribution'] as List?)
-              ?.map(
-                (s) => StatusDistribution.fromJson(s as Map<String, dynamic>),
-              )
-              .toList() ??
-          [],
+      scoreDistribution: scoreList != null
+          ? List<ScoreDistribution>.from(
+              scoreList.map(
+                (s) => ScoreDistribution.fromJson(
+                  Map<String, dynamic>.from(s as Map),
+                ),
+              ),
+            )
+          : const [],
+      statusDistribution: statusList != null
+          ? List<StatusDistribution>.from(
+              statusList.map(
+                (s) => StatusDistribution.fromJson(
+                  Map<String, dynamic>.from(s as Map),
+                ),
+              ),
+            )
+          : const [],
     );
   }
 
@@ -1070,12 +1124,15 @@ class MediaTrendConnection {
 
   /// Creates a media trend connection from a JSON map
   factory MediaTrendConnection.fromJson(Map<String, dynamic> json) {
+    final nodesList = json['nodes'] as List?;
     return MediaTrendConnection(
-      nodes:
-          (json['nodes'] as List?)
-              ?.map((n) => MediaTrend.fromJson(n as Map<String, dynamic>))
-              .toList() ??
-          [],
+      nodes: nodesList != null
+          ? List<MediaTrend>.from(
+              nodesList.map(
+                (n) => MediaTrend.fromJson(Map<String, dynamic>.from(n as Map)),
+              ),
+            )
+          : const [],
     );
   }
 
@@ -1131,12 +1188,18 @@ class MediaMin {
 
   /// Creates a minimal media from a JSON map
   factory MediaMin.fromJson(Map<String, dynamic> json) {
+    final titleData = json['title'] as Map?;
+    final coverImageData = json['coverImage'] as Map?;
     return MediaMin(
       id: json['id'] as int? ?? 0,
-      title: Title.fromJson(json['title'] as Map<String, dynamic>),
+      title: Title.fromJson(
+        titleData != null ? Map<String, dynamic>.from(titleData) : const {},
+      ),
       averageScore: json['averageScore'] as int? ?? 0,
       coverImage: CoverImage.fromJson(
-        json['coverImage'] as Map<String, dynamic>,
+        coverImageData != null
+            ? Map<String, dynamic>.from(coverImageData)
+            : const {},
       ),
       episodes: json['episodes'] as int? ?? 0,
       format: json['format']?.toString() ?? '',
@@ -1279,19 +1342,35 @@ class Media extends MediaMin {
 
   /// Creates a media from a JSON map
   factory Media.fromJson(Map<String, dynamic> json) {
-    final studiosData = json['studios'] as Map<String, dynamic>?;
-    final staffData = json['staff'] as Map<String, dynamic>?;
-    final charactersData = json['characters'] as Map<String, dynamic>?;
-    final relationsData = json['relations'] as Map<String, dynamic>?;
-    final recommendationsData =
-        json['recommendations'] as Map<String, dynamic>?;
+    final titleData = json['title'] as Map?;
+    final coverImageData = json['coverImage'] as Map?;
+    final studiosData = json['studios'] as Map?;
+    final staffData = json['staff'] as Map?;
+    final charactersData = json['characters'] as Map?;
+    final relationsData = json['relations'] as Map?;
+    final recommendationsData = json['recommendations'] as Map?;
+    final trailerData = json['trailer'] as Map?;
+    final entryData = json['mediaListEntry'] as Map?;
+    final nextAiringData = json['nextAiringEpisode'] as Map?;
+    final statsData = json['stats'] as Map?;
+    final trendsData = json['trends'] as Map?;
+
+    final studiosList = studiosData != null ? studiosData['edges'] as List? : null;
+    final tagsList = json['tags'] as List?;
+    final externalLinksList = json['externalLinks'] as List?;
+    final streamingEpisodesList = json['streamingEpisodes'] as List?;
+    final rankingsList = json['rankings'] as List?;
 
     return Media(
       id: json['id'] as int? ?? 0,
-      title: Title.fromJson(json['title'] as Map<String, dynamic>),
+      title: Title.fromJson(
+        titleData != null ? Map<String, dynamic>.from(titleData) : const {},
+      ),
       averageScore: json['averageScore'] as int? ?? 0,
       coverImage: CoverImage.fromJson(
-        json['coverImage'] as Map<String, dynamic>,
+        coverImageData != null
+            ? Map<String, dynamic>.from(coverImageData)
+            : const {},
       ),
       episodes: json['episodes'] as int? ?? 0,
       format: json['format']?.toString() ?? '',
@@ -1309,61 +1388,74 @@ class Media extends MediaMin {
       description: json['description']?.toString() ?? '',
       genres: (json['genres'] as List?)?.cast<String>() ?? [],
       synonyms: (json['synonyms'] as List?)?.cast<String>() ?? [],
-      trailer: json['trailer'] != null
-          ? Trailer.fromJson(json['trailer'] as Map<String, dynamic>)
+      trailer: trailerData != null
+          ? Trailer.fromJson(Map<String, dynamic>.from(trailerData))
           : null,
-      studios: studiosData != null
-          ? (studiosData['edges'] as List?)
-                    ?.map((e) => StudioEdge.fromJson(e as Map<String, dynamic>))
-                    .toList() ??
-                []
-          : [],
-      tags:
-          (json['tags'] as List?)
-              ?.map((t) => MediaTag.fromJson(t as Map<String, dynamic>))
-              .toList() ??
-          [],
-      externalLinks:
-          (json['externalLinks'] as List?)
-              ?.map((e) => ExternalLink.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      mediaListEntry: json['mediaListEntry'] != null
-          ? MediaListEntry.fromJson(
-              json['mediaListEntry'] as Map<String, dynamic>,
+      studios: studiosList != null
+          ? List<StudioEdge>.from(
+              studiosList.map(
+                (e) => StudioEdge.fromJson(Map<String, dynamic>.from(e as Map)),
+              ),
             )
+          : const [],
+      tags: tagsList != null
+          ? List<MediaTag>.from(
+              tagsList.map(
+                (t) => MediaTag.fromJson(Map<String, dynamic>.from(t as Map)),
+              ),
+            )
+          : const [],
+      externalLinks: externalLinksList != null
+          ? List<ExternalLink>.from(
+              externalLinksList.map(
+                (e) => ExternalLink.fromJson(Map<String, dynamic>.from(e as Map)),
+              ),
+            )
+          : const [],
+      mediaListEntry: entryData != null
+          ? MediaListEntry.fromJson(Map<String, dynamic>.from(entryData))
           : null,
-      streamingEpisodes:
-          (json['streamingEpisodes'] as List?)
-              ?.map((s) => StreamingEpisode.fromJson(s as Map<String, dynamic>))
-              .toList() ??
-          [],
-      staff: staffData != null ? StaffConnection.fromJson(staffData) : null,
-      nextAiringEpisode: json['nextAiringEpisode'] != null
-          ? AiringSchedule.fromJson(
-              json['nextAiringEpisode'] as Map<String, dynamic>,
+      streamingEpisodes: streamingEpisodesList != null
+          ? List<StreamingEpisode>.from(
+              streamingEpisodesList.map(
+                (s) => StreamingEpisode.fromJson(
+                  Map<String, dynamic>.from(s as Map),
+                ),
+              ),
             )
+          : const [],
+      staff: staffData != null
+          ? StaffConnection.fromJson(Map<String, dynamic>.from(staffData))
+          : null,
+      nextAiringEpisode: nextAiringData != null
+          ? AiringSchedule.fromJson(Map<String, dynamic>.from(nextAiringData))
           : null,
       characters: charactersData != null
-          ? CharacterConnection.fromJson(charactersData)
+          ? CharacterConnection.fromJson(
+              Map<String, dynamic>.from(charactersData),
+            )
           : null,
       relations: relationsData != null
-          ? MediaConnection.fromJson(relationsData)
+          ? MediaConnection.fromJson(Map<String, dynamic>.from(relationsData))
           : null,
       recommendations: recommendationsData != null
-          ? RecommendationConnection.fromJson(recommendationsData)
+          ? RecommendationConnection.fromJson(
+              Map<String, dynamic>.from(recommendationsData),
+            )
           : null,
-      rankings:
-          (json['rankings'] as List?)
-              ?.map((r) => MediaRank.fromJson(r as Map<String, dynamic>))
-              .toList() ??
-          [],
-      stats: json['stats'] != null
-          ? MediaStats.fromJson(json['stats'] as Map<String, dynamic>)
+      rankings: rankingsList != null
+          ? List<MediaRank>.from(
+              rankingsList.map(
+                (r) => MediaRank.fromJson(Map<String, dynamic>.from(r as Map)),
+              ),
+            )
+          : const [],
+      stats: statsData != null
+          ? MediaStats.fromJson(Map<String, dynamic>.from(statsData))
           : null,
-      trends: json['trends'] != null
+      trends: trendsData != null
           ? MediaTrendConnection.fromJson(
-              json['trends'] as Map<String, dynamic>,
+              Map<String, dynamic>.from(trendsData),
             )
           : null,
     );

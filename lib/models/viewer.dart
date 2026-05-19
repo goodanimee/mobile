@@ -22,12 +22,12 @@ class Viewer {
 
   /// Creates a viewer from a JSON map
   factory Viewer.fromJson(Map<String, dynamic> json) {
+    final avatar = json['avatar'] as Map?;
     return Viewer(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      avatarMedium:
-          (json['avatar'] as Map<String, dynamic>)['medium'] as String,
-      createdAt: json['createdAt'] as int,
+      id: json['id'] as int? ?? 0,
+      name: json['name']?.toString() ?? '',
+      avatarMedium: avatar?['medium']?.toString() ?? '',
+      createdAt: json['createdAt'] as int? ?? 0,
     );
   }
 

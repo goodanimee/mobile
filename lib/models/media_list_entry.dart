@@ -36,17 +36,19 @@ class MediaListEntry {
 
   /// Creates a media list entry from a JSON map
   factory MediaListEntry.fromJson(Map<String, dynamic> json) {
+    final startedAtData = json['startedAt'] as Map?;
+    final completedAtData = json['completedAt'] as Map?;
     return MediaListEntry(
       id: json['id'] as int? ?? 0,
-      status: MediaListStatus.fromJson(json['status'] as String?),
+      status: MediaListStatus.fromJson(json['status']?.toString()),
       progress: json['progress'] as int? ?? 0,
       score: (json['score'] as num?)?.toDouble() ?? 0.0,
       repeat: json['repeat'] as int? ?? 0,
-      startedAt: json['startedAt'] != null
-          ? FuzzyDate.fromJson(json['startedAt'] as Map<String, dynamic>)
+      startedAt: startedAtData != null
+          ? FuzzyDate.fromJson(Map<String, dynamic>.from(startedAtData))
           : null,
-      completedAt: json['completedAt'] != null
-          ? FuzzyDate.fromJson(json['completedAt'] as Map<String, dynamic>)
+      completedAt: completedAtData != null
+          ? FuzzyDate.fromJson(Map<String, dynamic>.from(completedAtData))
           : null,
     );
   }

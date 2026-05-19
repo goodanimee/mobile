@@ -22,6 +22,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
   /// Creates a media list entry with media from a JSON map
   factory MediaListEntryWithMedia.fromJson(Map<String, dynamic> json) {
     final base = MediaListEntry.fromJson(json);
+    final mediaData = json['media'] as Map?;
     return MediaListEntryWithMedia(
       id: base.id,
       status: base.status,
@@ -30,7 +31,9 @@ class MediaListEntryWithMedia extends MediaListEntry {
       repeat: base.repeat,
       startedAt: base.startedAt,
       completedAt: base.completedAt,
-      media: MediaMin.fromJson(json['media'] as Map<String, dynamic>),
+      media: MediaMin.fromJson(
+        mediaData != null ? Map<String, dynamic>.from(mediaData) : const {},
+      ),
     );
   }
 
@@ -60,14 +63,19 @@ class MediaList {
 
   /// Creates a media list from a JSON map
   factory MediaList.fromJson(Map<String, dynamic> json) {
+    final entriesList = json['entries'] as List?;
     return MediaList(
-      name: json['name'] as String,
-      status: MediaListStatus.fromJson(json['status'] as String?),
-      entries: (json['entries'] as List)
-          .map(
-            (e) => MediaListEntryWithMedia.fromJson(e as Map<String, dynamic>),
-          )
-          .toList(),
+      name: json['name']?.toString() ?? '',
+      status: MediaListStatus.fromJson(json['status']?.toString()),
+      entries: entriesList != null
+          ? List<MediaListEntryWithMedia>.from(
+              entriesList.map(
+                (e) => MediaListEntryWithMedia.fromJson(
+                  Map<String, dynamic>.from(e as Map),
+                ),
+              ),
+            )
+          : const [],
     );
   }
 
@@ -94,11 +102,16 @@ class MediaListCollection {
 
   /// Creates a media list collection from a JSON map
   factory MediaListCollection.fromJson(Map<String, dynamic> json) {
+    final listsList = json['lists'] as List?;
     return MediaListCollection(
-      hasNextChunk: json['hasNextChunk'] as bool,
-      lists: (json['lists'] as List)
-          .map((l) => MediaList.fromJson(l as Map<String, dynamic>))
-          .toList(),
+      hasNextChunk: json['hasNextChunk'] as bool? ?? false,
+      lists: listsList != null
+          ? List<MediaList>.from(
+              listsList.map(
+                (l) => MediaList.fromJson(Map<String, dynamic>.from(l as Map)),
+              ),
+            )
+          : const [],
     );
   }
 
