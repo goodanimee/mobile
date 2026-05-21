@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
+import '../../../models/common.dart';
 import 'stat_tooltip.dart';
 
 /// A widget displaying a horizontal bar showing the status distribution of an anime
@@ -207,7 +208,6 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
 
   /// Formats the status string for display
   String _formatStatus(String status) {
-    if (status == 'CURRENT') return 'WATCHING';
-    return status;
+    return MediaListStatus.fromJson(status)?.displayName ?? status;
   }
 }

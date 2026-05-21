@@ -65,4 +65,25 @@ class MediaListEntry {
       'completedAt': completedAt?.toJson(),
     };
   }
+
+  /// Creates a copy of this object with the given fields replaced
+  MediaListEntry copyWith({
+    int? id,
+    MediaListStatus? status,
+    int? progress,
+    double? score,
+    int? repeat,
+    FuzzyDate? startedAt,
+    FuzzyDate? completedAt,
+  }) {
+    return MediaListEntry(
+      id: id ?? this.id,
+      status: status ?? this.status,
+      progress: progress ?? this.progress,
+      score: score ?? this.score,
+      repeat: repeat ?? this.repeat,
+      startedAt: startedAt ?? this.startedAt,
+      completedAt: completedAt ?? this.completedAt,
+    );
+  }
 }

@@ -4,13 +4,14 @@ import '../../../components/app_media_card.dart';
 import '../../../components/app_badges.dart';
 import '../../../components/section_title.dart';
 import '../../../components/error_view.dart';
+import '../../../models/media_list.dart';
 
 class AnimeListGridView extends StatelessWidget {
   final String activeName;
-  final List<dynamic> entries;
+  final List<MediaListEntryWithMedia> entries;
   final ScrollController scrollController;
   final VoidCallback onRefresh;
-  final void Function(BuildContext context, Map<String, dynamic> entry)
+  final void Function(BuildContext context, MediaListEntryWithMedia entry)
   onLongPress;
 
   const AnimeListGridView({
@@ -53,20 +54,19 @@ class AnimeListGridView extends StatelessWidget {
                 childAspectRatio: 0.7,
               ),
               delegate: SliverChildBuilderDelegate((context, index) {
-                final entry = entries[index] as Map<String, dynamic>;
-                final media = entry['media'] as Map<String, dynamic>? ?? {};
+                final entry = entries[index];
+                final media = entry.media;
 
                 return AppMediaCard(
-                  imageUrl: media['coverImage']['large']?.toString() ?? '',
-                  title:
-                      media['title']?['userPreferred']?.toString() ?? 'Unknown',
-                  colorStr: media['coverImage']?['color']?.toString(),
-                  isAdult: media['isAdult'] == true,
-                  isFavourite: media['isFavourite'] == true,
+                  imageUrl: media.coverImage.large,
+                  title: media.title.userPreferred,
+                  colorStr: media.coverImage.color,
+                  isAdult: media.isAdult,
+                  isFavourite: media.isFavourite,
                   favouriteBadge: const AppFavouriteBadge(hasBackground: true),
                   adultBadge: const AppAdultBadge(),
                   onTap: () {
-                    final mediaId = media['id'] as int? ?? 0;
+                    final mediaId = media.id;
                     if (mediaId != 0) {
                       AppNavigation.toAnime(
                         context,

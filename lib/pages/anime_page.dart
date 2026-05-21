@@ -8,6 +8,7 @@ import '../services/anime_repo.dart';
 import '../utils/utils.dart';
 import '../utils/app_options.dart';
 import '../models/media_list.dart';
+import '../models/media_list_entry.dart';
 import '../models/media.dart';
 
 import 'anime_page/tabs/info_tab.dart';
@@ -36,7 +37,7 @@ class AnimePage extends StatefulWidget {
 /// State for AnimePage
 class _AnimePageState extends State<AnimePage> {
   bool _isLoading = true;
-  Map<String, dynamic>? _mediaData;
+  Media? _mediaData;
   String? _error;
   bool _showSpoilers = false;
   int _selectedTabIndex = 0;
@@ -97,21 +98,27 @@ class _AnimePageState extends State<AnimePage> {
   /// Toggles the anime's favourite status
   Future<void> _toggleFavourite() async {
     if (_mediaData == null || _isTogglingFavourite) return;
-    final bool currentFav = _mediaData!['isFavourite'] == true;
+    final bool currentFav = _mediaData!.isFavourite;
 
     setState(() => _isTogglingFavourite = true);
 
     try {
       await AnimeRepo.toggleFavourite(widget.mediaId, _mediaData!);
-      setState(() => _mediaData!['isFavourite'] = !currentFav);
+      setState(
+        () => _mediaData = _mediaData!.copyWith(isFavourite: !currentFav),
+      );
       _didUpdate = true;
     } catch (e) {
       if (mounted) {
-        setState(() => _mediaData!['isFavourite'] = currentFav);
-        await AnimeRepo.restoreFavouriteCache(widget.mediaId, _mediaData!);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to toggle favourite: $e')),
+        setState(
+          () => _mediaData = _mediaData!.copyWith(isFavourite: currentFav),
         );
+        await AnimeRepo.restoreFavouriteCache(widget.mediaId, _mediaData!);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to toggle favourite: $e')),
+          );
+        }
       }
     } finally {
       if (mounted) {
@@ -131,25 +138,30 @@ class _AnimePageState extends State<AnimePage> {
     if (_mediaData == null) return;
 
     final media = _mediaData!;
-    final entry = Map<String, dynamic>.from(media['mediaListEntry'] ?? {});
-    entry['media'] = media;
-
-    final typedEntry = MediaListEntryWithMedia.fromJson(entry);
+    final typedEntry = MediaListEntryWithMedia(
+      id: media.mediaListEntry?.id ?? 0,
+      status: media.mediaListEntry?.status,
+      progress: media.mediaListEntry?.progress ?? 0,
+      score: media.mediaListEntry?.score ?? 0,
+      repeat: media.mediaListEntry?.repeat ?? 0,
+      startedAt: media.mediaListEntry?.startedAt,
+      completedAt: media.mediaListEntry?.completedAt,
+      media: media,
+    );
     final result = await showAnimeOptions(context, typedEntry);
 
     if (result != null && mounted) {
       _didUpdate = true;
       setState(() {
         if (result['deleted'] == true) {
-          _mediaData!['mediaListEntry'] = null;
+          _mediaData = media.copyWith(mediaListEntry: null);
         } else {
-          final entryMap =
-              _mediaData!['mediaListEntry'] as Map<String, dynamic>? ?? {};
-          final updatedEntry = Map<String, dynamic>.from(entryMap);
+          final entryMap = media.mediaListEntry?.toJson() ?? {};
           result.forEach((key, value) {
-            updatedEntry[key] = value;
+            entryMap[key] = value;
           });
-          _mediaData!['mediaListEntry'] = updatedEntry;
+          final updatedEntry = MediaListEntry.fromJson(entryMap);
+          _mediaData = media.copyWith(mediaListEntry: updatedEntry);
         }
       });
 
@@ -232,8 +244,7 @@ class _AnimePageState extends State<AnimePage> {
       );
     }
 
-    final rawMedia = _mediaData!;
-    final media = Media.fromJson(rawMedia);
+    final media = _mediaData!;
 
     final quickNavItems = [
       QuickNavSection(
@@ -360,7 +371,7 @@ class _AnimePageState extends State<AnimePage> {
               child: StickyHeader(
                 media: media,
                 showStickyBar: _showStickyBar,
-                isFavourite: _mediaData?['isFavourite'] == true,
+                isFavourite: _mediaData?.isFavourite ?? false,
                 isFavouriteLoading: _isTogglingFavourite,
                 onBack: () => Navigator.of(context).pop(_didUpdate),
                 onToggleFavourite: _toggleFavourite,

@@ -42,6 +42,30 @@ class MediaListEntryWithMedia extends MediaListEntry {
   Map<String, dynamic> toJson() {
     return {...super.toJson(), 'media': media.toJson()};
   }
+
+  /// Creates a copy of this object with the given fields replaced
+  @override
+  MediaListEntryWithMedia copyWith({
+    int? id,
+    MediaListStatus? status,
+    int? progress,
+    double? score,
+    int? repeat,
+    FuzzyDate? startedAt,
+    FuzzyDate? completedAt,
+    MediaMin? media,
+  }) {
+    return MediaListEntryWithMedia(
+      id: id ?? this.id,
+      status: status ?? this.status,
+      progress: progress ?? this.progress,
+      score: score ?? this.score,
+      repeat: repeat ?? this.repeat,
+      startedAt: startedAt ?? this.startedAt,
+      completedAt: completedAt ?? this.completedAt,
+      media: media ?? this.media,
+    );
+  }
 }
 
 /// Represents a single media list

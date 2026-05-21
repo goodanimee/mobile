@@ -1176,6 +1176,31 @@ class MediaMin {
       'siteUrl': siteUrl,
     };
   }
+
+  /// Creates a copy of this object with the given fields replaced
+  MediaMin copyWith({
+    int? id,
+    Title? title,
+    int? averageScore,
+    CoverImage? coverImage,
+    int? episodes,
+    String? format,
+    bool? isAdult,
+    bool? isFavourite,
+    String? siteUrl,
+  }) {
+    return MediaMin(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      averageScore: averageScore ?? this.averageScore,
+      coverImage: coverImage ?? this.coverImage,
+      episodes: episodes ?? this.episodes,
+      format: format ?? this.format,
+      isAdult: isAdult ?? this.isAdult,
+      isFavourite: isFavourite ?? this.isFavourite,
+      siteUrl: siteUrl ?? this.siteUrl,
+    );
+  }
 }
 
 /// Represents the core media domain model
@@ -1446,6 +1471,84 @@ class Media extends MediaMin {
       'stats': stats?.toJson(),
       'trends': trends?.toJson(),
     };
+  }
+
+  /// Creates a copy of this object with the given fields replaced
+  @override
+  Media copyWith({
+    int? id,
+    Title? title,
+    int? averageScore,
+    CoverImage? coverImage,
+    int? episodes,
+    String? format,
+    bool? isAdult,
+    bool? isFavourite,
+    String? siteUrl,
+    String? type,
+    String? bannerImage,
+    String? status,
+    int? seasonYear,
+    String? season,
+    int? meanScore,
+    int? favourites,
+    int? popularity,
+    String? description,
+    List<String>? genres,
+    List<String>? synonyms,
+    Trailer? trailer,
+    List<StudioEdge>? studios,
+    List<MediaTag>? tags,
+    List<ExternalLink>? externalLinks,
+    MediaListEntry? mediaListEntry,
+    List<StreamingEpisode>? streamingEpisodes,
+    StaffConnection? staff,
+    AiringSchedule? nextAiringEpisode,
+    CharacterConnection? characters,
+    MediaConnection? relations,
+    RecommendationConnection? recommendations,
+    List<MediaRank>? rankings,
+    MediaStats? stats,
+    MediaTrendConnection? trends,
+  }) {
+    return Media(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      averageScore: averageScore ?? this.averageScore,
+      coverImage: coverImage ?? this.coverImage,
+      episodes: episodes ?? this.episodes,
+      format: format ?? this.format,
+      isAdult: isAdult ?? this.isAdult,
+      isFavourite: isFavourite ?? this.isFavourite,
+      siteUrl: siteUrl ?? this.siteUrl,
+      type: type ?? this.type,
+      bannerImage: bannerImage ?? this.bannerImage,
+      status: status ?? this.status,
+      seasonYear: seasonYear ?? this.seasonYear,
+      season: season ?? this.season,
+      meanScore: meanScore ?? this.meanScore,
+      favourites: favourites ?? this.favourites,
+      popularity: popularity ?? this.popularity,
+      description: description ?? this.description,
+      genres: genres ?? this.genres,
+      synonyms: synonyms ?? this.synonyms,
+      trailer: trailer ?? this.trailer,
+      studios: studios ?? this.studios,
+      tags: tags ?? this.tags,
+      externalLinks: externalLinks ?? this.externalLinks,
+      mediaListEntry:
+          mediaListEntry ??
+          this.mediaListEntry, // Not doing a hack to clear it via copyWith for now
+      streamingEpisodes: streamingEpisodes ?? this.streamingEpisodes,
+      staff: staff ?? this.staff,
+      nextAiringEpisode: nextAiringEpisode ?? this.nextAiringEpisode,
+      characters: characters ?? this.characters,
+      relations: relations ?? this.relations,
+      recommendations: recommendations ?? this.recommendations,
+      rankings: rankings ?? this.rankings,
+      stats: stats ?? this.stats,
+      trends: trends ?? this.trends,
+    );
   }
 }
 

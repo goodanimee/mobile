@@ -7,11 +7,11 @@ import '../../../models/media_list.dart';
 
 class AnimeListView extends StatelessWidget {
   final String activeName;
-  final List<dynamic> entries;
+  final List<MediaListEntryWithMedia> entries;
   final ScrollController scrollController;
   final VoidCallback onRefresh;
   final void Function(int mediaId, Map<String, dynamic> updates) onEntryUpdated;
-  final void Function(BuildContext context, Map<String, dynamic> entry)
+  final void Function(BuildContext context, MediaListEntryWithMedia entry)
   onLongPress;
 
   const AnimeListView({
@@ -60,15 +60,13 @@ class AnimeListView extends StatelessWidget {
           );
         }
 
-        final entry = entries[index - 1] as Map<String, dynamic>;
-        final typedEntry = MediaListEntryWithMedia.fromJson(entry);
+        final entry = entries[index - 1];
 
         return AnimeListCard(
-          entry: typedEntry,
+          entry: entry,
           onEntryUpdated: onEntryUpdated,
           onTap: () {
-            final media = entry['media'] as Map<String, dynamic>? ?? {};
-            final mediaId = media['id'] as int? ?? 0;
+            final mediaId = entry.media.id;
             if (mediaId != 0) {
               AppNavigation.toAnime(context, mediaId, onRefresh: onRefresh);
             }

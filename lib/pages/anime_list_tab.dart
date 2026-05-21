@@ -41,7 +41,7 @@ class AnimeListTab extends StatefulWidget {
 /// State for AnimeListTab
 class _AnimeListTabState extends State<AnimeListTab> {
   bool _isLoading = true;
-  List<dynamic> _lists = [];
+  List<MediaList> _lists = [];
   String? _error;
   final _scrollController = ScrollController();
   String? _activeStatus;
@@ -73,7 +73,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
   /// Notifies parent of the available list sections
   void _notifySections() {
     widget.onSectionsChanged?.call(
-      _lists.map((l) => l['name'] as String).toList(),
+      _lists.map((l) => l.name).toList(),
       _activeStatus ?? '',
       _selectSection,
     );
@@ -127,7 +127,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
     }
   }
 
-  void _updateUIWithLists(List<dynamic> newLists) {
+  void _updateUIWithLists(List<MediaList> newLists) {
     if (!mounted) return;
 
     setState(() {
@@ -137,10 +137,10 @@ class _AnimeListTabState extends State<AnimeListTab> {
 
       if (_activeStatus == null) {
         final firstNonEmpty = newLists.firstWhere(
-          (l) => (l['entries'] as List).isNotEmpty,
-          orElse: () => newLists.first as Map<String, dynamic>,
+          (l) => l.entries.isNotEmpty,
+          orElse: () => newLists.first,
         );
-        _activeStatus = firstNonEmpty['name'] as String;
+        _activeStatus = firstNonEmpty.name;
       }
     });
     _notifySections();
@@ -161,14 +161,12 @@ class _AnimeListTabState extends State<AnimeListTab> {
   /// Shows the anime options bottom sheet
   void _showItemOptions(
     BuildContext context,
-    Map<String, dynamic> entry,
+    MediaListEntryWithMedia entry,
   ) async {
-    final typedEntry = MediaListEntryWithMedia.fromJson(entry);
-    final result = await showAnimeOptions(context, typedEntry);
+    final result = await showAnimeOptions(context, entry);
 
     if (result != null && mounted) {
-      final media = entry['media'] as Map<String, dynamic>? ?? {};
-      final mediaId = media.mediaId;
+      final mediaId = entry.media.id;
       if (mediaId != 0) {
         CacheUtils.invalidateMedia(mediaId);
         _handleEntryUpdated(mediaId, result);
@@ -194,14 +192,12 @@ class _AnimeListTabState extends State<AnimeListTab> {
       return const AppErrorView(message: 'No anime lists found.');
     }
 
-    final activeList =
-        _lists.firstWhere(
-              (l) => l['name'] == _activeStatus,
-              orElse: () => _lists.first as Map<String, dynamic>,
-            )
-            as Map<String, dynamic>;
-    final activeName = activeList['name'] as String? ?? '';
-    final activeEntries = activeList['entries'] as List<dynamic>? ?? [];
+    final activeList = _lists.firstWhere(
+      (l) => l.name == _activeStatus,
+      orElse: () => _lists.first,
+    );
+    final activeName = activeList.name;
+    final activeEntries = activeList.entries;
 
     return RefreshIndicator(
       color: borderColor,

@@ -74,6 +74,9 @@ enum MediaListStatus {
   /// Converts the status to JSON string
   String toJson() => name;
 
+  /// Gets the display name for the status (e.g., WATCHING instead of CURRENT)
+  String get displayName => this == MediaListStatus.CURRENT ? 'WATCHING' : name;
+
   /// Parses the status from a nullable JSON string
   static MediaListStatus? fromJson(String? value) {
     if (value == null) return null;
