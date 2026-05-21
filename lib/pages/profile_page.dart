@@ -5,6 +5,7 @@ import '../api/user_api.dart';
 import '../theme/theme.dart';
 import '../components/user_profile.dart';
 import '../services/auth_service.dart';
+import '../models/viewer.dart';
 
 const _keyCachedUser = 'cached_viewer';
 const _keyCachedAt = 'cached_viewer_at';
@@ -24,7 +25,7 @@ class ProfilePage extends StatefulWidget {
 
 /// State for ProfilePage
 class _ProfilePageState extends State<ProfilePage> {
-  Map<String, dynamic>? _userData;
+  Viewer? _userData;
   bool _isLoading = true;
 
   @override
@@ -47,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (cachedJson != null && isFresh) {
       if (mounted) {
         setState(() {
-          _userData = jsonDecode(cachedJson);
+          _userData = Viewer.fromJson(jsonDecode(cachedJson));
           _isLoading = false;
         });
       }
@@ -62,19 +63,13 @@ class _ProfilePageState extends State<ProfilePage> {
     try {
       final token = await AuthService.getValidToken();
       final viewer = await UserApi.fetchViewer(token);
-      final viewerMap = <String, dynamic>{
-        'id': viewer.id,
-        'name': viewer.name,
-        'createdAt': viewer.createdAt,
-        'avatar': {'medium': viewer.avatarMedium},
-      };
 
-      await prefs.setString(_keyCachedUser, jsonEncode(viewerMap));
+      await prefs.setString(_keyCachedUser, jsonEncode(viewer.toJson()));
       await prefs.setInt(_keyCachedAt, DateTime.now().millisecondsSinceEpoch);
 
       if (mounted) {
         setState(() {
-          _userData = viewerMap;
+          _userData = viewer;
           _isLoading = false;
         });
       }
