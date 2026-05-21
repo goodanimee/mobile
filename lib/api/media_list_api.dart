@@ -1,7 +1,10 @@
 import 'dart:ffi' as ffi;
 import 'package:ffi/ffi.dart';
 import 'dart:isolate';
-import '../proto/medialist.pb.dart';
+import '../models/media_list.dart';
+import '../models/media_list_entry.dart';
+import '../proto/medialist.pb.dart'
+    hide MediaListEntry, MediaList, MediaListCollection;
 import 'ffi_core.dart';
 
 /// Native function signature for fetching media list
@@ -82,7 +85,7 @@ class MediaListApi {
   }
 
   /// Fetches the media list for a given user ID and authentication token.
-  static Future<FetchMediaListResponse> fetchMediaList(
+  static Future<MediaListCollection> fetchMediaList(
     int userId,
     String token,
   ) async {
@@ -95,9 +98,11 @@ class MediaListApi {
         );
         final response = FetchMediaListResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) {
-          throw Exception('Error fetching viewer: ${response.error}');
+          throw Exception('Error fetching media list: ${response.error}');
         }
-        return response;
+        final decoded =
+            response.collection.toProto3Json() as Map<String, dynamic>;
+        return MediaListCollection.fromJson(decoded);
       } finally {
         calloc.free(tokenPtr);
       }
@@ -105,7 +110,7 @@ class MediaListApi {
   }
 
   /// Saves or updates an anime list entry
-  static Future<SaveMediaListEntryResponse> saveMediaListEntry(
+  static Future<MediaListEntry> saveMediaListEntry(
     SaveMediaListEntryRequest request,
     String token,
   ) async {
@@ -124,7 +129,8 @@ class MediaListApi {
         );
         final response = SaveMediaListEntryResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
-        return response;
+        final decoded = response.toProto3Json() as Map<String, dynamic>;
+        return MediaListEntry.fromJson(decoded);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);

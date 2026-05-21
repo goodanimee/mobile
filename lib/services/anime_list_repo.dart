@@ -56,69 +56,12 @@ class AnimeListRepo {
   static Future<List<dynamic>> fetchNetworkLists(int userId) async {
     final token = await AuthService.getRawToken() ?? '';
     final response = await MediaListApi.fetchMediaList(userId, token);
-    final rawLists = response.collection.lists;
+    final rawLists = response.lists;
 
     final allEntries = [];
     for (final list in rawLists) {
       for (final entry in list.entries) {
-        final media = entry.media;
-        final entryMap = <String, dynamic>{
-          'status': entry.status,
-          'progress': entry.progress,
-          'repeat': entry.repeat,
-          'score': entry.score,
-          'id': entry.id,
-          'media': {
-            'id': media.id,
-            'title': {
-              'userPreferred': media.title.userPreferred,
-              'english': media.title.english,
-              'native': media.title.native,
-              'romaji': media.title.romaji,
-            },
-            'averageScore': media.averageScore,
-            'bannerImage': media.bannerImage.isNotEmpty
-                ? media.bannerImage
-                : null,
-            'coverImage': {
-              'medium': media.coverImage.medium,
-              'large': media.coverImage.large,
-              'extraLarge': media.coverImage.extraLarge,
-              'color': media.coverImage.color.isNotEmpty
-                  ? media.coverImage.color
-                  : null,
-            },
-            'description': media.description,
-            'duration': media.duration,
-            'episodes': media.episodes,
-            'format': media.format,
-            'genres': media.genres,
-            'isAdult': media.isAdult,
-            'isFavourite': media.isFavourite,
-            'popularity': media.popularity,
-            'season': media.season,
-            'seasonYear': media.seasonYear,
-            'status': media.status,
-          },
-        };
-
-        if (entry.hasStartedAt()) {
-          entryMap['startedAt'] = {
-            'year': entry.startedAt.year,
-            'month': entry.startedAt.month,
-            'day': entry.startedAt.day,
-          };
-        }
-
-        if (entry.hasCompletedAt()) {
-          entryMap['completedAt'] = {
-            'year': entry.completedAt.year,
-            'month': entry.completedAt.month,
-            'day': entry.completedAt.day,
-          };
-        }
-
-        allEntries.add(entryMap);
+        allEntries.add(entry.toJson());
       }
     }
 
