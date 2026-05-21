@@ -4,6 +4,7 @@ import '../api/user_api.dart';
 import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
+import '../utils/app_options.dart';
 import 'auth_service.dart';
 
 /// Repository for managing user anime list data and caches
@@ -131,9 +132,9 @@ class AnimeListRepo {
   static Future<List<MediaList>> updateEntryInLists(
     List<MediaList> currentLists,
     int mediaId,
-    Map<String, dynamic> updates,
+    AnimeOptionsResult result,
   ) async {
-    if (updates['deleted'] == true) {
+    if (result.deleted) {
       final updatedLists = currentLists.map((section) {
         final entries = List<MediaListEntryWithMedia>.from(section.entries);
         entries.removeWhere((e) => e.media.id == mediaId);
@@ -152,6 +153,8 @@ class AnimeListRepo {
       return updatedLists;
     }
 
+    if (result.entry == null) return currentLists;
+
     const orderedNames = [
       'WATCHING',
       'PLANNING',
@@ -160,16 +163,9 @@ class AnimeListRepo {
       'PAUSED',
       'DROPPED',
     ];
-    String? targetName;
-
-    if (updates.containsKey('status')) {
-      final st = MediaListStatus.fromJson(updates['status'] as String?);
-      if (st != null) {
-        targetName = st.displayName;
-      }
-    }
 
     MediaListEntryWithMedia? movedEntry;
+    String? targetName = result.entry!.status?.displayName;
 
     final updatedLists = currentLists.map((section) {
       final entries = List<MediaListEntryWithMedia>.from(section.entries);
@@ -180,44 +176,14 @@ class AnimeListRepo {
       }
 
       final entry = entries[idx];
-      final oldStatus = entry.status?.name;
-
-      final updatedEntry = entry.copyWith(
-        status: updates.containsKey('status')
-            ? MediaListStatus.fromJson(updates['status']?.toString())
-            : entry.status,
-        progress: updates.containsKey('progress')
-            ? updates['progress'] as int?
-            : entry.progress,
-        score: updates.containsKey('score')
-            ? (updates['score'] as num?)?.toDouble()
-            : entry.score,
-        repeat: updates.containsKey('repeat')
-            ? updates['repeat'] as int?
-            : entry.repeat,
-        startedAt: updates.containsKey('startedAt')
-            ? (updates['startedAt'] != null
-                  ? FuzzyDate.fromJson(
-                      Map<String, dynamic>.from(updates['startedAt'] as Map),
-                    )
-                  : null)
-            : entry.startedAt,
-        completedAt: updates.containsKey('completedAt')
-            ? (updates['completedAt'] != null
-                  ? FuzzyDate.fromJson(
-                      Map<String, dynamic>.from(updates['completedAt'] as Map),
-                    )
-                  : null)
-            : entry.completedAt,
-      );
-
-      final newStatus = updatedEntry.status?.name;
+      final oldStatus = entry.status;
+      final newStatus = result.entry!.status;
 
       if (targetName != null && oldStatus != newStatus) {
-        movedEntry = updatedEntry;
+        movedEntry = result.entry;
         entries.removeAt(idx);
       } else {
-        entries[idx] = updatedEntry;
+        entries[idx] = result.entry!;
       }
 
       return MediaList(
@@ -241,7 +207,7 @@ class AnimeListRepo {
       } else {
         final insertAt = updatedLists.indexWhere((s) {
           final pos = orderedNames.indexOf(s.name);
-          return pos > orderedNames.indexOf(targetName!);
+          return pos > orderedNames.indexOf(targetName);
         });
         final newSection = MediaList(
           name: targetName,

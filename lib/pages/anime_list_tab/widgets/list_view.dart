@@ -4,13 +4,14 @@ import '../../../components/section_title.dart';
 import '../../../components/error_view.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../models/media_list.dart';
+import '../../../utils/app_options.dart';
 
 class AnimeListView extends StatelessWidget {
   final String activeName;
   final List<MediaListEntryWithMedia> entries;
   final ScrollController scrollController;
   final VoidCallback onRefresh;
-  final void Function(int mediaId, Map<String, dynamic> updates) onEntryUpdated;
+  final void Function(int mediaId, AnimeOptionsResult result) onEntryUpdated;
   final void Function(BuildContext context, MediaListEntryWithMedia entry)
   onLongPress;
 

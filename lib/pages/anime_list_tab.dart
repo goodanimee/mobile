@@ -148,12 +148,12 @@ class _AnimeListTabState extends State<AnimeListTab> {
 
   Future<void> _handleEntryUpdated(
     int mediaId,
-    Map<String, dynamic> updates,
+    AnimeOptionsResult result,
   ) async {
     final updatedLists = await AnimeListRepo.updateEntryInLists(
       _lists,
       mediaId,
-      updates,
+      result,
     );
     _updateUIWithLists(updatedLists);
   }

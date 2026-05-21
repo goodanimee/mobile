@@ -88,49 +88,4 @@ class CacheUtils {
   }
 }
 
-/// Extensions for `Map<String, dynamic>` to easily access AniList data
-extension MediaDataExtensions on Map<String, dynamic> {
-  /// User preferred title
-  String get titleText {
-    final title = this['title'] as Map<String, dynamic>?;
-    return title?['userPreferred']?.toString() ??
-        title?['romaji']?.toString() ??
-        title?['english']?.toString() ??
-        'Unknown';
-  }
 
-  /// Large cover image URL
-  String get coverImage {
-    final cover = this['coverImage'] as Map<String, dynamic>?;
-    return cover?['large']?.toString() ?? '';
-  }
-
-  /// Banner image URL
-  String? get bannerImage => this['bannerImage']?.toString();
-
-  /// Accent color
-  Color get accentColor {
-    final cover = this['coverImage'] as Map<String, dynamic>?;
-    return ColorUtils.fromHex(cover?['color']?.toString());
-  }
-
-  /// Media ID
-  int get mediaId => this['id'] as int? ?? 0;
-
-  /// Whether the media is adult content
-  bool get isAdultMedia => this['isAdult'] as bool? ?? false;
-
-  /// Whether the media is marked as favorite
-  bool get isFavouriteMedia => this['isFavourite'] as bool? ?? false;
-}
-
-/// Extensions for Character and Staff data
-extension EntityDataExtensions on Map<String, dynamic> {
-  /// Character full name
-  String get fullName {
-    final name = this['name'] as Map<String, dynamic>?;
-    return name?['userPreferred']?.toString() ??
-        name?['full']?.toString() ??
-        'Unknown';
-  }
-}

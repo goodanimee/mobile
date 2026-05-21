@@ -9,6 +9,7 @@ import '../proto/medialist.pb.dart' hide FuzzyDate;
 import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
+import '../utils/app_options.dart';
 
 /// A bottom sheet for editing anime list entry options
 class AnimeOptionsSheet extends StatefulWidget {
@@ -283,7 +284,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
       await MediaListApi.deleteMediaListEntry(req, token);
 
       if (mounted) {
-        Navigator.of(context).pop({'deleted': true});
+        Navigator.of(context).pop(const AnimeOptionsResult(deleted: true));
       }
     } catch (e) {
       if (mounted) {
@@ -341,26 +342,30 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
       final response = await MediaListApi.saveMediaListEntry(req, token);
 
       if (mounted) {
-        Navigator.of(context).pop({
-          'id': response.id,
-          'status': finalStatus,
-          'progress': _progress,
-          'score': _score,
-          'startedAt': _startDate != null
-              ? {
-                  'year': _startDate!.year,
-                  'month': _startDate!.month,
-                  'day': _startDate!.day,
-                }
-              : null,
-          'completedAt': _finishDate != null
-              ? {
-                  'year': _finishDate!.year,
-                  'month': _finishDate!.month,
-                  'day': _finishDate!.day,
-                }
-              : null,
-        });
+        Navigator.of(context).pop(
+          AnimeOptionsResult(
+            entry: widget.entry.copyWith(
+              id: response.id,
+              status: MediaListStatus.fromJson(finalStatus),
+              progress: _progress,
+              score: _score,
+              startedAt: _startDate != null
+                  ? FuzzyDate(
+                      year: _startDate!.year,
+                      month: _startDate!.month,
+                      day: _startDate!.day,
+                    )
+                  : null,
+              completedAt: _finishDate != null
+                  ? FuzzyDate(
+                      year: _finishDate!.year,
+                      month: _finishDate!.month,
+                      day: _finishDate!.day,
+                    )
+                  : null,
+            ),
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {

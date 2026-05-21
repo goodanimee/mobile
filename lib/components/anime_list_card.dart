@@ -7,6 +7,7 @@ import '../proto/medialist.pb.dart';
 import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
+import '../utils/app_options.dart';
 
 /// Builds a badge showing repeat count
 Widget _buildRepeatBadge(int repeat) {
@@ -151,8 +152,7 @@ class AnimeListCard extends StatefulWidget {
   final MediaListEntryWithMedia entry;
 
   /// Callback when the entry is updated
-  final void Function(int mediaId, Map<String, dynamic> updates)?
-  onEntryUpdated;
+  final void Function(int mediaId, AnimeOptionsResult result)? onEntryUpdated;
 
   /// Callback for long press
   final VoidCallback? onLongPress;
@@ -221,10 +221,15 @@ class _AnimeListCardState extends State<AnimeListCard> {
         status: newStatus.name,
       );
       await MediaListApi.saveMediaListEntry(req, token);
-      widget.onEntryUpdated?.call(mediaId, {
-        'progress': newProgress,
-        'status': newStatus.name,
-      });
+      widget.onEntryUpdated?.call(
+        mediaId,
+        AnimeOptionsResult(
+          entry: widget.entry.copyWith(
+            progress: newProgress,
+            status: newStatus,
+          ),
+        ),
+      );
     } catch (e) {
       setState(() {
         _progress = widget.entry.progress;

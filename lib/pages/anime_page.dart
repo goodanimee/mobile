@@ -153,14 +153,19 @@ class _AnimePageState extends State<AnimePage> {
     if (result != null && mounted) {
       _didUpdate = true;
       setState(() {
-        if (result['deleted'] == true) {
+        if (result.deleted) {
           _mediaData = media.copyWith(mediaListEntry: null);
-        } else {
-          final entryMap = media.mediaListEntry?.toJson() ?? {};
-          result.forEach((key, value) {
-            entryMap[key] = value;
-          });
-          final updatedEntry = MediaListEntry.fromJson(entryMap);
+        } else if (result.entry != null) {
+          final typedEntry = result.entry!;
+          final updatedEntry = MediaListEntry(
+            id: typedEntry.id,
+            status: typedEntry.status,
+            progress: typedEntry.progress,
+            score: typedEntry.score,
+            repeat: typedEntry.repeat,
+            startedAt: typedEntry.startedAt,
+            completedAt: typedEntry.completedAt,
+          );
           _mediaData = media.copyWith(mediaListEntry: updatedEntry);
         }
       });
