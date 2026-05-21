@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import '../../../components/app_relation_card.dart';
 import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
@@ -99,11 +98,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
         page: _recommendationPage + 1,
         perPage: 25,
       );
-      final response = await MediaApi.fetchMediaRecommendations(req, token);
-      final data = json.decode(response.rawJson);
-      final recommendationsMap =
-          data['recommendations'] as Map<String, dynamic>;
-      final connection = RecommendationConnection.fromJson(recommendationsMap);
+      final connection = await MediaApi.fetchMediaRecommendations(req, token);
 
       if (mounted) {
         setState(() {

@@ -32,11 +32,12 @@ class AnimeRepo {
 
     final token = await AuthService.getRawToken() ?? '';
     final req = FetchMediaDetailsRequest(mediaId: mediaId);
-    final response = await MediaApi.fetchMediaDetails(req, token);
+    final media = await MediaApi.fetchMediaDetails(req, token);
 
-    final decoded = json.decode(response.rawJson);
+    final rawJson = json.encode(media.toJson());
+    final decoded = json.decode(rawJson);
     if (decoded != null) {
-      await _saveToDiskCache(prefs, mediaId, response.rawJson);
+      await _saveToDiskCache(prefs, mediaId, rawJson);
     }
     return decoded;
   }

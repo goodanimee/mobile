@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import '../../../components/loading_indicator.dart';
 import '../../../components/error_view.dart';
 import '../../../utils/app_navigation.dart';
@@ -104,11 +103,7 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
         page: _currentPage,
         perPage: 25,
       );
-      final response = await MediaApi.fetchMediaCharacters(req, token);
-
-      final data = json.decode(response.rawJson);
-      final charData = data['characters'] as Map<String, dynamic>;
-      final connection = CharacterConnection.fromJson(charData);
+      final connection = await MediaApi.fetchMediaCharacters(req, token);
 
       if (mounted) {
         setState(() {

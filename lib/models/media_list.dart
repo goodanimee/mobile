@@ -40,10 +40,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
   /// Converts the entry with media to a JSON map
   @override
   Map<String, dynamic> toJson() {
-    return {
-      ...super.toJson(),
-      'media': media.toJson(),
-    };
+    return {...super.toJson(), 'media': media.toJson()};
   }
 }
 

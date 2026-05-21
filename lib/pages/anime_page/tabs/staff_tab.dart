@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import '../../../components/loading_indicator.dart';
 import '../../../components/error_view.dart';
 import '../../../components/app_entity_card.dart';
@@ -103,11 +102,7 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
         page: _currentPage,
         perPage: 25,
       );
-      final response = await MediaApi.fetchMediaStaff(req, token);
-
-      final data = json.decode(response.rawJson);
-      final staffData = data['staff'] as Map<String, dynamic>;
-      final connection = StaffConnection.fromJson(staffData);
+      final connection = await MediaApi.fetchMediaStaff(req, token);
 
       if (mounted) {
         setState(() {

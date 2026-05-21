@@ -36,9 +36,7 @@ class Viewer {
     return {
       'id': id,
       'name': name,
-      'avatar': {
-        'medium': avatarMedium,
-      },
+      'avatar': {'medium': avatarMedium},
       'createdAt': createdAt,
     };
   }

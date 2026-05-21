@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:ffi' as ffi;
 import 'dart:isolate';
 import 'package:ffi/ffi.dart';
-import '../proto/medialist.pb.dart';
+import '../models/media.dart';
+import '../proto/medialist.pb.dart' hide Media;
 import 'ffi_core.dart';
 
 /// Native function signature for fetching media details
@@ -132,7 +134,7 @@ class MediaApi {
   }
 
   /// Fetches full anime details by using a media ID
-  static Future<FetchMediaDetailsResponse> fetchMediaDetails(
+  static Future<Media> fetchMediaDetails(
     FetchMediaDetailsRequest request,
     String token,
   ) async {
@@ -151,7 +153,8 @@ class MediaApi {
         );
         final response = FetchMediaDetailsResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
-        return response;
+        final decoded = json.decode(response.rawJson) as Map<String, dynamic>;
+        return Media.fromJson(decoded);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);
@@ -160,7 +163,7 @@ class MediaApi {
   }
 
   /// Fetches media characters
-  static Future<FetchMediaCharactersResponse> fetchMediaCharacters(
+  static Future<CharacterConnection> fetchMediaCharacters(
     FetchMediaCharactersRequest request,
     String token,
   ) async {
@@ -183,7 +186,9 @@ class MediaApi {
         );
         final response = FetchMediaCharactersResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
-        return response;
+        final decoded = json.decode(response.rawJson) as Map<String, dynamic>;
+        final charData = decoded['characters'] as Map<String, dynamic>;
+        return CharacterConnection.fromJson(charData);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);
@@ -192,7 +197,7 @@ class MediaApi {
   }
 
   /// Fetches media staff
-  static Future<FetchMediaStaffResponse> fetchMediaStaff(
+  static Future<StaffConnection> fetchMediaStaff(
     FetchMediaStaffRequest request,
     String token,
   ) async {
@@ -211,7 +216,9 @@ class MediaApi {
         );
         final response = FetchMediaStaffResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
-        return response;
+        final decoded = json.decode(response.rawJson) as Map<String, dynamic>;
+        final staffData = decoded['staff'] as Map<String, dynamic>;
+        return StaffConnection.fromJson(staffData);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);
@@ -220,7 +227,7 @@ class MediaApi {
   }
 
   /// Fetches media recommendations
-  static Future<FetchMediaRecommendationsResponse> fetchMediaRecommendations(
+  static Future<RecommendationConnection> fetchMediaRecommendations(
     FetchMediaRecommendationsRequest request,
     String token,
   ) async {
@@ -243,7 +250,10 @@ class MediaApi {
         );
         final response = FetchMediaRecommendationsResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
-        return response;
+        final decoded = json.decode(response.rawJson) as Map<String, dynamic>;
+        final recommendationsMap =
+            decoded['recommendations'] as Map<String, dynamic>;
+        return RecommendationConnection.fromJson(recommendationsMap);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);

@@ -30,11 +30,7 @@ class Trailer {
 
   /// Converts the trailer to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'site': site,
-      'thumbnail': thumbnail,
-    };
+    return {'id': id, 'site': site, 'thumbnail': thumbnail};
   }
 }
 
@@ -145,10 +141,7 @@ class Studio {
 
   /// Converts the studio to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-    };
+    return {'id': id, 'name': name};
   }
 }
 
@@ -176,10 +169,7 @@ class StudioEdge {
 
   /// Converts the studio edge to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'isMain': isMain,
-      'node': node.toJson(),
-    };
+    return {'isMain': isMain, 'node': node.toJson()};
   }
 }
 
@@ -261,11 +251,7 @@ class ExternalLink {
 
   /// Converts the external link to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'language': language,
-      'site': site,
-      'url': url,
-    };
+    return {'language': language, 'site': site, 'url': url};
   }
 }
 
@@ -293,10 +279,7 @@ class MediaEdge {
 
   /// Converts the media edge to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'relationType': relationType,
-      'node': node?.toJson(),
-    };
+    return {'relationType': relationType, 'node': node?.toJson()};
   }
 }
 
@@ -324,9 +307,7 @@ class MediaConnection {
 
   /// Converts the media connection to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'edges': edges.map((e) => e.toJson()).toList(),
-    };
+    return {'edges': edges.map((e) => e.toJson()).toList()};
   }
 }
 
@@ -401,10 +382,7 @@ class CharacterImage {
 
   /// Converts the character image to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'large': large,
-      'medium': medium,
-    };
+    return {'large': large, 'medium': medium};
   }
 }
 
@@ -550,9 +528,8 @@ class CharacterConnection {
       edges: edgesList != null
           ? List<CharacterEdge>.from(
               edgesList.map(
-                (e) => CharacterEdge.fromJson(
-                  Map<String, dynamic>.from(e as Map),
-                ),
+                (e) =>
+                    CharacterEdge.fromJson(Map<String, dynamic>.from(e as Map)),
               ),
             )
           : const [],
@@ -598,11 +575,7 @@ class StaffName {
 
   /// Converts the staff name to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'full': full,
-      'native': native,
-      'userPreferred': userPreferred,
-    };
+    return {'full': full, 'native': native, 'userPreferred': userPreferred};
   }
 }
 
@@ -627,10 +600,7 @@ class StaffImage {
 
   /// Converts the staff image to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'large': large,
-      'medium': medium,
-    };
+    return {'large': large, 'medium': medium};
   }
 }
 
@@ -697,10 +667,7 @@ class StaffEdge {
 
   /// Converts the staff edge to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'role': role,
-      'node': node?.toJson(),
-    };
+    return {'role': role, 'node': node?.toJson()};
   }
 }
 
@@ -795,9 +762,7 @@ class RecommendationEdge {
 
   /// Converts the recommendation edge to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'node': node.toJson(),
-    };
+    return {'node': node.toJson()};
   }
 }
 
@@ -909,11 +874,7 @@ class StreamingEpisode {
 
   /// Converts the streaming episode to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'thumbnail': thumbnail,
-      'title': title,
-      'url': url,
-    };
+    return {'thumbnail': thumbnail, 'title': title, 'url': url};
   }
 }
 
@@ -987,10 +948,7 @@ class ScoreDistribution {
 
   /// Converts the score distribution to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'amount': amount,
-      'score': score,
-    };
+    return {'amount': amount, 'score': score};
   }
 }
 
@@ -1015,10 +973,7 @@ class StatusDistribution {
 
   /// Converts the status distribution to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'amount': amount,
-      'status': status,
-    };
+    return {'amount': amount, 'status': status};
   }
 }
 
@@ -1138,9 +1093,7 @@ class MediaTrendConnection {
 
   /// Converts the media trend connection to a JSON map
   Map<String, dynamic> toJson() {
-    return {
-      'nodes': nodes.map((n) => n.toJson()).toList(),
-    };
+    return {'nodes': nodes.map((n) => n.toJson()).toList()};
   }
 }
 
@@ -1355,7 +1308,9 @@ class Media extends MediaMin {
     final statsData = json['stats'] as Map?;
     final trendsData = json['trends'] as Map?;
 
-    final studiosList = studiosData != null ? studiosData['edges'] as List? : null;
+    final studiosList = studiosData != null
+        ? studiosData['edges'] as List?
+        : null;
     final tagsList = json['tags'] as List?;
     final externalLinksList = json['externalLinks'] as List?;
     final streamingEpisodesList = json['streamingEpisodes'] as List?;
@@ -1408,7 +1363,8 @@ class Media extends MediaMin {
       externalLinks: externalLinksList != null
           ? List<ExternalLink>.from(
               externalLinksList.map(
-                (e) => ExternalLink.fromJson(Map<String, dynamic>.from(e as Map)),
+                (e) =>
+                    ExternalLink.fromJson(Map<String, dynamic>.from(e as Map)),
               ),
             )
           : const [],
@@ -1454,9 +1410,7 @@ class Media extends MediaMin {
           ? MediaStats.fromJson(Map<String, dynamic>.from(statsData))
           : null,
       trends: trendsData != null
-          ? MediaTrendConnection.fromJson(
-              Map<String, dynamic>.from(trendsData),
-            )
+          ? MediaTrendConnection.fromJson(Map<String, dynamic>.from(trendsData))
           : null,
     );
   }
@@ -1524,12 +1478,7 @@ class ToggleFavourite {
     return {
       'anime': {
         'nodes': animeNodes
-            .map(
-              (n) => {
-                'id': n.id,
-                'isFavourite': n.isFavourite,
-              },
-            )
+            .map((n) => {'id': n.id, 'isFavourite': n.isFavourite})
             .toList(),
       },
     };
