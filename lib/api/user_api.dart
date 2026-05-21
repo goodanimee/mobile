@@ -1,7 +1,8 @@
 import 'dart:ffi' as ffi;
 import 'dart:isolate';
 import 'package:ffi/ffi.dart';
-import '../proto/medialist.pb.dart';
+import '../models/viewer.dart';
+import '../proto/medialist.pb.dart' hide Viewer;
 import 'ffi_core.dart';
 
 /// Native function signature for fetching viewer information
@@ -27,7 +28,7 @@ class UserApi {
   }
 
   /// Fetches viewer information using the provided token
-  static Future<FetchViewerResponse> fetchViewer(String token) async {
+  static Future<Viewer> fetchViewer(String token) async {
     return Isolate.run(() {
       _init();
       final tokenPtr = token.toNativeUtf8();
@@ -39,7 +40,12 @@ class UserApi {
         if (response.error.isNotEmpty) {
           throw Exception('Error fetching viewer: ${response.error}');
         }
-        return response;
+        return Viewer(
+          id: response.viewer.id,
+          name: response.viewer.name,
+          avatarMedium: response.viewer.avatarMedium,
+          createdAt: response.viewer.createdAt,
+        );
       } finally {
         calloc.free(tokenPtr);
       }

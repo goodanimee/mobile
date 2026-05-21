@@ -70,8 +70,8 @@ class AuthService {
   /// Verifies the token with a lightweight backend probe
   static Future<bool> _probe(String token) async {
     try {
-      final response = await UserApi.fetchViewer(token);
-      return response.viewer.id != 0;
+      final viewer = await UserApi.fetchViewer(token);
+      return viewer.id != 0;
     } catch (_) {
       return false;
     }

@@ -21,8 +21,7 @@ class AnimeListRepo {
 
     try {
       final token = await AuthService.getRawToken() ?? '';
-      final response = await UserApi.fetchViewer(token);
-      final viewer = response.viewer;
+      final viewer = await UserApi.fetchViewer(token);
 
       final viewerMap = {
         'id': viewer.id,

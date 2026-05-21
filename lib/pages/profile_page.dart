@@ -61,8 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _fetchAndCache(SharedPreferences prefs) async {
     try {
       final token = await AuthService.getValidToken();
-      final response = await UserApi.fetchViewer(token);
-      final viewer = response.viewer;
+      final viewer = await UserApi.fetchViewer(token);
       final viewerMap = <String, dynamic>{
         'id': viewer.id,
         'name': viewer.name,
