@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package goodanime;
+
+option go_package = "goodanime/backend/proto";
+
+message ViewerAvatar {
+  string medium = 1;
+}
+
+message Viewer {
+  int32 id = 1;
+  string name = 2;
+  int32 created_at = 3;
+  ViewerAvatar avatar = 4;
+}

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package goodanime;
+
+option go_package = "goodanime/backend/proto";
+
+message FuzzyDate {
+  optional int32 day = 1;
+  optional int32 month = 2;
+  optional int32 year = 3;
+}
+
+message PageInfo {
+  bool has_next_page = 1;
+  int32 current_page = 2;
+}
+
+enum MediaListStatus {
+  MEDIA_LIST_STATUS_UNSPECIFIED = 0;
+  MEDIA_LIST_STATUS_CURRENT = 1;
+  MEDIA_LIST_STATUS_PLANNING = 2;
+  MEDIA_LIST_STATUS_COMPLETED = 3;
+  MEDIA_LIST_STATUS_DROPPED = 4;
+  MEDIA_LIST_STATUS_PAUSED = 5;
+  MEDIA_LIST_STATUS_REPEATING = 6;
+}

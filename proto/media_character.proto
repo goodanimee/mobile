@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "common.proto";
+import "media_staff.proto";
+
+option go_package = "goodanime/backend/proto";
+
+message CharacterName {
+  string full = 1;
+  optional string native = 2;
+  optional string user_preferred = 3;
+  repeated string alternative = 4;
+  repeated string alternative_spoiler = 5;
+}
+
+message CharacterImage {
+  optional string large = 1;
+  optional string medium = 2;
+}
+
+message Character {
+  CharacterName name = 1;
+  CharacterImage image = 2;
+  optional string gender = 3;
+  optional string age = 4;
+  FuzzyDate date_of_birth = 5;
+  optional string description = 6;
+}
+
+message CharacterEdge {
+  int32 id = 1;
+  string role = 2;
+  string name = 3;
+  Character node = 4;
+  repeated Staff voice_actors = 5;
+}
+
+message CharacterConnection {
+  repeated CharacterEdge edges = 1;
+  PageInfo page_info = 2;
+}

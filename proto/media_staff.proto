@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "common.proto";
+
+option go_package = "goodanime/backend/proto";
+
+message StaffName {
+  string full = 1;
+  optional string native = 2;
+  optional string user_preferred = 3;
+}
+
+message StaffImage {
+  optional string large = 1;
+  optional string medium = 2;
+}
+
+message Staff {
+  StaffName name = 1;
+  StaffImage image = 2;
+  optional string language_v2 = 3;
+}
+
+message StaffEdge {
+  string role = 1;
+  Staff node = 2;
+}
+
+message StaffConnection {
+  repeated StaffEdge edges = 1;
+  PageInfo page_info = 2;
+}

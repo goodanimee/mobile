@@ -1,6 +1,6 @@
 // This is a generated file - do not edit.
 //
-// Generated from proto/medialist.proto.
+// Generated from media_min.proto.
 
 // @dart = 3.3
 

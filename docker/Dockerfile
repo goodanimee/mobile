@@ -16,6 +16,11 @@ ENV PATH="$PATH:/usr/lib/dart/bin:/root/.pub-cache/bin"
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
     && dart pub global activate protoc_plugin
 
+RUN curl -sSL \
+    "https://github.com/bufbuild/buf/releases/download/v1.69.0/buf-Linux-x86_64" \
+    -o "/usr/local/bin/buf" && \
+    chmod +x "/usr/local/bin/buf"
+
 WORKDIR /workspace
 
 ENTRYPOINT ["/workspace/docker/generate-proto.sh"]

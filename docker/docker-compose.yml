@@ -2,7 +2,7 @@ services:
   proto:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.proto
+      dockerfile: docker/Dockerfile
     volumes:
       - ..:/workspace
 

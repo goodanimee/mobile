@@ -2,81 +2,12 @@ syntax = "proto3";
 
 package goodanime;
 
+import "common.proto";
+import "media.proto";
+import "media_list.proto";
+import "viewer.proto";
+
 option go_package = "goodanime/backend/proto";
-
-message FuzzyDate {
-  int32 day = 1;
-  int32 month = 2;
-  int32 year = 3;
-}
-
-message Trailer {
-  string id = 1;
-  string site = 2;
-  string thumbnail = 3;
-}
-
-message CoverImage {
-  string medium = 1;
-  string large = 2;
-  string extra_large = 3;
-  string color = 4;
-}
-
-message Title {
-  string english = 1;
-  string native = 2;
-  string romaji = 3;
-  string user_preferred = 4;
-}
-
-message Media {
-  int32 id = 1;
-  Title title = 2;
-  int32 average_score = 3;
-  string banner_image = 4;
-  CoverImage cover_image = 5;
-  string description = 6;
-  int32 duration = 7;
-  int32 episodes = 8;
-  string format = 9;
-  repeated string genres = 10;
-  bool is_adult = 11;
-  bool is_favourite = 12;
-  int32 popularity = 13;
-  string season = 14;
-  int32 season_year = 15;
-  string status = 16;
-  Trailer trailer = 17;
-  repeated string synonyms = 18;
-  FuzzyDate start_date = 19;
-  FuzzyDate end_date = 20;
-  int32 mean_score = 21;
-  int32 favourites = 22;
-  string site_url = 23;
-}
-
-message MediaListEntry {
-  Media media = 1;
-  int32 progress = 2;
-  int32 repeat = 3;
-  string status = 4;
-  double score = 5;
-  FuzzyDate started_at = 6;
-  FuzzyDate completed_at = 7;
-  int32 id = 8;
-}
-
-message MediaList {
-  string name = 1;
-  string status = 2;
-  repeated MediaListEntry entries = 3;
-}
-
-message MediaListCollection {
-  bool has_next_chunk = 1;
-  repeated MediaList lists = 2;
-}
 
 message FetchMediaListRequest {
   int32 user_id = 1;
@@ -87,13 +18,6 @@ message FetchMediaListRequest {
 message FetchMediaListResponse {
   MediaListCollection collection = 1;
   string error = 2;
-}
-
-message Viewer {
-  int32 id = 1;
-  string name = 2;
-  string avatar_medium = 3;
-  int32 created_at = 4;
 }
 
 message FetchViewerResponse {
@@ -132,7 +56,7 @@ message FetchMediaDetailsRequest {
 }
 
 message FetchMediaDetailsResponse {
-  string raw_json = 1;
+  Media media = 1;
   string error = 2;
 }
 
@@ -143,7 +67,7 @@ message FetchMediaStaffRequest {
 }
 
 message FetchMediaStaffResponse {
-  string raw_json = 1;
+  Media media = 1;
   string error = 2;
 }
 
@@ -154,7 +78,7 @@ message FetchMediaCharactersRequest {
 }
 
 message FetchMediaCharactersResponse {
-  string raw_json = 1;
+  Media media = 1;
   string error = 2;
 }
 
@@ -165,7 +89,7 @@ message FetchMediaRecommendationsRequest {
 }
 
 message FetchMediaRecommendationsResponse {
-  string raw_json = 1;
+  Media media = 1;
   string error = 2;
 }
 

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package goodanime;
+
+option go_package = "goodanime/backend/proto";
+
+message Title {
+  string english = 1;
+  string native = 2;
+  string romaji = 3;
+  string user_preferred = 4;
+}
+
+message CoverImage {
+  string medium = 1;
+  string large = 2;
+  string extra_large = 3;
+  string color = 4;
+}
+
+message MediaMin {
+  int32 id = 1;
+  Title title = 2;
+  int32 average_score = 3;
+  CoverImage cover_image = 4;
+  int32 episodes = 5;
+  string format = 6;
+  bool is_adult = 7;
+  bool is_favourite = 8;
+  string site_url = 9;
+}
