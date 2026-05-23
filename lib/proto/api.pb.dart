@@ -14,9 +14,9 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'common.pb.dart' as $2;
 import 'media.pb.dart' as $3;
 import 'media_list.pb.dart' as $0;
+import 'media_list_entry.pb.dart' as $2;
 import 'viewer.pb.dart' as $1;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -434,23 +434,11 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
 
 class SaveMediaListEntryResponse extends $pb.GeneratedMessage {
   factory SaveMediaListEntryResponse({
-    $core.int? id,
-    $core.String? status,
-    $core.int? progress,
-    $core.double? score,
-    $core.int? repeat,
-    $2.FuzzyDate? startedAt,
-    $2.FuzzyDate? completedAt,
+    $2.MediaListEntry? entry,
     $core.String? error,
   }) {
     final result = create();
-    if (id != null) result.id = id;
-    if (status != null) result.status = status;
-    if (progress != null) result.progress = progress;
-    if (score != null) result.score = score;
-    if (repeat != null) result.repeat = repeat;
-    if (startedAt != null) result.startedAt = startedAt;
-    if (completedAt != null) result.completedAt = completedAt;
+    if (entry != null) result.entry = entry;
     if (error != null) result.error = error;
     return result;
   }
@@ -468,16 +456,9 @@ class SaveMediaListEntryResponse extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'SaveMediaListEntryResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
       createEmptyInstance: create)
-    ..aI(1, _omitFieldNames ? '' : 'id')
-    ..aOS(2, _omitFieldNames ? '' : 'status')
-    ..aI(3, _omitFieldNames ? '' : 'progress')
-    ..aD(4, _omitFieldNames ? '' : 'score')
-    ..aI(5, _omitFieldNames ? '' : 'repeat')
-    ..aOM<$2.FuzzyDate>(6, _omitFieldNames ? '' : 'startedAt',
-        subBuilder: $2.FuzzyDate.create)
-    ..aOM<$2.FuzzyDate>(7, _omitFieldNames ? '' : 'completedAt',
-        subBuilder: $2.FuzzyDate.create)
-    ..aOS(8, _omitFieldNames ? '' : 'error')
+    ..aOM<$2.MediaListEntry>(1, _omitFieldNames ? '' : 'entry',
+        subBuilder: $2.MediaListEntry.create)
+    ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -502,80 +483,24 @@ class SaveMediaListEntryResponse extends $pb.GeneratedMessage {
   static SaveMediaListEntryResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get id => $_getIZ(0);
+  $2.MediaListEntry get entry => $_getN(0);
   @$pb.TagNumber(1)
-  set id($core.int value) => $_setSignedInt32(0, value);
+  set entry($2.MediaListEntry value) => $_setField(1, value);
   @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
+  $core.bool hasEntry() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => $_clearField(1);
+  void clearEntry() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $2.MediaListEntry ensureEntry() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.String get status => $_getSZ(1);
+  $core.String get error => $_getSZ(1);
   @$pb.TagNumber(2)
-  set status($core.String value) => $_setString(1, value);
+  set error($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
-  $core.bool hasStatus() => $_has(1);
+  $core.bool hasError() => $_has(1);
   @$pb.TagNumber(2)
-  void clearStatus() => $_clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.int get progress => $_getIZ(2);
-  @$pb.TagNumber(3)
-  set progress($core.int value) => $_setSignedInt32(2, value);
-  @$pb.TagNumber(3)
-  $core.bool hasProgress() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearProgress() => $_clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.double get score => $_getN(3);
-  @$pb.TagNumber(4)
-  set score($core.double value) => $_setDouble(3, value);
-  @$pb.TagNumber(4)
-  $core.bool hasScore() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearScore() => $_clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.int get repeat => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set repeat($core.int value) => $_setSignedInt32(4, value);
-  @$pb.TagNumber(5)
-  $core.bool hasRepeat() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearRepeat() => $_clearField(5);
-
-  @$pb.TagNumber(6)
-  $2.FuzzyDate get startedAt => $_getN(5);
-  @$pb.TagNumber(6)
-  set startedAt($2.FuzzyDate value) => $_setField(6, value);
-  @$pb.TagNumber(6)
-  $core.bool hasStartedAt() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearStartedAt() => $_clearField(6);
-  @$pb.TagNumber(6)
-  $2.FuzzyDate ensureStartedAt() => $_ensure(5);
-
-  @$pb.TagNumber(7)
-  $2.FuzzyDate get completedAt => $_getN(6);
-  @$pb.TagNumber(7)
-  set completedAt($2.FuzzyDate value) => $_setField(7, value);
-  @$pb.TagNumber(7)
-  $core.bool hasCompletedAt() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearCompletedAt() => $_clearField(7);
-  @$pb.TagNumber(7)
-  $2.FuzzyDate ensureCompletedAt() => $_ensure(6);
-
-  @$pb.TagNumber(8)
-  $core.String get error => $_getSZ(7);
-  @$pb.TagNumber(8)
-  set error($core.String value) => $_setString(7, value);
-  @$pb.TagNumber(8)
-  $core.bool hasError() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearError() => $_clearField(8);
+  void clearError() => $_clearField(2);
 }
 
 class FetchMediaDetailsRequest extends $pb.GeneratedMessage {

@@ -331,14 +331,8 @@ func (x *SaveMediaListEntryRequest) GetCompletedAt() *FuzzyDateInput {
 
 type SaveMediaListEntryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
-	Progress      int32                  `protobuf:"varint,3,opt,name=progress,proto3" json:"progress,omitempty"`
-	Score         float64                `protobuf:"fixed64,4,opt,name=score,proto3" json:"score,omitempty"`
-	Repeat        int32                  `protobuf:"varint,5,opt,name=repeat,proto3" json:"repeat,omitempty"`
-	StartedAt     *FuzzyDate             `protobuf:"bytes,6,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
-	CompletedAt   *FuzzyDate             `protobuf:"bytes,7,opt,name=completed_at,json=completedAt,proto3" json:"completed_at,omitempty"`
-	Error         string                 `protobuf:"bytes,8,opt,name=error,proto3" json:"error,omitempty"`
+	Entry         *MediaListEntry        `protobuf:"bytes,1,opt,name=entry,proto3" json:"entry,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -373,51 +367,9 @@ func (*SaveMediaListEntryResponse) Descriptor() ([]byte, []int) {
 	return file_api_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *SaveMediaListEntryResponse) GetId() int32 {
+func (x *SaveMediaListEntryResponse) GetEntry() *MediaListEntry {
 	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *SaveMediaListEntryResponse) GetStatus() string {
-	if x != nil {
-		return x.Status
-	}
-	return ""
-}
-
-func (x *SaveMediaListEntryResponse) GetProgress() int32 {
-	if x != nil {
-		return x.Progress
-	}
-	return 0
-}
-
-func (x *SaveMediaListEntryResponse) GetScore() float64 {
-	if x != nil {
-		return x.Score
-	}
-	return 0
-}
-
-func (x *SaveMediaListEntryResponse) GetRepeat() int32 {
-	if x != nil {
-		return x.Repeat
-	}
-	return 0
-}
-
-func (x *SaveMediaListEntryResponse) GetStartedAt() *FuzzyDate {
-	if x != nil {
-		return x.StartedAt
-	}
-	return nil
-}
-
-func (x *SaveMediaListEntryResponse) GetCompletedAt() *FuzzyDate {
-	if x != nil {
-		return x.CompletedAt
+		return x.Entry
 	}
 	return nil
 }
@@ -1073,7 +1025,7 @@ var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
 	"\n" +
-	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x10media_list.proto\x1a\fviewer.proto\"X\n" +
+	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\fviewer.proto\"X\n" +
 	"\x15FetchMediaListRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x12\n" +
@@ -1105,17 +1057,10 @@ const file_api_proto_rawDesc = "" +
 	"\a_statusB\b\n" +
 	"\x06_scoreB\r\n" +
 	"\v_started_atB\x0f\n" +
-	"\r_completed_at\"\x92\x02\n" +
-	"\x1aSaveMediaListEntryResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x16\n" +
-	"\x06status\x18\x02 \x01(\tR\x06status\x12\x1a\n" +
-	"\bprogress\x18\x03 \x01(\x05R\bprogress\x12\x14\n" +
-	"\x05score\x18\x04 \x01(\x01R\x05score\x12\x16\n" +
-	"\x06repeat\x18\x05 \x01(\x05R\x06repeat\x123\n" +
-	"\n" +
-	"started_at\x18\x06 \x01(\v2\x14.goodanime.FuzzyDateR\tstartedAt\x127\n" +
-	"\fcompleted_at\x18\a \x01(\v2\x14.goodanime.FuzzyDateR\vcompletedAt\x12\x14\n" +
-	"\x05error\x18\b \x01(\tR\x05error\"5\n" +
+	"\r_completed_at\"c\n" +
+	"\x1aSaveMediaListEntryResponse\x12/\n" +
+	"\x05entry\x18\x01 \x01(\v2\x19.goodanime.MediaListEntryR\x05entry\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"5\n" +
 	"\x18FetchMediaDetailsRequest\x12\x19\n" +
 	"\bmedia_id\x18\x01 \x01(\x05R\amediaId\"Y\n" +
 	"\x19FetchMediaDetailsResponse\x12&\n" +
@@ -1189,7 +1134,7 @@ var file_api_proto_goTypes = []any{
 	(*DeleteMediaListEntryResponse)(nil),      // 17: goodanime.DeleteMediaListEntryResponse
 	(*MediaListCollection)(nil),               // 18: goodanime.MediaListCollection
 	(*Viewer)(nil),                            // 19: goodanime.Viewer
-	(*FuzzyDate)(nil),                         // 20: goodanime.FuzzyDate
+	(*MediaListEntry)(nil),                    // 20: goodanime.MediaListEntry
 	(*Media)(nil),                             // 21: goodanime.Media
 }
 var file_api_proto_depIdxs = []int32{
@@ -1197,17 +1142,16 @@ var file_api_proto_depIdxs = []int32{
 	19, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	20, // 4: goodanime.SaveMediaListEntryResponse.started_at:type_name -> goodanime.FuzzyDate
-	20, // 5: goodanime.SaveMediaListEntryResponse.completed_at:type_name -> goodanime.FuzzyDate
-	21, // 6: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	21, // 7: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	21, // 8: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	21, // 9: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	20, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	21, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	21, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	21, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	21, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	9,  // [9:9] is the sub-list for method output_type
+	9,  // [9:9] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -1218,6 +1162,7 @@ func file_api_proto_init() {
 	file_common_proto_init()
 	file_media_proto_init()
 	file_media_list_proto_init()
+	file_media_list_entry_proto_init()
 	file_viewer_proto_init()
 	file_api_proto_msgTypes[3].OneofWrappers = []any{}
 	file_api_proto_msgTypes[4].OneofWrappers = []any{}

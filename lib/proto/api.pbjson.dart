@@ -153,38 +153,23 @@ final $typed_data.Uint8List saveMediaListEntryRequestDescriptor = $convert.base6
 const SaveMediaListEntryResponse$json = {
   '1': 'SaveMediaListEntryResponse',
   '2': [
-    {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
-    {'1': 'status', '3': 2, '4': 1, '5': 9, '10': 'status'},
-    {'1': 'progress', '3': 3, '4': 1, '5': 5, '10': 'progress'},
-    {'1': 'score', '3': 4, '4': 1, '5': 1, '10': 'score'},
-    {'1': 'repeat', '3': 5, '4': 1, '5': 5, '10': 'repeat'},
     {
-      '1': 'started_at',
-      '3': 6,
+      '1': 'entry',
+      '3': 1,
       '4': 1,
       '5': 11,
-      '6': '.goodanime.FuzzyDate',
-      '10': 'startedAt'
+      '6': '.goodanime.MediaListEntry',
+      '10': 'entry'
     },
-    {
-      '1': 'completed_at',
-      '3': 7,
-      '4': 1,
-      '5': 11,
-      '6': '.goodanime.FuzzyDate',
-      '10': 'completedAt'
-    },
-    {'1': 'error', '3': 8, '4': 1, '5': 9, '10': 'error'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
   ],
 };
 
 /// Descriptor for `SaveMediaListEntryResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List saveMediaListEntryResponseDescriptor = $convert.base64Decode(
-    'ChpTYXZlTWVkaWFMaXN0RW50cnlSZXNwb25zZRIOCgJpZBgBIAEoBVICaWQSFgoGc3RhdHVzGA'
-    'IgASgJUgZzdGF0dXMSGgoIcHJvZ3Jlc3MYAyABKAVSCHByb2dyZXNzEhQKBXNjb3JlGAQgASgB'
-    'UgVzY29yZRIWCgZyZXBlYXQYBSABKAVSBnJlcGVhdBIzCgpzdGFydGVkX2F0GAYgASgLMhQuZ2'
-    '9vZGFuaW1lLkZ1enp5RGF0ZVIJc3RhcnRlZEF0EjcKDGNvbXBsZXRlZF9hdBgHIAEoCzIULmdv'
-    'b2RhbmltZS5GdXp6eURhdGVSC2NvbXBsZXRlZEF0EhQKBWVycm9yGAggASgJUgVlcnJvcg==');
+final $typed_data.Uint8List saveMediaListEntryResponseDescriptor =
+    $convert.base64Decode(
+        'ChpTYXZlTWVkaWFMaXN0RW50cnlSZXNwb25zZRIvCgVlbnRyeRgBIAEoCzIZLmdvb2RhbmltZS'
+        '5NZWRpYUxpc3RFbnRyeVIFZW50cnkSFAoFZXJyb3IYAiABKAlSBWVycm9y');
 
 @$core.Deprecated('Use fetchMediaDetailsRequestDescriptor instead')
 const FetchMediaDetailsRequest$json = {

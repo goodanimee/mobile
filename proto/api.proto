@@ -5,6 +5,7 @@ package goodanime;
 import "common.proto";
 import "media.proto";
 import "media_list.proto";
+import "media_list_entry.proto";
 import "viewer.proto";
 
 option go_package = "goodanime/backend/proto";
@@ -41,14 +42,8 @@ message SaveMediaListEntryRequest {
 }
 
 message SaveMediaListEntryResponse {
-  int32 id = 1;
-  string status = 2;
-  int32 progress = 3;
-  double score = 4;
-  int32 repeat = 5;
-  FuzzyDate started_at = 6;
-  FuzzyDate completed_at = 7;
-  string error = 8;
+  MediaListEntry entry = 1;
+  string error = 2;
 }
 
 message FetchMediaDetailsRequest {
