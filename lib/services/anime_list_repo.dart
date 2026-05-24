@@ -76,27 +76,27 @@ class AnimeListRepo {
     }
 
     final Map<MediaListStatus, List<MediaListEntryWithMedia>> grouped = {
-      MediaListStatus.CURRENT: [],
-      MediaListStatus.REPEATING: [],
-      MediaListStatus.PLANNING: [],
-      MediaListStatus.COMPLETED: [],
-      MediaListStatus.PAUSED: [],
-      MediaListStatus.DROPPED: [],
+      MediaListStatus.current: [],
+      MediaListStatus.repeating: [],
+      MediaListStatus.planning: [],
+      MediaListStatus.completed: [],
+      MediaListStatus.paused: [],
+      MediaListStatus.dropped: [],
     };
 
     for (final entry in allEntries) {
-      final status = entry.status ?? MediaListStatus.CURRENT;
+      final status = entry.status ?? MediaListStatus.current;
       grouped[status] ??= [];
       grouped[status]!.add(entry);
     }
 
     final orderedStatuses = [
-      MediaListStatus.CURRENT,
-      MediaListStatus.PLANNING,
-      MediaListStatus.COMPLETED,
-      MediaListStatus.REPEATING,
-      MediaListStatus.PAUSED,
-      MediaListStatus.DROPPED,
+      MediaListStatus.current,
+      MediaListStatus.planning,
+      MediaListStatus.completed,
+      MediaListStatus.repeating,
+      MediaListStatus.paused,
+      MediaListStatus.dropped,
     ];
 
     final List<MediaList> processedLists = [];

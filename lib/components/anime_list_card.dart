@@ -51,7 +51,7 @@ Widget _buildProgressBadge(
     fontWeight: FontWeight.w600,
   );
 
-  if (status == MediaListStatus.PLANNING) {
+  if (status == MediaListStatus.planning) {
     return Container(
       padding: badgePadding,
       decoration: badgeDecoration,
@@ -71,9 +71,9 @@ Widget _buildProgressBadge(
   }
 
   final icon = switch (status) {
-    MediaListStatus.COMPLETED => Icons.check_circle_rounded,
-    MediaListStatus.PAUSED => Icons.pause_circle_rounded,
-    MediaListStatus.DROPPED => Icons.cancel_rounded,
+    MediaListStatus.completed => Icons.check_circle_rounded,
+    MediaListStatus.paused => Icons.pause_circle_rounded,
+    MediaListStatus.dropped => Icons.cancel_rounded,
     _ => Icons.play_circle_fill_rounded,
   };
 
@@ -203,8 +203,8 @@ class _AnimeListCardState extends State<AnimeListCard> {
     final epCount = widget.entry.media.episodes;
     final newProgress = _progress + 1;
     final newStatus = (epCount > 0 && newProgress >= epCount)
-        ? MediaListStatus.COMPLETED
-        : MediaListStatus.CURRENT;
+        ? MediaListStatus.completed
+        : MediaListStatus.current;
 
     setState(() {
       _progress = newProgress;
@@ -266,9 +266,9 @@ class _AnimeListCardState extends State<AnimeListCard> {
     final isFavourite = widget.entry.media.isFavourite;
 
     final showPlayButton =
-        _status == MediaListStatus.CURRENT ||
-        _status == MediaListStatus.PLANNING ||
-        _status == MediaListStatus.PAUSED;
+        _status == MediaListStatus.current ||
+        _status == MediaListStatus.planning ||
+        _status == MediaListStatus.paused;
 
     return GestureDetector(
       onTap: widget.onTap,
@@ -395,8 +395,8 @@ class _AnimeListCardState extends State<AnimeListCard> {
                                     ],
                                   ],
                                 ),
-                                if ((_status == MediaListStatus.COMPLETED ||
-                                        _status == MediaListStatus.DROPPED) &&
+                                if ((_status == MediaListStatus.completed ||
+                                        _status == MediaListStatus.dropped) &&
                                     score > 0)
                                   _buildScoreBadge(score),
                               ],
