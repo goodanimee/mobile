@@ -7,6 +7,7 @@ import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
 import '../utils/app_options.dart';
+import '../proto/api.pb.dart';
 
 /// Builds a badge showing repeat count
 Widget _buildRepeatBadge(int repeat) {

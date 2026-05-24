@@ -9,6 +9,7 @@ import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
 import '../utils/app_options.dart';
+import '../proto/api.pb.dart';
 
 /// A bottom sheet for editing anime list entry options
 class AnimeOptionsSheet extends StatefulWidget {

@@ -4,6 +4,7 @@ import '../api/media_details_api.dart';
 import '../models/media.dart';
 import 'auth_service.dart';
 import '../utils/utils.dart';
+import '../proto/api.pb.dart';
 
 class AnimeRepo {
   static const String _cachePrefix = 'anime_cache_';

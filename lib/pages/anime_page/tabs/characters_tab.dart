@@ -7,6 +7,7 @@ import '../../../components/app_section.dart';
 import '../../../api/media_details_api.dart';
 import '../../../services/auth_service.dart';
 import '../../../models/media_character.dart';
+import '../../../proto/api.pb.dart';
 
 /// A tab displaying characters and cast for an anime
 class AnimeCharactersTab extends StatefulWidget {
