@@ -7,6 +7,7 @@ import '../widgets/status_distribution_bar.dart';
 import '../widgets/trend_line_chart.dart';
 import '../widgets/stat_tooltip.dart';
 import '../../../models/media.dart';
+import '../../../models/media_misc.dart';
 
 /// A tab displaying ranking and statistical information for an anime
 class AnimeRankingsTab extends StatefulWidget {

@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 /// Represents a date with optional day, month, and year
 class FuzzyDate {
   /// Year component

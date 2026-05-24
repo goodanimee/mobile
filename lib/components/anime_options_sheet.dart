@@ -5,7 +5,6 @@ import './anime_options/score_slider.dart';
 import './anime_options/progress_editor.dart';
 import './anime_options/status_selector.dart';
 import '../services/auth_service.dart';
-import '../proto/medialist.pb.dart' hide FuzzyDate;
 import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';

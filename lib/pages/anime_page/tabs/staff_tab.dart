@@ -5,8 +5,7 @@ import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
 import '../../../api/media_details_api.dart';
 import '../../../services/auth_service.dart';
-import '../../../proto/medialist.pb.dart';
-import '../../../models/media.dart';
+import '../../../models/media_staff.dart';
 
 /// A tab displaying the production staff for an anime
 class AnimeStaffTab extends StatefulWidget {

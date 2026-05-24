@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../pages/anime_page.dart';
 import '../pages/anime_page/widgets/character_sheet.dart';
-import '../models/media.dart';
+import '../models/media_character.dart';
 import 'utils.dart';
 
 /// Centralized manager for app transitions and navigation

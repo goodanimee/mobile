@@ -3,7 +3,7 @@ import '../../../theme/theme.dart';
 import '../../../components/section_title.dart';
 import '../../../components/app_network_image.dart';
 import '../../../components/html_description.dart';
-import '../../../models/media.dart';
+import '../../../models/media_character.dart';
 import '../../../models/common.dart';
 
 /// A bottom sheet displaying detailed information about a character

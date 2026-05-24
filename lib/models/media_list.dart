@@ -1,6 +1,6 @@
 import 'common.dart';
-import 'media.dart';
 import 'media_list_entry.dart';
+import 'media_min.dart';
 
 /// Extends MediaListEntry to include the minimal media object
 class MediaListEntryWithMedia extends MediaListEntry {

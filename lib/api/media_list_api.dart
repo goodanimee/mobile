@@ -3,8 +3,6 @@ import 'package:ffi/ffi.dart';
 import 'dart:isolate';
 import '../models/media_list.dart';
 import '../models/media_list_entry.dart';
-import '../proto/medialist.pb.dart'
-    hide MediaListEntry, MediaList, MediaListCollection;
 import 'ffi_core.dart';
 
 /// Native function signature for fetching media list

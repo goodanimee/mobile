@@ -6,9 +6,9 @@ import '../../../utils/app_navigation.dart';
 import '../../../utils/utils.dart';
 import '../../../api/media_details_api.dart';
 import '../../../services/auth_service.dart';
-import '../../../proto/medialist.pb.dart';
 import '../../../theme/theme.dart';
-import '../../../models/media.dart';
+import '../../../models/media_edge.dart';
+import '../../../models/media_recommendation.dart';
 
 /// Tab displaying related and recommended media
 class AnimeRelationsTab extends StatefulWidget {

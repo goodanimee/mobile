@@ -2,7 +2,6 @@ import 'dart:ffi' as ffi;
 import 'dart:isolate';
 import 'package:ffi/ffi.dart';
 import '../models/viewer.dart';
-import '../proto/medialist.pb.dart' hide Viewer;
 import 'ffi_core.dart';
 
 /// Native function signature for fetching viewer information

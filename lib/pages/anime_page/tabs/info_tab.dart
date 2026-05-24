@@ -7,6 +7,7 @@ import '../../../components/app_pill.dart';
 import '../../../components/app_section.dart';
 import '../../../utils/utils.dart';
 import '../../../models/media.dart';
+import '../../../models/media_misc.dart';
 import '../../../theme/theme.dart';
 
 /// A tab displaying general information and synopsis for an anime

@@ -5,6 +5,7 @@ import '../../../components/section_title.dart';
 import '../../../components/app_network_image.dart';
 import '../../../components/error_view.dart';
 import '../../../models/media.dart';
+import '../../../models/media_misc.dart';
 
 /// A tab displaying trailers and streaming episodes for an anime
 class AnimeMediaTab extends StatelessWidget {

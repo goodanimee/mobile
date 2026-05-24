@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../api/media_details_api.dart';
-import '../proto/medialist.pb.dart' hide Media;
 import '../models/media.dart';
 import 'auth_service.dart';
 import '../utils/utils.dart';

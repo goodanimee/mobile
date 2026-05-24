@@ -3,7 +3,6 @@ import '../theme/theme.dart';
 import 'app_network_image.dart';
 import 'app_badges.dart';
 import '../services/auth_service.dart';
-import '../proto/medialist.pb.dart';
 import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
