@@ -1,3 +1,5 @@
+import '../proto/media_min.pb.dart' as pb;
+
 /// Represents a media cover image
 class CoverImage {
   /// Medium-sized image URL
@@ -20,24 +22,24 @@ class CoverImage {
     required this.color,
   });
 
-  /// Creates a cover image from a JSON map
-  factory CoverImage.fromJson(Map<String, dynamic> json) {
+  /// Creates a cover image from a protobuf object
+  factory CoverImage.fromProto(pb.CoverImage pbObj) {
     return CoverImage(
-      medium: json['medium']?.toString() ?? '',
-      large: json['large']?.toString() ?? '',
-      extraLarge: json['extraLarge']?.toString() ?? '',
-      color: json['color']?.toString() ?? '',
+      medium: pbObj.medium,
+      large: pbObj.large,
+      extraLarge: pbObj.extraLarge,
+      color: pbObj.color,
     );
   }
 
-  /// Converts the cover image to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'medium': medium,
-      'large': large,
-      'extraLarge': extraLarge,
-      'color': color,
-    };
+  /// Converts the cover image to a protobuf object
+  pb.CoverImage toProto() {
+    return pb.CoverImage(
+      medium: medium,
+      large: large,
+      extraLarge: extraLarge,
+      color: color,
+    );
   }
 }
 
@@ -63,24 +65,24 @@ class Title {
     required this.userPreferred,
   });
 
-  /// Creates a title from a JSON map
-  factory Title.fromJson(Map<String, dynamic> json) {
+  /// Creates a title from a protobuf object
+  factory Title.fromProto(pb.Title pbObj) {
     return Title(
-      english: json['english']?.toString() ?? '',
-      native: json['native']?.toString() ?? '',
-      romaji: json['romaji']?.toString() ?? '',
-      userPreferred: json['userPreferred']?.toString() ?? '',
+      english: pbObj.english,
+      native: pbObj.native,
+      romaji: pbObj.romaji,
+      userPreferred: pbObj.userPreferred,
     );
   }
 
-  /// Converts the title to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'english': english,
-      'native': native,
-      'romaji': romaji,
-      'userPreferred': userPreferred,
-    };
+  /// Converts the title to a protobuf object
+  pb.Title toProto() {
+    return pb.Title(
+      english: english,
+      native: native,
+      romaji: romaji,
+      userPreferred: userPreferred,
+    );
   }
 }
 
@@ -126,42 +128,34 @@ class MediaMin {
     required this.siteUrl,
   });
 
-  /// Creates a minimal media from a JSON map
-  factory MediaMin.fromJson(Map<String, dynamic> json) {
-    final titleData = json['title'] as Map?;
-    final coverImageData = json['coverImage'] as Map?;
+  /// Creates a minimal media from a protobuf object
+  factory MediaMin.fromProto(pb.MediaMin pbObj) {
     return MediaMin(
-      id: json['id'] as int? ?? 0,
-      title: Title.fromJson(
-        titleData != null ? Map<String, dynamic>.from(titleData) : const {},
-      ),
-      averageScore: json['averageScore'] as int? ?? 0,
-      coverImage: CoverImage.fromJson(
-        coverImageData != null
-            ? Map<String, dynamic>.from(coverImageData)
-            : const {},
-      ),
-      episodes: json['episodes'] as int? ?? 0,
-      format: json['format']?.toString() ?? '',
-      isAdult: json['isAdult'] as bool? ?? false,
-      isFavourite: json['isFavourite'] as bool? ?? false,
-      siteUrl: json['siteUrl']?.toString() ?? '',
+      id: pbObj.id,
+      title: Title.fromProto(pbObj.title),
+      averageScore: pbObj.averageScore,
+      coverImage: CoverImage.fromProto(pbObj.coverImage),
+      episodes: pbObj.episodes,
+      format: pbObj.format,
+      isAdult: pbObj.isAdult,
+      isFavourite: pbObj.isFavourite,
+      siteUrl: pbObj.siteUrl,
     );
   }
 
-  /// Converts the minimal media to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title.toJson(),
-      'averageScore': averageScore,
-      'coverImage': coverImage.toJson(),
-      'episodes': episodes,
-      'format': format,
-      'isAdult': isAdult,
-      'isFavourite': isFavourite,
-      'siteUrl': siteUrl,
-    };
+  /// Converts the minimal media to a protobuf object
+  pb.MediaMin toProto() {
+    return pb.MediaMin(
+      id: id,
+      title: title.toProto(),
+      averageScore: averageScore,
+      coverImage: coverImage.toProto(),
+      episodes: episodes,
+      format: format,
+      isAdult: isAdult,
+      isFavourite: isFavourite,
+      siteUrl: siteUrl,
+    );
   }
 
   /// Creates a copy of this object with the given fields replaced
