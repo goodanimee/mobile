@@ -1,3 +1,4 @@
+import '../proto/media_character.pb.dart' as pb;
 import 'common.dart';
 import 'media_staff.dart';
 
@@ -27,27 +28,27 @@ class CharacterName {
     required this.alternativeSpoiler,
   });
 
-  /// Creates a character name from a JSON map
-  factory CharacterName.fromJson(Map<String, dynamic> json) {
+  /// Creates a character name from a protobuf object
+  factory CharacterName.fromProto(pb.CharacterName pbObj) {
     return CharacterName(
-      full: json['full']?.toString() ?? '',
-      native: json['native']?.toString(),
-      userPreferred: json['userPreferred']?.toString(),
-      alternative: (json['alternative'] as List?)?.cast<String>() ?? [],
-      alternativeSpoiler:
-          (json['alternativeSpoiler'] as List?)?.cast<String>() ?? [],
+      full: pbObj.full,
+      native: pbObj.hasNative() ? pbObj.native : null,
+      userPreferred: pbObj.hasUserPreferred() ? pbObj.userPreferred : null,
+      alternative: pbObj.alternative,
+      alternativeSpoiler: pbObj.alternativeSpoiler,
     );
   }
 
-  /// Converts the character name to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'full': full,
-      'native': native,
-      'userPreferred': userPreferred,
-      'alternative': alternative,
-      'alternativeSpoiler': alternativeSpoiler,
-    };
+  /// Converts the character name to a protobuf object
+  pb.CharacterName toProto() {
+    final pbObj = pb.CharacterName(
+      full: full,
+      alternative: alternative,
+      alternativeSpoiler: alternativeSpoiler,
+    );
+    if (native != null) pbObj.native = native!;
+    if (userPreferred != null) pbObj.userPreferred = userPreferred!;
+    return pbObj;
   }
 }
 
@@ -62,17 +63,20 @@ class CharacterImage {
   /// Creates a character image
   const CharacterImage({this.large, this.medium});
 
-  /// Creates a character image from a JSON map
-  factory CharacterImage.fromJson(Map<String, dynamic> json) {
+  /// Creates a character image from a protobuf object
+  factory CharacterImage.fromProto(pb.CharacterImage pbObj) {
     return CharacterImage(
-      large: json['large']?.toString(),
-      medium: json['medium']?.toString(),
+      large: pbObj.hasLarge() ? pbObj.large : null,
+      medium: pbObj.hasMedium() ? pbObj.medium : null,
     );
   }
 
-  /// Converts the character image to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'large': large, 'medium': medium};
+  /// Converts the character image to a protobuf object
+  pb.CharacterImage toProto() {
+    final pbObj = pb.CharacterImage();
+    if (large != null) pbObj.large = large!;
+    if (medium != null) pbObj.medium = medium!;
+    return pbObj;
   }
 }
 
@@ -106,37 +110,30 @@ class Character {
     this.description,
   });
 
-  /// Creates a character from a JSON map
-  factory Character.fromJson(Map<String, dynamic> json) {
-    final nameData = json['name'] as Map?;
-    final imageData = json['image'] as Map?;
-    final dobData = json['dateOfBirth'] as Map?;
+  /// Creates a character from a protobuf object
+  factory Character.fromProto(pb.Character pbObj) {
     return Character(
-      name: nameData != null
-          ? CharacterName.fromJson(Map<String, dynamic>.from(nameData))
+      name: pbObj.hasName() ? CharacterName.fromProto(pbObj.name) : null,
+      image: pbObj.hasImage() ? CharacterImage.fromProto(pbObj.image) : null,
+      gender: pbObj.hasGender() ? pbObj.gender : null,
+      age: pbObj.hasAge() ? pbObj.age : null,
+      dateOfBirth: pbObj.hasDateOfBirth()
+          ? FuzzyDate.fromProto(pbObj.dateOfBirth)
           : null,
-      image: imageData != null
-          ? CharacterImage.fromJson(Map<String, dynamic>.from(imageData))
-          : null,
-      gender: json['gender']?.toString(),
-      age: json['age']?.toString(),
-      dateOfBirth: dobData != null
-          ? FuzzyDate.fromJson(Map<String, dynamic>.from(dobData))
-          : null,
-      description: json['description']?.toString(),
+      description: pbObj.hasDescription() ? pbObj.description : null,
     );
   }
 
-  /// Converts the character to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name?.toJson(),
-      'image': image?.toJson(),
-      'gender': gender,
-      'age': age,
-      'dateOfBirth': dateOfBirth?.toJson(),
-      'description': description,
-    };
+  /// Converts the character to a protobuf object
+  pb.Character toProto() {
+    final pbObj = pb.Character();
+    if (name != null) pbObj.name = name!.toProto();
+    if (image != null) pbObj.image = image!.toProto();
+    if (gender != null) pbObj.gender = gender!;
+    if (age != null) pbObj.age = age!;
+    if (dateOfBirth != null) pbObj.dateOfBirth = dateOfBirth!.toProto();
+    if (description != null) pbObj.description = description!;
+    return pbObj;
   }
 }
 
@@ -166,36 +163,26 @@ class CharacterEdge {
     required this.voiceActors,
   });
 
-  /// Creates a character edge from a JSON map
-  factory CharacterEdge.fromJson(Map<String, dynamic> json) {
-    final nodeData = json['node'] as Map?;
-    final vaList = json['voiceActors'] as List?;
+  /// Creates a character edge from a protobuf object
+  factory CharacterEdge.fromProto(pb.CharacterEdge pbObj) {
     return CharacterEdge(
-      id: json['id'] as int? ?? 0,
-      role: json['role']?.toString() ?? '',
-      name: json['name']?.toString() ?? '',
-      node: nodeData != null
-          ? Character.fromJson(Map<String, dynamic>.from(nodeData))
-          : null,
-      voiceActors: vaList != null
-          ? List<Staff>.from(
-              vaList.map(
-                (v) => Staff.fromJson(Map<String, dynamic>.from(v as Map)),
-              ),
-            )
-          : const [],
+      id: pbObj.id,
+      role: pbObj.role,
+      name: pbObj.name,
+      node: pbObj.hasNode() ? Character.fromProto(pbObj.node) : null,
+      voiceActors: pbObj.voiceActors.map((v) => Staff.fromProto(v)).toList(),
     );
   }
 
-  /// Converts the character edge to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'role': role,
-      'name': name,
-      'node': node?.toJson(),
-      'voiceActors': voiceActors.map((v) => v.toJson()).toList(),
-    };
+  /// Converts the character edge to a protobuf object
+  pb.CharacterEdge toProto() {
+    return pb.CharacterEdge(
+      id: id,
+      role: role,
+      name: name,
+      node: node?.toProto(),
+      voiceActors: voiceActors.map((v) => v.toProto()).toList(),
+    );
   }
 }
 
@@ -210,32 +197,19 @@ class CharacterConnection {
   /// Creates a character connection
   const CharacterConnection({required this.edges, required this.pageInfo});
 
-  /// Creates a character connection from a JSON map
-  factory CharacterConnection.fromJson(Map<String, dynamic> json) {
-    final edgesList = json['edges'] as List?;
-    final pageInfoData = json['pageInfo'] as Map?;
+  /// Creates a character connection from a protobuf object
+  factory CharacterConnection.fromProto(pb.CharacterConnection pbObj) {
     return CharacterConnection(
-      edges: edgesList != null
-          ? List<CharacterEdge>.from(
-              edgesList.map(
-                (e) =>
-                    CharacterEdge.fromJson(Map<String, dynamic>.from(e as Map)),
-              ),
-            )
-          : const [],
-      pageInfo: PageInfo.fromJson(
-        pageInfoData != null
-            ? Map<String, dynamic>.from(pageInfoData)
-            : const {},
-      ),
+      edges: pbObj.edges.map((e) => CharacterEdge.fromProto(e)).toList(),
+      pageInfo: PageInfo.fromProto(pbObj.pageInfo),
     );
   }
 
-  /// Converts the character connection to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'edges': edges.map((e) => e.toJson()).toList(),
-      'pageInfo': pageInfo.toJson(),
-    };
+  /// Converts the character connection to a protobuf object
+  pb.CharacterConnection toProto() {
+    return pb.CharacterConnection(
+      edges: edges.map((e) => e.toProto()).toList(),
+      pageInfo: pageInfo.toProto(),
+    );
   }
 }

@@ -1,3 +1,5 @@
+import '../proto/media_misc.pb.dart' as pb;
+
 /// Represents a media trailer
 class Trailer {
   /// Trailer ID
@@ -16,18 +18,22 @@ class Trailer {
     required this.thumbnail,
   });
 
-  /// Creates a trailer from a JSON map
-  factory Trailer.fromJson(Map<String, dynamic> json) {
+  /// Creates a trailer from a protobuf object
+  factory Trailer.fromProto(pb.Trailer pbObj) {
     return Trailer(
-      id: json['id']?.toString() ?? '',
-      site: json['site']?.toString() ?? '',
-      thumbnail: json['thumbnail']?.toString() ?? '',
+      id: pbObj.id,
+      site: pbObj.site,
+      thumbnail: pbObj.thumbnail,
     );
   }
 
-  /// Converts the trailer to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'site': site, 'thumbnail': thumbnail};
+  /// Converts the trailer to a protobuf object
+  pb.Trailer toProto() {
+    return pb.Trailer(
+      id: id,
+      site: site,
+      thumbnail: thumbnail,
+    );
   }
 }
 
@@ -57,26 +63,26 @@ class MediaTag {
     required this.rank,
   });
 
-  /// Creates a media tag from a JSON map
-  factory MediaTag.fromJson(Map<String, dynamic> json) {
+  /// Creates a media tag from a protobuf object
+  factory MediaTag.fromProto(pb.MediaTag pbObj) {
     return MediaTag(
-      id: json['id'] as int? ?? 0,
-      isGeneralSpoiler: json['isGeneralSpoiler'] as bool? ?? false,
-      isMediaSpoiler: json['isMediaSpoiler'] as bool? ?? false,
-      name: json['name']?.toString() ?? '',
-      rank: json['rank'] as int? ?? 0,
+      id: pbObj.id,
+      isGeneralSpoiler: pbObj.isGeneralSpoiler,
+      isMediaSpoiler: pbObj.isMediaSpoiler,
+      name: pbObj.name,
+      rank: pbObj.rank,
     );
   }
 
-  /// Converts the media tag to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'isGeneralSpoiler': isGeneralSpoiler,
-      'isMediaSpoiler': isMediaSpoiler,
-      'name': name,
-      'rank': rank,
-    };
+  /// Converts the media tag to a protobuf object
+  pb.MediaTag toProto() {
+    return pb.MediaTag(
+      id: id,
+      isGeneralSpoiler: isGeneralSpoiler,
+      isMediaSpoiler: isMediaSpoiler,
+      name: name,
+      rank: rank,
+    );
   }
 }
 
@@ -98,18 +104,22 @@ class ExternalLink {
     required this.url,
   });
 
-  /// Creates an external link from a JSON map
-  factory ExternalLink.fromJson(Map<String, dynamic> json) {
+  /// Creates an external link from a protobuf object
+  factory ExternalLink.fromProto(pb.ExternalLink pbObj) {
     return ExternalLink(
-      language: json['language']?.toString() ?? '',
-      site: json['site']?.toString() ?? '',
-      url: json['url']?.toString() ?? '',
+      language: pbObj.language,
+      site: pbObj.site,
+      url: pbObj.url,
     );
   }
 
-  /// Converts the external link to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'language': language, 'site': site, 'url': url};
+  /// Converts the external link to a protobuf object
+  pb.ExternalLink toProto() {
+    return pb.ExternalLink(
+      language: language,
+      site: site,
+      url: url,
+    );
   }
 }
 
@@ -131,22 +141,22 @@ class AiringSchedule {
     required this.timeUntilAiring,
   });
 
-  /// Creates an airing schedule from a JSON map
-  factory AiringSchedule.fromJson(Map<String, dynamic> json) {
+  /// Creates an airing schedule from a protobuf object
+  factory AiringSchedule.fromProto(pb.AiringSchedule pbObj) {
     return AiringSchedule(
-      airingAt: json['airingAt'] as int? ?? 0,
-      episode: json['episode'] as int? ?? 0,
-      timeUntilAiring: json['timeUntilAiring'] as int? ?? 0,
+      airingAt: pbObj.airingAt,
+      episode: pbObj.episode,
+      timeUntilAiring: pbObj.timeUntilAiring,
     );
   }
 
-  /// Converts the airing schedule to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'airingAt': airingAt,
-      'episode': episode,
-      'timeUntilAiring': timeUntilAiring,
-    };
+  /// Converts the airing schedule to a protobuf object
+  pb.AiringSchedule toProto() {
+    return pb.AiringSchedule(
+      airingAt: airingAt,
+      episode: episode,
+      timeUntilAiring: timeUntilAiring,
+    );
   }
 }
 
@@ -168,18 +178,22 @@ class StreamingEpisode {
     required this.url,
   });
 
-  /// Creates a streaming episode from a JSON map
-  factory StreamingEpisode.fromJson(Map<String, dynamic> json) {
+  /// Creates a streaming episode from a protobuf object
+  factory StreamingEpisode.fromProto(pb.StreamingEpisode pbObj) {
     return StreamingEpisode(
-      thumbnail: json['thumbnail']?.toString() ?? '',
-      title: json['title']?.toString() ?? '',
-      url: json['url']?.toString() ?? '',
+      thumbnail: pbObj.thumbnail,
+      title: pbObj.title,
+      url: pbObj.url,
     );
   }
 
-  /// Converts the streaming episode to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'thumbnail': thumbnail, 'title': title, 'url': url};
+  /// Converts the streaming episode to a protobuf object
+  pb.StreamingEpisode toProto() {
+    return pb.StreamingEpisode(
+      thumbnail: thumbnail,
+      title: title,
+      url: url,
+    );
   }
 }
 
@@ -209,26 +223,26 @@ class MediaRank {
     required this.year,
   });
 
-  /// Creates a media rank from a JSON map
-  factory MediaRank.fromJson(Map<String, dynamic> json) {
+  /// Creates a media rank from a protobuf object
+  factory MediaRank.fromProto(pb.MediaRank pbObj) {
     return MediaRank(
-      allTime: json['allTime'] as bool? ?? false,
-      rank: json['rank'] as int? ?? 0,
-      season: json['season']?.toString() ?? '',
-      type: json['type']?.toString() ?? '',
-      year: json['year'] as int? ?? 0,
+      allTime: pbObj.allTime,
+      rank: pbObj.rank,
+      season: pbObj.season,
+      type: pbObj.type,
+      year: pbObj.year,
     );
   }
 
-  /// Converts the media rank to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'allTime': allTime,
-      'rank': rank,
-      'season': season,
-      'type': type,
-      'year': year,
-    };
+  /// Converts the media rank to a protobuf object
+  pb.MediaRank toProto() {
+    return pb.MediaRank(
+      allTime: allTime,
+      rank: rank,
+      season: season,
+      type: type,
+      year: year,
+    );
   }
 }
 
@@ -243,17 +257,20 @@ class ScoreDistribution {
   /// Creates a score distribution
   const ScoreDistribution({required this.amount, required this.score});
 
-  /// Creates a score distribution from a JSON map
-  factory ScoreDistribution.fromJson(Map<String, dynamic> json) {
+  /// Creates a score distribution from a protobuf object
+  factory ScoreDistribution.fromProto(pb.ScoreDistribution pbObj) {
     return ScoreDistribution(
-      amount: json['amount'] as int? ?? 0,
-      score: json['score'] as int? ?? 0,
+      amount: pbObj.amount,
+      score: pbObj.score,
     );
   }
 
-  /// Converts the score distribution to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'amount': amount, 'score': score};
+  /// Converts the score distribution to a protobuf object
+  pb.ScoreDistribution toProto() {
+    return pb.ScoreDistribution(
+      amount: amount,
+      score: score,
+    );
   }
 }
 
@@ -268,17 +285,20 @@ class StatusDistribution {
   /// Creates a status distribution
   const StatusDistribution({required this.amount, required this.status});
 
-  /// Creates a status distribution from a JSON map
-  factory StatusDistribution.fromJson(Map<String, dynamic> json) {
+  /// Creates a status distribution from a protobuf object
+  factory StatusDistribution.fromProto(pb.StatusDistribution pbObj) {
     return StatusDistribution(
-      amount: json['amount'] as int? ?? 0,
-      status: json['status']?.toString() ?? '',
+      amount: pbObj.amount,
+      status: pbObj.status,
     );
   }
 
-  /// Converts the status distribution to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'amount': amount, 'status': status};
+  /// Converts the status distribution to a protobuf object
+  pb.StatusDistribution toProto() {
+    return pb.StatusDistribution(
+      amount: amount,
+      status: status,
+    );
   }
 }
 
@@ -296,37 +316,19 @@ class MediaStats {
     required this.statusDistribution,
   });
 
-  /// Creates media stats from a JSON map
-  factory MediaStats.fromJson(Map<String, dynamic> json) {
-    final scoreList = json['scoreDistribution'] as List?;
-    final statusList = json['statusDistribution'] as List?;
+  /// Creates media stats from a protobuf object
+  factory MediaStats.fromProto(pb.MediaStats pbObj) {
     return MediaStats(
-      scoreDistribution: scoreList != null
-          ? List<ScoreDistribution>.from(
-              scoreList.map(
-                (s) => ScoreDistribution.fromJson(
-                  Map<String, dynamic>.from(s as Map),
-                ),
-              ),
-            )
-          : const [],
-      statusDistribution: statusList != null
-          ? List<StatusDistribution>.from(
-              statusList.map(
-                (s) => StatusDistribution.fromJson(
-                  Map<String, dynamic>.from(s as Map),
-                ),
-              ),
-            )
-          : const [],
+      scoreDistribution: pbObj.scoreDistribution.map((s) => ScoreDistribution.fromProto(s)).toList(),
+      statusDistribution: pbObj.statusDistribution.map((s) => StatusDistribution.fromProto(s)).toList(),
     );
   }
 
-  /// Converts the media stats to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'scoreDistribution': scoreDistribution.map((s) => s.toJson()).toList(),
-      'statusDistribution': statusDistribution.map((s) => s.toJson()).toList(),
-    };
+  /// Converts the media stats to a protobuf object
+  pb.MediaStats toProto() {
+    return pb.MediaStats(
+      scoreDistribution: scoreDistribution.map((s) => s.toProto()).toList(),
+      statusDistribution: statusDistribution.map((s) => s.toProto()).toList(),
+    );
   }
 }

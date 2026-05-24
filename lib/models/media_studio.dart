@@ -1,3 +1,5 @@
+import '../proto/media_studio.pb.dart' as pb;
+
 /// Represents a production studio
 class Studio {
   /// Studio ID
@@ -9,17 +11,20 @@ class Studio {
   /// Creates a studio
   const Studio({required this.id, required this.name});
 
-  /// Creates a studio from a JSON map
-  factory Studio.fromJson(Map<String, dynamic> json) {
+  /// Creates a studio from a protobuf object
+  factory Studio.fromProto(pb.Studio pbObj) {
     return Studio(
-      id: json['id'] as int? ?? 0,
-      name: json['name']?.toString() ?? '',
+      id: pbObj.id,
+      name: pbObj.name,
     );
   }
 
-  /// Converts the studio to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name};
+  /// Converts the studio to a protobuf object
+  pb.Studio toProto() {
+    return pb.Studio(
+      id: id,
+      name: name,
+    );
   }
 }
 
@@ -34,19 +39,19 @@ class StudioEdge {
   /// Creates a studio edge
   const StudioEdge({required this.isMain, required this.node});
 
-  /// Creates a studio edge from a JSON map
-  factory StudioEdge.fromJson(Map<String, dynamic> json) {
-    final nodeData = json['node'] as Map?;
+  /// Creates a studio edge from a protobuf object
+  factory StudioEdge.fromProto(pb.StudioEdge pbObj) {
     return StudioEdge(
-      isMain: json['isMain'] as bool? ?? false,
-      node: Studio.fromJson(
-        nodeData != null ? Map<String, dynamic>.from(nodeData) : const {},
-      ),
+      isMain: pbObj.isMain,
+      node: Studio.fromProto(pbObj.node),
     );
   }
 
-  /// Converts the studio edge to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'isMain': isMain, 'node': node.toJson()};
+  /// Converts the studio edge to a protobuf object
+  pb.StudioEdge toProto() {
+    return pb.StudioEdge(
+      isMain: isMain,
+      node: node.toProto(),
+    );
   }
 }

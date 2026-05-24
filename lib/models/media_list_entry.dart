@@ -1,3 +1,5 @@
+import 'package:protobuf/protobuf.dart';
+import '../proto/media_list_entry.pb.dart' as pb;
 import 'common.dart';
 
 /// Represents a media list entry
@@ -34,36 +36,31 @@ class MediaListEntry {
     this.completedAt,
   });
 
-  /// Creates a media list entry from a JSON map
-  factory MediaListEntry.fromJson(Map<String, dynamic> json) {
-    final startedAtData = json['startedAt'] as Map?;
-    final completedAtData = json['completedAt'] as Map?;
+  /// Creates a media list entry from a protobuf object
+  factory MediaListEntry.fromProto(pb.MediaListEntry pbObj) {
     return MediaListEntry(
-      id: json['id'] as int? ?? 0,
-      status: MediaListStatus.fromJson(json['status']?.toString()),
-      progress: json['progress'] as int? ?? 0,
-      score: (json['score'] as num?)?.toDouble() ?? 0.0,
-      repeat: json['repeat'] as int? ?? 0,
-      startedAt: startedAtData != null
-          ? FuzzyDate.fromJson(Map<String, dynamic>.from(startedAtData))
-          : null,
-      completedAt: completedAtData != null
-          ? FuzzyDate.fromJson(Map<String, dynamic>.from(completedAtData))
-          : null,
+      id: pbObj.id,
+      status: pbObj.hasStatus() ? MediaListStatus.fromProto(pbObj.status) : null,
+      progress: pbObj.progress,
+      score: pbObj.score,
+      repeat: pbObj.repeat,
+      startedAt: pbObj.hasStartedAt() ? FuzzyDate.fromProto(pbObj.startedAt) : null,
+      completedAt: pbObj.hasCompletedAt() ? FuzzyDate.fromProto(pbObj.completedAt) : null,
     );
   }
 
-  /// Converts the media list entry to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'status': status?.toJson(),
-      'progress': progress,
-      'score': score,
-      'repeat': repeat,
-      'startedAt': startedAt?.toJson(),
-      'completedAt': completedAt?.toJson(),
-    };
+  /// Converts the media list entry to a protobuf object
+  GeneratedMessage toProto() {
+    final pbObj = pb.MediaListEntry(
+      id: id,
+      progress: progress,
+      score: score,
+      repeat: repeat,
+    );
+    if (status != null) pbObj.status = status!.toProto();
+    if (startedAt != null) pbObj.startedAt = startedAt!.toProto();
+    if (completedAt != null) pbObj.completedAt = completedAt!.toProto();
+    return pbObj;
   }
 
   /// Creates a copy of this object with the given fields replaced

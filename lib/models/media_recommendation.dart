@@ -1,3 +1,5 @@
+import '../proto/media_recommendation.pb.dart' as pb;
+import '../proto/media_min.pb.dart' as pbm;
 import 'common.dart';
 import 'media_min.dart';
 
@@ -12,23 +14,24 @@ class Recommendation {
   /// Creates a recommendation
   const Recommendation({required this.rating, this.mediaRecommendation});
 
-  /// Creates a recommendation from a JSON map
-  factory Recommendation.fromJson(Map<String, dynamic> json) {
-    final mediaRecData = json['mediaRecommendation'] as Map?;
+  /// Creates a recommendation from a protobuf object
+  factory Recommendation.fromProto(pb.Recommendation pbObj) {
     return Recommendation(
-      rating: json['rating'] as int? ?? 0,
-      mediaRecommendation: mediaRecData != null
-          ? MediaMin.fromJson(Map<String, dynamic>.from(mediaRecData))
+      rating: pbObj.rating,
+      mediaRecommendation: pbObj.hasMediaRecommendation()
+          ? MediaMin.fromProto(pbObj.mediaRecommendation)
           : null,
     );
   }
 
-  /// Converts the recommendation to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'rating': rating,
-      'mediaRecommendation': mediaRecommendation?.toJson(),
-    };
+  /// Converts the recommendation to a protobuf object
+  pb.Recommendation toProto() {
+    final pbObj = pb.Recommendation(rating: rating);
+    if (mediaRecommendation != null) {
+      pbObj.mediaRecommendation =
+          mediaRecommendation!.toProto() as pbm.MediaMin;
+    }
+    return pbObj;
   }
 }
 
@@ -40,19 +43,14 @@ class RecommendationEdge {
   /// Creates a recommendation edge
   const RecommendationEdge({required this.node});
 
-  /// Creates a recommendation edge from a JSON map
-  factory RecommendationEdge.fromJson(Map<String, dynamic> json) {
-    final nodeData = json['node'] as Map?;
-    return RecommendationEdge(
-      node: Recommendation.fromJson(
-        nodeData != null ? Map<String, dynamic>.from(nodeData) : const {},
-      ),
-    );
+  /// Creates a recommendation edge from a protobuf object
+  factory RecommendationEdge.fromProto(pb.RecommendationEdge pbObj) {
+    return RecommendationEdge(node: Recommendation.fromProto(pbObj.node));
   }
 
-  /// Converts the recommendation edge to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'node': node.toJson()};
+  /// Converts the recommendation edge to a protobuf object
+  pb.RecommendationEdge toProto() {
+    return pb.RecommendationEdge(node: node.toProto());
   }
 }
 
@@ -67,33 +65,21 @@ class RecommendationConnection {
   /// Creates a recommendation connection
   const RecommendationConnection({required this.pageInfo, required this.edges});
 
-  /// Creates a recommendation connection from a JSON map
-  factory RecommendationConnection.fromJson(Map<String, dynamic> json) {
-    final pageInfoData = json['pageInfo'] as Map?;
-    final edgesList = json['edges'] as List?;
+  /// Creates a recommendation connection from a protobuf object
+  factory RecommendationConnection.fromProto(
+    pb.RecommendationConnection pbObj,
+  ) {
     return RecommendationConnection(
-      pageInfo: PageInfo.fromJson(
-        pageInfoData != null
-            ? Map<String, dynamic>.from(pageInfoData)
-            : const {},
-      ),
-      edges: edgesList != null
-          ? List<RecommendationEdge>.from(
-              edgesList.map(
-                (e) => RecommendationEdge.fromJson(
-                  Map<String, dynamic>.from(e as Map),
-                ),
-              ),
-            )
-          : const [],
+      pageInfo: PageInfo.fromProto(pbObj.pageInfo),
+      edges: pbObj.edges.map((e) => RecommendationEdge.fromProto(e)).toList(),
     );
   }
 
-  /// Converts the recommendation connection to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'pageInfo': pageInfo.toJson(),
-      'edges': edges.map((e) => e.toJson()).toList(),
-    };
+  /// Converts the recommendation connection to a protobuf object
+  pb.RecommendationConnection toProto() {
+    return pb.RecommendationConnection(
+      pageInfo: pageInfo.toProto(),
+      edges: edges.map((e) => e.toProto()).toList(),
+    );
   }
 }

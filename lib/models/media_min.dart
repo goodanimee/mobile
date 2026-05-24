@@ -1,3 +1,4 @@
+import 'package:protobuf/protobuf.dart';
 import '../proto/media_min.pb.dart' as pb;
 
 /// Represents a media cover image
@@ -144,7 +145,7 @@ class MediaMin {
   }
 
   /// Converts the minimal media to a protobuf object
-  pb.MediaMin toProto() {
+  GeneratedMessage toProto() {
     return pb.MediaMin(
       id: id,
       title: title.toProto(),

@@ -1,3 +1,5 @@
+import '../proto/media_trend.pb.dart' as pb;
+
 /// Represents a trend data point
 class MediaTrend {
   /// Average score at this point
@@ -20,24 +22,24 @@ class MediaTrend {
     required this.popularity,
   });
 
-  /// Creates a media trend from a JSON map
-  factory MediaTrend.fromJson(Map<String, dynamic> json) {
+  /// Creates a media trend from a protobuf object
+  factory MediaTrend.fromProto(pb.MediaTrend pbObj) {
     return MediaTrend(
-      averageScore: json['averageScore'] as int? ?? 0,
-      date: json['date'] as int? ?? 0,
-      inProgress: json['inProgress'] as int? ?? 0,
-      popularity: json['popularity'] as int? ?? 0,
+      averageScore: pbObj.averageScore,
+      date: pbObj.date,
+      inProgress: pbObj.inProgress,
+      popularity: pbObj.popularity,
     );
   }
 
-  /// Converts the media trend to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'averageScore': averageScore,
-      'date': date,
-      'inProgress': inProgress,
-      'popularity': popularity,
-    };
+  /// Converts the media trend to a protobuf object
+  pb.MediaTrend toProto() {
+    return pb.MediaTrend(
+      averageScore: averageScore,
+      date: date,
+      inProgress: inProgress,
+      popularity: popularity,
+    );
   }
 }
 
@@ -49,22 +51,17 @@ class MediaTrendConnection {
   /// Creates a media trend connection
   const MediaTrendConnection({required this.nodes});
 
-  /// Creates a media trend connection from a JSON map
-  factory MediaTrendConnection.fromJson(Map<String, dynamic> json) {
-    final nodesList = json['nodes'] as List?;
+  /// Creates a media trend connection from a protobuf object
+  factory MediaTrendConnection.fromProto(pb.MediaTrendConnection pbObj) {
     return MediaTrendConnection(
-      nodes: nodesList != null
-          ? List<MediaTrend>.from(
-              nodesList.map(
-                (n) => MediaTrend.fromJson(Map<String, dynamic>.from(n as Map)),
-              ),
-            )
-          : const [],
+      nodes: pbObj.nodes.map((n) => MediaTrend.fromProto(n)).toList(),
     );
   }
 
-  /// Converts the media trend connection to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'nodes': nodes.map((n) => n.toJson()).toList()};
+  /// Converts the media trend connection to a protobuf object
+  pb.MediaTrendConnection toProto() {
+    return pb.MediaTrendConnection(
+      nodes: nodes.map((n) => n.toProto()).toList(),
+    );
   }
 }

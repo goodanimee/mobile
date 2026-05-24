@@ -1,3 +1,7 @@
+import '../proto/media.pb.dart' as pb;
+import '../proto/media_studio.pb.dart' as pbs;
+import '../proto/media_min.pb.dart' as pbm;
+import '../proto/media_list_entry.pb.dart' as pb_list_entry;
 import 'media_list_entry.dart';
 import 'media_min.dart';
 import 'media_character.dart';
@@ -123,159 +127,103 @@ class Media extends MediaMin {
     this.trends,
   });
 
-  /// Creates a media from a JSON map
-  factory Media.fromJson(Map<String, dynamic> json) {
-    final titleData = json['title'] as Map?;
-    final coverImageData = json['coverImage'] as Map?;
-    final studiosData = json['studios'] as Map?;
-    final staffData = json['staff'] as Map?;
-    final charactersData = json['characters'] as Map?;
-    final relationsData = json['relations'] as Map?;
-    final recommendationsData = json['recommendations'] as Map?;
-    final trailerData = json['trailer'] as Map?;
-    final entryData = json['mediaListEntry'] as Map?;
-    final nextAiringData = json['nextAiringEpisode'] as Map?;
-    final statsData = json['stats'] as Map?;
-    final trendsData = json['trends'] as Map?;
-
-    final studiosList = studiosData != null
-        ? studiosData['edges'] as List?
-        : null;
-    final tagsList = json['tags'] as List?;
-    final externalLinksList = json['externalLinks'] as List?;
-    final streamingEpisodesList = json['streamingEpisodes'] as List?;
-    final rankingsList = json['rankings'] as List?;
-
+  /// Creates a media from a protobuf object
+  factory Media.fromProto(pb.Media pbObj) {
     return Media(
-      id: json['id'] as int? ?? 0,
-      title: Title.fromJson(
-        titleData != null ? Map<String, dynamic>.from(titleData) : const {},
-      ),
-      averageScore: json['averageScore'] as int? ?? 0,
-      coverImage: CoverImage.fromJson(
-        coverImageData != null
-            ? Map<String, dynamic>.from(coverImageData)
-            : const {},
-      ),
-      episodes: json['episodes'] as int? ?? 0,
-      format: json['format']?.toString() ?? '',
-      isAdult: json['isAdult'] as bool? ?? false,
-      isFavourite: json['isFavourite'] as bool? ?? false,
-      siteUrl: json['siteUrl']?.toString() ?? '',
-      type: json['type']?.toString() ?? '',
-      bannerImage: json['bannerImage']?.toString() ?? '',
-      status: json['status']?.toString() ?? '',
-      seasonYear: json['seasonYear'] as int? ?? 0,
-      season: json['season']?.toString() ?? '',
-      meanScore: json['meanScore'] as int?,
-      favourites: json['favourites'] as int?,
-      popularity: json['popularity'] as int? ?? 0,
-      description: json['description']?.toString() ?? '',
-      genres: (json['genres'] as List?)?.cast<String>() ?? [],
-      synonyms: (json['synonyms'] as List?)?.cast<String>() ?? [],
-      trailer: trailerData != null
-          ? Trailer.fromJson(Map<String, dynamic>.from(trailerData))
+      id: pbObj.base.id,
+      title: Title.fromProto(pbObj.base.title),
+      averageScore: pbObj.base.averageScore,
+      coverImage: CoverImage.fromProto(pbObj.base.coverImage),
+      episodes: pbObj.base.episodes,
+      format: pbObj.base.format,
+      isAdult: pbObj.base.isAdult,
+      isFavourite: pbObj.base.isFavourite,
+      siteUrl: pbObj.base.siteUrl,
+      type: pbObj.type,
+      bannerImage: pbObj.bannerImage,
+      status: pbObj.status,
+      seasonYear: pbObj.seasonYear,
+      season: pbObj.season,
+      meanScore: pbObj.hasMeanScore() ? pbObj.meanScore : null,
+      favourites: pbObj.hasFavourites() ? pbObj.favourites : null,
+      popularity: pbObj.popularity,
+      description: pbObj.description,
+      genres: pbObj.genres,
+      synonyms: pbObj.synonyms,
+      trailer: pbObj.hasTrailer() ? Trailer.fromProto(pbObj.trailer) : null,
+      studios: pbObj.studios.edges.map((s) => StudioEdge.fromProto(s)).toList(),
+      tags: pbObj.tags.map((t) => MediaTag.fromProto(t)).toList(),
+      externalLinks: pbObj.externalLinks
+          .map((e) => ExternalLink.fromProto(e))
+          .toList(),
+      mediaListEntry: pbObj.hasMediaListEntry()
+          ? MediaListEntry.fromProto(pbObj.mediaListEntry)
           : null,
-      studios: studiosList != null
-          ? List<StudioEdge>.from(
-              studiosList.map(
-                (e) => StudioEdge.fromJson(Map<String, dynamic>.from(e as Map)),
-              ),
-            )
-          : const [],
-      tags: tagsList != null
-          ? List<MediaTag>.from(
-              tagsList.map(
-                (t) => MediaTag.fromJson(Map<String, dynamic>.from(t as Map)),
-              ),
-            )
-          : const [],
-      externalLinks: externalLinksList != null
-          ? List<ExternalLink>.from(
-              externalLinksList.map(
-                (e) =>
-                    ExternalLink.fromJson(Map<String, dynamic>.from(e as Map)),
-              ),
-            )
-          : const [],
-      mediaListEntry: entryData != null
-          ? MediaListEntry.fromJson(Map<String, dynamic>.from(entryData))
+      streamingEpisodes: pbObj.streamingEpisodes
+          .map((s) => StreamingEpisode.fromProto(s))
+          .toList(),
+      staff: pbObj.hasStaff() ? StaffConnection.fromProto(pbObj.staff) : null,
+      nextAiringEpisode: pbObj.hasNextAiringEpisode()
+          ? AiringSchedule.fromProto(pbObj.nextAiringEpisode)
           : null,
-      streamingEpisodes: streamingEpisodesList != null
-          ? List<StreamingEpisode>.from(
-              streamingEpisodesList.map(
-                (s) => StreamingEpisode.fromJson(
-                  Map<String, dynamic>.from(s as Map),
-                ),
-              ),
-            )
-          : const [],
-      staff: staffData != null
-          ? StaffConnection.fromJson(Map<String, dynamic>.from(staffData))
+      characters: pbObj.hasCharacters()
+          ? CharacterConnection.fromProto(pbObj.characters)
           : null,
-      nextAiringEpisode: nextAiringData != null
-          ? AiringSchedule.fromJson(Map<String, dynamic>.from(nextAiringData))
+      relations: pbObj.hasRelations()
+          ? MediaConnection.fromProto(pbObj.relations)
           : null,
-      characters: charactersData != null
-          ? CharacterConnection.fromJson(
-              Map<String, dynamic>.from(charactersData),
-            )
+      recommendations: pbObj.hasRecommendations()
+          ? RecommendationConnection.fromProto(pbObj.recommendations)
           : null,
-      relations: relationsData != null
-          ? MediaConnection.fromJson(Map<String, dynamic>.from(relationsData))
-          : null,
-      recommendations: recommendationsData != null
-          ? RecommendationConnection.fromJson(
-              Map<String, dynamic>.from(recommendationsData),
-            )
-          : null,
-      rankings: rankingsList != null
-          ? List<MediaRank>.from(
-              rankingsList.map(
-                (r) => MediaRank.fromJson(Map<String, dynamic>.from(r as Map)),
-              ),
-            )
-          : const [],
-      stats: statsData != null
-          ? MediaStats.fromJson(Map<String, dynamic>.from(statsData))
-          : null,
-      trends: trendsData != null
-          ? MediaTrendConnection.fromJson(Map<String, dynamic>.from(trendsData))
+      rankings: pbObj.rankings.map((r) => MediaRank.fromProto(r)).toList(),
+      stats: pbObj.hasStats() ? MediaStats.fromProto(pbObj.stats) : null,
+      trends: pbObj.hasTrends()
+          ? MediaTrendConnection.fromProto(pbObj.trends)
           : null,
     );
   }
 
-  /// Converts the media to a JSON map
+  /// Converts the media to a protobuf object
   @override
-  Map<String, dynamic> toJson() {
-    return {
-      ...super.toJson(),
-      'type': type,
-      'bannerImage': bannerImage,
-      'status': status,
-      'seasonYear': seasonYear,
-      'season': season,
-      'meanScore': meanScore,
-      'favourites': favourites,
-      'popularity': popularity,
-      'description': description,
-      'genres': genres,
-      'synonyms': synonyms,
-      'trailer': trailer?.toJson(),
-      'studios': {'edges': studios.map((e) => e.toJson()).toList()},
-      'tags': tags.map((e) => e.toJson()).toList(),
-      'externalLinks': externalLinks.map((e) => e.toJson()).toList(),
-      'mediaListEntry': mediaListEntry?.toJson(),
-      'streamingEpisodes': streamingEpisodes.map((e) => e.toJson()).toList(),
-      'staff': staff?.toJson(),
-      'nextAiringEpisode': nextAiringEpisode?.toJson(),
-      'characters': characters?.toJson(),
-      'relations': relations?.toJson(),
-      'recommendations': recommendations?.toJson(),
-      'rankings': rankings.map((e) => e.toJson()).toList(),
-      'stats': stats?.toJson(),
-      'trends': trends?.toJson(),
-    };
+  pb.Media toProto() {
+    final pbObj = pb.Media(
+      base: super.toProto() as pbm.MediaMin,
+      type: type,
+      bannerImage: bannerImage,
+      status: status,
+      seasonYear: seasonYear,
+      season: season,
+      popularity: popularity,
+      description: description,
+      genres: genres,
+      synonyms: synonyms,
+      studios: pbs.StudioConnection(edges: studios.map((s) => s.toProto())),
+      tags: tags.map((t) => t.toProto()),
+      externalLinks: externalLinks.map((e) => e.toProto()),
+      streamingEpisodes: streamingEpisodes.map((s) => s.toProto()),
+      rankings: rankings.map((r) => r.toProto()),
+    );
+
+    if (meanScore != null) pbObj.meanScore = meanScore!;
+    if (favourites != null) pbObj.favourites = favourites!;
+    if (trailer != null) pbObj.trailer = trailer!.toProto();
+    if (mediaListEntry != null) {
+      pbObj.mediaListEntry =
+          mediaListEntry!.toProto() as pb_list_entry.MediaListEntry;
+    }
+    if (staff != null) pbObj.staff = staff!.toProto();
+    if (nextAiringEpisode != null) {
+      pbObj.nextAiringEpisode = nextAiringEpisode!.toProto();
+    }
+    if (characters != null) pbObj.characters = characters!.toProto();
+    if (relations != null) pbObj.relations = relations!.toProto();
+    if (recommendations != null) {
+      pbObj.recommendations = recommendations!.toProto();
+    }
+    if (stats != null) pbObj.stats = stats!.toProto();
+    if (trends != null) pbObj.trends = trends!.toProto();
+
+    return pbObj;
   }
 
   /// Creates a copy of this object with the given fields replaced
@@ -341,9 +289,7 @@ class Media extends MediaMin {
       studios: studios ?? this.studios,
       tags: tags ?? this.tags,
       externalLinks: externalLinks ?? this.externalLinks,
-      mediaListEntry:
-          mediaListEntry ??
-          this.mediaListEntry, // Not doing a hack to clear it via copyWith for now
+      mediaListEntry: mediaListEntry ?? this.mediaListEntry,
       streamingEpisodes: streamingEpisodes ?? this.streamingEpisodes,
       staff: staff ?? this.staff,
       nextAiringEpisode: nextAiringEpisode ?? this.nextAiringEpisode,

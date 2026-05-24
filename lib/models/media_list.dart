@@ -1,3 +1,7 @@
+import 'package:protobuf/protobuf.dart';
+import '../proto/media_list.pb.dart' as pb;
+import '../proto/media_list_entry.pb.dart' as pb_entry;
+import '../proto/media_min.pb.dart' as pb_min;
 import 'common.dart';
 import 'media_list_entry.dart';
 import 'media_min.dart';
@@ -19,28 +23,27 @@ class MediaListEntryWithMedia extends MediaListEntry {
     required this.media,
   });
 
-  /// Creates a media list entry with media from a JSON map
-  factory MediaListEntryWithMedia.fromJson(Map<String, dynamic> json) {
-    final base = MediaListEntry.fromJson(json);
-    final mediaData = json['media'] as Map?;
+  /// Creates a media list entry with media from a protobuf object
+  factory MediaListEntryWithMedia.fromProto(pb.MediaListEntryWithMedia pbObj) {
     return MediaListEntryWithMedia(
-      id: base.id,
-      status: base.status,
-      progress: base.progress,
-      score: base.score,
-      repeat: base.repeat,
-      startedAt: base.startedAt,
-      completedAt: base.completedAt,
-      media: MediaMin.fromJson(
-        mediaData != null ? Map<String, dynamic>.from(mediaData) : const {},
-      ),
+      id: pbObj.entry.id,
+      status: pbObj.entry.hasStatus() ? MediaListStatus.fromProto(pbObj.entry.status) : null,
+      progress: pbObj.entry.progress,
+      score: pbObj.entry.score,
+      repeat: pbObj.entry.repeat,
+      startedAt: pbObj.entry.hasStartedAt() ? FuzzyDate.fromProto(pbObj.entry.startedAt) : null,
+      completedAt: pbObj.entry.hasCompletedAt() ? FuzzyDate.fromProto(pbObj.entry.completedAt) : null,
+      media: MediaMin.fromProto(pbObj.media),
     );
   }
 
-  /// Converts the entry with media to a JSON map
+  /// Converts the entry with media to a protobuf object
   @override
-  Map<String, dynamic> toJson() {
-    return {...super.toJson(), 'media': media.toJson()};
+  GeneratedMessage toProto() {
+    final pbObj = pb.MediaListEntryWithMedia();
+    pbObj.entry = super.toProto() as pb_entry.MediaListEntry;
+    pbObj.media = media.toProto() as pb_min.MediaMin;
+    return pbObj;
   }
 
   /// Creates a copy of this object with the given fields replaced
@@ -82,31 +85,23 @@ class MediaList {
   /// Creates a media list
   const MediaList({required this.name, this.status, required this.entries});
 
-  /// Creates a media list from a JSON map
-  factory MediaList.fromJson(Map<String, dynamic> json) {
-    final entriesList = json['entries'] as List?;
+  /// Creates a media list from a protobuf object
+  factory MediaList.fromProto(pb.MediaListGroup pbObj) {
     return MediaList(
-      name: json['name']?.toString() ?? '',
-      status: MediaListStatus.fromJson(json['status']?.toString()),
-      entries: entriesList != null
-          ? List<MediaListEntryWithMedia>.from(
-              entriesList.map(
-                (e) => MediaListEntryWithMedia.fromJson(
-                  Map<String, dynamic>.from(e as Map),
-                ),
-              ),
-            )
-          : const [],
+      name: pbObj.name,
+      status: pbObj.hasStatus() ? MediaListStatus.fromProto(pbObj.status) : null,
+      entries: pbObj.entries.map((e) => MediaListEntryWithMedia.fromProto(e)).toList(),
     );
   }
 
-  /// Converts the media list to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'status': status?.toJson(),
-      'entries': entries.map((e) => e.toJson()).toList(),
-    };
+  /// Converts the media list to a protobuf object
+  pb.MediaListGroup toProto() {
+    final pbObj = pb.MediaListGroup(
+      name: name,
+      entries: entries.map((e) => e.toProto() as pb.MediaListEntryWithMedia),
+    );
+    if (status != null) pbObj.status = status!.toProto();
+    return pbObj;
   }
 }
 
@@ -121,26 +116,19 @@ class MediaListCollection {
   /// Creates a media list collection
   const MediaListCollection({required this.hasNextChunk, required this.lists});
 
-  /// Creates a media list collection from a JSON map
-  factory MediaListCollection.fromJson(Map<String, dynamic> json) {
-    final listsList = json['lists'] as List?;
+  /// Creates a media list collection from a protobuf object
+  factory MediaListCollection.fromProto(pb.MediaListCollection pbObj) {
     return MediaListCollection(
-      hasNextChunk: json['hasNextChunk'] as bool? ?? false,
-      lists: listsList != null
-          ? List<MediaList>.from(
-              listsList.map(
-                (l) => MediaList.fromJson(Map<String, dynamic>.from(l as Map)),
-              ),
-            )
-          : const [],
+      hasNextChunk: pbObj.hasNextChunk,
+      lists: pbObj.lists.map((l) => MediaList.fromProto(l)).toList(),
     );
   }
 
-  /// Converts the collection to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'hasNextChunk': hasNextChunk,
-      'lists': lists.map((l) => l.toJson()).toList(),
-    };
+  /// Converts the collection to a protobuf object
+  pb.MediaListCollection toProto() {
+    return pb.MediaListCollection(
+      hasNextChunk: hasNextChunk,
+      lists: lists.map((l) => l.toProto()),
+    );
   }
 }

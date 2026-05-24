@@ -1,3 +1,5 @@
+import '../proto/media_edge.pb.dart' as pb;
+import '../proto/media_min.pb.dart' as pbm;
 import 'media_min.dart';
 
 /// Represents a link between two media
@@ -11,20 +13,20 @@ class MediaEdge {
   /// Creates a media edge
   const MediaEdge({required this.relationType, this.node});
 
-  /// Creates a media edge from a JSON map
-  factory MediaEdge.fromJson(Map<String, dynamic> json) {
-    final nodeData = json['node'] as Map?;
+  /// Creates a media edge from a protobuf object
+  factory MediaEdge.fromProto(pb.MediaEdge pbObj) {
     return MediaEdge(
-      relationType: json['relationType']?.toString() ?? '',
-      node: nodeData != null
-          ? MediaMin.fromJson(Map<String, dynamic>.from(nodeData))
-          : null,
+      relationType: pbObj.relationType,
+      node: pbObj.hasNode() ? MediaMin.fromProto(pbObj.node) : null,
     );
   }
 
-  /// Converts the media edge to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'relationType': relationType, 'node': node?.toJson()};
+  /// Converts the media edge to a protobuf object
+  pb.MediaEdge toProto() {
+    return pb.MediaEdge(
+      relationType: relationType,
+      node: node?.toProto() as pbm.MediaMin,
+    );
   }
 }
 
@@ -36,22 +38,15 @@ class MediaConnection {
   /// Creates a media connection
   const MediaConnection({required this.edges});
 
-  /// Creates a media connection from a JSON map
-  factory MediaConnection.fromJson(Map<String, dynamic> json) {
-    final edgesList = json['edges'] as List?;
+  /// Creates a media connection from a protobuf object
+  factory MediaConnection.fromProto(pb.MediaConnection pbObj) {
     return MediaConnection(
-      edges: edgesList != null
-          ? List<MediaEdge>.from(
-              edgesList.map(
-                (e) => MediaEdge.fromJson(Map<String, dynamic>.from(e as Map)),
-              ),
-            )
-          : const [],
+      edges: pbObj.edges.map((e) => MediaEdge.fromProto(e)).toList(),
     );
   }
 
-  /// Converts the media connection to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'edges': edges.map((e) => e.toJson()).toList()};
+  /// Converts the media connection to a protobuf object
+  pb.MediaConnection toProto() {
+    return pb.MediaConnection(edges: edges.map((e) => e.toProto()).toList());
   }
 }

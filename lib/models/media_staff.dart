@@ -1,3 +1,4 @@
+import '../proto/media_staff.pb.dart' as pb;
 import 'common.dart';
 
 /// Represents the names of a staff member
@@ -14,18 +15,21 @@ class StaffName {
   /// Creates a staff name
   const StaffName({required this.full, this.native, this.userPreferred});
 
-  /// Creates a staff name from a JSON map
-  factory StaffName.fromJson(Map<String, dynamic> json) {
+  /// Creates a staff name from a protobuf object
+  factory StaffName.fromProto(pb.StaffName pbObj) {
     return StaffName(
-      full: json['full']?.toString() ?? '',
-      native: json['native']?.toString(),
-      userPreferred: json['userPreferred']?.toString(),
+      full: pbObj.full,
+      native: pbObj.hasNative() ? pbObj.native : null,
+      userPreferred: pbObj.hasUserPreferred() ? pbObj.userPreferred : null,
     );
   }
 
-  /// Converts the staff name to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'full': full, 'native': native, 'userPreferred': userPreferred};
+  /// Converts the staff name to a protobuf object
+  pb.StaffName toProto() {
+    final pbObj = pb.StaffName(full: full);
+    if (native != null) pbObj.native = native!;
+    if (userPreferred != null) pbObj.userPreferred = userPreferred!;
+    return pbObj;
   }
 }
 
@@ -40,17 +44,20 @@ class StaffImage {
   /// Creates a staff image
   const StaffImage({this.large, this.medium});
 
-  /// Creates a staff image from a JSON map
-  factory StaffImage.fromJson(Map<String, dynamic> json) {
+  /// Creates a staff image from a protobuf object
+  factory StaffImage.fromProto(pb.StaffImage pbObj) {
     return StaffImage(
-      large: json['large']?.toString(),
-      medium: json['medium']?.toString(),
+      large: pbObj.hasLarge() ? pbObj.large : null,
+      medium: pbObj.hasMedium() ? pbObj.medium : null,
     );
   }
 
-  /// Converts the staff image to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'large': large, 'medium': medium};
+  /// Converts the staff image to a protobuf object
+  pb.StaffImage toProto() {
+    final pbObj = pb.StaffImage();
+    if (large != null) pbObj.large = large!;
+    if (medium != null) pbObj.medium = medium!;
+    return pbObj;
   }
 }
 
@@ -68,28 +75,22 @@ class Staff {
   /// Creates a staff member
   const Staff({this.name, this.image, this.languageV2});
 
-  /// Creates a staff member from a JSON map
-  factory Staff.fromJson(Map<String, dynamic> json) {
-    final nameData = json['name'] as Map?;
-    final imageData = json['image'] as Map?;
+  /// Creates a staff member from a protobuf object
+  factory Staff.fromProto(pb.Staff pbObj) {
     return Staff(
-      name: nameData != null
-          ? StaffName.fromJson(Map<String, dynamic>.from(nameData))
-          : null,
-      image: imageData != null
-          ? StaffImage.fromJson(Map<String, dynamic>.from(imageData))
-          : null,
-      languageV2: json['languageV2']?.toString(),
+      name: pbObj.hasName() ? StaffName.fromProto(pbObj.name) : null,
+      image: pbObj.hasImage() ? StaffImage.fromProto(pbObj.image) : null,
+      languageV2: pbObj.hasLanguageV2() ? pbObj.languageV2 : null,
     );
   }
 
-  /// Converts the staff member to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name?.toJson(),
-      'image': image?.toJson(),
-      'languageV2': languageV2,
-    };
+  /// Converts the staff member to a protobuf object
+  pb.Staff toProto() {
+    final pbObj = pb.Staff();
+    if (name != null) pbObj.name = name!.toProto();
+    if (image != null) pbObj.image = image!.toProto();
+    if (languageV2 != null) pbObj.languageV2 = languageV2!;
+    return pbObj;
   }
 }
 
@@ -104,20 +105,20 @@ class StaffEdge {
   /// Creates a staff edge
   const StaffEdge({required this.role, this.node});
 
-  /// Creates a staff edge from a JSON map
-  factory StaffEdge.fromJson(Map<String, dynamic> json) {
-    final nodeData = json['node'] as Map?;
+  /// Creates a staff edge from a protobuf object
+  factory StaffEdge.fromProto(pb.StaffEdge pbObj) {
     return StaffEdge(
-      role: json['role']?.toString() ?? '',
-      node: nodeData != null
-          ? Staff.fromJson(Map<String, dynamic>.from(nodeData))
-          : null,
+      role: pbObj.role,
+      node: pbObj.hasNode() ? Staff.fromProto(pbObj.node) : null,
     );
   }
 
-  /// Converts the staff edge to a JSON map
-  Map<String, dynamic> toJson() {
-    return {'role': role, 'node': node?.toJson()};
+  /// Converts the staff edge to a protobuf object
+  pb.StaffEdge toProto() {
+    return pb.StaffEdge(
+      role: role,
+      node: node?.toProto(),
+    );
   }
 }
 
@@ -132,31 +133,19 @@ class StaffConnection {
   /// Creates a staff connection
   const StaffConnection({required this.edges, required this.pageInfo});
 
-  /// Creates a staff connection from a JSON map
-  factory StaffConnection.fromJson(Map<String, dynamic> json) {
-    final edgesList = json['edges'] as List?;
-    final pageInfoData = json['pageInfo'] as Map?;
+  /// Creates a staff connection from a protobuf object
+  factory StaffConnection.fromProto(pb.StaffConnection pbObj) {
     return StaffConnection(
-      edges: edgesList != null
-          ? List<StaffEdge>.from(
-              edgesList.map(
-                (e) => StaffEdge.fromJson(Map<String, dynamic>.from(e as Map)),
-              ),
-            )
-          : const [],
-      pageInfo: PageInfo.fromJson(
-        pageInfoData != null
-            ? Map<String, dynamic>.from(pageInfoData)
-            : const {},
-      ),
+      edges: pbObj.edges.map((e) => StaffEdge.fromProto(e)).toList(),
+      pageInfo: PageInfo.fromProto(pbObj.pageInfo),
     );
   }
 
-  /// Converts the staff connection to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'edges': edges.map((e) => e.toJson()).toList(),
-      'pageInfo': pageInfo.toJson(),
-    };
+  /// Converts the staff connection to a protobuf object
+  pb.StaffConnection toProto() {
+    return pb.StaffConnection(
+      edges: edges.map((e) => e.toProto()).toList(),
+      pageInfo: pageInfo.toProto(),
+    );
   }
 }
