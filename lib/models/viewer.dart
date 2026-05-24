@@ -1,3 +1,5 @@
+import '../proto/viewer.pb.dart' as pb;
+
 /// Represents a user on the platform
 class Viewer {
   /// User ID
@@ -20,24 +22,27 @@ class Viewer {
     required this.createdAt,
   });
 
-  /// Creates a viewer from a JSON map
-  factory Viewer.fromJson(Map<String, dynamic> json) {
-    final avatar = json['avatar'] as Map?;
+  /// Creates a viewer from a protobuf object
+  factory Viewer.fromProto(pb.Viewer pbObj) {
     return Viewer(
-      id: json['id'] as int? ?? 0,
-      name: json['name']?.toString() ?? '',
-      avatarMedium: avatar?['medium']?.toString() ?? '',
-      createdAt: json['createdAt'] as int? ?? 0,
+      id: pbObj.id,
+      name: pbObj.name,
+      avatarMedium: pbObj.hasAvatar() ? pbObj.avatar.medium : '',
+      createdAt: pbObj.createdAt,
     );
   }
 
-  /// Converts the viewer to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'avatar': {'medium': avatarMedium},
-      'createdAt': createdAt,
-    };
+  /// Converts the viewer to a protobuf object
+  pb.Viewer toProto() {
+    final pbObj = pb.Viewer(
+      id: id,
+      name: name,
+      createdAt: createdAt,
+    );
+    if (avatarMedium.isNotEmpty) {
+      final avatarPb = pb.ViewerAvatar(medium: avatarMedium);
+      pbObj.avatar = avatarPb;
+    }
+    return pbObj;
   }
 }
