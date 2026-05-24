@@ -1,5 +1,48 @@
 package models
 
+import pb "goodanime-backend/proto"
+
+func (c *CoverImage) ToProto() *pb.CoverImage {
+	if c == nil {
+		return nil
+	}
+	return &pb.CoverImage{
+		Medium:     c.Medium,
+		Large:      c.Large,
+		ExtraLarge: c.ExtraLarge,
+		Color:      c.Color,
+	}
+}
+
+func (t *Title) ToProto() *pb.Title {
+	if t == nil {
+		return nil
+	}
+	return &pb.Title{
+		English:       t.English,
+		Native:        t.Native,
+		Romaji:        t.Romaji,
+		UserPreferred: t.UserPreferred,
+	}
+}
+
+func (m *MediaMin) ToProto() *pb.MediaMin {
+	if m == nil {
+		return nil
+	}
+	return &pb.MediaMin{
+		Id:           m.ID,
+		Title:        m.Title.ToProto(),
+		AverageScore: m.AverageScore,
+		CoverImage:   m.CoverImage.ToProto(),
+		Episodes:     m.Episodes,
+		Format:       m.Format,
+		IsAdult:      m.IsAdult,
+		IsFavourite:  m.IsFavourite,
+		SiteUrl:      m.SiteURL,
+	}
+}
+
 // CoverImage represents a media cover image
 type CoverImage struct {
 	Medium     string `json:"medium"`

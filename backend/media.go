@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"unsafe"
 
+	"goodanime-backend/models"
 	pb "goodanime-backend/proto"
 
 	"google.golang.org/protobuf/proto"
@@ -57,20 +58,17 @@ func FetchMediaDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var errCheck struct {
-		Errors []struct {
-			Message string `json:"message"`
-		} `json:"errors"`
-		Data struct {
-			Media json.RawMessage `json:"Media"`
-		} `json:"data"`
+	var apiResp models.GraphQLResponse[models.MediaDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
 	}
-	if err := json.Unmarshal(respBody, &errCheck); err == nil && len(errCheck.Errors) > 0 {
-		pbResponse.Error = errCheck.Errors[0].Message
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	pbResponse.RawJson = string(errCheck.Data.Media)
+	pbResponse.Media = apiResp.Data.Media.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -100,20 +98,17 @@ func FetchMediaStaff(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.i
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var errCheck struct {
-		Errors []struct {
-			Message string `json:"message"`
-		} `json:"errors"`
-		Data struct {
-			Media json.RawMessage `json:"Media"`
-		} `json:"data"`
+	var apiResp models.GraphQLResponse[models.MediaDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
 	}
-	if err := json.Unmarshal(respBody, &errCheck); err == nil && len(errCheck.Errors) > 0 {
-		pbResponse.Error = errCheck.Errors[0].Message
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	pbResponse.RawJson = string(errCheck.Data.Media)
+	pbResponse.Media = apiResp.Data.Media.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -143,20 +138,17 @@ func FetchMediaCharacters(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var errCheck struct {
-		Errors []struct {
-			Message string `json:"message"`
-		} `json:"errors"`
-		Data struct {
-			Media json.RawMessage `json:"Media"`
-		} `json:"data"`
+	var apiResp models.GraphQLResponse[models.MediaDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
 	}
-	if err := json.Unmarshal(respBody, &errCheck); err == nil && len(errCheck.Errors) > 0 {
-		pbResponse.Error = errCheck.Errors[0].Message
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	pbResponse.RawJson = string(errCheck.Data.Media)
+	pbResponse.Media = apiResp.Data.Media.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -186,20 +178,17 @@ func FetchMediaRecommendations(reqPtr *C.uint8_t, reqLen C.int, token *C.char, o
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var errCheck struct {
-		Errors []struct {
-			Message string `json:"message"`
-		} `json:"errors"`
-		Data struct {
-			Media json.RawMessage `json:"Media"`
-		} `json:"data"`
+	var apiResp models.GraphQLResponse[models.MediaDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
 	}
-	if err := json.Unmarshal(respBody, &errCheck); err == nil && len(errCheck.Errors) > 0 {
-		pbResponse.Error = errCheck.Errors[0].Message
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	pbResponse.RawJson = string(errCheck.Data.Media)
+	pbResponse.Media = apiResp.Data.Media.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -219,13 +208,23 @@ func ToggleFavouriteAnime(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 
 	variables := map[string]interface{}{"animeId": req.AnimeId}
 
-	aniResp, err := graphqlRequest(tk, mediaToggleFavouriteMutation, variables)
+	respBody, err := rawGraphqlRequest(tk, mediaToggleFavouriteMutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	s := aniResp.Data.ToggleFavourite
+	var apiResp models.GraphQLResponse[models.ToggleFavouriteDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	s := apiResp.Data.ToggleFavourite
 
 	if len(s.Anime.Nodes) == 0 {
 		pbResponse.Error = "Empty response from AniList"

@@ -1,5 +1,52 @@
 package models
 
+import pb "goodanime-backend/proto"
+
+func (m *Media) ToProto() *pb.Media {
+	if m == nil {
+		return nil
+	}
+	res := &pb.Media{
+		Base:              m.MediaMin.ToProto(),
+		Description:       m.Description,
+		BannerImage:       m.BannerImage,
+		Status:            m.Status,
+		Genres:            m.Genres,
+		Popularity:        m.Popularity,
+		Season:            m.Season,
+		SeasonYear:        m.SeasonYear,
+		Type:              m.Type,
+		Trailer:           m.Trailer.ToProto(),
+		MediaListEntry:    m.MediaListEntry.ToProto(),
+		Studios:           m.Studios.ToProto(),
+		Staff:             m.Staff.ToProto(),
+		NextAiringEpisode: m.NextAiringEpisode.ToProto(),
+		Characters:        m.Characters.ToProto(),
+		Relations:         m.Relations.ToProto(),
+		Recommendations:   m.Recommendations.ToProto(),
+		Stats:             m.Stats.ToProto(),
+		Trends:            m.Trends.ToProto(),
+		MeanScore:         m.MeanScore,
+		Favourites:        m.Favourites,
+		Synonyms:          m.Synonyms,
+	}
+
+	for _, tag := range m.Tags {
+		res.Tags = append(res.Tags, tag.ToProto())
+	}
+	for _, el := range m.ExternalLinks {
+		res.ExternalLinks = append(res.ExternalLinks, el.ToProto())
+	}
+	for _, se := range m.StreamingEpisodes {
+		res.StreamingEpisodes = append(res.StreamingEpisodes, se.ToProto())
+	}
+	for _, mr := range m.Rankings {
+		res.Rankings = append(res.Rankings, mr.ToProto())
+	}
+
+	return res
+}
+
 // Media represents the core media domain model
 type Media struct {
 	MediaMin

@@ -1,5 +1,37 @@
 package models
 
+import pb "goodanime-backend/proto"
+
+func (m *MediaListEntryWithMedia) ToProto() *pb.MediaListEntryWithMedia {
+	if m == nil {
+		return nil
+	}
+	return &pb.MediaListEntryWithMedia{
+		Entry: m.MediaListEntry.ToProto(),
+		Media: m.Media.ToProto(),
+	}
+}
+
+func (c *MediaListCollection) ToProto() *pb.MediaListCollection {
+	if c == nil {
+		return nil
+	}
+	res := &pb.MediaListCollection{
+		HasNextChunk: c.HasNextChunk,
+	}
+	for _, g := range c.Lists {
+		group := &pb.MediaListGroup{
+			Name:   g.Name,
+			Status: g.Status.ToProto(),
+		}
+		for _, e := range g.Entries {
+			group.Entries = append(group.Entries, e.ToProto())
+		}
+		res.Lists = append(res.Lists, group)
+	}
+	return res
+}
+
 // MediaListEntryWithMedia extends MediaListEntry to include the minimal media object
 type MediaListEntryWithMedia struct {
 	MediaListEntry

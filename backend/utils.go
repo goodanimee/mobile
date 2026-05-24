@@ -13,14 +13,14 @@ import (
 	"io"
 	"net/http"
 
-	pb "goodanime-backend/proto"
+	"goodanime-backend/models"
 
 	"google.golang.org/protobuf/proto"
 )
 
 // rawGraphqlRequest sends GraphQL query and returns raw body
 func rawGraphqlRequest(token, query string, variables map[string]interface{}) ([]byte, error) {
-	q := GraphQLQuery{Query: query, Variables: variables}
+	q := models.GraphQLQuery{Query: query, Variables: variables}
 	body, err := json.Marshal(q)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -47,53 +47,6 @@ func rawGraphqlRequest(token, query string, variables map[string]interface{}) ([
 	}
 
 	return respBody, nil
-}
-
-// graphqlRequest sends GraphQL query or mutation to AniList
-func graphqlRequest(token, query string, variables map[string]interface{}) (*AniListResponse, error) {
-	respBody, err := rawGraphqlRequest(token, query, variables)
-	if err != nil {
-		return nil, err
-	}
-
-	var aniResp AniListResponse
-	if err := json.Unmarshal(respBody, &aniResp); err != nil {
-		return nil, fmt.Errorf("failed to parse response: %w", err)
-	}
-	if len(aniResp.Errors) > 0 {
-		return nil, fmt.Errorf("anilist error: %s", aniResp.Errors[0].Message)
-	}
-	return &aniResp, nil
-}
-
-// fuzzyDate converts nullable fields to pb.FuzzyDate
-func fuzzyDate(year, month, day *int32) *pb.FuzzyDate {
-	if year == nil {
-		return nil
-	}
-	d := &pb.FuzzyDate{Year: *year}
-	if month != nil {
-		d.Month = *month
-	}
-	if day != nil {
-		d.Day = *day
-	}
-	return d
-}
-
-// fuzzyDateInput converts pb.FuzzyDateInput to JSON map
-func fuzzyDateInput(d *pb.FuzzyDateInput) map[string]interface{} {
-	m := map[string]interface{}{"year": nil, "month": nil, "day": nil}
-	if d.Year != nil {
-		m["year"] = *d.Year
-	}
-	if d.Month != nil {
-		m["month"] = *d.Month
-	}
-	if d.Day != nil {
-		m["day"] = *d.Day
-	}
-	return m
 }
 
 // marshalAndReturn marshals protobuf message to C buffer

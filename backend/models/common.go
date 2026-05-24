@@ -1,5 +1,50 @@
 package models
 
+import pb "goodanime-backend/proto"
+
+func (f *FuzzyDate) ToProto() *pb.FuzzyDate {
+	if f == nil {
+		return nil
+	}
+	return &pb.FuzzyDate{
+		Year:  f.Year,
+		Month: f.Month,
+		Day:   f.Day,
+	}
+}
+
+func (p *PageInfo) ToProto() *pb.PageInfo {
+	if p == nil {
+		return nil
+	}
+	return &pb.PageInfo{
+		CurrentPage: p.CurrentPage,
+		HasNextPage: p.HasNextPage,
+	}
+}
+
+func (s *MediaListStatus) ToProto() *pb.MediaListStatus {
+	if s == nil {
+		return nil
+	}
+	status := pb.MediaListStatus_MEDIA_LIST_STATUS_UNSPECIFIED
+	switch *s {
+	case MediaListStatusCurrent:
+		status = pb.MediaListStatus_MEDIA_LIST_STATUS_CURRENT
+	case MediaListStatusPlanning:
+		status = pb.MediaListStatus_MEDIA_LIST_STATUS_PLANNING
+	case MediaListStatusCompleted:
+		status = pb.MediaListStatus_MEDIA_LIST_STATUS_COMPLETED
+	case MediaListStatusDropped:
+		status = pb.MediaListStatus_MEDIA_LIST_STATUS_DROPPED
+	case MediaListStatusPaused:
+		status = pb.MediaListStatus_MEDIA_LIST_STATUS_PAUSED
+	case MediaListStatusRepeating:
+		status = pb.MediaListStatus_MEDIA_LIST_STATUS_REPEATING
+	}
+	return &status
+}
+
 // GraphQLQuery represents a GraphQL query and its variables
 type GraphQLQuery struct {
 	Query     string         `json:"query"`

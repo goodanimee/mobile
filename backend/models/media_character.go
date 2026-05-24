@@ -1,5 +1,73 @@
 package models
 
+import pb "goodanime-backend/proto"
+
+func (n *CharacterName) ToProto() *pb.CharacterName {
+	if n == nil {
+		return nil
+	}
+	return &pb.CharacterName{
+		Full:               n.Full,
+		Native:             n.Native,
+		UserPreferred:      n.UserPreferred,
+		Alternative:        n.Alternative,
+		AlternativeSpoiler: n.AlternativeSpoiler,
+	}
+}
+
+func (i *CharacterImage) ToProto() *pb.CharacterImage {
+	if i == nil {
+		return nil
+	}
+	return &pb.CharacterImage{
+		Large:  i.Large,
+		Medium: i.Medium,
+	}
+}
+
+func (c *Character) ToProto() *pb.Character {
+	if c == nil {
+		return nil
+	}
+	return &pb.Character{
+		Name:        c.Name.ToProto(),
+		Image:       c.Image.ToProto(),
+		Gender:      c.Gender,
+		Age:         c.Age,
+		DateOfBirth: c.DateOfBirth.ToProto(),
+		Description: c.Description,
+	}
+}
+
+func (e *CharacterEdge) ToProto() *pb.CharacterEdge {
+	if e == nil {
+		return nil
+	}
+	res := &pb.CharacterEdge{
+		Id:   e.ID,
+		Role: e.Role,
+		Name: e.Name,
+		Node: e.Node.ToProto(),
+	}
+	for _, va := range e.VoiceActors {
+		res.VoiceActors = append(res.VoiceActors, va.ToProto())
+	}
+	return res
+}
+
+func (c *CharacterConnection) ToProto() *pb.CharacterConnection {
+	if c == nil {
+		return nil
+	}
+	res := &pb.CharacterConnection{
+		PageInfo: c.PageInfo.ToProto(),
+	}
+	for _, edge := range c.Edges {
+		res.Edges = append(res.Edges, edge.ToProto())
+	}
+	return res
+}
+
 // CharacterName represents the names of a character
 type CharacterName struct {
 	Full               string   `json:"full"`

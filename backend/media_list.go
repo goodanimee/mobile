@@ -8,9 +8,11 @@ import "C"
 
 import (
 	_ "embed"
+	"encoding/json"
 	"fmt"
 	"unsafe"
 
+	"goodanime-backend/models"
 	pb "goodanime-backend/proto"
 
 	"google.golang.org/protobuf/proto"
@@ -34,7 +36,7 @@ func FetchMediaList(userId C.int, token *C.char, outLen *C.int) *C.uint8_t {
 
 	pbResponse := &pb.FetchMediaListResponse{}
 
-	aniResp, err := graphqlRequest(tk, mediaListQuery, map[string]interface{}{
+	respBody, err := rawGraphqlRequest(tk, mediaListQuery, map[string]interface{}{
 		"userId": uID,
 		"type":   "ANIME",
 		"sort":   []string{"SCORE_DESC"},
@@ -44,47 +46,17 @@ func FetchMediaList(userId C.int, token *C.char, outLen *C.int) *C.uint8_t {
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	col := &pb.MediaListCollection{
-		HasNextChunk: aniResp.Data.MediaListCollection.HasNextChunk,
+	var apiResp models.GraphQLResponse[models.MediaListDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
+		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	for _, list := range aniResp.Data.MediaListCollection.Lists {
-		pbList := &pb.MediaList{
-			Name:   list.Name,
-			Status: list.Status,
-		}
-
-		for _, entry := range list.Entries {
-			pbEntry := &pb.MediaListEntry{
-				Progress:    entry.Progress,
-				Repeat:      entry.Repeat,
-				Status:      entry.Status,
-				Score:       entry.Score,
-				Id:          entry.Id,
-				StartedAt:   fuzzyDate(entry.StartedAt.Year, entry.StartedAt.Month, entry.StartedAt.Day),
-				CompletedAt: fuzzyDate(entry.CompletedAt.Year, entry.CompletedAt.Month, entry.CompletedAt.Day),
-				Media: &pb.Media{
-					Id:           entry.Media.ID,
-					AverageScore: entry.Media.AverageScore,
-					Episodes:     entry.Media.Episodes,
-					Format:       entry.Media.Format,
-					IsAdult:      entry.Media.IsAdult,
-					IsFavourite:  entry.Media.IsFavourite,
-					Title: &pb.Title{
-						UserPreferred: entry.Media.Title.UserPreferred,
-					},
-					CoverImage: &pb.CoverImage{
-						Large: entry.Media.CoverImage.Large,
-						Color: entry.Media.CoverImage.Color,
-					},
-				},
-			}
-			pbList.Entries = append(pbList.Entries, pbEntry)
-		}
-		col.Lists = append(col.Lists, pbList)
-	}
-
-	pbResponse.Collection = col
+	pbResponse.Collection = apiResp.Data.MediaListCollection.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -113,26 +85,29 @@ func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 		variables["score"] = *req.Score
 	}
 	if req.StartedAt != nil {
-		variables["startedAt"] = fuzzyDateInput(req.StartedAt)
+		variables["startedAt"] = req.StartedAt
 	}
 	if req.CompletedAt != nil {
-		variables["completedAt"] = fuzzyDateInput(req.CompletedAt)
+		variables["completedAt"] = req.CompletedAt
 	}
 
-	aniResp, err := graphqlRequest(tk, saveMediaListEntryMutation, variables)
+	respBody, err := rawGraphqlRequest(tk, saveMediaListEntryMutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	s := aniResp.Data.SaveMediaListEntry
-	pbResponse.Id = s.ID
-	pbResponse.Status = s.Status
-	pbResponse.Progress = s.Progress
-	pbResponse.Score = s.Score
-	pbResponse.Repeat = s.Repeat
-	pbResponse.StartedAt = fuzzyDate(s.StartedAt.Year, s.StartedAt.Month, s.StartedAt.Day)
-	pbResponse.CompletedAt = fuzzyDate(s.CompletedAt.Year, s.CompletedAt.Month, s.CompletedAt.Day)
+	var apiResp models.GraphQLResponse[models.SaveMediaListEntryDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	pbResponse.Entry = apiResp.Data.SaveMediaListEntry.ToProto()
 
 	return marshalAndReturn(pbResponse, outLen)
 }
@@ -153,18 +128,23 @@ func DeleteMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 
 	variables := map[string]any{"mediaListEntryId": req.GetEntryId()}
 
-	aniResp, err := graphqlRequest(tk, deleteMediaListEntryMutation, variables)
+	respBody, err := rawGraphqlRequest(tk, deleteMediaListEntryMutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	if len(aniResp.Errors) > 0 {
-		pbResponse.Error = aniResp.Errors[0].Message
+	var apiResp models.GraphQLResponse[models.DeleteMediaListEntryDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
 	pbResponse.EntryId = req.GetEntryId()
-	pbResponse.Deleted = aniResp.Data.DeleteMediaListEntry.Deleted
+	pbResponse.Deleted = apiResp.Data.DeleteMediaListEntry.Deleted
 	return marshalAndReturn(pbResponse, outLen)
 }

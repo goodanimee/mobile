@@ -1,5 +1,23 @@
 package models
 
+import pb "goodanime-backend/proto"
+
+func (e *MediaListEntry) ToProto() *pb.MediaListEntry {
+	if e == nil {
+		return nil
+	}
+
+	return &pb.MediaListEntry{
+		Id:          e.ID,
+		Status:      e.Status.ToProto(),
+		Progress:    e.Progress,
+		Score:       e.Score,
+		Repeat:      e.Repeat,
+		StartedAt:   e.StartedAt.ToProto(),
+		CompletedAt: e.CompletedAt.ToProto(),
+	}
+}
+
 // MediaListEntry represents a media list entry
 type MediaListEntry struct {
 	ID          int32            `json:"id"`
