@@ -93,8 +93,41 @@ enum MediaListStatus {
     }
   }
 
-  /// Gets the display name for the status (e.g., WATCHING instead of CURRENT)
-  String get displayName => this == MediaListStatus.current ? 'WATCHING' : name;
+  /// Gets the display name for the status
+  String get displayName =>
+      this == MediaListStatus.current ? 'WATCHING' : name.toUpperCase();
+
+  /// Get the string representation of the enum value
+  @override
+  String toString() {
+    return name.toUpperCase();
+  }
+
+  /// Parse the media list status from the string
+  static MediaListStatus fromString(String status) {
+    switch (status) {
+      case 'current':
+      case 'CURRENT':
+        return MediaListStatus.current;
+      case 'planning':
+      case 'PLANNING':
+        return MediaListStatus.planning;
+      case 'completed':
+      case 'COMPLETED':
+        return MediaListStatus.completed;
+      case 'dropped':
+      case 'DROPPED':
+        return MediaListStatus.dropped;
+      case 'paused':
+      case 'PAUSED':
+        return MediaListStatus.paused;
+      case 'repeating':
+      case 'REPEATING':
+        return MediaListStatus.repeating;
+      default:
+        return MediaListStatus.current;
+    }
+  }
 
   /// Parses the status from a protobuf enum
   static MediaListStatus? fromProto(pb.MediaListStatus pbStatus) {

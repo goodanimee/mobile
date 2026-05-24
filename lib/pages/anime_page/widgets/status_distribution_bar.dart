@@ -208,6 +208,6 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
 
   /// Formats the status string for display
   String _formatStatus(String status) {
-    return MediaListStatus.fromJson(status)?.displayName ?? status;
+    return MediaListStatus.fromString(status).displayName;
   }
 }

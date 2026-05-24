@@ -4,6 +4,7 @@ import 'dart:isolate';
 import '../models/media_list.dart';
 import '../models/media_list_entry.dart';
 import 'ffi_core.dart';
+import '../proto/api.pb.dart';
 
 /// Native function signature for fetching media list
 typedef _FetchMediaListC =
@@ -98,9 +99,7 @@ class MediaListApi {
         if (response.error.isNotEmpty) {
           throw Exception('Error fetching media list: ${response.error}');
         }
-        final decoded =
-            response.collection.toProto3Json() as Map<String, dynamic>;
-        return MediaListCollection.fromJson(decoded);
+        return MediaListCollection.fromProto(response.collection);
       } finally {
         calloc.free(tokenPtr);
       }
@@ -127,8 +126,7 @@ class MediaListApi {
         );
         final response = SaveMediaListEntryResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
-        final decoded = response.toProto3Json() as Map<String, dynamic>;
-        return MediaListEntry.fromJson(decoded);
+        return MediaListEntry.fromProto(response.entry);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);

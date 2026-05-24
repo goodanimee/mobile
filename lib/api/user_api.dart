@@ -3,6 +3,7 @@ import 'dart:isolate';
 import 'package:ffi/ffi.dart';
 import '../models/viewer.dart';
 import 'ffi_core.dart';
+import '../proto/api.pb.dart';
 
 /// Native function signature for fetching viewer information
 typedef _FetchViewerC =
@@ -39,12 +40,7 @@ class UserApi {
         if (response.error.isNotEmpty) {
           throw Exception('Error fetching viewer: ${response.error}');
         }
-        return Viewer(
-          id: response.viewer.id,
-          name: response.viewer.name,
-          avatarMedium: response.viewer.avatarMedium,
-          createdAt: response.viewer.createdAt,
-        );
+        return Viewer.fromProto(response.viewer);
       } finally {
         calloc.free(tokenPtr);
       }

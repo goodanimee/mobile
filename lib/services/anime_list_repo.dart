@@ -6,6 +6,9 @@ import '../models/common.dart';
 import '../models/media_list.dart';
 import '../utils/app_options.dart';
 import 'auth_service.dart';
+import '../proto/media_list.pb.dart' as pb_list;
+import '../proto/viewer.pb.dart' as pb_viewer;
+import '../models/viewer.dart';
 
 /// Repository for managing user anime list data and caches
 class AnimeListRepo {
@@ -15,12 +18,14 @@ class AnimeListRepo {
   /// Retrieves the cached or remote user ID
   static Future<int?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    final cachedJson = prefs.getString(_cacheKeyViewer);
+    final cachedStr = prefs.getString(_cacheKeyViewer);
 
-    if (cachedJson != null) {
+    if (cachedStr != null) {
       try {
-        final data = jsonDecode(cachedJson);
-        return data['id'] as int?;
+        final viewer = Viewer.fromProto(
+          pb_viewer.Viewer.fromBuffer(base64Decode(cachedStr)),
+        );
+        return viewer.id;
       } catch (_) {}
     }
 
@@ -28,14 +33,10 @@ class AnimeListRepo {
       final token = await AuthService.getRawToken() ?? '';
       final viewer = await UserApi.fetchViewer(token);
 
-      final viewerMap = {
-        'id': viewer.id,
-        'name': viewer.name,
-        'createdAt': viewer.createdAt,
-        'avatar': {'medium': viewer.avatarMedium},
-      };
-
-      await prefs.setString(_cacheKeyViewer, jsonEncode(viewerMap));
+      await prefs.setString(
+        _cacheKeyViewer,
+        base64Encode(viewer.toProto().writeToBuffer()),
+      );
       await prefs.setInt(
         'cached_viewer_at',
         DateTime.now().millisecondsSinceEpoch,
@@ -54,7 +55,11 @@ class AnimeListRepo {
       try {
         final List<dynamic> decoded = jsonDecode(cachedJson);
         return decoded
-            .map((l) => MediaList.fromJson(Map<String, dynamic>.from(l as Map)))
+            .map(
+              (l) => MediaList.fromProto(
+                pb_list.MediaListGroup.fromBuffer(base64Decode(l as String)),
+              ),
+            )
             .toList();
       } catch (_) {}
     }
@@ -123,7 +128,11 @@ class AnimeListRepo {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(
       _cacheKeyLists,
-      jsonEncode(processedLists.map((l) => l.toJson()).toList()),
+      jsonEncode(
+        processedLists
+            .map((l) => base64Encode(l.toProto().writeToBuffer()))
+            .toList(),
+      ),
     );
     return processedLists;
   }
@@ -148,7 +157,11 @@ class AnimeListRepo {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(
         _cacheKeyLists,
-        jsonEncode(updatedLists.map((l) => l.toJson()).toList()),
+        jsonEncode(
+          updatedLists
+              .map((l) => base64Encode(l.toProto().writeToBuffer()))
+              .toList(),
+        ),
       );
       return updatedLists;
     }
@@ -211,8 +224,8 @@ class AnimeListRepo {
         });
         final newSection = MediaList(
           name: targetName,
-          status: MediaListStatus.fromJson(
-            targetName == 'WATCHING' ? 'CURRENT' : targetName,
+          status: MediaListStatus.fromString(
+            targetName == 'WATCHING' ? 'current' : targetName.toLowerCase(),
           ),
           entries: [movedEntry!],
         );
@@ -227,7 +240,11 @@ class AnimeListRepo {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(
       _cacheKeyLists,
-      jsonEncode(updatedLists.map((l) => l.toJson()).toList()),
+      jsonEncode(
+        updatedLists
+            .map((l) => base64Encode(l.toProto().writeToBuffer()))
+            .toList(),
+      ),
     );
 
     return updatedLists;

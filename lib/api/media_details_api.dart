@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:ffi' as ffi;
 import 'dart:isolate';
 import 'package:ffi/ffi.dart';
@@ -7,6 +6,7 @@ import '../models/media_recommendation.dart';
 import '../models/media_character.dart';
 import '../models/media_staff.dart';
 import 'ffi_core.dart';
+import '../proto/api.pb.dart';
 
 /// Native function signature for fetching media details
 typedef _FetchMediaDetailsC =
@@ -155,8 +155,7 @@ class MediaApi {
         );
         final response = FetchMediaDetailsResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
-        final decoded = json.decode(response.rawJson) as Map<String, dynamic>;
-        return Media.fromJson(decoded);
+        return Media.fromProto(response.media);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);
@@ -188,9 +187,7 @@ class MediaApi {
         );
         final response = FetchMediaCharactersResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
-        final decoded = json.decode(response.rawJson) as Map<String, dynamic>;
-        final charData = decoded['characters'] as Map<String, dynamic>;
-        return CharacterConnection.fromJson(charData);
+        return CharacterConnection.fromProto(response.media.characters);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);
@@ -218,9 +215,7 @@ class MediaApi {
         );
         final response = FetchMediaStaffResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
-        final decoded = json.decode(response.rawJson) as Map<String, dynamic>;
-        final staffData = decoded['staff'] as Map<String, dynamic>;
-        return StaffConnection.fromJson(staffData);
+        return StaffConnection.fromProto(response.media.staff);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);
@@ -252,10 +247,9 @@ class MediaApi {
         );
         final response = FetchMediaRecommendationsResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
-        final decoded = json.decode(response.rawJson) as Map<String, dynamic>;
-        final recommendationsMap =
-            decoded['recommendations'] as Map<String, dynamic>;
-        return RecommendationConnection.fromJson(recommendationsMap);
+        return RecommendationConnection.fromProto(
+          response.media.recommendations,
+        );
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);

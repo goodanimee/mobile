@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../models/common.dart';
 import '../../theme/theme.dart';
 import '../section_title.dart';
 
 class StatusSelector extends StatelessWidget {
-  final String currentStatus;
-  final ValueChanged<String> onStatusChanged;
+  final MediaListStatus? currentStatus;
+  final ValueChanged<MediaListStatus> onStatusChanged;
 
   const StatusSelector({
     super.key,
@@ -15,12 +16,12 @@ class StatusSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const statuses = [
-      ('CURRENT', Icons.play_circle_rounded),
-      ('PLANNING', Icons.bookmark_rounded),
-      ('COMPLETED', Icons.check_circle_rounded),
-      ('REPEATING', Icons.repeat_rounded),
-      ('PAUSED', Icons.pause_circle_rounded),
-      ('DROPPED', Icons.cancel_rounded),
+      (MediaListStatus.current, Icons.play_circle_rounded),
+      (MediaListStatus.planning, Icons.bookmark_rounded),
+      (MediaListStatus.completed, Icons.check_circle_rounded),
+      (MediaListStatus.repeating, Icons.repeat_rounded),
+      (MediaListStatus.paused, Icons.pause_circle_rounded),
+      (MediaListStatus.dropped, Icons.cancel_rounded),
     ];
 
     return Padding(

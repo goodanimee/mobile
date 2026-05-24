@@ -6,6 +6,7 @@ import '../theme/theme.dart';
 import '../components/user_profile.dart';
 import '../services/auth_service.dart';
 import '../models/viewer.dart';
+import '../proto/viewer.pb.dart' as pb;
 
 const _keyCachedUser = 'cached_viewer';
 const _keyCachedAt = 'cached_viewer_at';
@@ -37,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   /// Loads user data from cache or network
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
-    final cachedJson = prefs.getString(_keyCachedUser);
+    final cachedViewer = prefs.getString(_keyCachedUser);
     final cachedAt = prefs.getInt(_keyCachedAt);
 
     final isFresh =
@@ -45,10 +46,12 @@ class _ProfilePageState extends State<ProfilePage> {
         DateTime.now().millisecondsSinceEpoch - cachedAt <
             _cacheTtl.inMilliseconds;
 
-    if (cachedJson != null && isFresh) {
+    if (cachedViewer != null && isFresh) {
       if (mounted) {
         setState(() {
-          _userData = Viewer.fromJson(jsonDecode(cachedJson));
+          _userData = Viewer.fromProto(
+            pb.Viewer.fromBuffer(base64Decode(cachedViewer)),
+          );
           _isLoading = false;
         });
       }
@@ -64,7 +67,10 @@ class _ProfilePageState extends State<ProfilePage> {
       final token = await AuthService.getValidToken();
       final viewer = await UserApi.fetchViewer(token);
 
-      await prefs.setString(_keyCachedUser, jsonEncode(viewer.toJson()));
+      await prefs.setString(
+        _keyCachedUser,
+        base64Encode(viewer.toProto().writeToBuffer()),
+      );
       await prefs.setInt(_keyCachedAt, DateTime.now().millisecondsSinceEpoch);
 
       if (mounted) {

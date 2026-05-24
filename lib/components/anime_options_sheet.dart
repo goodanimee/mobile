@@ -32,14 +32,14 @@ class AnimeOptionsSheet extends StatefulWidget {
 
 /// State for AnimeOptionsSheet
 class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
-  late String _status;
+  late MediaListStatus? _status;
   late int _progress;
   late double _score;
   DateTime? _startDate;
   DateTime? _finishDate;
   int? _episodes;
 
-  late String _initialStatus;
+  late MediaListStatus? _initialStatus;
   late int _initialProgress;
   late double _initialScore;
   DateTime? _initialStartDate;
@@ -50,7 +50,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
   @override
   void initState() {
     super.initState();
-    _status = widget.entry.status?.name ?? '';
+    _status = widget.entry.status;
     _progress = widget.entry.progress;
     _score = widget.entry.score;
 
@@ -80,7 +80,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     return null;
   }
 
-  void _setStatus(String newStatus) {
+  void _setStatus(MediaListStatus newStatus) {
     setState(() => _status = newStatus);
   }
 
@@ -92,16 +92,17 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
       _progress = newProgress;
 
       if (_episodes != null && _progress >= _episodes!) {
-        _status = 'COMPLETED';
+        _status = MediaListStatus.completed;
       } else {
-        _status = 'CURRENT';
+        _status = MediaListStatus.current;
       }
 
       final now = DateTime.now();
       if (oldProgress == 0 && newProgress > 0) {
         _startDate = now;
       }
-      if (oldStatus != 'COMPLETED' && _status == 'COMPLETED') {
+      if (oldStatus != MediaListStatus.completed &&
+          _status == MediaListStatus.completed) {
         _finishDate = now;
       }
     });
@@ -316,11 +317,11 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
     setState(() => _isSaving = true);
 
     try {
-      final finalStatus = _status.isEmpty ? 'CURRENT' : _status;
+      final finalStatus = _status ?? MediaListStatus.current;
       final token = await AuthService.getRawToken() ?? '';
       final req = SaveMediaListEntryRequest(mediaId: mediaId);
 
-      if (finalStatus != _initialStatus) req.status = finalStatus;
+      if (finalStatus != _initialStatus) req.status = finalStatus.toString();
       if (_progress != _initialProgress) req.progress = _progress;
       if (_score != _initialScore) req.score = _score;
 
@@ -346,7 +347,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
           AnimeOptionsResult(
             entry: widget.entry.copyWith(
               id: response.id,
-              status: MediaListStatus.fromJson(finalStatus),
+              status: finalStatus,
               progress: _progress,
               score: _score,
               startedAt: _startDate != null

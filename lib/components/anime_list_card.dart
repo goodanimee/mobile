@@ -218,7 +218,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
       final req = SaveMediaListEntryRequest(
         mediaId: mediaId,
         progress: newProgress,
-        status: newStatus.name,
+        status: newStatus.toString(),
       );
       await MediaListApi.saveMediaListEntry(req, token);
       widget.onEntryUpdated?.call(

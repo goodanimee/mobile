@@ -5,6 +5,7 @@ import '../models/media.dart';
 import 'auth_service.dart';
 import '../utils/utils.dart';
 import '../proto/api.pb.dart';
+import '../proto/media.pb.dart' as pb_media;
 
 class AnimeRepo {
   static const String _cachePrefix = 'anime_cache_';
@@ -26,7 +27,9 @@ class AnimeRepo {
         await prefs.setStringList(_cacheKeysPref, keys);
 
         try {
-          return Media.fromJson(json.decode(cachedStr));
+          return Media.fromProto(
+            pb_media.Media.fromBuffer(base64Decode(cachedStr)),
+          );
         } catch (_) {}
       }
     } else {
@@ -37,8 +40,8 @@ class AnimeRepo {
     final req = FetchMediaDetailsRequest(mediaId: mediaId);
     final media = await MediaApi.fetchMediaDetails(req, token);
 
-    final rawJson = json.encode(media.toJson());
-    await _saveToDiskCache(prefs, mediaId, rawJson);
+    final rawData = base64Encode(media.toProto().writeToBuffer());
+    await _saveToDiskCache(prefs, mediaId, rawData);
     return media;
   }
 
@@ -48,12 +51,16 @@ class AnimeRepo {
 
     await MediaApi.toggleFavouriteAnime(req, token);
 
-    final currentFav = currentMedia.isFavourite;
-    final updatedMap = currentMedia.toJson();
-    updatedMap['isFavourite'] = !currentFav;
+    final updatedMedia = currentMedia.copyWith(
+      isFavourite: !currentMedia.isFavourite,
+    );
 
     final prefs = await SharedPreferences.getInstance();
-    await _saveToDiskCache(prefs, mediaId, json.encode(updatedMap));
+    await _saveToDiskCache(
+      prefs,
+      mediaId,
+      base64Encode(updatedMedia.toProto().writeToBuffer()),
+    );
 
     await CacheUtils.invalidateMedia(mediaId);
     CacheUtils.animeListNeedsRefresh.value = true;
@@ -64,13 +71,17 @@ class AnimeRepo {
     Media mediaData,
   ) async {
     final prefs = await SharedPreferences.getInstance();
-    await _saveToDiskCache(prefs, mediaId, json.encode(mediaData.toJson()));
+    await _saveToDiskCache(
+      prefs,
+      mediaId,
+      base64Encode(mediaData.toProto().writeToBuffer()),
+    );
   }
 
   static Future<void> _saveToDiskCache(
     SharedPreferences prefs,
     int mediaId,
-    String rawJson,
+    String rawData,
   ) async {
     List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
     final idStr = mediaId.toString();
@@ -83,6 +94,6 @@ class AnimeRepo {
     }
 
     await prefs.setStringList(_cacheKeysPref, keys);
-    await prefs.setString('$_cachePrefix$idStr', rawJson);
+    await prefs.setString('$_cachePrefix$idStr', rawData);
   }
 }
