@@ -3,7 +3,9 @@ import 'dart:isolate';
 
 import 'package:ffi/ffi.dart';
 
+import '../models/common.dart';
 import '../models/media.dart';
+import '../models/media_activity.dart';
 import '../models/media_character.dart';
 import '../models/media_recommendation.dart';
 import '../models/media_review.dart';
@@ -137,6 +139,24 @@ typedef _RateReviewDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for fetching media activities
+typedef _FetchMediaActivitiesC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for fetching media activities
+typedef _FetchMediaActivitiesDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// API class for media-related operations
 class MediaApi {
   static late _FetchMediaDetailsDart _fetchMediaDetails;
@@ -146,6 +166,7 @@ class MediaApi {
   static late _FetchMediaReviewsDart _fetchMediaReviews;
   static late _ToggleFavouriteAnimeDart _toggleFavouriteAnime;
   static late _RateReviewDart _rateReview;
+  static late _FetchMediaActivitiesDart _fetchMediaActivities;
   static bool _initialized = false;
 
   static void _init() {
@@ -180,6 +201,10 @@ class MediaApi {
     _rateReview = FfiCore.lib
         .lookupFunction<_RateReviewC, _RateReviewDart>(
           'RateReview',
+        );
+    _fetchMediaActivities = FfiCore.lib
+        .lookupFunction<_FetchMediaActivitiesC, _FetchMediaActivitiesDart>(
+          'FetchMediaActivities',
         );
     _initialized = true;
   }
@@ -388,6 +413,41 @@ class MediaApi {
         final response = RateReviewResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
         return ReviewNode.fromProto(response.review);
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
+  /// Fetches paginated recent activities for a media ID.
+  static Future<ListActivityConnection> fetchMediaActivities(
+    FetchMediaActivitiesRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      _init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = FfiCore.executeNativeCall(
+          (outLenPtr) => _fetchMediaActivities(
+            reqPtr,
+            reqBytes.length,
+            tokenPtr,
+            outLenPtr,
+          ),
+        );
+        final response = FetchMediaActivitiesResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return ListActivityConnection(
+          pageInfo: PageInfo.fromProto(response.pageInfo),
+          nodes: response.activities.map(ListActivity.fromProto).toList(),
+        );
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);

@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/media_details_api.dart';
+import '../models/common.dart';
 import '../models/media.dart';
+import '../models/media_activity.dart';
 import '../models/media_character.dart';
 import '../models/media_recommendation.dart';
 import '../models/media_review.dart';
@@ -18,6 +20,7 @@ import 'auth_service.dart';
 class AnimeService {
   static const String _cachePrefix = 'anime_cache_';
   static const String _cacheKeysPref = 'anime_cache_keys';
+  static const String _activityCachePrefix = 'activity_cache_';
   static const int _cacheCapacity = 50;
 
   /// Fetches anime details from cache or network.
@@ -135,6 +138,58 @@ class AnimeService {
       rating: protoRating,
     );
     return MediaApi.rateReview(req, token);
+  }
+
+  /// Fetches media activities pagination results, caching the first page.
+  static Future<ListActivityConnection> getActivities(
+    int mediaId,
+    int page, {
+    bool forceRefresh = false,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final cacheKey = '$_activityCachePrefix$mediaId';
+
+    if (page == 1 && !forceRefresh) {
+      final cachedData = prefs.getString(cacheKey);
+      if (cachedData != null) {
+        try {
+          final pbObj = FetchMediaActivitiesResponse.fromBuffer(
+            base64Decode(cachedData),
+          );
+          return ListActivityConnection(
+            pageInfo: PageInfo.fromProto(pbObj.pageInfo),
+            nodes: pbObj.activities.map(ListActivity.fromProto).toList(),
+          );
+        } catch (_) {
+          // Fallback to fetch on failure
+        }
+      }
+    }
+
+    if (forceRefresh && page == 1) {
+      await prefs.remove(cacheKey);
+    }
+
+    final token = await AuthService.getRawToken() ?? '';
+    final req = FetchMediaActivitiesRequest(
+      mediaId: mediaId,
+      page: page,
+      perPage: 25,
+    );
+    final connection = await MediaApi.fetchMediaActivities(req, token);
+
+    if (page == 1) {
+      final responseObj = FetchMediaActivitiesResponse(
+        pageInfo: connection.pageInfo.toProto(),
+        activities: connection.nodes.map((n) => n.toProto()),
+      );
+      await prefs.setString(
+        cacheKey,
+        base64Encode(responseObj.writeToBuffer()),
+      );
+    }
+
+    return connection;
   }
 
 
