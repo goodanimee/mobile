@@ -1,0 +1,5 @@
+mutation ToggleActivityLike($activityId: Int) {
+  ToggleLike(id: $activityId, type: ACTIVITY) {
+    id
+  }
+}
