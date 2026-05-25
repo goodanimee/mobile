@@ -115,10 +115,7 @@ class StaffEdge {
 
   /// Converts the staff edge to a protobuf object
   pb.StaffEdge toProto() {
-    return pb.StaffEdge(
-      role: role,
-      node: node?.toProto(),
-    );
+    return pb.StaffEdge(role: role, node: node?.toProto());
   }
 }
 

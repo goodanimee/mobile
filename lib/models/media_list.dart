@@ -27,12 +27,18 @@ class MediaListEntryWithMedia extends MediaListEntry {
   factory MediaListEntryWithMedia.fromProto(pb.MediaListEntryWithMedia pbObj) {
     return MediaListEntryWithMedia(
       id: pbObj.entry.id,
-      status: pbObj.entry.hasStatus() ? MediaListStatus.fromProto(pbObj.entry.status) : null,
+      status: pbObj.entry.hasStatus()
+          ? MediaListStatus.fromProto(pbObj.entry.status)
+          : null,
       progress: pbObj.entry.progress,
       score: pbObj.entry.score,
       repeat: pbObj.entry.repeat,
-      startedAt: pbObj.entry.hasStartedAt() ? FuzzyDate.fromProto(pbObj.entry.startedAt) : null,
-      completedAt: pbObj.entry.hasCompletedAt() ? FuzzyDate.fromProto(pbObj.entry.completedAt) : null,
+      startedAt: pbObj.entry.hasStartedAt()
+          ? FuzzyDate.fromProto(pbObj.entry.startedAt)
+          : null,
+      completedAt: pbObj.entry.hasCompletedAt()
+          ? FuzzyDate.fromProto(pbObj.entry.completedAt)
+          : null,
       media: MediaMin.fromProto(pbObj.media),
     );
   }
@@ -89,8 +95,12 @@ class MediaList {
   factory MediaList.fromProto(pb.MediaListGroup pbObj) {
     return MediaList(
       name: pbObj.name,
-      status: pbObj.hasStatus() ? MediaListStatus.fromProto(pbObj.status) : null,
-      entries: pbObj.entries.map((e) => MediaListEntryWithMedia.fromProto(e)).toList(),
+      status: pbObj.hasStatus()
+          ? MediaListStatus.fromProto(pbObj.status)
+          : null,
+      entries: pbObj.entries
+          .map((e) => MediaListEntryWithMedia.fromProto(e))
+          .toList(),
     );
   }
 

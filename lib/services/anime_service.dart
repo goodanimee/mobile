@@ -62,7 +62,10 @@ class AnimeService {
   }
 
   /// Fetches character pagination results for an anime.
-  static Future<CharacterConnection> getCharacters(int mediaId, int page) async {
+  static Future<CharacterConnection> getCharacters(
+    int mediaId,
+    int page,
+  ) async {
     final token = await AuthService.getRawToken() ?? '';
     final req = FetchMediaCharactersRequest(
       mediaId: mediaId,
@@ -84,7 +87,10 @@ class AnimeService {
   }
 
   /// Fetches recommendation pagination results for an anime.
-  static Future<RecommendationConnection> getRecommendations(int mediaId, int page) async {
+  static Future<RecommendationConnection> getRecommendations(
+    int mediaId,
+    int page,
+  ) async {
     final token = await AuthService.getRawToken() ?? '';
     final req = FetchMediaRecommendationsRequest(
       mediaId: mediaId,

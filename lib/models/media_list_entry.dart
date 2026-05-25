@@ -40,12 +40,18 @@ class MediaListEntry {
   factory MediaListEntry.fromProto(pb.MediaListEntry pbObj) {
     return MediaListEntry(
       id: pbObj.id,
-      status: pbObj.hasStatus() ? MediaListStatus.fromProto(pbObj.status) : null,
+      status: pbObj.hasStatus()
+          ? MediaListStatus.fromProto(pbObj.status)
+          : null,
       progress: pbObj.progress,
       score: pbObj.score,
       repeat: pbObj.repeat,
-      startedAt: pbObj.hasStartedAt() ? FuzzyDate.fromProto(pbObj.startedAt) : null,
-      completedAt: pbObj.hasCompletedAt() ? FuzzyDate.fromProto(pbObj.completedAt) : null,
+      startedAt: pbObj.hasStartedAt()
+          ? FuzzyDate.fromProto(pbObj.startedAt)
+          : null,
+      completedAt: pbObj.hasCompletedAt()
+          ? FuzzyDate.fromProto(pbObj.completedAt)
+          : null,
     );
   }
 

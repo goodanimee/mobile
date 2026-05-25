@@ -20,20 +20,12 @@ class Trailer {
 
   /// Creates a trailer from a protobuf object
   factory Trailer.fromProto(pb.Trailer pbObj) {
-    return Trailer(
-      id: pbObj.id,
-      site: pbObj.site,
-      thumbnail: pbObj.thumbnail,
-    );
+    return Trailer(id: pbObj.id, site: pbObj.site, thumbnail: pbObj.thumbnail);
   }
 
   /// Converts the trailer to a protobuf object
   pb.Trailer toProto() {
-    return pb.Trailer(
-      id: id,
-      site: site,
-      thumbnail: thumbnail,
-    );
+    return pb.Trailer(id: id, site: site, thumbnail: thumbnail);
   }
 }
 
@@ -115,11 +107,7 @@ class ExternalLink {
 
   /// Converts the external link to a protobuf object
   pb.ExternalLink toProto() {
-    return pb.ExternalLink(
-      language: language,
-      site: site,
-      url: url,
-    );
+    return pb.ExternalLink(language: language, site: site, url: url);
   }
 }
 
@@ -189,11 +177,7 @@ class StreamingEpisode {
 
   /// Converts the streaming episode to a protobuf object
   pb.StreamingEpisode toProto() {
-    return pb.StreamingEpisode(
-      thumbnail: thumbnail,
-      title: title,
-      url: url,
-    );
+    return pb.StreamingEpisode(thumbnail: thumbnail, title: title, url: url);
   }
 }
 
@@ -259,18 +243,12 @@ class ScoreDistribution {
 
   /// Creates a score distribution from a protobuf object
   factory ScoreDistribution.fromProto(pb.ScoreDistribution pbObj) {
-    return ScoreDistribution(
-      amount: pbObj.amount,
-      score: pbObj.score,
-    );
+    return ScoreDistribution(amount: pbObj.amount, score: pbObj.score);
   }
 
   /// Converts the score distribution to a protobuf object
   pb.ScoreDistribution toProto() {
-    return pb.ScoreDistribution(
-      amount: amount,
-      score: score,
-    );
+    return pb.ScoreDistribution(amount: amount, score: score);
   }
 }
 
@@ -287,18 +265,12 @@ class StatusDistribution {
 
   /// Creates a status distribution from a protobuf object
   factory StatusDistribution.fromProto(pb.StatusDistribution pbObj) {
-    return StatusDistribution(
-      amount: pbObj.amount,
-      status: pbObj.status,
-    );
+    return StatusDistribution(amount: pbObj.amount, status: pbObj.status);
   }
 
   /// Converts the status distribution to a protobuf object
   pb.StatusDistribution toProto() {
-    return pb.StatusDistribution(
-      amount: amount,
-      status: status,
-    );
+    return pb.StatusDistribution(amount: amount, status: status);
   }
 }
 
@@ -319,8 +291,12 @@ class MediaStats {
   /// Creates media stats from a protobuf object
   factory MediaStats.fromProto(pb.MediaStats pbObj) {
     return MediaStats(
-      scoreDistribution: pbObj.scoreDistribution.map((s) => ScoreDistribution.fromProto(s)).toList(),
-      statusDistribution: pbObj.statusDistribution.map((s) => StatusDistribution.fromProto(s)).toList(),
+      scoreDistribution: pbObj.scoreDistribution
+          .map((s) => ScoreDistribution.fromProto(s))
+          .toList(),
+      statusDistribution: pbObj.statusDistribution
+          .map((s) => StatusDistribution.fromProto(s))
+          .toList(),
     );
   }
 

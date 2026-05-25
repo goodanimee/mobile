@@ -13,18 +13,12 @@ class Studio {
 
   /// Creates a studio from a protobuf object
   factory Studio.fromProto(pb.Studio pbObj) {
-    return Studio(
-      id: pbObj.id,
-      name: pbObj.name,
-    );
+    return Studio(id: pbObj.id, name: pbObj.name);
   }
 
   /// Converts the studio to a protobuf object
   pb.Studio toProto() {
-    return pb.Studio(
-      id: id,
-      name: name,
-    );
+    return pb.Studio(id: id, name: name);
   }
 }
 
@@ -41,17 +35,11 @@ class StudioEdge {
 
   /// Creates a studio edge from a protobuf object
   factory StudioEdge.fromProto(pb.StudioEdge pbObj) {
-    return StudioEdge(
-      isMain: pbObj.isMain,
-      node: Studio.fromProto(pbObj.node),
-    );
+    return StudioEdge(isMain: pbObj.isMain, node: Studio.fromProto(pbObj.node));
   }
 
   /// Converts the studio edge to a protobuf object
   pb.StudioEdge toProto() {
-    return pb.StudioEdge(
-      isMain: isMain,
-      node: node.toProto(),
-    );
+    return pb.StudioEdge(isMain: isMain, node: node.toProto());
   }
 }

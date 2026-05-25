@@ -34,11 +34,7 @@ class Viewer {
 
   /// Converts the viewer to a protobuf object
   pb.Viewer toProto() {
-    final pbObj = pb.Viewer(
-      id: id,
-      name: name,
-      createdAt: createdAt,
-    );
+    final pbObj = pb.Viewer(id: id, name: name, createdAt: createdAt);
     if (avatarMedium.isNotEmpty) {
       final avatarPb = pb.ViewerAvatar(medium: avatarMedium);
       pbObj.avatar = avatarPb;
