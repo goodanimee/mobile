@@ -8,6 +8,7 @@ import 'media_list_entry.dart';
 import 'media_min.dart';
 import 'media_misc.dart';
 import 'media_recommendation.dart';
+import 'media_review.dart';
 import 'media_staff.dart';
 import 'media_studio.dart';
 import 'media_trend.dart';
@@ -89,6 +90,9 @@ class Media extends MediaMin {
   /// Trend data
   final MediaTrendConnection? trends;
 
+  /// Paginated reviews
+  final ReviewConnection? reviews;
+
   /// Creates a media
   const Media({
     required super.id,
@@ -125,6 +129,7 @@ class Media extends MediaMin {
     required this.rankings,
     this.stats,
     this.trends,
+    this.reviews,
   });
 
   /// Creates a media from a protobuf object
@@ -180,6 +185,9 @@ class Media extends MediaMin {
       trends: pbObj.hasTrends()
           ? MediaTrendConnection.fromProto(pbObj.trends)
           : null,
+      reviews: pbObj.hasReviews()
+          ? ReviewConnection.fromProto(pbObj.reviews)
+          : null,
     );
   }
 
@@ -222,6 +230,7 @@ class Media extends MediaMin {
     }
     if (stats != null) pbObj.stats = stats!.toProto();
     if (trends != null) pbObj.trends = trends!.toProto();
+    if (reviews != null) pbObj.reviews = reviews!.toProto();
 
     return pbObj;
   }
@@ -263,6 +272,7 @@ class Media extends MediaMin {
     List<MediaRank>? rankings,
     MediaStats? stats,
     MediaTrendConnection? trends,
+    ReviewConnection? reviews,
   }) {
     return Media(
       id: id ?? this.id,
@@ -299,6 +309,7 @@ class Media extends MediaMin {
       rankings: rankings ?? this.rankings,
       stats: stats ?? this.stats,
       trends: trends ?? this.trends,
+      reviews: reviews ?? this.reviews,
     );
   }
 }
