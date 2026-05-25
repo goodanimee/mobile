@@ -61,3 +61,9 @@ type ReviewConnection struct {
 	Nodes    []ReviewNode `json:"nodes"`
 	PageInfo PageInfo     `json:"pageInfo"`
 }
+
+// RateReviewDTO represents the rate review response DTO.
+type RateReviewDTO struct {
+	RateReview ReviewNode `json:"RateReview"`
+}
+

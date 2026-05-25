@@ -36,6 +36,10 @@ var mediaReviewsQuery string
 //go:embed graphql/toggle_favourite.graphql
 var mediaToggleFavouriteMutation string
 
+//go:embed graphql/rate_review.graphql
+var rateReviewMutation string
+
+
 // FetchMediaDetails returns full details for a media ID
 //
 //export FetchMediaDetails
@@ -276,5 +280,48 @@ func ToggleFavouriteAnime(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 
 	pbResponse.AnimeId = req.AnimeId
 	pbResponse.IsFavourite = s.Anime.Nodes[0].IsFavourite
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// RateReview rates a review on AniList.
+//
+//export RateReview
+func RateReview(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.RateReviewResponse{}
+	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+	var req pb.RateReviewRequest
+	if err := proto.Unmarshal(reqBytes, &req); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	var ratingStr string
+	switch req.Rating {
+	case pb.ReviewUserRating_REVIEW_USER_RATING_UP_VOTE:
+		ratingStr = "UP_VOTE"
+	case pb.ReviewUserRating_REVIEW_USER_RATING_DOWN_VOTE:
+		ratingStr = "DOWN_VOTE"
+	default:
+		ratingStr = "NO_VOTE"
+	}
+	variables := map[string]any{
+		"reviewId": req.ReviewId,
+		"rating":   ratingStr,
+	}
+	respBody, err := rawGraphqlRequest(tk, rateReviewMutation, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	var apiResp models.GraphQLResponse[models.RateReviewDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	pbResponse.Review = apiResp.Data.RateReview.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
