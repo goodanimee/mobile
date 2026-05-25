@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "viewer.proto";
+
+option go_package = "goodanime/backend/proto";
+
+message ListActivity {
+  int32 id = 1;
+  int32 created_at = 2;
+  bool is_liked = 3;
+  int32 like_count = 4;
+  string progress = 5;
+  string status = 6;
+  Viewer user = 7;
+}

@@ -14,7 +14,9 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'common.pb.dart' as $5;
 import 'media.pb.dart' as $3;
+import 'media_activity.pb.dart' as $6;
 import 'media_list.pb.dart' as $0;
 import 'media_list_entry.pb.dart' as $2;
 import 'media_review.pb.dart' as $4;
@@ -1647,6 +1649,166 @@ class RateReviewResponse extends $pb.GeneratedMessage {
   $core.bool hasError() => $_has(1);
   @$pb.TagNumber(2)
   void clearError() => $_clearField(2);
+}
+
+class FetchMediaActivitiesRequest extends $pb.GeneratedMessage {
+  factory FetchMediaActivitiesRequest({
+    $core.int? mediaId,
+    $core.int? page,
+    $core.int? perPage,
+  }) {
+    final result = create();
+    if (mediaId != null) result.mediaId = mediaId;
+    if (page != null) result.page = page;
+    if (perPage != null) result.perPage = perPage;
+    return result;
+  }
+
+  FetchMediaActivitiesRequest._();
+
+  factory FetchMediaActivitiesRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchMediaActivitiesRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchMediaActivitiesRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'mediaId')
+    ..aI(2, _omitFieldNames ? '' : 'page')
+    ..aI(3, _omitFieldNames ? '' : 'perPage')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaActivitiesRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaActivitiesRequest copyWith(
+          void Function(FetchMediaActivitiesRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as FetchMediaActivitiesRequest))
+          as FetchMediaActivitiesRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaActivitiesRequest create() =>
+      FetchMediaActivitiesRequest._();
+  @$core.override
+  FetchMediaActivitiesRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaActivitiesRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaActivitiesRequest>(create);
+  static FetchMediaActivitiesRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get mediaId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set mediaId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasMediaId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMediaId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get perPage => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set perPage($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasPerPage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPerPage() => $_clearField(3);
+}
+
+class FetchMediaActivitiesResponse extends $pb.GeneratedMessage {
+  factory FetchMediaActivitiesResponse({
+    $5.PageInfo? pageInfo,
+    $core.Iterable<$6.ListActivity>? activities,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (activities != null) result.activities.addAll(activities);
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchMediaActivitiesResponse._();
+
+  factory FetchMediaActivitiesResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchMediaActivitiesResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchMediaActivitiesResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOM<$5.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $5.PageInfo.create)
+    ..pPM<$6.ListActivity>(2, _omitFieldNames ? '' : 'activities',
+        subBuilder: $6.ListActivity.create)
+    ..aOS(3, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaActivitiesResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaActivitiesResponse copyWith(
+          void Function(FetchMediaActivitiesResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as FetchMediaActivitiesResponse))
+          as FetchMediaActivitiesResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaActivitiesResponse create() =>
+      FetchMediaActivitiesResponse._();
+  @$core.override
+  FetchMediaActivitiesResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaActivitiesResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaActivitiesResponse>(create);
+  static FetchMediaActivitiesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $5.PageInfo get pageInfo => $_getN(0);
+  @$pb.TagNumber(1)
+  set pageInfo($5.PageInfo value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPageInfo() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPageInfo() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $5.PageInfo ensurePageInfo() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $pb.PbList<$6.ListActivity> get activities => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $core.String get error => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set error($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasError() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearError() => $_clearField(3);
 }
 
 const $core.bool _omitFieldNames =

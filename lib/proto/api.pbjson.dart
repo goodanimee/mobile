@@ -460,3 +460,50 @@ const RateReviewResponse$json = {
 final $typed_data.Uint8List rateReviewResponseDescriptor = $convert.base64Decode(
     'ChJSYXRlUmV2aWV3UmVzcG9uc2USLQoGcmV2aWV3GAEgASgLMhUuZ29vZGFuaW1lLlJldmlld0'
     '5vZGVSBnJldmlldxIUCgVlcnJvchgCIAEoCVIFZXJyb3I=');
+
+@$core.Deprecated('Use fetchMediaActivitiesRequestDescriptor instead')
+const FetchMediaActivitiesRequest$json = {
+  '1': 'FetchMediaActivitiesRequest',
+  '2': [
+    {'1': 'media_id', '3': 1, '4': 1, '5': 5, '10': 'mediaId'},
+    {'1': 'page', '3': 2, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'per_page', '3': 3, '4': 1, '5': 5, '10': 'perPage'},
+  ],
+};
+
+/// Descriptor for `FetchMediaActivitiesRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaActivitiesRequestDescriptor =
+    $convert.base64Decode(
+        'ChtGZXRjaE1lZGlhQWN0aXZpdGllc1JlcXVlc3QSGQoIbWVkaWFfaWQYASABKAVSB21lZGlhSW'
+        'QSEgoEcGFnZRgCIAEoBVIEcGFnZRIZCghwZXJfcGFnZRgDIAEoBVIHcGVyUGFnZQ==');
+
+@$core.Deprecated('Use fetchMediaActivitiesResponseDescriptor instead')
+const FetchMediaActivitiesResponse$json = {
+  '1': 'FetchMediaActivitiesResponse',
+  '2': [
+    {
+      '1': 'page_info',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {
+      '1': 'activities',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.ListActivity',
+      '10': 'activities'
+    },
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchMediaActivitiesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaActivitiesResponseDescriptor =
+    $convert.base64Decode(
+        'ChxGZXRjaE1lZGlhQWN0aXZpdGllc1Jlc3BvbnNlEjAKCXBhZ2VfaW5mbxgBIAEoCzITLmdvb2'
+        'RhbmltZS5QYWdlSW5mb1IIcGFnZUluZm8SNwoKYWN0aXZpdGllcxgCIAMoCzIXLmdvb2Rhbmlt'
+        'ZS5MaXN0QWN0aXZpdHlSCmFjdGl2aXRpZXMSFAoFZXJyb3IYAyABKAlSBWVycm9y');

@@ -1237,11 +1237,131 @@ func (x *RateReviewResponse) GetError() string {
 	return ""
 }
 
+type FetchMediaActivitiesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MediaId       int32                  `protobuf:"varint,1,opt,name=media_id,json=mediaId,proto3" json:"media_id,omitempty"`
+	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	PerPage       int32                  `protobuf:"varint,3,opt,name=per_page,json=perPage,proto3" json:"per_page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaActivitiesRequest) Reset() {
+	*x = FetchMediaActivitiesRequest{}
+	mi := &file_api_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaActivitiesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaActivitiesRequest) ProtoMessage() {}
+
+func (x *FetchMediaActivitiesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaActivitiesRequest.ProtoReflect.Descriptor instead.
+func (*FetchMediaActivitiesRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *FetchMediaActivitiesRequest) GetMediaId() int32 {
+	if x != nil {
+		return x.MediaId
+	}
+	return 0
+}
+
+func (x *FetchMediaActivitiesRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *FetchMediaActivitiesRequest) GetPerPage() int32 {
+	if x != nil {
+		return x.PerPage
+	}
+	return 0
+}
+
+type FetchMediaActivitiesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageInfo      *PageInfo              `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Activities    []*ListActivity        `protobuf:"bytes,2,rep,name=activities,proto3" json:"activities,omitempty"`
+	Error         string                 `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaActivitiesResponse) Reset() {
+	*x = FetchMediaActivitiesResponse{}
+	mi := &file_api_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaActivitiesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaActivitiesResponse) ProtoMessage() {}
+
+func (x *FetchMediaActivitiesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaActivitiesResponse.ProtoReflect.Descriptor instead.
+func (*FetchMediaActivitiesResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *FetchMediaActivitiesResponse) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *FetchMediaActivitiesResponse) GetActivities() []*ListActivity {
+	if x != nil {
+		return x.Activities
+	}
+	return nil
+}
+
+func (x *FetchMediaActivitiesResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
 	"\n" +
-	"\tapi.proto\x12\tgoodanime\x1a\vmedia.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x12media_review.proto\x1a\fviewer.proto\"X\n" +
+	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x14media_activity.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x12media_review.proto\x1a\fviewer.proto\"X\n" +
 	"\x15FetchMediaListRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x12\n" +
@@ -1327,7 +1447,17 @@ const file_api_proto_rawDesc = "" +
 	"\x06rating\x18\x02 \x01(\x0e2\x1b.goodanime.ReviewUserRatingR\x06rating\"Y\n" +
 	"\x12RateReviewResponse\x12-\n" +
 	"\x06review\x18\x01 \x01(\v2\x15.goodanime.ReviewNodeR\x06review\x12\x14\n" +
-	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x05error\x18\x02 \x01(\tR\x05error\"g\n" +
+	"\x1bFetchMediaActivitiesRequest\x12\x19\n" +
+	"\bmedia_id\x18\x01 \x01(\x05R\amediaId\x12\x12\n" +
+	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x19\n" +
+	"\bper_page\x18\x03 \x01(\x05R\aperPage\"\x9f\x01\n" +
+	"\x1cFetchMediaActivitiesResponse\x120\n" +
+	"\tpage_info\x18\x01 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x127\n" +
+	"\n" +
+	"activities\x18\x02 \x03(\v2\x17.goodanime.ListActivityR\n" +
+	"activities\x12\x14\n" +
+	"\x05error\x18\x03 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_api_proto_rawDescOnce sync.Once
@@ -1341,7 +1471,7 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
@@ -1365,31 +1495,37 @@ var file_api_proto_goTypes = []any{
 	(*FetchMediaReviewsResponse)(nil),         // 19: goodanime.FetchMediaReviewsResponse
 	(*RateReviewRequest)(nil),                 // 20: goodanime.RateReviewRequest
 	(*RateReviewResponse)(nil),                // 21: goodanime.RateReviewResponse
-	(*MediaListCollection)(nil),               // 22: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 23: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 24: goodanime.MediaListEntry
-	(*Media)(nil),                             // 25: goodanime.Media
-	(ReviewUserRating)(0),                     // 26: goodanime.ReviewUserRating
-	(*ReviewNode)(nil),                        // 27: goodanime.ReviewNode
+	(*FetchMediaActivitiesRequest)(nil),       // 22: goodanime.FetchMediaActivitiesRequest
+	(*FetchMediaActivitiesResponse)(nil),      // 23: goodanime.FetchMediaActivitiesResponse
+	(*MediaListCollection)(nil),               // 24: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 25: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 26: goodanime.MediaListEntry
+	(*Media)(nil),                             // 27: goodanime.Media
+	(ReviewUserRating)(0),                     // 28: goodanime.ReviewUserRating
+	(*ReviewNode)(nil),                        // 29: goodanime.ReviewNode
+	(*PageInfo)(nil),                          // 30: goodanime.PageInfo
+	(*ListActivity)(nil),                      // 31: goodanime.ListActivity
 }
 var file_api_proto_depIdxs = []int32{
-	22, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	23, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	24, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	25, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	24, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	25, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	25, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	25, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	25, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	25, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
-	26, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
-	27, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	26, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	27, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	27, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	27, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	27, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	27, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	28, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
+	29, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
+	30, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	31, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -1397,7 +1533,9 @@ func file_api_proto_init() {
 	if File_api_proto != nil {
 		return
 	}
+	file_common_proto_init()
 	file_media_proto_init()
+	file_media_activity_proto_init()
 	file_media_list_proto_init()
 	file_media_list_entry_proto_init()
 	file_media_review_proto_init()
@@ -1410,7 +1548,7 @@ func file_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -1,0 +1,25 @@
+query Media($page: Int, $perPage: Int, $mediaId: Int) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo {
+      hasNextPage
+      currentPage
+    }
+    activities(mediaId: $mediaId, sort: [ID_DESC]) {
+      ... on ListActivity {
+        id
+        createdAt
+        isLiked
+        likeCount
+        progress
+        status
+        user {
+          avatar {
+            medium
+          }
+          id
+          name
+        }
+      }
+    }
+  }
+}
