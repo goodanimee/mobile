@@ -380,3 +380,41 @@ final $typed_data.Uint8List deleteMediaListEntryResponseDescriptor =
     $convert.base64Decode(
         'ChxEZWxldGVNZWRpYUxpc3RFbnRyeVJlc3BvbnNlEhkKCGVudHJ5X2lkGAEgASgFUgdlbnRyeU'
         'lkEhgKB2RlbGV0ZWQYAiABKAhSB2RlbGV0ZWQSFAoFZXJyb3IYAyABKAlSBWVycm9y');
+
+@$core.Deprecated('Use fetchMediaReviewsRequestDescriptor instead')
+const FetchMediaReviewsRequest$json = {
+  '1': 'FetchMediaReviewsRequest',
+  '2': [
+    {'1': 'media_id', '3': 1, '4': 1, '5': 5, '10': 'mediaId'},
+    {'1': 'page', '3': 2, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'per_page', '3': 3, '4': 1, '5': 5, '10': 'perPage'},
+  ],
+};
+
+/// Descriptor for `FetchMediaReviewsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaReviewsRequestDescriptor =
+    $convert.base64Decode(
+        'ChhGZXRjaE1lZGlhUmV2aWV3c1JlcXVlc3QSGQoIbWVkaWFfaWQYASABKAVSB21lZGlhSWQSEg'
+        'oEcGFnZRgCIAEoBVIEcGFnZRIZCghwZXJfcGFnZRgDIAEoBVIHcGVyUGFnZQ==');
+
+@$core.Deprecated('Use fetchMediaReviewsResponseDescriptor instead')
+const FetchMediaReviewsResponse$json = {
+  '1': 'FetchMediaReviewsResponse',
+  '2': [
+    {
+      '1': 'media',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.Media',
+      '10': 'media'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchMediaReviewsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaReviewsResponseDescriptor =
+    $convert.base64Decode(
+        'ChlGZXRjaE1lZGlhUmV2aWV3c1Jlc3BvbnNlEiYKBW1lZGlhGAEgASgLMhAuZ29vZGFuaW1lLk'
+        '1lZGlhUgVtZWRpYRIUCgVlcnJvchgCIAEoCVIFZXJyb3I=');

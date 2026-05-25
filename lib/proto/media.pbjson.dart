@@ -166,6 +166,14 @@ const Media$json = {
       '17': true
     },
     {'1': 'synonyms', '3': 26, '4': 3, '5': 9, '10': 'synonyms'},
+    {
+      '1': 'reviews',
+      '3': 27,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.ReviewConnection',
+      '10': 'reviews'
+    },
   ],
   '8': [
     {'1': '_mean_score'},
@@ -196,5 +204,6 @@ final $typed_data.Uint8List mediaDescriptor = $convert.base64Decode(
     'Z3MSKwoFc3RhdHMYFiABKAsyFS5nb29kYW5pbWUuTWVkaWFTdGF0c1IFc3RhdHMSNwoGdHJlbm'
     'RzGBcgASgLMh8uZ29vZGFuaW1lLk1lZGlhVHJlbmRDb25uZWN0aW9uUgZ0cmVuZHMSIgoKbWVh'
     'bl9zY29yZRgYIAEoBUgAUgltZWFuU2NvcmWIAQESIwoKZmF2b3VyaXRlcxgZIAEoBUgBUgpmYX'
-    'ZvdXJpdGVziAEBEhoKCHN5bm9ueW1zGBogAygJUghzeW5vbnltc0INCgtfbWVhbl9zY29yZUIN'
-    'CgtfZmF2b3VyaXRlcw==');
+    'ZvdXJpdGVziAEBEhoKCHN5bm9ueW1zGBogAygJUghzeW5vbnltcxI1CgdyZXZpZXdzGBsgASgL'
+    'MhsuZ29vZGFuaW1lLlJldmlld0Nvbm5lY3Rpb25SB3Jldmlld3NCDQoLX21lYW5fc2NvcmVCDQ'
+    'oLX2Zhdm91cml0ZXM=');

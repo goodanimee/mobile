@@ -20,6 +20,7 @@ import 'media_list_entry.pb.dart' as $2;
 import 'media_min.pb.dart' as $0;
 import 'media_misc.pb.dart' as $1;
 import 'media_recommendation.pb.dart' as $7;
+import 'media_review.pb.dart' as $9;
 import 'media_staff.pb.dart' as $4;
 import 'media_studio.pb.dart' as $3;
 import 'media_trend.pb.dart' as $8;
@@ -54,6 +55,7 @@ class Media extends $pb.GeneratedMessage {
     $core.int? meanScore,
     $core.int? favourites,
     $core.Iterable<$core.String>? synonyms,
+    $9.ReviewConnection? reviews,
   }) {
     final result = create();
     if (base != null) result.base = base;
@@ -83,6 +85,7 @@ class Media extends $pb.GeneratedMessage {
     if (meanScore != null) result.meanScore = meanScore;
     if (favourites != null) result.favourites = favourites;
     if (synonyms != null) result.synonyms.addAll(synonyms);
+    if (reviews != null) result.reviews = reviews;
     return result;
   }
 
@@ -141,6 +144,8 @@ class Media extends $pb.GeneratedMessage {
     ..aI(24, _omitFieldNames ? '' : 'meanScore')
     ..aI(25, _omitFieldNames ? '' : 'favourites')
     ..pPS(26, _omitFieldNames ? '' : 'synonyms')
+    ..aOM<$9.ReviewConnection>(27, _omitFieldNames ? '' : 'reviews',
+        subBuilder: $9.ReviewConnection.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -381,6 +386,17 @@ class Media extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(26)
   $pb.PbList<$core.String> get synonyms => $_getList(25);
+
+  @$pb.TagNumber(27)
+  $9.ReviewConnection get reviews => $_getN(26);
+  @$pb.TagNumber(27)
+  set reviews($9.ReviewConnection value) => $_setField(27, value);
+  @$pb.TagNumber(27)
+  $core.bool hasReviews() => $_has(26);
+  @$pb.TagNumber(27)
+  void clearReviews() => $_clearField(27);
+  @$pb.TagNumber(27)
+  $9.ReviewConnection ensureReviews() => $_ensure(26);
 }
 
 const $core.bool _omitFieldNames =

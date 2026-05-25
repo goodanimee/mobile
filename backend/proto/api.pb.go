@@ -1021,11 +1021,123 @@ func (x *DeleteMediaListEntryResponse) GetError() string {
 	return ""
 }
 
+type FetchMediaReviewsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MediaId       int32                  `protobuf:"varint,1,opt,name=media_id,json=mediaId,proto3" json:"media_id,omitempty"`
+	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	PerPage       int32                  `protobuf:"varint,3,opt,name=per_page,json=perPage,proto3" json:"per_page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaReviewsRequest) Reset() {
+	*x = FetchMediaReviewsRequest{}
+	mi := &file_api_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaReviewsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaReviewsRequest) ProtoMessage() {}
+
+func (x *FetchMediaReviewsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaReviewsRequest.ProtoReflect.Descriptor instead.
+func (*FetchMediaReviewsRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *FetchMediaReviewsRequest) GetMediaId() int32 {
+	if x != nil {
+		return x.MediaId
+	}
+	return 0
+}
+
+func (x *FetchMediaReviewsRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *FetchMediaReviewsRequest) GetPerPage() int32 {
+	if x != nil {
+		return x.PerPage
+	}
+	return 0
+}
+
+type FetchMediaReviewsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Media         *Media                 `protobuf:"bytes,1,opt,name=media,proto3" json:"media,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaReviewsResponse) Reset() {
+	*x = FetchMediaReviewsResponse{}
+	mi := &file_api_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaReviewsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaReviewsResponse) ProtoMessage() {}
+
+func (x *FetchMediaReviewsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaReviewsResponse.ProtoReflect.Descriptor instead.
+func (*FetchMediaReviewsResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *FetchMediaReviewsResponse) GetMedia() *Media {
+	if x != nil {
+		return x.Media
+	}
+	return nil
+}
+
+func (x *FetchMediaReviewsResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
 	"\n" +
-	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\fviewer.proto\"X\n" +
+	"\tapi.proto\x12\tgoodanime\x1a\vmedia.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\fviewer.proto\"X\n" +
 	"\x15FetchMediaListRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x12\n" +
@@ -1098,7 +1210,14 @@ const file_api_proto_rawDesc = "" +
 	"\x1cDeleteMediaListEntryResponse\x12\x19\n" +
 	"\bentry_id\x18\x01 \x01(\x05R\aentryId\x12\x18\n" +
 	"\adeleted\x18\x02 \x01(\bR\adeleted\x12\x14\n" +
-	"\x05error\x18\x03 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x05error\x18\x03 \x01(\tR\x05error\"d\n" +
+	"\x18FetchMediaReviewsRequest\x12\x19\n" +
+	"\bmedia_id\x18\x01 \x01(\x05R\amediaId\x12\x12\n" +
+	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x19\n" +
+	"\bper_page\x18\x03 \x01(\x05R\aperPage\"Y\n" +
+	"\x19FetchMediaReviewsResponse\x12&\n" +
+	"\x05media\x18\x01 \x01(\v2\x10.goodanime.MediaR\x05media\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_api_proto_rawDescOnce sync.Once
@@ -1112,7 +1231,7 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
@@ -1132,26 +1251,29 @@ var file_api_proto_goTypes = []any{
 	(*ToggleFavouriteAnimeResponse)(nil),      // 15: goodanime.ToggleFavouriteAnimeResponse
 	(*DeleteMediaListEntryRequest)(nil),       // 16: goodanime.DeleteMediaListEntryRequest
 	(*DeleteMediaListEntryResponse)(nil),      // 17: goodanime.DeleteMediaListEntryResponse
-	(*MediaListCollection)(nil),               // 18: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 19: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 20: goodanime.MediaListEntry
-	(*Media)(nil),                             // 21: goodanime.Media
+	(*FetchMediaReviewsRequest)(nil),          // 18: goodanime.FetchMediaReviewsRequest
+	(*FetchMediaReviewsResponse)(nil),         // 19: goodanime.FetchMediaReviewsResponse
+	(*MediaListCollection)(nil),               // 20: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 21: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 22: goodanime.MediaListEntry
+	(*Media)(nil),                             // 23: goodanime.Media
 }
 var file_api_proto_depIdxs = []int32{
-	18, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	19, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	20, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	21, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	20, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	21, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	21, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	21, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	21, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	9,  // [9:9] is the sub-list for method output_type
-	9,  // [9:9] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	22, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	23, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	23, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	23, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	23, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	23, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -1159,7 +1281,6 @@ func file_api_proto_init() {
 	if File_api_proto != nil {
 		return
 	}
-	file_common_proto_init()
 	file_media_proto_init()
 	file_media_list_proto_init()
 	file_media_list_entry_proto_init()
@@ -1172,7 +1293,7 @@ func file_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

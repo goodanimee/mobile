@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "common.proto";
+import "viewer.proto";
+
+option go_package = "goodanime/backend/proto";
+
+enum ReviewUserRating {
+  REVIEW_USER_RATING_NO_VOTE_UNSPECIFIED = 0;
+  REVIEW_USER_RATING_UP_VOTE = 1;
+  REVIEW_USER_RATING_DOWN_VOTE = 2;
+}
+
+message ReviewNode {
+  int32 id = 1;
+  int32 score = 2;
+  int32 rating = 3;
+  int32 rating_amount = 4;
+  string summary = 5;
+  ReviewUserRating user_rating = 6;
+  Viewer user = 7;
+  string body = 8;
+}
+
+message ReviewConnection {
+  PageInfo page_info = 1;
+  repeated ReviewNode nodes = 2;
+}

@@ -8,6 +8,7 @@ import "media_list_entry.proto";
 import "media_min.proto";
 import "media_misc.proto";
 import "media_recommendation.proto";
+import "media_review.proto";
 import "media_staff.proto";
 import "media_studio.proto";
 import "media_trend.proto";
@@ -41,4 +42,5 @@ message Media {
   optional int32 mean_score = 24;
   optional int32 favourites = 25;
   repeated string synonyms = 26;
+  ReviewConnection reviews = 27;
 }

@@ -49,6 +49,7 @@ type Media struct {
 	MeanScore         *int32                    `protobuf:"varint,24,opt,name=mean_score,json=meanScore,proto3,oneof" json:"mean_score,omitempty"`
 	Favourites        *int32                    `protobuf:"varint,25,opt,name=favourites,proto3,oneof" json:"favourites,omitempty"`
 	Synonyms          []string                  `protobuf:"bytes,26,rep,name=synonyms,proto3" json:"synonyms,omitempty"`
+	Reviews           *ReviewConnection         `protobuf:"bytes,27,opt,name=reviews,proto3" json:"reviews,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -265,11 +266,19 @@ func (x *Media) GetSynonyms() []string {
 	return nil
 }
 
+func (x *Media) GetReviews() *ReviewConnection {
+	if x != nil {
+		return x.Reviews
+	}
+	return nil
+}
+
 var File_media_proto protoreflect.FileDescriptor
 
 const file_media_proto_rawDesc = "" +
 	"\n" +
-	"\vmedia.proto\x12\tgoodanime\x1a\x15media_character.proto\x1a\x10media_edge.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x1amedia_recommendation.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\x11media_trend.proto\"\xd2\t\n" +
+	"\vmedia.proto\x12\tgoodanime\x1a\x15media_character.proto\x1a\x10media_edge.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x1amedia_recommendation.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\x11media_trend.proto\"\x89\n" +
+	"\n" +
 	"\x05Media\x12'\n" +
 	"\x04base\x18\x01 \x01(\v2\x13.goodanime.MediaMinR\x04base\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12!\n" +
@@ -305,7 +314,8 @@ const file_media_proto_rawDesc = "" +
 	"\n" +
 	"favourites\x18\x19 \x01(\x05H\x01R\n" +
 	"favourites\x88\x01\x01\x12\x1a\n" +
-	"\bsynonyms\x18\x1a \x03(\tR\bsynonymsB\r\n" +
+	"\bsynonyms\x18\x1a \x03(\tR\bsynonyms\x125\n" +
+	"\areviews\x18\x1b \x01(\v2\x1b.goodanime.ReviewConnectionR\areviewsB\r\n" +
 	"\v_mean_scoreB\r\n" +
 	"\v_favouritesB\x19Z\x17goodanime/backend/protob\x06proto3"
 
@@ -339,6 +349,7 @@ var file_media_proto_goTypes = []any{
 	(*MediaRank)(nil),                // 13: goodanime.MediaRank
 	(*MediaStats)(nil),               // 14: goodanime.MediaStats
 	(*MediaTrendConnection)(nil),     // 15: goodanime.MediaTrendConnection
+	(*ReviewConnection)(nil),         // 16: goodanime.ReviewConnection
 }
 var file_media_proto_depIdxs = []int32{
 	1,  // 0: goodanime.Media.base:type_name -> goodanime.MediaMin
@@ -356,11 +367,12 @@ var file_media_proto_depIdxs = []int32{
 	13, // 12: goodanime.Media.rankings:type_name -> goodanime.MediaRank
 	14, // 13: goodanime.Media.stats:type_name -> goodanime.MediaStats
 	15, // 14: goodanime.Media.trends:type_name -> goodanime.MediaTrendConnection
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	16, // 15: goodanime.Media.reviews:type_name -> goodanime.ReviewConnection
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_media_proto_init() }
@@ -374,6 +386,7 @@ func file_media_proto_init() {
 	file_media_min_proto_init()
 	file_media_misc_proto_init()
 	file_media_recommendation_proto_init()
+	file_media_review_proto_init()
 	file_media_staff_proto_init()
 	file_media_studio_proto_init()
 	file_media_trend_proto_init()
