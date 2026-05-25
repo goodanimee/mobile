@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts MediaEdge to its protobuf representation.
 func (e *MediaEdge) ToProto() *pb.MediaEdge {
 	if e == nil {
 		return nil
@@ -12,6 +13,7 @@ func (e *MediaEdge) ToProto() *pb.MediaEdge {
 	}
 }
 
+// ToProto converts MediaConnection to its protobuf representation.
 func (c *MediaConnection) ToProto() *pb.MediaConnection {
 	if c == nil {
 		return nil

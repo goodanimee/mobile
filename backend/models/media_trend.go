@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts MediaTrend to its protobuf representation.
 func (t *MediaTrend) ToProto() *pb.MediaTrend {
 	if t == nil {
 		return nil
@@ -14,6 +15,7 @@ func (t *MediaTrend) ToProto() *pb.MediaTrend {
 	}
 }
 
+// ToProto converts MediaTrendConnection to its protobuf representation.
 func (c *MediaTrendConnection) ToProto() *pb.MediaTrendConnection {
 	if c == nil {
 		return nil

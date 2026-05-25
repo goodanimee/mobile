@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts Recommendation to its protobuf representation.
 func (r *Recommendation) ToProto() *pb.Recommendation {
 	if r == nil {
 		return nil
@@ -12,6 +13,7 @@ func (r *Recommendation) ToProto() *pb.Recommendation {
 	}
 }
 
+// ToProto converts RecommendationEdge to its protobuf representation.
 func (e *RecommendationEdge) ToProto() *pb.RecommendationEdge {
 	if e == nil {
 		return nil
@@ -21,6 +23,7 @@ func (e *RecommendationEdge) ToProto() *pb.RecommendationEdge {
 	}
 }
 
+// ToProto converts RecommendationConnection to its protobuf representation.
 func (c *RecommendationConnection) ToProto() *pb.RecommendationConnection {
 	if c == nil {
 		return nil

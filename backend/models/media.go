@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts Media to its protobuf representation.
 func (m *Media) ToProto() *pb.Media {
 	if m == nil {
 		return nil

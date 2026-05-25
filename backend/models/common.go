@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts FuzzyDate to its protobuf representation.
 func (f *FuzzyDate) ToProto() *pb.FuzzyDate {
 	if f == nil {
 		return nil
@@ -13,6 +14,7 @@ func (f *FuzzyDate) ToProto() *pb.FuzzyDate {
 	}
 }
 
+// ToProto converts PageInfo to its protobuf representation.
 func (p *PageInfo) ToProto() *pb.PageInfo {
 	if p == nil {
 		return nil
@@ -23,6 +25,7 @@ func (p *PageInfo) ToProto() *pb.PageInfo {
 	}
 }
 
+// ToProto converts MediaListStatus to its protobuf representation.
 func (s *MediaListStatus) ToProto() *pb.MediaListStatus {
 	if s == nil {
 		return nil
@@ -79,10 +82,16 @@ type PageInfo struct {
 type MediaListStatus string
 
 const (
-	MediaListStatusCurrent   MediaListStatus = "CURRENT"
-	MediaListStatusPlanning  MediaListStatus = "PLANNING"
+	// MediaListStatusCurrent represents current status.
+	MediaListStatusCurrent MediaListStatus = "CURRENT"
+	// MediaListStatusPlanning represents planning status.
+	MediaListStatusPlanning MediaListStatus = "PLANNING"
+	// MediaListStatusCompleted represents completed status.
 	MediaListStatusCompleted MediaListStatus = "COMPLETED"
-	MediaListStatusDropped   MediaListStatus = "DROPPED"
-	MediaListStatusPaused    MediaListStatus = "PAUSED"
+	// MediaListStatusDropped represents dropped status.
+	MediaListStatusDropped MediaListStatus = "DROPPED"
+	// MediaListStatusPaused represents paused status.
+	MediaListStatusPaused MediaListStatus = "PAUSED"
+	// MediaListStatusRepeating represents repeating status.
 	MediaListStatusRepeating MediaListStatus = "REPEATING"
 )

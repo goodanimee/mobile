@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts StaffName to its protobuf representation.
 func (n *StaffName) ToProto() *pb.StaffName {
 	if n == nil {
 		return nil
@@ -13,6 +14,7 @@ func (n *StaffName) ToProto() *pb.StaffName {
 	}
 }
 
+// ToProto converts StaffImage to its protobuf representation.
 func (i *StaffImage) ToProto() *pb.StaffImage {
 	if i == nil {
 		return nil
@@ -23,6 +25,7 @@ func (i *StaffImage) ToProto() *pb.StaffImage {
 	}
 }
 
+// ToProto converts Staff to its protobuf representation.
 func (s *Staff) ToProto() *pb.Staff {
 	if s == nil {
 		return nil
@@ -34,6 +37,7 @@ func (s *Staff) ToProto() *pb.Staff {
 	}
 }
 
+// ToProto converts StaffEdge to its protobuf representation.
 func (e *StaffEdge) ToProto() *pb.StaffEdge {
 	if e == nil {
 		return nil
@@ -44,6 +48,7 @@ func (e *StaffEdge) ToProto() *pb.StaffEdge {
 	}
 }
 
+// ToProto converts StaffConnection to its protobuf representation.
 func (c *StaffConnection) ToProto() *pb.StaffConnection {
 	if c == nil {
 		return nil

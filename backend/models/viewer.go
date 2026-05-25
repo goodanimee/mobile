@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts ViewerAvatar to its protobuf representation.
 func (a *ViewerAvatar) ToProto() *pb.ViewerAvatar {
 	if a == nil {
 		return nil
@@ -11,6 +12,7 @@ func (a *ViewerAvatar) ToProto() *pb.ViewerAvatar {
 	}
 }
 
+// ToProto converts Viewer to its protobuf representation.
 func (v *Viewer) ToProto() *pb.Viewer {
 	if v == nil {
 		return nil

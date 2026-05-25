@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts Trailer to its protobuf representation.
 func (t *Trailer) ToProto() *pb.Trailer {
 	if t == nil {
 		return nil
@@ -13,6 +14,7 @@ func (t *Trailer) ToProto() *pb.Trailer {
 	}
 }
 
+// ToProto converts MediaTag to its protobuf representation.
 func (t *MediaTag) ToProto() *pb.MediaTag {
 	if t == nil {
 		return nil
@@ -26,6 +28,7 @@ func (t *MediaTag) ToProto() *pb.MediaTag {
 	}
 }
 
+// ToProto converts ExternalLink to its protobuf representation.
 func (e *ExternalLink) ToProto() *pb.ExternalLink {
 	if e == nil {
 		return nil
@@ -37,6 +40,7 @@ func (e *ExternalLink) ToProto() *pb.ExternalLink {
 	}
 }
 
+// ToProto converts AiringSchedule to its protobuf representation.
 func (a *AiringSchedule) ToProto() *pb.AiringSchedule {
 	if a == nil {
 		return nil
@@ -48,6 +52,7 @@ func (a *AiringSchedule) ToProto() *pb.AiringSchedule {
 	}
 }
 
+// ToProto converts StreamingEpisode to its protobuf representation.
 func (s *StreamingEpisode) ToProto() *pb.StreamingEpisode {
 	if s == nil {
 		return nil
@@ -59,6 +64,7 @@ func (s *StreamingEpisode) ToProto() *pb.StreamingEpisode {
 	}
 }
 
+// ToProto converts MediaRank to its protobuf representation.
 func (r *MediaRank) ToProto() *pb.MediaRank {
 	if r == nil {
 		return nil
@@ -72,6 +78,7 @@ func (r *MediaRank) ToProto() *pb.MediaRank {
 	}
 }
 
+// ToProto converts MediaStats to its protobuf representation.
 func (s *MediaStats) ToProto() *pb.MediaStats {
 	if s == nil {
 		return nil

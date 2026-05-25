@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts CharacterName to its protobuf representation.
 func (n *CharacterName) ToProto() *pb.CharacterName {
 	if n == nil {
 		return nil
@@ -15,6 +16,7 @@ func (n *CharacterName) ToProto() *pb.CharacterName {
 	}
 }
 
+// ToProto converts CharacterImage to its protobuf representation.
 func (i *CharacterImage) ToProto() *pb.CharacterImage {
 	if i == nil {
 		return nil
@@ -25,6 +27,7 @@ func (i *CharacterImage) ToProto() *pb.CharacterImage {
 	}
 }
 
+// ToProto converts Character to its protobuf representation.
 func (c *Character) ToProto() *pb.Character {
 	if c == nil {
 		return nil
@@ -39,6 +42,7 @@ func (c *Character) ToProto() *pb.Character {
 	}
 }
 
+// ToProto converts CharacterEdge to its protobuf representation.
 func (e *CharacterEdge) ToProto() *pb.CharacterEdge {
 	if e == nil {
 		return nil
@@ -55,6 +59,7 @@ func (e *CharacterEdge) ToProto() *pb.CharacterEdge {
 	return res
 }
 
+// ToProto converts CharacterConnection to its protobuf representation.
 func (c *CharacterConnection) ToProto() *pb.CharacterConnection {
 	if c == nil {
 		return nil

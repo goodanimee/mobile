@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts MediaListEntryWithMedia to its protobuf representation.
 func (m *MediaListEntryWithMedia) ToProto() *pb.MediaListEntryWithMedia {
 	if m == nil {
 		return nil
@@ -12,6 +13,7 @@ func (m *MediaListEntryWithMedia) ToProto() *pb.MediaListEntryWithMedia {
 	}
 }
 
+// ToProto converts MediaListCollection to its protobuf representation.
 func (c *MediaListCollection) ToProto() *pb.MediaListCollection {
 	if c == nil {
 		return nil

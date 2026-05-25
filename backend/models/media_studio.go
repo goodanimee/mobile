@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts Studio to its protobuf representation.
 func (s *Studio) ToProto() *pb.Studio {
 	if s == nil {
 		return nil
@@ -12,6 +13,7 @@ func (s *Studio) ToProto() *pb.Studio {
 	}
 }
 
+// ToProto converts StudioEdge to its protobuf representation.
 func (e *StudioEdge) ToProto() *pb.StudioEdge {
 	if e == nil {
 		return nil
@@ -22,6 +24,7 @@ func (e *StudioEdge) ToProto() *pb.StudioEdge {
 	}
 }
 
+// ToProto converts StudioConnection to its protobuf representation.
 func (c *StudioConnection) ToProto() *pb.StudioConnection {
 	if c == nil {
 		return nil

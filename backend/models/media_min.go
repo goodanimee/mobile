@@ -2,6 +2,7 @@ package models
 
 import pb "goodanime-backend/proto"
 
+// ToProto converts CoverImage to its protobuf representation.
 func (c *CoverImage) ToProto() *pb.CoverImage {
 	if c == nil {
 		return nil
@@ -14,6 +15,7 @@ func (c *CoverImage) ToProto() *pb.CoverImage {
 	}
 }
 
+// ToProto converts Title to its protobuf representation.
 func (t *Title) ToProto() *pb.Title {
 	if t == nil {
 		return nil
@@ -26,6 +28,7 @@ func (t *Title) ToProto() *pb.Title {
 	}
 }
 
+// ToProto converts MediaMin to its protobuf representation.
 func (m *MediaMin) ToProto() *pb.MediaMin {
 	if m == nil {
 		return nil
