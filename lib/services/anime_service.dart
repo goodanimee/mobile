@@ -6,6 +6,7 @@ import '../api/media_details_api.dart';
 import '../models/media.dart';
 import '../models/media_character.dart';
 import '../models/media_recommendation.dart';
+import '../models/media_review.dart';
 import '../models/media_staff.dart';
 import '../proto/api.pb.dart';
 import '../proto/media.pb.dart' as pb_media;
@@ -100,6 +101,17 @@ class AnimeService {
       perPage: 25,
     );
     return MediaApi.fetchMediaRecommendations(req, token);
+  }
+
+  /// Fetches reviews pagination results for an anime.
+  static Future<ReviewConnection> getReviews(int mediaId, int page) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = FetchMediaReviewsRequest(
+      mediaId: mediaId,
+      page: page,
+      perPage: 25,
+    );
+    return MediaApi.fetchMediaReviews(req, token);
   }
 
   static Future<void> _saveToDiskCache(

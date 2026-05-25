@@ -6,6 +6,7 @@ import 'package:ffi/ffi.dart';
 import '../models/media.dart';
 import '../models/media_character.dart';
 import '../models/media_recommendation.dart';
+import '../models/media_review.dart';
 import '../models/media_staff.dart';
 import '../proto/api.pb.dart';
 import 'ffi_core.dart';
@@ -82,6 +83,24 @@ typedef _FetchMediaRecommendationsDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for fetching media reviews
+typedef _FetchMediaReviewsC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for fetching media reviews
+typedef _FetchMediaReviewsDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// Native function signature for toggling favourite anime
 typedef _ToggleFavouriteAnimeC =
     ffi.Pointer<ffi.Uint8> Function(
@@ -106,6 +125,7 @@ class MediaApi {
   static late _FetchMediaCharactersDart _fetchMediaCharacters;
   static late _FetchMediaStaffDart _fetchMediaStaff;
   static late _FetchMediaRecommendationsDart _fetchMediaRecommendations;
+  static late _FetchMediaReviewsDart _fetchMediaReviews;
   static late _ToggleFavouriteAnimeDart _toggleFavouriteAnime;
   static bool _initialized = false;
 
@@ -130,6 +150,10 @@ class MediaApi {
           _FetchMediaRecommendationsC,
           _FetchMediaRecommendationsDart
         >('FetchMediaRecommendations');
+    _fetchMediaReviews = FfiCore.lib
+        .lookupFunction<_FetchMediaReviewsC, _FetchMediaReviewsDart>(
+          'FetchMediaReviews',
+        );
     _toggleFavouriteAnime = FfiCore.lib
         .lookupFunction<_ToggleFavouriteAnimeC, _ToggleFavouriteAnimeDart>(
           'ToggleFavouriteAnime',
@@ -252,6 +276,34 @@ class MediaApi {
         return RecommendationConnection.fromProto(
           response.media.recommendations,
         );
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
+  /// Fetches media reviews
+  static Future<ReviewConnection> fetchMediaReviews(
+    FetchMediaReviewsRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      _init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = FfiCore.executeNativeCall(
+          (outLenPtr) =>
+              _fetchMediaReviews(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
+        );
+        final response = FetchMediaReviewsResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return ReviewConnection.fromProto(response.media.reviews);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);
