@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../components/app_relation_card.dart';
 import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../models/media_edge.dart';
+import '../../../models/media_min.dart';
 import '../../../models/media_recommendation.dart';
 import '../../../services/anime_service.dart';
 import '../../../theme/theme.dart';
@@ -110,6 +112,22 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
     }
   }
 
+  /// Handles media tapping by launching URL for music or navigating to anime page
+  Future<void> _handleMediaTap(MediaMin media) async {
+    if (media.format == 'MUSIC') {
+      if (media.siteUrl.isNotEmpty) {
+        final uri = Uri.tryParse(media.siteUrl);
+        if (uri != null && await canLaunchUrl(uri)) {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+        }
+      }
+    } else {
+      if (mounted) {
+        await AppNavigation.toAnime(context, media.id);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final relationEdges = widget.relationsData?.edges ?? [];
@@ -196,13 +214,6 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
                       fallback: Colors.transparent,
                     );
 
-                    final canNavigate = ![
-                      'MUSIC',
-                      'MANGA',
-                      'NOVEL',
-                      'ONESHOT',
-                    ].contains(format);
-
                     return AppRelationCard(
                       imageUrl: imageUrl,
                       title: name,
@@ -214,9 +225,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
                         size: 16,
                         color: textHint,
                       ),
-                      onTap: canNavigate && node != null
-                          ? () => AppNavigation.toAnime(context, node.id)
-                          : null,
+                      onTap: node != null ? () => _handleMediaTap(node) : null,
                     );
                   },
                 ),
@@ -338,9 +347,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
       ),
       color: color != Colors.transparent ? color : null,
       trailing: Icon(Icons.chevron_right_rounded, size: 16, color: textHint),
-      onTap: media != null
-          ? () => AppNavigation.toAnime(context, media.id)
-          : null,
+      onTap: media != null ? () => _handleMediaTap(media) : null,
     );
   }
 }
