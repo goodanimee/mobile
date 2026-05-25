@@ -36,7 +36,7 @@ func FetchMediaList(userId C.int, token *C.char, outLen *C.int) *C.uint8_t {
 
 	pbResponse := &pb.FetchMediaListResponse{}
 
-	respBody, err := rawGraphqlRequest(tk, mediaListQuery, map[string]interface{}{
+	respBody, err := rawGraphqlRequest(tk, mediaListQuery, map[string]any{
 		"userId": uID,
 		"type":   "ANIME",
 		"sort":   []string{"SCORE_DESC"},
@@ -74,7 +74,7 @@ func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	variables := map[string]interface{}{"mediaId": req.MediaId}
+	variables := map[string]any{"mediaId": req.MediaId}
 	if req.Progress != nil {
 		variables["progress"] = *req.Progress
 	}

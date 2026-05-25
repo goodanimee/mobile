@@ -19,7 +19,7 @@ import (
 )
 
 // rawGraphqlRequest sends GraphQL query and returns raw body
-func rawGraphqlRequest(token, query string, variables map[string]interface{}) ([]byte, error) {
+func rawGraphqlRequest(token, query string, variables map[string]any) ([]byte, error) {
 	q := models.GraphQLQuery{Query: query, Variables: variables}
 	body, err := json.Marshal(q)
 	if err != nil {

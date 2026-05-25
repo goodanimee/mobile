@@ -49,6 +49,9 @@ query Media($mediaId: Int) {
         trends(sort: [DATE_DESC], page: 1, perPage: 14) {
             ...MediaTrendsFields
         }
+        reviews(page: 1, perPage: 25, sort: [RATING_DESC]) {
+            ...ReviewFields
+        }
     }
 }
 
@@ -301,4 +304,30 @@ fragment TitleFields on MediaTitle {
     native
     romaji
     userPreferred
+}
+
+fragment ReviewFields on ReviewConnection {
+    pageInfo {
+        ...PageInfoFields
+    }
+    nodes {
+        id
+        score
+        rating
+        ratingAmount
+        summary
+        userRating
+        user {
+            ...UserFields
+        }
+        body(asHtml: true)
+    }
+}
+
+fragment UserFields on User {
+    id
+    name
+    avatar {
+        medium
+    }
 }

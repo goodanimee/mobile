@@ -30,6 +30,9 @@ var mediaCharactersQuery string
 //go:embed graphql/media_recommendations.graphql
 var mediaRecommendationsQuery string
 
+//go:embed graphql/media_reviews.graphql
+var mediaReviewsQuery string
+
 //go:embed graphql/toggle_favourite.graphql
 var mediaToggleFavouriteMutation string
 
@@ -47,7 +50,7 @@ func FetchMediaDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"mediaId":     req.MediaId,
 		"notYetAired": true,
 	}
@@ -86,7 +89,7 @@ func FetchMediaStaff(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.i
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"mediaId": req.MediaId,
 		"page":    req.Page,
 		"perPage": req.PerPage,
@@ -126,7 +129,7 @@ func FetchMediaCharacters(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"mediaId": req.MediaId,
 		"page":    req.Page,
 		"perPage": req.PerPage,
@@ -166,13 +169,53 @@ func FetchMediaRecommendations(reqPtr *C.uint8_t, reqLen C.int, token *C.char, o
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"mediaId": req.MediaId,
 		"page":    req.Page,
 		"perPage": req.PerPage,
 	}
 
 	respBody, err := rawGraphqlRequest(tk, mediaRecommendationsQuery, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	var apiResp models.GraphQLResponse[models.MediaDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	pbResponse.Media = apiResp.Data.Media.ToProto()
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// FetchMediaReviews returns paginated reviews for a media ID
+//
+//export FetchMediaReviews
+func FetchMediaReviews(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.FetchMediaReviewsResponse{}
+
+	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+	var req pb.FetchMediaReviewsRequest
+	if err := proto.Unmarshal(reqBytes, &req); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]any{
+		"mediaId": req.MediaId,
+		"page":    req.Page,
+		"perPage": req.PerPage,
+	}
+
+	respBody, err := rawGraphqlRequest(tk, mediaReviewsQuery, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
@@ -206,7 +249,7 @@ func ToggleFavouriteAnime(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	variables := map[string]interface{}{"animeId": req.AnimeId}
+	variables := map[string]any{"animeId": req.AnimeId}
 
 	respBody, err := rawGraphqlRequest(tk, mediaToggleFavouriteMutation, variables)
 	if err != nil {
