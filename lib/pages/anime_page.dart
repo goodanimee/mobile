@@ -44,6 +44,7 @@ class _AnimePageState extends State<AnimePage> {
   int _selectedTabIndex = 0;
   bool _didUpdate = false;
   bool _isTogglingFavourite = false;
+  int _refreshCount = 0;
 
   /// Whether the sticky header bar is visible
   bool _showStickyBar = false;
@@ -174,6 +175,11 @@ class _AnimePageState extends State<AnimePage> {
   /// Handles manual pull-to-refresh
   Future<void> _handleRefresh() async {
     await _fetchAnimeDetails(forceRefresh: true);
+    if (_selectedTabIndex == 6) {
+      setState(() {
+        _refreshCount++;
+      });
+    }
   }
 
   /// Builds the content of the currently selected tab
@@ -223,6 +229,7 @@ class _AnimePageState extends State<AnimePage> {
           mediaName: name,
           initialData: media.reviews,
           isNested: true,
+          refreshTrigger: _refreshCount,
         );
       default:
         return const PlaceholderTab(title: 'Overview Section');

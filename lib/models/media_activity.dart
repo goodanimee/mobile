@@ -49,6 +49,27 @@ class ListActivity {
     );
   }
 
+  /// Creates a copy of this activity with replaced fields.
+  ListActivity copyWith({
+    int? id,
+    int? createdAt,
+    bool? isLiked,
+    int? likeCount,
+    String? progress,
+    String? status,
+    Viewer? user,
+  }) {
+    return ListActivity(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      isLiked: isLiked ?? this.isLiked,
+      likeCount: likeCount ?? this.likeCount,
+      progress: progress ?? this.progress,
+      status: status ?? this.status,
+      user: user ?? this.user,
+    );
+  }
+
   /// Converts this ListActivity to a protobuf object.
   pb.ListActivity toProto() {
     final pbObj = pb.ListActivity(

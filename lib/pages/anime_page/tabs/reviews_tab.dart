@@ -25,6 +25,9 @@ class AnimeReviewsTab extends StatefulWidget {
   /// Whether this tab is nested
   final bool isNested;
 
+  /// Trigger for manual refresh updates
+  final int refreshTrigger;
+
   /// Creates a reviews tab
   const AnimeReviewsTab({
     super.key,
@@ -32,6 +35,7 @@ class AnimeReviewsTab extends StatefulWidget {
     required this.mediaName,
     this.initialData,
     this.isNested = false,
+    this.refreshTrigger = 0,
   });
 
   @override
@@ -52,6 +56,7 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
   int _activitiesCurrentPage = 1;
   bool _activitiesHasNextPage = false;
   bool _isFetchingMoreActivities = false;
+  final Set<int> _togglingActivities = {};
 
   @override
   void initState() {
@@ -63,6 +68,54 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
     _scrollController.addListener(_scrollListener);
     _activitiesScrollController.addListener(_activitiesScrollListener);
     _fetchActivities();
+  }
+
+  @override
+  void didUpdateWidget(AnimeReviewsTab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.refreshTrigger != oldWidget.refreshTrigger) {
+      _fetchActivities();
+    }
+  }
+
+  Future<void> _handleToggleLike(ListActivity activity) async {
+    if (_togglingActivities.contains(activity.id)) return;
+
+    setState(() {
+      _togglingActivities.add(activity.id);
+    });
+
+    try {
+      await AnimeService.toggleActivityLike(activity.id);
+      if (mounted) {
+        setState(() {
+          final index = _activities.indexWhere((element) => element.id == activity.id);
+          if (index != -1) {
+            final nextLiked = !activity.isLiked;
+            final nextLikeCount = nextLiked ? activity.likeCount + 1 : activity.likeCount - 1;
+            _activities[index] = activity.copyWith(
+              isLiked: nextLiked,
+              likeCount: nextLikeCount,
+            );
+          }
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to toggle like: $e'),
+            backgroundColor: Colors.redAccent.shade700,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _togglingActivities.remove(activity.id);
+        });
+      }
+    }
   }
 
   Future<void> _fetchActivities() async {
@@ -457,29 +510,45 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
             ),
           ),
           const SizedBox(width: 12),
-          SizedBox(
-            width: 48,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  activity.isLiked
-                      ? Icons.favorite_rounded
-                      : Icons.favorite_border_rounded,
-                  color: activity.isLiked ? Colors.redAccent.shade400 : textHint,
-                  size: 20,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${activity.likeCount}',
-                  style: const TextStyle(
-                    color: textHint,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+          GestureDetector(
+            onTap: () => _handleToggleLike(activity),
+            behavior: HitTestBehavior.opaque,
+            child: SizedBox(
+              width: 48,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _togglingActivities.contains(activity.id)
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: Padding(
+                            padding: EdgeInsets.all(2.0),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: textSecondary,
+                            ),
+                          ),
+                        )
+                      : Icon(
+                          activity.isLiked
+                              ? Icons.favorite_rounded
+                              : Icons.favorite_border_rounded,
+                          color: activity.isLiked ? paletteRed : textMuted,
+                          size: 20,
+                        ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${activity.likeCount}',
+                    style: TextStyle(
+                      color: activity.isLiked ? paletteRed : textMuted,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
