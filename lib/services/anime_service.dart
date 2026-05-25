@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/media_details_api.dart';
-import '../models/common.dart';
 import '../models/media.dart';
 import '../models/media_activity.dart';
 import '../models/media_character.dart';
@@ -20,7 +19,6 @@ import 'auth_service.dart';
 class AnimeService {
   static const String _cachePrefix = 'anime_cache_';
   static const String _cacheKeysPref = 'anime_cache_keys';
-  static const String _activityCachePrefix = 'activity_cache_';
   static const int _cacheCapacity = 50;
 
   /// Fetches anime details from cache or network.
@@ -119,7 +117,10 @@ class AnimeService {
   }
 
   /// Rates a review on AniList.
-  static Future<ReviewNode> rateReview(int reviewId, ReviewUserRating rating) async {
+  static Future<ReviewNode> rateReview(
+    int reviewId,
+    ReviewUserRating rating,
+  ) async {
     final token = await AuthService.getRawToken() ?? '';
     pb_review.ReviewUserRating protoRating;
     switch (rating) {
@@ -130,68 +131,27 @@ class AnimeService {
         protoRating = pb_review.ReviewUserRating.REVIEW_USER_RATING_DOWN_VOTE;
         break;
       case ReviewUserRating.noVote:
-        protoRating = pb_review.ReviewUserRating.REVIEW_USER_RATING_NO_VOTE_UNSPECIFIED;
+        protoRating =
+            pb_review.ReviewUserRating.REVIEW_USER_RATING_NO_VOTE_UNSPECIFIED;
         break;
     }
-    final req = RateReviewRequest(
-      reviewId: reviewId,
-      rating: protoRating,
-    );
+    final req = RateReviewRequest(reviewId: reviewId, rating: protoRating);
     return MediaApi.rateReview(req, token);
   }
 
-  /// Fetches media activities pagination results, caching the first page.
+  /// Fetches media activities pagination results.
   static Future<ListActivityConnection> getActivities(
     int mediaId,
-    int page, {
-    bool forceRefresh = false,
-  }) async {
-    final prefs = await SharedPreferences.getInstance();
-    final cacheKey = '$_activityCachePrefix$mediaId';
-
-    if (page == 1 && !forceRefresh) {
-      final cachedData = prefs.getString(cacheKey);
-      if (cachedData != null) {
-        try {
-          final pbObj = FetchMediaActivitiesResponse.fromBuffer(
-            base64Decode(cachedData),
-          );
-          return ListActivityConnection(
-            pageInfo: PageInfo.fromProto(pbObj.pageInfo),
-            nodes: pbObj.activities.map(ListActivity.fromProto).toList(),
-          );
-        } catch (_) {
-          // Fallback to fetch on failure
-        }
-      }
-    }
-
-    if (forceRefresh && page == 1) {
-      await prefs.remove(cacheKey);
-    }
-
+    int page,
+  ) async {
     final token = await AuthService.getRawToken() ?? '';
     final req = FetchMediaActivitiesRequest(
       mediaId: mediaId,
       page: page,
       perPage: 25,
     );
-    final connection = await MediaApi.fetchMediaActivities(req, token);
-
-    if (page == 1) {
-      final responseObj = FetchMediaActivitiesResponse(
-        pageInfo: connection.pageInfo.toProto(),
-        activities: connection.nodes.map((n) => n.toProto()),
-      );
-      await prefs.setString(
-        cacheKey,
-        base64Encode(responseObj.writeToBuffer()),
-      );
-    }
-
-    return connection;
+    return MediaApi.fetchMediaActivities(req, token);
   }
-
 
   static Future<void> _saveToDiskCache(
     SharedPreferences prefs,

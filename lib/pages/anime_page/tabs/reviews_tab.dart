@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
+import '../../../components/app_network_image.dart';
 import '../../../components/app_review_card.dart';
 import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
+import '../../../models/media_activity.dart';
 import '../../../models/media_review.dart';
 import '../../../services/anime_service.dart';
 import '../../../theme/theme.dart';
@@ -38,9 +41,17 @@ class AnimeReviewsTab extends StatefulWidget {
 class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
   final List<ReviewNode> _reviews = [];
   final ScrollController _scrollController = ScrollController();
+  final ScrollController _activitiesScrollController = ScrollController();
   int _currentPage = 1;
   bool _hasNextPage = false;
   bool _isFetchingMore = false;
+
+  final List<ListActivity> _activities = [];
+  bool _isLoadingActivities = true;
+  String? _activitiesError;
+  int _activitiesCurrentPage = 1;
+  bool _activitiesHasNextPage = false;
+  bool _isFetchingMoreActivities = false;
 
   @override
   void initState() {
@@ -50,11 +61,37 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
       _hasNextPage = widget.initialData!.pageInfo.hasNextPage;
     }
     _scrollController.addListener(_scrollListener);
+    _activitiesScrollController.addListener(_activitiesScrollListener);
+    _fetchActivities();
+  }
+
+  Future<void> _fetchActivities() async {
+    try {
+      final connection = await AnimeService.getActivities(widget.mediaId, 1);
+      if (mounted) {
+        setState(() {
+          _activities.clear();
+          _activities.addAll(connection.nodes);
+          _activitiesCurrentPage = 1;
+          _activitiesHasNextPage = connection.pageInfo.hasNextPage;
+          _isLoadingActivities = false;
+          _activitiesError = null;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoadingActivities = false;
+          _activitiesError = 'Failed to load activities: $e';
+        });
+      }
+    }
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _activitiesScrollController.dispose();
     super.dispose();
   }
 
@@ -93,37 +130,43 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
     }
   }
 
+  void _activitiesScrollListener() {
+    if (!_activitiesHasNextPage || _isFetchingMoreActivities) return;
+
+    final threshold = _activitiesScrollController.position.maxScrollExtent - 400;
+    if (_activitiesScrollController.offset >= threshold) {
+      _loadMoreActivities();
+    }
+  }
+
+  Future<void> _loadMoreActivities() async {
+    if (_isFetchingMoreActivities || !_activitiesHasNextPage) return;
+
+    setState(() => _isFetchingMoreActivities = true);
+
+    try {
+      final connection = await AnimeService.getActivities(
+        widget.mediaId,
+        _activitiesCurrentPage + 1,
+      );
+
+      if (mounted) {
+        setState(() {
+          _activities.addAll(connection.nodes);
+          _activitiesCurrentPage++;
+          _activitiesHasNextPage = connection.pageInfo.hasNextPage;
+          _isFetchingMoreActivities = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _isFetchingMoreActivities = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (_reviews.isEmpty && !_isFetchingMore) {
-      final emptyContent = Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 64),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.rate_review_outlined,
-                size: 48,
-                color: textHint.withValues(alpha: 0.33),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'No reviews found',
-                style: TextStyle(color: textMuted, fontSize: 15),
-              ),
-            ],
-          ),
-        ),
-      );
-
-      if (widget.isNested) return emptyContent;
-      return SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: emptyContent,
-      );
-    }
-
     final screenWidth = MediaQuery.of(context).size.width;
     final cardWidth = screenWidth * 0.68;
     const carouselHeight = 270.0;
@@ -133,61 +176,71 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
     final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppSection(
-          title: 'Reviews',
-          topSpacing: 0,
-          children: [
-            SizedBox(
-              height: carouselHeight,
-              child: ListView.builder(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.zero,
-                itemCount:
-                    ((_reviews.length / 2).ceil()) + (_isFetchingMore ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (index == (_reviews.length / 2).ceil()) {
-                    return const Padding(
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      child: Center(
-                        child: AppLoadingIndicator(topPadding: 0),
+        if (_reviews.isNotEmpty) ...[
+          AppSection(
+            title: 'Reviews',
+            topSpacing: 0,
+            children: [
+              SizedBox(
+                height: carouselHeight,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.zero,
+                  itemCount:
+                      ((_reviews.length / 2).ceil()) + (_isFetchingMore ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == (_reviews.length / 2).ceil()) {
+                      return const Padding(
+                        padding: EdgeInsets.only(left: 16, right: 16),
+                        child: Center(
+                          child: AppLoadingIndicator(topPadding: 0),
+                        ),
+                      );
+                    }
+
+                    final firstIdx = index * 2;
+                    final secondIdx = firstIdx + 1;
+
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        right: index == ((_reviews.length / 2).ceil()) - 1
+                            ? 0
+                            : spacing,
                       ),
-                    );
-                  }
-
-                  final firstIdx = index * 2;
-                  final secondIdx = firstIdx + 1;
-
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      right: index == ((_reviews.length / 2).ceil()) - 1
-                          ? 0
-                          : spacing,
-                    ),
-                    child: SizedBox(
-                      width: cardWidth,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: rowHeight,
-                            child: _buildReviewCard(firstIdx),
-                          ),
-                          if (secondIdx < _reviews.length) ...[
-                            const SizedBox(height: spacing),
+                      child: SizedBox(
+                        width: cardWidth,
+                        child: Column(
+                          children: [
                             SizedBox(
                               height: rowHeight,
-                              child: _buildReviewCard(secondIdx),
+                              child: _buildReviewCard(firstIdx),
                             ),
-                          ] else ...[
-                            const Spacer(),
+                            if (secondIdx < _reviews.length) ...[
+                              const SizedBox(height: spacing),
+                              SizedBox(
+                                height: rowHeight,
+                                child: _buildReviewCard(secondIdx),
+                              ),
+                            ] else ...[
+                              const Spacer(),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
+            ],
+          ),
+          const SizedBox(height: 24),
+        ],
+        AppSection(
+          title: 'Recent Activity',
+          topSpacing: _reviews.isEmpty ? 0 : 8,
+          children: [
+            _buildActivitiesSection(),
           ],
         ),
       ],
@@ -204,6 +257,233 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: content,
+    );
+  }
+
+  Widget _buildActivitiesSection() {
+    if (_isLoadingActivities) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 32),
+        child: Center(
+          child: AppLoadingIndicator(topPadding: 0),
+        ),
+      );
+    }
+
+    if (_activitiesError != null) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 32),
+        child: Center(
+          child: Text(
+            _activitiesError!,
+            style: const TextStyle(color: Colors.redAccent, fontSize: 14),
+          ),
+        ),
+      );
+    }
+
+    if (_activities.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.history_rounded,
+                size: 40,
+                color: textHint.withValues(alpha: 0.33),
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'No recent activities found',
+                style: TextStyle(color: textMuted, fontSize: 14),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final cardWidth = screenWidth * 0.68;
+    const carouselHeight = 172.0;
+    const spacing = 12.0;
+    final rowHeight = (carouselHeight - spacing) / 2;
+
+    return SizedBox(
+      height: carouselHeight,
+      child: ListView.builder(
+        controller: _activitiesScrollController,
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.zero,
+        itemCount: ((_activities.length / 2).ceil()) + (_isFetchingMoreActivities ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index == (_activities.length / 2).ceil()) {
+            return const Padding(
+              padding: EdgeInsets.only(left: 16, right: 16),
+              child: Center(
+                child: AppLoadingIndicator(topPadding: 0),
+              ),
+            );
+          }
+
+          final firstIdx = index * 2;
+          final secondIdx = firstIdx + 1;
+
+          return Padding(
+            padding: EdgeInsets.only(
+              right: index == ((_activities.length / 2).ceil()) - 1
+                  ? 0
+                  : spacing,
+            ),
+            child: SizedBox(
+              width: cardWidth,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: rowHeight,
+                    width: double.infinity,
+                    child: _buildActivityCard(_activities[firstIdx]),
+                  ),
+                  if (secondIdx < _activities.length) ...[
+                    const SizedBox(height: spacing),
+                    SizedBox(
+                      height: rowHeight,
+                      width: double.infinity,
+                      child: _buildActivityCard(_activities[secondIdx]),
+                    ),
+                  ] else ...[
+                    const Spacer(),
+                  ],
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  String _getActivityActionText(String status, String progress) {
+    final s = status.toLowerCase();
+    final animeName = widget.mediaName;
+
+    if (s == 'watched episode' || s == 'watched' || (s == 'current' && progress.isNotEmpty)) {
+      return 'Watched episode $progress of $animeName';
+    } else if (s == 'plans to watch' || s == 'planning') {
+      return 'Plans to watch $animeName';
+    } else if (s == 'completed') {
+      return 'Completed watching $animeName';
+    } else {
+      final capitalizedStatus = status.isNotEmpty
+          ? '${status[0].toUpperCase()}${status.substring(1)}'
+          : status;
+      if (progress.isNotEmpty) {
+        return '$capitalizedStatus $progress of $animeName';
+      }
+      return '$capitalizedStatus $animeName';
+    }
+  }
+
+  String _formatTimeAgo(int timestampSeconds) {
+    final date = DateTime.fromMillisecondsSinceEpoch(timestampSeconds * 1000);
+    return timeago.format(date);
+  }
+
+  Widget _buildActivityCard(ListActivity activity) {
+    final avatarUrl = activity.user?.avatarMedium ?? '';
+    final username = activity.user?.name ?? 'Anonymous';
+    final actionText = _getActivityActionText(activity.status, activity.progress);
+    final timeStr = _formatTimeAgo(activity.createdAt);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.03),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: cardBorderColor),
+      ),
+      child: Row(
+        children: [
+          AppNetworkImage(
+            imageUrl: avatarUrl,
+            width: 38,
+            height: 38,
+            borderRadius: BorderRadius.circular(19),
+            fallbackIcon: Icons.person,
+            checkDefault: true,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Text(
+                      username,
+                      style: const TextStyle(
+                        color: textSecondary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      timeStr,
+                      style: const TextStyle(
+                        color: textHint,
+                        fontSize: 11.5,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  actionText,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: textMuted,
+                    fontSize: 13.5,
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          SizedBox(
+            width: 48,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  activity.isLiked
+                      ? Icons.favorite_rounded
+                      : Icons.favorite_border_rounded,
+                  color: activity.isLiked ? Colors.redAccent.shade400 : textHint,
+                  size: 20,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${activity.likeCount}',
+                  style: const TextStyle(
+                    color: textHint,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
