@@ -7,12 +7,12 @@ import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../models/media_activity.dart';
 import '../../../models/media_review.dart';
-import '../../../services/anime_service.dart';
+import '../../../services/media_service.dart';
 import '../../../theme/theme.dart';
 import '../widgets/review_sheet.dart';
 
 /// Tab displaying paginated reviews for an anime
-class AnimeReviewsTab extends StatefulWidget {
+class MediaReviewsTab extends StatefulWidget {
   /// The media ID of the anime
   final int mediaId;
 
@@ -29,7 +29,7 @@ class AnimeReviewsTab extends StatefulWidget {
   final int refreshTrigger;
 
   /// Creates a reviews tab
-  const AnimeReviewsTab({
+  const MediaReviewsTab({
     super.key,
     required this.mediaId,
     required this.mediaName,
@@ -39,10 +39,10 @@ class AnimeReviewsTab extends StatefulWidget {
   });
 
   @override
-  State<AnimeReviewsTab> createState() => _AnimeReviewsTabState();
+  State<MediaReviewsTab> createState() => _MediaReviewsTabState();
 }
 
-class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
+class _MediaReviewsTabState extends State<MediaReviewsTab> {
   final List<ReviewNode> _reviews = [];
   final ScrollController _scrollController = ScrollController();
   final ScrollController _activitiesScrollController = ScrollController();
@@ -71,7 +71,7 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
   }
 
   @override
-  void didUpdateWidget(AnimeReviewsTab oldWidget) {
+  void didUpdateWidget(MediaReviewsTab oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.refreshTrigger != oldWidget.refreshTrigger) {
       _fetchActivities();
@@ -86,13 +86,17 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
     });
 
     try {
-      await AnimeService.toggleActivityLike(activity.id);
+      await MediaService.toggleActivityLike(activity.id);
       if (mounted) {
         setState(() {
-          final index = _activities.indexWhere((element) => element.id == activity.id);
+          final index = _activities.indexWhere(
+            (element) => element.id == activity.id,
+          );
           if (index != -1) {
             final nextLiked = !activity.isLiked;
-            final nextLikeCount = nextLiked ? activity.likeCount + 1 : activity.likeCount - 1;
+            final nextLikeCount = nextLiked
+                ? activity.likeCount + 1
+                : activity.likeCount - 1;
             _activities[index] = activity.copyWith(
               isLiked: nextLiked,
               likeCount: nextLikeCount,
@@ -120,7 +124,7 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
 
   Future<void> _fetchActivities() async {
     try {
-      final connection = await AnimeService.getActivities(widget.mediaId, 1);
+      final connection = await MediaService.getActivities(widget.mediaId, 1);
       if (mounted) {
         setState(() {
           _activities.clear();
@@ -163,7 +167,7 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
     setState(() => _isFetchingMore = true);
 
     try {
-      final connection = await AnimeService.getReviews(
+      final connection = await MediaService.getReviews(
         widget.mediaId,
         _currentPage + 1,
       );
@@ -186,7 +190,8 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
   void _activitiesScrollListener() {
     if (!_activitiesHasNextPage || _isFetchingMoreActivities) return;
 
-    final threshold = _activitiesScrollController.position.maxScrollExtent - 400;
+    final threshold =
+        _activitiesScrollController.position.maxScrollExtent - 400;
     if (_activitiesScrollController.offset >= threshold) {
       _loadMoreActivities();
     }
@@ -198,7 +203,7 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
     setState(() => _isFetchingMoreActivities = true);
 
     try {
-      final connection = await AnimeService.getActivities(
+      final connection = await MediaService.getActivities(
         widget.mediaId,
         _activitiesCurrentPage + 1,
       );
@@ -241,7 +246,8 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.zero,
                   itemCount:
-                      ((_reviews.length / 2).ceil()) + (_isFetchingMore ? 1 : 0),
+                      ((_reviews.length / 2).ceil()) +
+                      (_isFetchingMore ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == (_reviews.length / 2).ceil()) {
                       return const Padding(
@@ -292,9 +298,7 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
         AppSection(
           title: 'Recent Activity',
           topSpacing: _reviews.isEmpty ? 0 : 8,
-          children: [
-            _buildActivitiesSection(),
-          ],
+          children: [_buildActivitiesSection()],
         ),
       ],
     );
@@ -317,9 +321,7 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
     if (_isLoadingActivities) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 32),
-        child: Center(
-          child: AppLoadingIndicator(topPadding: 0),
-        ),
+        child: Center(child: AppLoadingIndicator(topPadding: 0)),
       );
     }
 
@@ -370,14 +372,14 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
         controller: _activitiesScrollController,
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.zero,
-        itemCount: ((_activities.length / 2).ceil()) + (_isFetchingMoreActivities ? 1 : 0),
+        itemCount:
+            ((_activities.length / 2).ceil()) +
+            (_isFetchingMoreActivities ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == (_activities.length / 2).ceil()) {
             return const Padding(
               padding: EdgeInsets.only(left: 16, right: 16),
-              child: Center(
-                child: AppLoadingIndicator(topPadding: 0),
-              ),
+              child: Center(child: AppLoadingIndicator(topPadding: 0)),
             );
           }
 
@@ -422,7 +424,9 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
     final s = status.toLowerCase();
     final animeName = widget.mediaName;
 
-    if (s == 'watched episode' || s == 'watched' || (s == 'current' && progress.isNotEmpty)) {
+    if (s == 'watched episode' ||
+        s == 'watched' ||
+        (s == 'current' && progress.isNotEmpty)) {
       return 'Watched episode $progress of $animeName';
     } else if (s == 'plans to watch' || s == 'planning') {
       return 'Plans to watch $animeName';
@@ -447,7 +451,10 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
   Widget _buildActivityCard(ListActivity activity) {
     final avatarUrl = activity.user?.avatarMedium ?? '';
     final username = activity.user?.name ?? 'Anonymous';
-    final actionText = _getActivityActionText(activity.status, activity.progress);
+    final actionText = _getActivityActionText(
+      activity.status,
+      activity.progress,
+    );
     final timeStr = _formatTimeAgo(activity.createdAt);
 
     return Container(
@@ -488,10 +495,7 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
                     const SizedBox(width: 8),
                     Text(
                       timeStr,
-                      style: const TextStyle(
-                        color: textHint,
-                        fontSize: 11.5,
-                      ),
+                      style: const TextStyle(color: textHint, fontSize: 11.5),
                     ),
                   ],
                 ),

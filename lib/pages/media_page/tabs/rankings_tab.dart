@@ -11,7 +11,7 @@ import '../widgets/status_distribution_bar.dart';
 import '../widgets/trend_line_chart.dart';
 
 /// A tab displaying ranking and statistical information for an anime
-class AnimeRankingsTab extends StatefulWidget {
+class MediaRankingsTab extends StatefulWidget {
   /// The anime media data
   final Media media;
 
@@ -19,18 +19,18 @@ class AnimeRankingsTab extends StatefulWidget {
   final bool isNested;
 
   /// Creates an anime rankings tab
-  const AnimeRankingsTab({
+  const MediaRankingsTab({
     super.key,
     required this.media,
     this.isNested = false,
   });
 
   @override
-  State<AnimeRankingsTab> createState() => _AnimeRankingsTabState();
+  State<MediaRankingsTab> createState() => _MediaRankingsTabState();
 }
 
 /// State for AnimeRankingsTab
-class _AnimeRankingsTabState extends State<AnimeRankingsTab> {
+class _MediaRankingsTabState extends State<MediaRankingsTab> {
   @override
   void dispose() {
     StatTooltip.hide();

@@ -9,7 +9,7 @@ import '../../../models/media.dart';
 import '../../../models/media_misc.dart';
 
 /// A tab displaying trailers and streaming episodes for an anime
-class AnimeMediaTab extends StatelessWidget {
+class MediaContentTab extends StatelessWidget {
   /// The anime media data
   final Media media;
 
@@ -17,7 +17,11 @@ class AnimeMediaTab extends StatelessWidget {
   final bool isNested;
 
   /// Creates a media tab
-  const AnimeMediaTab({super.key, required this.media, this.isNested = false});
+  const MediaContentTab({
+    super.key,
+    required this.media,
+    this.isNested = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +184,7 @@ class AnimeMediaTab extends StatelessWidget {
           const SizedBox(height: 24),
         ],
         if (!hasYoutubeTrailer && allEpisodes.isEmpty)
-          const AppErrorView(message: 'No media available'),
+          const AppErrorView(message: 'No content available'),
       ],
     );
 

@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../components/app_relation_card.dart';
 import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../models/media_edge.dart';
-import '../../../models/media_min.dart';
 import '../../../models/media_recommendation.dart';
-import '../../../services/anime_service.dart';
+import '../../../services/media_service.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../utils/utils.dart';
 
 /// Tab displaying related and recommended media
-class AnimeRelationsTab extends StatefulWidget {
+class MediaRelationsTab extends StatefulWidget {
   /// The media ID of the anime
   final int mediaId;
 
@@ -27,7 +25,7 @@ class AnimeRelationsTab extends StatefulWidget {
   final bool isNested;
 
   /// Creates a relations tab
-  const AnimeRelationsTab({
+  const MediaRelationsTab({
     super.key,
     required this.mediaId,
     this.relationsData,
@@ -36,10 +34,10 @@ class AnimeRelationsTab extends StatefulWidget {
   });
 
   @override
-  State<AnimeRelationsTab> createState() => _AnimeRelationsTabState();
+  State<MediaRelationsTab> createState() => _MediaRelationsTabState();
 }
 
-class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
+class _MediaRelationsTabState extends State<MediaRelationsTab> {
   final List<RecommendationEdge> _recommendations = [];
   int _recommendationPage = 1;
   bool _hasNextRecommendationPage = false;
@@ -94,7 +92,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
     setState(() => _isFetchingMore = true);
 
     try {
-      final connection = await AnimeService.getRecommendations(
+      final connection = await MediaService.getRecommendations(
         widget.mediaId,
         _recommendationPage + 1,
       );
@@ -112,21 +110,6 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
     }
   }
 
-  /// Handles media tapping by launching URL for music or navigating to anime page
-  Future<void> _handleMediaTap(MediaMin media) async {
-    if (media.format == 'MUSIC') {
-      if (media.siteUrl.isNotEmpty) {
-        final uri = Uri.tryParse(media.siteUrl);
-        if (uri != null && await canLaunchUrl(uri)) {
-          await launchUrl(uri, mode: LaunchMode.externalApplication);
-        }
-      }
-    } else {
-      if (mounted) {
-        await AppNavigation.toAnime(context, media.id);
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +208,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
                         size: 16,
                         color: textHint,
                       ),
-                      onTap: node != null ? () => _handleMediaTap(node) : null,
+                      onTap: node != null ? () => AppNavigation.toMedia(context, node.id) : null,
                     );
                   },
                 ),
@@ -347,7 +330,7 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
       ),
       color: color != Colors.transparent ? color : null,
       trailing: Icon(Icons.chevron_right_rounded, size: 16, color: textHint),
-      onTap: media != null ? () => _handleMediaTap(media) : null,
+      onTap: media != null ? () => AppNavigation.toMedia(context, media.id) : null,
     );
   }
 }

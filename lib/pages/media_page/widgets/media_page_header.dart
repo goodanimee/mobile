@@ -5,12 +5,12 @@ import '../../../models/media.dart';
 import '../../../theme/theme.dart';
 
 /// Header component for the anime details page
-class AnimePageHeader extends StatelessWidget {
+class MediaPageHeader extends StatelessWidget {
   /// The anime media data
   final Media media;
 
   /// Creates an anime page header
-  const AnimePageHeader({super.key, required this.media});
+  const MediaPageHeader({super.key, required this.media});
 
   @override
   /// Builds the anime page header widget

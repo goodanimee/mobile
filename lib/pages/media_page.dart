@@ -7,36 +7,36 @@ import '../components/loading_indicator.dart';
 import '../models/media.dart';
 import '../models/media_list.dart';
 import '../models/media_list_entry.dart';
-import '../services/anime_service.dart';
+import '../services/media_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
 import '../utils/utils.dart';
-import 'anime_page/tabs/characters_tab.dart';
-import 'anime_page/tabs/info_tab.dart';
-import 'anime_page/tabs/media_tab.dart';
-import 'anime_page/tabs/placeholder_tab.dart';
-import 'anime_page/tabs/rankings_tab.dart';
-import 'anime_page/tabs/relations_tab.dart';
-import 'anime_page/tabs/reviews_tab.dart';
-import 'anime_page/tabs/staff_tab.dart';
-import 'anime_page/widgets/anime_page_header.dart';
-import 'anime_page/widgets/edit_entry_fab.dart';
-import 'anime_page/widgets/sticky_header.dart';
+import 'media_page/tabs/characters_tab.dart';
+import 'media_page/tabs/content_tab.dart';
+import 'media_page/tabs/info_tab.dart';
+import 'media_page/tabs/placeholder_tab.dart';
+import 'media_page/tabs/rankings_tab.dart';
+import 'media_page/tabs/relations_tab.dart';
+import 'media_page/tabs/reviews_tab.dart';
+import 'media_page/tabs/staff_tab.dart';
+import 'media_page/widgets/edit_entry_fab.dart';
+import 'media_page/widgets/media_page_header.dart';
+import 'media_page/widgets/sticky_header.dart';
 
 /// A page displaying detailed information about an anime
-class AnimePage extends StatefulWidget {
+class MediaPage extends StatefulWidget {
   /// The media ID of the anime to display
   final int mediaId;
 
   /// Creates an anime page
-  const AnimePage({super.key, required this.mediaId});
+  const MediaPage({super.key, required this.mediaId});
 
   @override
-  State<AnimePage> createState() => _AnimePageState();
+  State<MediaPage> createState() => _MediaPageState();
 }
 
-/// State for AnimePage
-class _AnimePageState extends State<AnimePage> {
+/// State for MediaPage
+class _MediaPageState extends State<MediaPage> {
   bool _isLoading = true;
   Media? _mediaData;
   String? _error;
@@ -53,7 +53,7 @@ class _AnimePageState extends State<AnimePage> {
   @override
   void initState() {
     super.initState();
-    _fetchAnimeDetails();
+    _fetchMediaDetails();
     _scrollController.addListener(_scrollListener);
   }
 
@@ -74,9 +74,9 @@ class _AnimePageState extends State<AnimePage> {
   }
 
   /// Fetches anime details from cache or network
-  Future<void> _fetchAnimeDetails({bool forceRefresh = false}) async {
+  Future<void> _fetchMediaDetails({bool forceRefresh = false}) async {
     try {
-      final data = await AnimeService.getAnimeDetails(
+      final data = await MediaService.getMediaDetails(
         widget.mediaId,
         forceRefresh: forceRefresh,
       );
@@ -105,7 +105,7 @@ class _AnimePageState extends State<AnimePage> {
     setState(() => _isTogglingFavourite = true);
 
     try {
-      await AnimeService.toggleFavourite(widget.mediaId, _mediaData!);
+      await MediaService.toggleFavouriteAnime(widget.mediaId, _mediaData!);
       setState(
         () => _mediaData = _mediaData!.copyWith(isFavourite: !currentFav),
       );
@@ -168,13 +168,13 @@ class _AnimePageState extends State<AnimePage> {
 
       await CacheUtils.invalidateMedia(widget.mediaId);
       CacheUtils.animeListNeedsRefresh.value = true;
-      await _fetchAnimeDetails(forceRefresh: true);
+      await _fetchMediaDetails(forceRefresh: true);
     }
   }
 
   /// Handles manual pull-to-refresh
   Future<void> _handleRefresh() async {
-    await _fetchAnimeDetails(forceRefresh: true);
+    await _fetchMediaDetails(forceRefresh: true);
     if (_selectedTabIndex == 6) {
       setState(() {
         _refreshCount++;
@@ -186,7 +186,7 @@ class _AnimePageState extends State<AnimePage> {
   Widget _buildActiveTab(Media media) {
     switch (_selectedTabIndex) {
       case 0:
-        return AnimeInfoTab(
+        return MediaInfoTab(
           media: media,
           showSpoilers: _showSpoilers,
           onToggleSpoilers: () =>
@@ -194,37 +194,37 @@ class _AnimePageState extends State<AnimePage> {
           isNested: true,
         );
       case 1:
-        return AnimeMediaTab(media: media, isNested: true);
+        return MediaContentTab(media: media, isNested: true);
       case 2:
-        return AnimeStaffTab(
+        return MediaStaffTab(
           mediaId: widget.mediaId,
           scrollController: _scrollController,
           isNested: true,
           initialData: media.staff,
         );
       case 3:
-        return AnimeCharactersTab(
+        return MediaCharactersTab(
           mediaId: widget.mediaId,
           scrollController: _scrollController,
           isNested: true,
           initialData: media.characters,
         );
       case 4:
-        return AnimeRelationsTab(
+        return MediaRelationsTab(
           mediaId: widget.mediaId,
           relationsData: media.relations,
           initialRecommendations: media.recommendations,
           isNested: true,
         );
       case 5:
-        return AnimeRankingsTab(media: media, isNested: true);
+        return MediaRankingsTab(media: media, isNested: true);
       case 6:
         final name = media.title.english.isNotEmpty
             ? media.title.english
             : media.title.romaji.isNotEmpty
-                ? media.title.romaji
-                : media.title.userPreferred;
-        return AnimeReviewsTab(
+            ? media.title.romaji
+            : media.title.userPreferred;
+        return MediaReviewsTab(
           mediaId: widget.mediaId,
           mediaName: name,
           initialData: media.reviews,
@@ -254,7 +254,7 @@ class _AnimePageState extends State<AnimePage> {
         ),
         body: AppErrorView(
           message: _error ?? 'Anime not found',
-          onRetry: () => _fetchAnimeDetails(forceRefresh: true),
+          onRetry: () => _fetchMediaDetails(forceRefresh: true),
         ),
       );
     }
@@ -373,7 +373,7 @@ class _AnimePageState extends State<AnimePage> {
                 controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
-                  SliverToBoxAdapter(child: AnimePageHeader(media: media)),
+                  SliverToBoxAdapter(child: MediaPageHeader(media: media)),
                   SliverToBoxAdapter(child: _buildActiveTab(media)),
                   const SliverToBoxAdapter(child: SizedBox(height: 128)),
                 ],

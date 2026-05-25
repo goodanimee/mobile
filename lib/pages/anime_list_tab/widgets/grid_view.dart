@@ -81,7 +81,7 @@ class AnimeListGridView extends StatelessWidget {
                   onTap: () {
                     final mediaId = media.id;
                     if (mediaId != 0) {
-                      AppNavigation.toAnime(
+                      AppNavigation.toMedia(
                         context,
                         mediaId,
                         onRefresh: onRefresh,

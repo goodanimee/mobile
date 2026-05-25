@@ -15,14 +15,14 @@ import '../proto/media_review.pb.dart' as pb_review;
 import '../utils/utils.dart';
 import 'auth_service.dart';
 
-/// Service for managing anime details and favorites.
-class AnimeService {
-  static const String _cachePrefix = 'anime_cache_';
-  static const String _cacheKeysPref = 'anime_cache_keys';
+/// Service for managing media details and favorites.
+class MediaService {
+  static const String _cachePrefix = 'media_cache_';
+  static const String _cacheKeysPref = 'media_cache_keys';
   static const int _cacheCapacity = 50;
 
-  /// Fetches anime details from cache or network.
-  static Future<Media?> getAnimeDetails(
+  /// Fetches media details from cache or network.
+  static Future<Media?> getMediaDetails(
     int mediaId, {
     bool forceRefresh = false,
   }) async {
@@ -45,7 +45,10 @@ class AnimeService {
   }
 
   /// Toggles the favorite status of an anime.
-  static Future<void> toggleFavourite(int mediaId, Media currentMedia) async {
+  static Future<void> toggleFavouriteAnime(
+    int mediaId,
+    Media currentMedia,
+  ) async {
     final token = await AuthService.getRawToken() ?? '';
     final req = ToggleFavouriteAnimeRequest()..animeId = mediaId;
 
@@ -67,13 +70,15 @@ class AnimeService {
   }
 
   /// Toggles the like status of an activity.
-  static Future<ToggleActivityLikeResponse> toggleActivityLike(int activityId) async {
+  static Future<ToggleActivityLikeResponse> toggleActivityLike(
+    int activityId,
+  ) async {
     final token = await AuthService.getRawToken() ?? '';
     final req = ToggleActivityLikeRequest()..activityId = activityId;
     return MediaApi.toggleActivityLike(req, token);
   }
 
-  /// Fetches character pagination results for an anime.
+  /// Fetches character pagination results for a media.
   static Future<CharacterConnection> getCharacters(
     int mediaId,
     int page,
@@ -87,7 +92,7 @@ class AnimeService {
     return MediaApi.fetchMediaCharacters(req, token);
   }
 
-  /// Fetches staff pagination results for an anime.
+  /// Fetches staff pagination results for a media.
   static Future<StaffConnection> getStaff(int mediaId, int page) async {
     final token = await AuthService.getRawToken() ?? '';
     final req = FetchMediaStaffRequest(
@@ -98,7 +103,7 @@ class AnimeService {
     return MediaApi.fetchMediaStaff(req, token);
   }
 
-  /// Fetches recommendation pagination results for an anime.
+  /// Fetches recommendation pagination results for a media.
   static Future<RecommendationConnection> getRecommendations(
     int mediaId,
     int page,
@@ -112,7 +117,7 @@ class AnimeService {
     return MediaApi.fetchMediaRecommendations(req, token);
   }
 
-  /// Fetches reviews pagination results for an anime.
+  /// Fetches reviews pagination results for a media.
   static Future<ReviewConnection> getReviews(int mediaId, int page) async {
     final token = await AuthService.getRawToken() ?? '';
     final req = FetchMediaReviewsRequest(

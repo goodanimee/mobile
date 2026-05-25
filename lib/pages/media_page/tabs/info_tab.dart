@@ -12,7 +12,7 @@ import '../../../utils/utils.dart';
 import '../widgets/airing_countdown.dart';
 
 /// A tab displaying general information and synopsis for an anime
-class AnimeInfoTab extends StatelessWidget {
+class MediaInfoTab extends StatelessWidget {
   /// The anime media data
   final Media media;
 
@@ -26,7 +26,7 @@ class AnimeInfoTab extends StatelessWidget {
   final bool isNested;
 
   /// Creates an info tab
-  const AnimeInfoTab({
+  const MediaInfoTab({
     super.key,
     required this.media,
     required this.showSpoilers,

@@ -84,7 +84,7 @@ class AnimeListView extends StatelessWidget {
           onTap: () {
             final mediaId = entry.media.id;
             if (mediaId != 0) {
-              AppNavigation.toAnime(context, mediaId, onRefresh: onRefresh);
+              AppNavigation.toMedia(context, mediaId, onRefresh: onRefresh);
             }
           },
           onLongPress: () => onLongPress(context, entry),

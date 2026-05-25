@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../components/app_network_image.dart';
 import '../../../components/html_description.dart';
 import '../../../models/media_review.dart';
-import '../../../services/anime_service.dart';
+import '../../../services/media_service.dart';
 import '../../../theme/theme.dart';
 
 /// A bottom sheet displaying details about a review
@@ -59,7 +59,7 @@ class _ReviewSheetState extends State<ReviewSheet> {
       _isLoading = true;
     });
     try {
-      final responseReview = await AnimeService.rateReview(
+      final responseReview = await MediaService.rateReview(
         widget.review.id,
         finalVote,
       );

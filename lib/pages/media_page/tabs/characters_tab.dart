@@ -4,11 +4,12 @@ import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
 import '../../../components/error_view.dart';
 import '../../../components/loading_indicator.dart';
-import '../../../models/media_staff.dart';
-import '../../../services/anime_service.dart';
+import '../../../models/media_character.dart';
+import '../../../services/media_service.dart';
+import '../../../utils/app_navigation.dart';
 
-/// A tab displaying the production staff for an anime
-class AnimeStaffTab extends StatefulWidget {
+/// A tab displaying characters and cast for an anime
+class MediaCharactersTab extends StatefulWidget {
   /// The media ID of the anime
   final int mediaId;
 
@@ -19,10 +20,10 @@ class AnimeStaffTab extends StatefulWidget {
   final bool isNested;
 
   /// Initial data for the first page
-  final StaffConnection? initialData;
+  final CharacterConnection? initialData;
 
-  /// Creates a staff tab
-  const AnimeStaffTab({
+  /// Creates a characters tab
+  const MediaCharactersTab({
     super.key,
     required this.mediaId,
     this.scrollController,
@@ -31,14 +32,14 @@ class AnimeStaffTab extends StatefulWidget {
   });
 
   @override
-  State<AnimeStaffTab> createState() => _AnimeStaffTabState();
+  State<MediaCharactersTab> createState() => _MediaCharactersTabState();
 }
 
-/// State for AnimeStaffTab
-class _AnimeStaffTabState extends State<AnimeStaffTab> {
+/// State for AnimeCharactersTab
+class _MediaCharactersTabState extends State<MediaCharactersTab> {
   bool _isLoading = true;
   bool _isFetchingMore = false;
-  final List<StaffEdge> _staff = [];
+  final List<CharacterEdge> _characters = [];
   int _currentPage = 1;
   bool _hasNextPage = false;
   String? _error;
@@ -50,11 +51,11 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
     super.initState();
 
     if (widget.initialData != null) {
-      _staff.addAll(widget.initialData!.edges);
+      _characters.addAll(widget.initialData!.edges);
       _hasNextPage = widget.initialData!.pageInfo.hasNextPage;
       _isLoading = false;
     } else {
-      _fetchStaff();
+      _fetchCharacters();
     }
   }
 
@@ -92,17 +93,17 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
     }
   }
 
-  /// Fetches staff data from the backend
-  Future<void> _fetchStaff() async {
+  /// Fetches character data from the backend
+  Future<void> _fetchCharacters() async {
     try {
-      final connection = await AnimeService.getStaff(
+      final connection = await MediaService.getCharacters(
         widget.mediaId,
         _currentPage,
       );
 
       if (mounted) {
         setState(() {
-          _staff.addAll(connection.edges);
+          _characters.addAll(connection.edges);
           _hasNextPage = connection.pageInfo.hasNextPage;
           _isLoading = false;
           _isFetchingMore = false;
@@ -119,37 +120,37 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
     }
   }
 
-  /// Increments page count and triggers a fetch for more staff members
+  /// Increments page count and triggers a fetch for more characters
   void _loadMore() {
     if (_hasNextPage && !_isFetchingMore) {
       setState(() {
         _isFetchingMore = true;
         _currentPage++;
       });
-      _fetchStaff();
+      _fetchCharacters();
     }
   }
 
   @override
-  /// Builds the staff tab widget
+  /// Builds the characters tab widget
   Widget build(BuildContext context) {
-    if (_isLoading && _staff.isEmpty) {
+    if (_isLoading && _characters.isEmpty) {
       return const AppLoadingIndicator();
     }
 
-    if (_error != null && _staff.isEmpty) {
-      return AppErrorView(message: _error!, onRetry: _fetchStaff);
+    if (_error != null && _characters.isEmpty) {
+      return AppErrorView(message: _error!, onRetry: _fetchCharacters);
     }
 
-    if (_staff.isEmpty) {
-      return const AppErrorView(message: 'No staff information available');
+    if (_characters.isEmpty) {
+      return const AppErrorView(message: 'No character information available');
     }
 
     final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppSection(
-          title: 'Staff Members',
+          title: 'Characters & Cast',
           topSpacing: 0,
           children: [
             GridView.builder(
@@ -162,20 +163,26 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
               ),
-              itemCount: _staff.length,
+              itemCount: _characters.length,
               itemBuilder: (context, index) {
-                final edge = _staff[index];
+                final edge = _characters[index];
                 final node = edge.node;
-                final fullName = node?.name?.full ?? '';
+                final fullName = node?.name?.full ?? edge.name;
                 final nativeName = node?.name?.native ?? '';
-                final role = edge.role.isNotEmpty ? edge.role : 'Unknown Role';
-                final imageUrl = node?.image?.large ?? '';
+                final role = edge.role;
+                final charImageUrl = node?.image?.large ?? '';
 
                 return AppEntityCard(
-                  imageUrl: imageUrl,
+                  imageUrl: charImageUrl,
                   name: fullName,
                   nativeName: nativeName,
                   subtitle: role,
+                  trailing: Icon(
+                    Icons.info_outline_rounded,
+                    size: 14,
+                    color: Colors.white.withValues(alpha: 0.25),
+                  ),
+                  onTap: () => AppNavigation.toCharacter(context, edge),
                 );
               },
             ),

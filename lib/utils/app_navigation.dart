@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../models/media_character.dart';
-import '../pages/anime_page.dart';
-import '../pages/anime_page/widgets/character_sheet.dart';
+import '../pages/media_page.dart';
+import '../pages/media_page/widgets/character_sheet.dart';
 import 'utils.dart';
 
 /// Centralized manager for app transitions and navigation
@@ -10,8 +10,8 @@ class AppNavigation {
   /// Global state for the active tab on the HomePage
   static final ValueNotifier<int> currentTab = ValueNotifier<int>(0);
 
-  /// Navigate to Anime details
-  static Future<void> toAnime(
+  /// Navigate to Media details
+  static Future<void> toMedia(
     BuildContext context,
     int mediaId, {
     VoidCallback? onRefresh,
@@ -19,7 +19,7 @@ class AppNavigation {
     final result = await Navigator.push(
       context,
       MaterialPageRoute<dynamic>(
-        builder: (context) => AnimePage(mediaId: mediaId),
+        builder: (context) => MediaPage(mediaId: mediaId),
       ),
     );
 
