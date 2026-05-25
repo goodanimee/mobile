@@ -39,3 +39,14 @@ type PageActivities struct {
 type PageDTO struct {
 	Page PageActivities `json:"Page"`
 }
+
+// ToggleActivityLike represents the response for a like toggle on an activity
+type ToggleActivityLike struct {
+	ID int32 `json:"id"`
+}
+
+// ToggleActivityLikeDTO represents the DTO for a like toggle mutation
+type ToggleActivityLikeDTO struct {
+	ToggleActivityLike []ToggleActivityLike `json:"ToggleLike"`
+}
+
