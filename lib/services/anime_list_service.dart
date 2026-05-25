@@ -185,7 +185,9 @@ class AnimeListService {
     }).toList();
 
     if (movedEntry != null && targetStatus != null) {
-      final targetIdx = updatedLists.indexWhere((s) => s.status == targetStatus);
+      final targetIdx = updatedLists.indexWhere(
+        (s) => s.status == targetStatus,
+      );
       if (targetIdx != -1) {
         final section = updatedLists[targetIdx];
         final entries = List<MediaListEntryWithMedia>.from(section.entries)
@@ -197,7 +199,9 @@ class AnimeListService {
         );
       } else {
         final insertAt = updatedLists.indexWhere((s) {
-          final pos = s.status != null ? orderedStatuses.indexOf(s.status!) : -1;
+          final pos = s.status != null
+              ? orderedStatuses.indexOf(s.status!)
+              : -1;
           return pos > orderedStatuses.indexOf(targetStatus);
         });
         final newSection = MediaList(

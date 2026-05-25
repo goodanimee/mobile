@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 
+/// Floating action button to trigger entry editing
 class EditEntryFab extends StatelessWidget {
+  /// Callback when the FAB is tapped
   final VoidCallback onTap;
 
+  /// Creates an edit entry floating action button
   const EditEntryFab({super.key, required this.onTap});
 
   @override
+  /// Builds the FAB widget
   Widget build(BuildContext context) {
     return Container(
       width: 52,

@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import '../../theme/theme.dart';
 import '../section_title.dart';
 
+/// Editor component for editing start and finish dates of a list entry
 class DateEditor extends StatelessWidget {
+  /// The optional start date of the entry
   final DateTime? startDate;
+
+  /// The optional finish date of the entry
   final DateTime? finishDate;
+
+  /// Callback when start date changes
   final ValueChanged<DateTime?> onStartDateChanged;
+
+  /// Callback when finish date changes
   final ValueChanged<DateTime?> onFinishDateChanged;
 
+  /// Creates a date editor widget
   const DateEditor({
     super.key,
     this.startDate,
@@ -17,6 +26,7 @@ class DateEditor extends StatelessWidget {
   });
 
   @override
+  /// Builds the date editor widget
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),

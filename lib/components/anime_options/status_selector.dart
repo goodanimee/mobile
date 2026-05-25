@@ -3,10 +3,15 @@ import '../../models/common.dart';
 import '../../theme/theme.dart';
 import '../section_title.dart';
 
+/// Selector component for updating the watching status of a list entry
 class StatusSelector extends StatelessWidget {
+  /// The current status of the entry
   final MediaListStatus? currentStatus;
+
+  /// Callback when status changes
   final ValueChanged<MediaListStatus> onStatusChanged;
 
+  /// Creates a status selector widget
   const StatusSelector({
     super.key,
     required this.currentStatus,
@@ -14,6 +19,7 @@ class StatusSelector extends StatelessWidget {
   });
 
   @override
+  /// Builds the status selector widget
   Widget build(BuildContext context) {
     const statuses = [
       (MediaListStatus.current, Icons.play_circle_rounded),

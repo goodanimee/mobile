@@ -25,7 +25,8 @@ class UserService {
       final cachedStr = prefs.getString(_keyCachedUser);
       final cachedAt = prefs.getInt(_keyCachedAt);
 
-      final isFresh = cachedAt != null &&
+      final isFresh =
+          cachedAt != null &&
           DateTime.now().millisecondsSinceEpoch - cachedAt <
               _cacheTtl.inMilliseconds;
 

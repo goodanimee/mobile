@@ -2,7 +2,10 @@ import 'dart:ffi' as ffi;
 import 'dart:io' show Platform;
 import 'package:ffi/ffi.dart';
 
+/// Native function signature for hello world
 typedef HelloWorldFunc = ffi.Pointer<Utf8> Function();
+
+/// Dart function signature for hello world
 typedef HelloWorldDartFunc = ffi.Pointer<Utf8> Function();
 
 /// Backend interface for FFI calls

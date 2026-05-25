@@ -4,14 +4,27 @@ import 'package:share_plus/share_plus.dart';
 import '../../../theme/theme.dart';
 import '../../../models/media.dart';
 
+/// A sticky app bar header widget for the anime details page
 class StickyHeader extends StatelessWidget {
+  /// The anime media object
   final Media media;
+
+  /// Whether the sticky bar should be fully visible
   final bool showStickyBar;
+
+  /// Whether this anime is marked as favourite
   final bool isFavourite;
+
+  /// Whether the favourite toggle is currently loading
   final bool isFavouriteLoading;
+
+  /// Callback when navigating back
   final VoidCallback onBack;
+
+  /// Callback when toggling favourite status
   final VoidCallback onToggleFavourite;
 
+  /// Creates a sticky header widget
   const StickyHeader({
     super.key,
     required this.media,
@@ -172,7 +185,6 @@ class StickyHeader extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: child,
-          // ignore: deprecated_member_use_from_same_package
         ),
       ),
     );

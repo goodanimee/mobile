@@ -6,15 +6,28 @@ import '../../../utils/app_navigation.dart';
 import '../../../models/media_list.dart';
 import '../../../utils/app_options.dart';
 
+/// A list view component representing a list of anime items in a linear format
 class AnimeListView extends StatelessWidget {
+  /// The active name/title of the list section
   final String activeName;
+
+  /// The list of media entries to display
   final List<MediaListEntryWithMedia> entries;
+
+  /// The scroll controller for the list view
   final ScrollController scrollController;
+
+  /// Callback to refresh the list
   final VoidCallback onRefresh;
+
+  /// Callback when a list entry is updated
   final void Function(int mediaId, AnimeOptionsResult result) onEntryUpdated;
+
+  /// Callback when a card is long-pressed
   final void Function(BuildContext context, MediaListEntryWithMedia entry)
   onLongPress;
 
+  /// Creates an anime list view widget
   const AnimeListView({
     super.key,
     required this.activeName,
@@ -26,6 +39,7 @@ class AnimeListView extends StatelessWidget {
   });
 
   @override
+  /// Builds the anime list view widget
   Widget build(BuildContext context) {
     if (entries.isEmpty) {
       return ListView(

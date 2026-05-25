@@ -68,11 +68,22 @@ class PageInfo {
 
 /// Represents the status of a media list entry
 enum MediaListStatus {
+  /// Currently watching status
   current,
+
+  /// Planning to watch status
   planning,
+
+  /// Completed watching status
   completed,
+
+  /// Dropped status
   dropped,
+
+  /// Paused status
   paused,
+
+  /// Repeating/rewatching status
   repeating;
 
   /// Converts the status to a protobuf enum

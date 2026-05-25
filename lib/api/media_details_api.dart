@@ -257,6 +257,7 @@ class MediaApi {
     });
   }
 
+  /// Toggles the favourite status of an anime
   static Future<ToggleFavouriteAnimeResponse> toggleFavouriteAnime(
     ToggleFavouriteAnimeRequest request,
     String token,

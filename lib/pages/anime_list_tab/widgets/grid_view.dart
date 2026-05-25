@@ -6,14 +6,25 @@ import '../../../components/section_title.dart';
 import '../../../components/error_view.dart';
 import '../../../models/media_list.dart';
 
+/// A grid view component representing a list of anime items
 class AnimeListGridView extends StatelessWidget {
+  /// The active name/title of the list section
   final String activeName;
+
+  /// The list of media entries to display
   final List<MediaListEntryWithMedia> entries;
+
+  /// The scroll controller for the custom scroll view
   final ScrollController scrollController;
+
+  /// Callback to refresh the list
   final VoidCallback onRefresh;
+
+  /// Callback when a card is long-pressed
   final void Function(BuildContext context, MediaListEntryWithMedia entry)
   onLongPress;
 
+  /// Creates an anime list grid view widget
   const AnimeListGridView({
     super.key,
     required this.activeName,
@@ -24,6 +35,7 @@ class AnimeListGridView extends StatelessWidget {
   });
 
   @override
+  /// Builds the anime list grid view widget
   Widget build(BuildContext context) {
     return CustomScrollView(
       controller: scrollController,

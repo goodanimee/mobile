@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import '../section_title.dart';
 
+/// Editor component for updating progress/episodes watched of a list entry
 class ProgressEditor extends StatelessWidget {
+  /// The current episode progress
   final int progress;
+
+  /// The optional maximum episodes of the anime
   final int? maximum;
+
+  /// Callback when progress changes
   final ValueChanged<int> onProgressChanged;
 
+  /// Creates a progress editor widget
   const ProgressEditor({
     super.key,
     required this.progress,
@@ -14,6 +21,7 @@ class ProgressEditor extends StatelessWidget {
   });
 
   @override
+  /// Builds the progress editor widget
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),

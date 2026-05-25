@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import '../section_title.dart';
 
+/// Slider component for updating score rating of a list entry
 class ScoreSlider extends StatelessWidget {
+  /// The current score (0.0 to 10.0)
   final double score;
+
+  /// Callback when score changes
   final ValueChanged<double> onScoreChanged;
 
+  /// Creates a score slider widget
   const ScoreSlider({
     super.key,
     required this.score,
@@ -19,6 +24,7 @@ class ScoreSlider extends StatelessWidget {
   }
 
   @override
+  /// Builds the score slider widget
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
