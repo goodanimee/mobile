@@ -146,17 +146,17 @@ class AnimeListService {
 
     if (result.entry == null) return currentLists;
 
-    const orderedNames = [
-      'WATCHING',
-      'PLANNING',
-      'COMPLETED',
-      'REPEATING',
-      'PAUSED',
-      'DROPPED',
+    const orderedStatuses = [
+      MediaListStatus.current,
+      MediaListStatus.planning,
+      MediaListStatus.completed,
+      MediaListStatus.repeating,
+      MediaListStatus.paused,
+      MediaListStatus.dropped,
     ];
 
     MediaListEntryWithMedia? movedEntry;
-    String? targetName = result.entry!.status?.displayName;
+    MediaListStatus? targetStatus = result.entry!.status;
 
     final updatedLists = currentLists.map((section) {
       final entries = List<MediaListEntryWithMedia>.from(section.entries);
@@ -170,7 +170,7 @@ class AnimeListService {
       final oldStatus = entry.status;
       final newStatus = result.entry!.status;
 
-      if (targetName != null && oldStatus != newStatus) {
+      if (targetStatus != null && oldStatus != newStatus) {
         movedEntry = result.entry;
         entries.removeAt(idx);
       } else {
@@ -184,8 +184,8 @@ class AnimeListService {
       );
     }).toList();
 
-    if (movedEntry != null && targetName != null) {
-      final targetIdx = updatedLists.indexWhere((s) => s.name == targetName);
+    if (movedEntry != null && targetStatus != null) {
+      final targetIdx = updatedLists.indexWhere((s) => s.status == targetStatus);
       if (targetIdx != -1) {
         final section = updatedLists[targetIdx];
         final entries = List<MediaListEntryWithMedia>.from(section.entries)
@@ -197,14 +197,12 @@ class AnimeListService {
         );
       } else {
         final insertAt = updatedLists.indexWhere((s) {
-          final pos = orderedNames.indexOf(s.name);
-          return pos > orderedNames.indexOf(targetName);
+          final pos = s.status != null ? orderedStatuses.indexOf(s.status!) : -1;
+          return pos > orderedStatuses.indexOf(targetStatus);
         });
         final newSection = MediaList(
-          name: targetName,
-          status: MediaListStatus.fromString(
-            targetName == 'WATCHING' ? 'current' : targetName.toLowerCase(),
-          ),
+          name: targetStatus.displayName,
+          status: targetStatus,
           entries: [movedEntry!],
         );
         if (insertAt == -1) {
@@ -231,7 +229,7 @@ class AnimeListService {
   /// Saves or updates an anime list entry.
   static Future<MediaListEntry> saveEntry({
     required int mediaId,
-    String? status,
+    MediaListStatus? status,
     int? progress,
     double? score,
     DateTime? startDate,
@@ -240,7 +238,7 @@ class AnimeListService {
     final token = await AuthService.getRawToken() ?? '';
     final req = SaveMediaListEntryRequest(mediaId: mediaId);
 
-    if (status != null) req.status = status;
+    if (status != null) req.status = status.toString();
     if (progress != null) req.progress = progress;
     if (score != null) req.score = score;
 

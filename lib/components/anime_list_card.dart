@@ -215,7 +215,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
       await AnimeListService.saveEntry(
         mediaId: mediaId,
         progress: newProgress,
-        status: newStatus.toString(),
+        status: newStatus,
       );
       widget.onEntryUpdated?.call(
         mediaId,

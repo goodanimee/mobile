@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:goodanime/utils/app_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/common.dart';
 import '../services/auth_service.dart';
 import '../theme/theme.dart';
 import '../components/floating_nav.dart';
@@ -19,14 +20,13 @@ class HomePage extends StatefulWidget {
 }
 
 /// Returns an icon corresponding to a list status
-IconData _statusIcon(String status) => switch (status) {
-  'WATCHING' => Icons.play_circle_rounded,
-  'REPEATING' => Icons.repeat_rounded,
-  'PLANNING' => Icons.bookmark_rounded,
-  'COMPLETED' => Icons.check_circle_rounded,
-  'PAUSED' => Icons.pause_circle_rounded,
-  'DROPPED' => Icons.cancel_rounded,
-  _ => Icons.list_rounded,
+IconData _statusIcon(MediaListStatus status) => switch (status) {
+  MediaListStatus.current => Icons.play_circle_rounded,
+  MediaListStatus.repeating => Icons.repeat_rounded,
+  MediaListStatus.planning => Icons.bookmark_rounded,
+  MediaListStatus.completed => Icons.check_circle_rounded,
+  MediaListStatus.paused => Icons.pause_circle_rounded,
+  MediaListStatus.dropped => Icons.cancel_rounded,
 };
 
 /// State for HomePage
@@ -93,9 +93,9 @@ class _HomePageState extends State<HomePage> {
 
   /// Updates the quick navigation sections based on visible list categories
   void _handleSectionsChanged(
-    List<String> statuses,
-    String activeStatus,
-    void Function(String) scrollTo,
+    List<MediaListStatus> statuses,
+    MediaListStatus activeStatus,
+    void Function(MediaListStatus) scrollTo,
   ) {
     if (!mounted) return;
     setState(() {
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
           .map(
             (s) => QuickNavSection(
               icon: _statusIcon(s),
-              label: s,
+              label: s.displayName,
               onTap: () => scrollTo(s),
               isSelected: s == activeStatus,
             ),

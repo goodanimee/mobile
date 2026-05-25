@@ -316,7 +316,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
       final finalStatus = _status ?? MediaListStatus.current;
       final response = await AnimeListService.saveEntry(
         mediaId: mediaId,
-        status: finalStatus != _initialStatus ? finalStatus.toString() : null,
+        status: finalStatus != _initialStatus ? finalStatus : null,
         progress: _progress != _initialProgress ? _progress : null,
         score: _score != _initialScore ? _score : null,
         startDate: _startDate != _initialStartDate ? _startDate : null,

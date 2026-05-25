@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/common.dart';
 import '../services/anime_list_service.dart';
 import '../services/user_service.dart';
 import '../theme/theme.dart';
@@ -22,9 +23,9 @@ class AnimeListTab extends StatefulWidget {
 
   /// Callback when the list of categories changes
   final void Function(
-    List<String> statuses,
-    String activeStatus,
-    void Function(String) scrollTo,
+    List<MediaListStatus> statuses,
+    MediaListStatus activeStatus,
+    void Function(MediaListStatus) scrollTo,
   )?
   onSectionsChanged;
 
@@ -46,7 +47,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
   List<MediaList> _lists = [];
   String? _error;
   final _scrollController = ScrollController();
-  String? _activeStatus;
+  MediaListStatus? _activeStatus;
 
   static bool _hasFetchedThisSession = false;
 
@@ -75,16 +76,16 @@ class _AnimeListTabState extends State<AnimeListTab> {
   /// Notifies parent of the available list sections
   void _notifySections() {
     widget.onSectionsChanged?.call(
-      _lists.map((l) => l.name).toList(),
-      _activeStatus ?? '',
+      _lists.map((l) => l.status ?? MediaListStatus.current).toList(),
+      _activeStatus ?? MediaListStatus.current,
       _selectSection,
     );
   }
 
-  /// Selects a section by name and scrolls to top
-  void _selectSection(String name) {
-    if (_activeStatus == name) return;
-    setState(() => _activeStatus = name);
+  /// Selects a section by status and scrolls to top
+  void _selectSection(MediaListStatus status) {
+    if (_activeStatus == status) return;
+    setState(() => _activeStatus = status);
     _notifySections();
     if (_scrollController.hasClients) {
       _scrollController.jumpTo(0);
@@ -151,7 +152,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
           (l) => l.entries.isNotEmpty,
           orElse: () => newLists.first,
         );
-        _activeStatus = firstNonEmpty.name;
+        _activeStatus = firstNonEmpty.status;
       }
     });
     _notifySections();
@@ -204,7 +205,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
     }
 
     final activeList = _lists.firstWhere(
-      (l) => l.name == _activeStatus,
+      (l) => l.status == _activeStatus,
       orElse: () => _lists.first,
     );
     final activeName = activeList.name;
