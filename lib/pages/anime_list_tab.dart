@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/anime_list_service.dart';
+import '../services/user_service.dart';
 import '../theme/theme.dart';
 import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
@@ -92,7 +93,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
 
   Future<void> _fetchLists({bool forceRefresh = false}) async {
     try {
-      final userId = await AnimeListService.getUserId();
+      final userId = await UserService.getUserId();
       if (userId == null) {
         if (mounted && _lists.isEmpty) {
           setState(() {

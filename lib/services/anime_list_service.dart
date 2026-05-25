@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../api/user_api.dart';
 import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
@@ -8,46 +7,11 @@ import '../models/media_list_entry.dart';
 import '../utils/app_options.dart';
 import 'auth_service.dart';
 import '../proto/media_list.pb.dart' as pb_list;
-import '../proto/viewer.pb.dart' as pb_viewer;
 import '../proto/api.pb.dart';
-import '../models/viewer.dart';
 
 /// Service for managing user anime list data and caches.
 class AnimeListService {
   static const String _cacheKeyLists = 'cached_anime_lists';
-  static const String _cacheKeyViewer = 'cached_viewer';
-
-  /// Retrieves the cached or remote user ID
-  static Future<int?> getUserId() async {
-    final prefs = await SharedPreferences.getInstance();
-    final cachedStr = prefs.getString(_cacheKeyViewer);
-
-    if (cachedStr != null) {
-      try {
-        final viewer = Viewer.fromProto(
-          pb_viewer.Viewer.fromBuffer(base64Decode(cachedStr)),
-        );
-        return viewer.id;
-      } catch (_) {}
-    }
-
-    try {
-      final token = await AuthService.getRawToken() ?? '';
-      final viewer = await UserApi.fetchViewer(token);
-
-      await prefs.setString(
-        _cacheKeyViewer,
-        base64Encode(viewer.toProto().writeToBuffer()),
-      );
-      await prefs.setInt(
-        'cached_viewer_at',
-        DateTime.now().millisecondsSinceEpoch,
-      );
-      return viewer.id;
-    } catch (e) {
-      return null;
-    }
-  }
 
   /// Retrieves the user anime lists from cache or network.
   static Future<List<MediaList>> getLists(
