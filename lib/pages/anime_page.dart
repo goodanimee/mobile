@@ -17,6 +17,7 @@ import 'anime_page/tabs/media_tab.dart';
 import 'anime_page/tabs/placeholder_tab.dart';
 import 'anime_page/tabs/rankings_tab.dart';
 import 'anime_page/tabs/relations_tab.dart';
+import 'anime_page/tabs/reviews_tab.dart';
 import 'anime_page/tabs/staff_tab.dart';
 import 'anime_page/widgets/anime_page_header.dart';
 import 'anime_page/widgets/edit_entry_fab.dart';
@@ -212,7 +213,17 @@ class _AnimePageState extends State<AnimePage> {
       case 5:
         return AnimeRankingsTab(media: media, isNested: true);
       case 6:
-        return const PlaceholderTab(title: 'Reviews Section');
+        final name = media.title.english.isNotEmpty
+            ? media.title.english
+            : media.title.romaji.isNotEmpty
+                ? media.title.romaji
+                : media.title.userPreferred;
+        return AnimeReviewsTab(
+          mediaId: widget.mediaId,
+          mediaName: name,
+          initialData: media.reviews,
+          isNested: true,
+        );
       default:
         return const PlaceholderTab(title: 'Overview Section');
     }
