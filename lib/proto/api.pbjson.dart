@@ -418,3 +418,45 @@ final $typed_data.Uint8List fetchMediaReviewsResponseDescriptor =
     $convert.base64Decode(
         'ChlGZXRjaE1lZGlhUmV2aWV3c1Jlc3BvbnNlEiYKBW1lZGlhGAEgASgLMhAuZ29vZGFuaW1lLk'
         '1lZGlhUgVtZWRpYRIUCgVlcnJvchgCIAEoCVIFZXJyb3I=');
+
+@$core.Deprecated('Use rateReviewRequestDescriptor instead')
+const RateReviewRequest$json = {
+  '1': 'RateReviewRequest',
+  '2': [
+    {'1': 'review_id', '3': 1, '4': 1, '5': 5, '10': 'reviewId'},
+    {
+      '1': 'rating',
+      '3': 2,
+      '4': 1,
+      '5': 14,
+      '6': '.goodanime.ReviewUserRating',
+      '10': 'rating'
+    },
+  ],
+};
+
+/// Descriptor for `RateReviewRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List rateReviewRequestDescriptor = $convert.base64Decode(
+    'ChFSYXRlUmV2aWV3UmVxdWVzdBIbCglyZXZpZXdfaWQYASABKAVSCHJldmlld0lkEjMKBnJhdG'
+    'luZxgCIAEoDjIbLmdvb2RhbmltZS5SZXZpZXdVc2VyUmF0aW5nUgZyYXRpbmc=');
+
+@$core.Deprecated('Use rateReviewResponseDescriptor instead')
+const RateReviewResponse$json = {
+  '1': 'RateReviewResponse',
+  '2': [
+    {
+      '1': 'review',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.ReviewNode',
+      '10': 'review'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `RateReviewResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List rateReviewResponseDescriptor = $convert.base64Decode(
+    'ChJSYXRlUmV2aWV3UmVzcG9uc2USLQoGcmV2aWV3GAEgASgLMhUuZ29vZGFuaW1lLlJldmlld0'
+    '5vZGVSBnJldmlldxIUCgVlcnJvchgCIAEoCVIFZXJyb3I=');

@@ -17,6 +17,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'media.pb.dart' as $3;
 import 'media_list.pb.dart' as $0;
 import 'media_list_entry.pb.dart' as $2;
+import 'media_review.pb.dart' as $4;
 import 'viewer.pb.dart' as $1;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -1501,6 +1502,142 @@ class FetchMediaReviewsResponse extends $pb.GeneratedMessage {
   void clearMedia() => $_clearField(1);
   @$pb.TagNumber(1)
   $3.Media ensureMedia() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class RateReviewRequest extends $pb.GeneratedMessage {
+  factory RateReviewRequest({
+    $core.int? reviewId,
+    $4.ReviewUserRating? rating,
+  }) {
+    final result = create();
+    if (reviewId != null) result.reviewId = reviewId;
+    if (rating != null) result.rating = rating;
+    return result;
+  }
+
+  RateReviewRequest._();
+
+  factory RateReviewRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory RateReviewRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RateReviewRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'reviewId')
+    ..aE<$4.ReviewUserRating>(2, _omitFieldNames ? '' : 'rating',
+        enumValues: $4.ReviewUserRating.values)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RateReviewRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RateReviewRequest copyWith(void Function(RateReviewRequest) updates) =>
+      super.copyWith((message) => updates(message as RateReviewRequest))
+          as RateReviewRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RateReviewRequest create() => RateReviewRequest._();
+  @$core.override
+  RateReviewRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static RateReviewRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RateReviewRequest>(create);
+  static RateReviewRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get reviewId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set reviewId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasReviewId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearReviewId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $4.ReviewUserRating get rating => $_getN(1);
+  @$pb.TagNumber(2)
+  set rating($4.ReviewUserRating value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasRating() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRating() => $_clearField(2);
+}
+
+class RateReviewResponse extends $pb.GeneratedMessage {
+  factory RateReviewResponse({
+    $4.ReviewNode? review,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (review != null) result.review = review;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  RateReviewResponse._();
+
+  factory RateReviewResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory RateReviewResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'RateReviewResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOM<$4.ReviewNode>(1, _omitFieldNames ? '' : 'review',
+        subBuilder: $4.ReviewNode.create)
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RateReviewResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  RateReviewResponse copyWith(void Function(RateReviewResponse) updates) =>
+      super.copyWith((message) => updates(message as RateReviewResponse))
+          as RateReviewResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RateReviewResponse create() => RateReviewResponse._();
+  @$core.override
+  RateReviewResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static RateReviewResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<RateReviewResponse>(create);
+  static RateReviewResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $4.ReviewNode get review => $_getN(0);
+  @$pb.TagNumber(1)
+  set review($4.ReviewNode value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasReview() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearReview() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $4.ReviewNode ensureReview() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get error => $_getSZ(1);

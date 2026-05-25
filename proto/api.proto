@@ -5,6 +5,7 @@ package goodanime;
 import "media.proto";
 import "media_list.proto";
 import "media_list_entry.proto";
+import "media_review.proto";
 import "viewer.proto";
 
 option go_package = "goodanime/backend/proto";
@@ -115,5 +116,15 @@ message FetchMediaReviewsRequest {
 
 message FetchMediaReviewsResponse {
   Media media = 1;
+  string error = 2;
+}
+
+message RateReviewRequest {
+  int32 review_id = 1;
+  ReviewUserRating rating = 2;
+}
+
+message RateReviewResponse {
+  ReviewNode review = 1;
   string error = 2;
 }

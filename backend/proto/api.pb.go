@@ -1133,11 +1133,115 @@ func (x *FetchMediaReviewsResponse) GetError() string {
 	return ""
 }
 
+type RateReviewRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReviewId      int32                  `protobuf:"varint,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
+	Rating        ReviewUserRating       `protobuf:"varint,2,opt,name=rating,proto3,enum=goodanime.ReviewUserRating" json:"rating,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RateReviewRequest) Reset() {
+	*x = RateReviewRequest{}
+	mi := &file_api_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RateReviewRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RateReviewRequest) ProtoMessage() {}
+
+func (x *RateReviewRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RateReviewRequest.ProtoReflect.Descriptor instead.
+func (*RateReviewRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *RateReviewRequest) GetReviewId() int32 {
+	if x != nil {
+		return x.ReviewId
+	}
+	return 0
+}
+
+func (x *RateReviewRequest) GetRating() ReviewUserRating {
+	if x != nil {
+		return x.Rating
+	}
+	return ReviewUserRating_REVIEW_USER_RATING_NO_VOTE_UNSPECIFIED
+}
+
+type RateReviewResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Review        *ReviewNode            `protobuf:"bytes,1,opt,name=review,proto3" json:"review,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RateReviewResponse) Reset() {
+	*x = RateReviewResponse{}
+	mi := &file_api_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RateReviewResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RateReviewResponse) ProtoMessage() {}
+
+func (x *RateReviewResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RateReviewResponse.ProtoReflect.Descriptor instead.
+func (*RateReviewResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *RateReviewResponse) GetReview() *ReviewNode {
+	if x != nil {
+		return x.Review
+	}
+	return nil
+}
+
+func (x *RateReviewResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
 	"\n" +
-	"\tapi.proto\x12\tgoodanime\x1a\vmedia.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\fviewer.proto\"X\n" +
+	"\tapi.proto\x12\tgoodanime\x1a\vmedia.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x12media_review.proto\x1a\fviewer.proto\"X\n" +
 	"\x15FetchMediaListRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x12\n" +
@@ -1217,6 +1321,12 @@ const file_api_proto_rawDesc = "" +
 	"\bper_page\x18\x03 \x01(\x05R\aperPage\"Y\n" +
 	"\x19FetchMediaReviewsResponse\x12&\n" +
 	"\x05media\x18\x01 \x01(\v2\x10.goodanime.MediaR\x05media\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"e\n" +
+	"\x11RateReviewRequest\x12\x1b\n" +
+	"\treview_id\x18\x01 \x01(\x05R\breviewId\x123\n" +
+	"\x06rating\x18\x02 \x01(\x0e2\x1b.goodanime.ReviewUserRatingR\x06rating\"Y\n" +
+	"\x12RateReviewResponse\x12-\n" +
+	"\x06review\x18\x01 \x01(\v2\x15.goodanime.ReviewNodeR\x06review\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
@@ -1231,7 +1341,7 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
@@ -1253,27 +1363,33 @@ var file_api_proto_goTypes = []any{
 	(*DeleteMediaListEntryResponse)(nil),      // 17: goodanime.DeleteMediaListEntryResponse
 	(*FetchMediaReviewsRequest)(nil),          // 18: goodanime.FetchMediaReviewsRequest
 	(*FetchMediaReviewsResponse)(nil),         // 19: goodanime.FetchMediaReviewsResponse
-	(*MediaListCollection)(nil),               // 20: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 21: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 22: goodanime.MediaListEntry
-	(*Media)(nil),                             // 23: goodanime.Media
+	(*RateReviewRequest)(nil),                 // 20: goodanime.RateReviewRequest
+	(*RateReviewResponse)(nil),                // 21: goodanime.RateReviewResponse
+	(*MediaListCollection)(nil),               // 22: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 23: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 24: goodanime.MediaListEntry
+	(*Media)(nil),                             // 25: goodanime.Media
+	(ReviewUserRating)(0),                     // 26: goodanime.ReviewUserRating
+	(*ReviewNode)(nil),                        // 27: goodanime.ReviewNode
 }
 var file_api_proto_depIdxs = []int32{
-	20, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	21, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	22, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	23, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	22, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	23, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	23, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	23, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	23, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	23, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	24, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	25, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	25, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	25, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	25, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	25, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	26, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
+	27, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -1284,6 +1400,7 @@ func file_api_proto_init() {
 	file_media_proto_init()
 	file_media_list_proto_init()
 	file_media_list_entry_proto_init()
+	file_media_review_proto_init()
 	file_viewer_proto_init()
 	file_api_proto_msgTypes[3].OneofWrappers = []any{}
 	file_api_proto_msgTypes[4].OneofWrappers = []any{}
@@ -1293,7 +1410,7 @@ func file_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   20,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
