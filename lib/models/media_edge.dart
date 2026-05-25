@@ -41,7 +41,7 @@ class MediaConnection {
   /// Creates a media connection from a protobuf object
   factory MediaConnection.fromProto(pb.MediaConnection pbObj) {
     return MediaConnection(
-      edges: pbObj.edges.map((e) => MediaEdge.fromProto(e)).toList(),
+      edges: pbObj.edges.map(MediaEdge.fromProto).toList(),
     );
   }
 

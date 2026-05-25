@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../../components/loading_indicator.dart';
-import '../../../components/error_view.dart';
-import '../../../utils/app_navigation.dart';
+
 import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
+import '../../../components/error_view.dart';
+import '../../../components/loading_indicator.dart';
 import '../../../models/media_character.dart';
 import '../../../services/anime_service.dart';
+import '../../../utils/app_navigation.dart';
 
 /// A tab displaying characters and cast for an anime
 class AnimeCharactersTab extends StatefulWidget {

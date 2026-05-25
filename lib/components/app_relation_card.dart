@@ -58,8 +58,6 @@ class AppRelationCard extends StatelessWidget {
                       0.75,
                     )!,
                   ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
                 )
               : null,
           color: color == null ? Colors.white.withValues(alpha: 0.03) : null,
@@ -68,7 +66,6 @@ class AppRelationCard extends StatelessWidget {
             color: color != null
                 ? color!.withValues(alpha: 0.2)
                 : Colors.white12,
-            width: 1.0,
           ),
         ),
         child: Stack(

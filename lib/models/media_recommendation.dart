@@ -1,5 +1,5 @@
-import '../proto/media_recommendation.pb.dart' as pb;
 import '../proto/media_min.pb.dart' as pbm;
+import '../proto/media_recommendation.pb.dart' as pb;
 import 'common.dart';
 import 'media_min.dart';
 
@@ -71,7 +71,7 @@ class RecommendationConnection {
   ) {
     return RecommendationConnection(
       pageInfo: PageInfo.fromProto(pbObj.pageInfo),
-      edges: pbObj.edges.map((e) => RecommendationEdge.fromProto(e)).toList(),
+      edges: pbObj.edges.map(RecommendationEdge.fromProto).toList(),
     );
   }
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mix/mix.dart';
+
+import '../models/viewer.dart';
 import '../theme/theme.dart';
 import 'app_button.dart';
-import '../models/viewer.dart';
 
 /// A widget displaying user profile information
 class UserProfile extends StatelessWidget {

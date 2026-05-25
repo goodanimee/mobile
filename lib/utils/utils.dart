@@ -80,7 +80,7 @@ class CacheUtils {
 
     await prefs.remove('$_cachePrefix$idStr');
 
-    List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
+    final List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
     if (keys.contains(idStr)) {
       keys.remove(idStr);
       await prefs.setStringList(_cacheKeysPref, keys);

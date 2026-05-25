@@ -1,10 +1,12 @@
 import 'dart:ffi' as ffi;
-import 'package:ffi/ffi.dart';
 import 'dart:isolate';
+
+import 'package:ffi/ffi.dart';
+
 import '../models/media_list.dart';
 import '../models/media_list_entry.dart';
-import 'ffi_core.dart';
 import '../proto/api.pb.dart';
+import 'ffi_core.dart';
 
 /// Native function signature for fetching media list
 typedef _FetchMediaListC =

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../theme/theme.dart';
+
 import '../../../components/app_network_image.dart';
 import '../../../models/media.dart';
+import '../../../theme/theme.dart';
 
 /// Header component for the anime details page
 class AnimePageHeader extends StatelessWidget {

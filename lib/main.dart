@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'theme/theme.dart';
+
 import 'pages/home_page.dart';
+import 'theme/theme.dart';
 
 /// Application entry point
 Future<void> main() async {

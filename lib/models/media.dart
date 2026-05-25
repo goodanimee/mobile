@@ -1,14 +1,14 @@
 import '../proto/media.pb.dart' as pb;
-import '../proto/media_studio.pb.dart' as pbs;
-import '../proto/media_min.pb.dart' as pbm;
 import '../proto/media_list_entry.pb.dart' as pb_list_entry;
+import '../proto/media_min.pb.dart' as pbm;
+import '../proto/media_studio.pb.dart' as pbs;
+import 'media_character.dart';
+import 'media_edge.dart';
 import 'media_list_entry.dart';
 import 'media_min.dart';
-import 'media_character.dart';
-import 'media_staff.dart';
-import 'media_edge.dart';
 import 'media_misc.dart';
 import 'media_recommendation.dart';
+import 'media_staff.dart';
 import 'media_studio.dart';
 import 'media_trend.dart';
 
@@ -151,16 +151,16 @@ class Media extends MediaMin {
       genres: pbObj.genres,
       synonyms: pbObj.synonyms,
       trailer: pbObj.hasTrailer() ? Trailer.fromProto(pbObj.trailer) : null,
-      studios: pbObj.studios.edges.map((s) => StudioEdge.fromProto(s)).toList(),
-      tags: pbObj.tags.map((t) => MediaTag.fromProto(t)).toList(),
+      studios: pbObj.studios.edges.map(StudioEdge.fromProto).toList(),
+      tags: pbObj.tags.map(MediaTag.fromProto).toList(),
       externalLinks: pbObj.externalLinks
-          .map((e) => ExternalLink.fromProto(e))
+          .map(ExternalLink.fromProto)
           .toList(),
       mediaListEntry: pbObj.hasMediaListEntry()
           ? MediaListEntry.fromProto(pbObj.mediaListEntry)
           : null,
       streamingEpisodes: pbObj.streamingEpisodes
-          .map((s) => StreamingEpisode.fromProto(s))
+          .map(StreamingEpisode.fromProto)
           .toList(),
       staff: pbObj.hasStaff() ? StaffConnection.fromProto(pbObj.staff) : null,
       nextAiringEpisode: pbObj.hasNextAiringEpisode()
@@ -175,7 +175,7 @@ class Media extends MediaMin {
       recommendations: pbObj.hasRecommendations()
           ? RecommendationConnection.fromProto(pbObj.recommendations)
           : null,
-      rankings: pbObj.rankings.map((r) => MediaRank.fromProto(r)).toList(),
+      rankings: pbObj.rankings.map(MediaRank.fromProto).toList(),
       stats: pbObj.hasStats() ? MediaStats.fromProto(pbObj.stats) : null,
       trends: pbObj.hasTrends()
           ? MediaTrendConnection.fromProto(pbObj.trends)

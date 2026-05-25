@@ -1,8 +1,10 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../theme/theme.dart';
+
 import '../../../models/media.dart';
+import '../../../theme/theme.dart';
 
 /// A sticky app bar header widget for the anime details page
 class StickyHeader extends StatelessWidget {
@@ -59,7 +61,6 @@ class StickyHeader extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 color: showStickyBar ? cardBorderColor : Colors.transparent,
-                width: 1.0,
               ),
             ),
           ),

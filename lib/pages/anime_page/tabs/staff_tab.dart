@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../components/loading_indicator.dart';
-import '../../../components/error_view.dart';
+
 import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
+import '../../../components/error_view.dart';
+import '../../../components/loading_indicator.dart';
 import '../../../models/media_staff.dart';
 import '../../../services/anime_service.dart';
 

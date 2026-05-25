@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:goodanime/utils/app_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../components/floating_nav.dart';
+import '../components/loading_indicator.dart';
 import '../models/common.dart';
 import '../services/auth_service.dart';
 import '../theme/theme.dart';
-import '../components/floating_nav.dart';
-import '../components/loading_indicator.dart';
+import 'anime_list_tab.dart';
 import 'login_page.dart';
 import 'profile_page.dart';
-import 'anime_list_tab.dart';
 
 /// The main container page for the application
 class HomePage extends StatefulWidget {

@@ -1,0 +1,15 @@
+﻿Analyzing goodanime...
+
+warning - lib\pages\anime_page\widgets\score_histogram.dart:8:9 - The generic type 'List<dynamic>' should have explicit type arguments but doesn't. Use explicit type arguments for 'List<dynamic>'. - strict_raw_type
+warning - lib\pages\anime_page\widgets\status_distribution_bar.dart:10:9 - The generic type 'List<dynamic>' should have explicit type arguments but doesn't. Use explicit type arguments for 'List<dynamic>'. - strict_raw_type
+warning - lib\pages\anime_page\widgets\status_distribution_bar.dart:102:49 - The generic type 'List<dynamic>' should have explicit type arguments but doesn't. Use explicit type arguments for 'List<dynamic>'. - strict_raw_type
+warning - lib\pages\anime_page\widgets\trend_line_chart.dart:12:9 - The generic type 'List<dynamic>' should have explicit type arguments but doesn't. Use explicit type arguments for 'List<dynamic>'. - strict_raw_type
+warning - lib\pages\anime_page\widgets\trend_line_chart.dart:74:44 - The generic type 'List<dynamic>' should have explicit type arguments but doesn't. Use explicit type arguments for 'List<dynamic>'. - strict_raw_type
+warning - lib\pages\anime_page\widgets\trend_line_chart.dart:257:9 - The generic type 'List<dynamic>' should have explicit type arguments but doesn't. Use explicit type arguments for 'List<dynamic>'. - strict_raw_type
+warning - lib\pages\login_page.dart:66:17 - The type of 'err' can't be inferred; a type must be explicitly provided. Try specifying the type of the parameter. - inference_failure_on_untyped_parameter
+warning - lib\utils\app_navigation.dart:21:7 - The type argument(s) of the constructor 'MaterialPageRoute' can't be inferred. Use explicit type argument(s) for 'MaterialPageRoute'. - inference_failure_on_instance_creation
+warning - lib\utils\app_navigation.dart:31:5 - The type argument(s) of the function 'showModalBottomSheet' can't be inferred. Use explicit type argument(s) for 'showModalBottomSheet'. - inference_failure_on_function_invocation
+   info - lib\pages\anime_list_tab.dart:183:20 - Missing an 'await' for the 'Future' computed by this expression. Try adding an 'await' or wrapping the expression with 'unawaited'. - unawaited_futures
+   info - lib\pages\anime_list_tab.dart:184:9 - Missing an 'await' for the 'Future' computed by this expression. Try adding an 'await' or wrapping the expression with 'unawaited'. - unawaited_futures
+
+11 issues found.

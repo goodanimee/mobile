@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:goodanime/utils/app_navigation.dart';
-import '../theme/theme.dart';
+
+import '../components/error_view.dart';
 import '../components/floating_nav.dart';
 import '../components/loading_indicator.dart';
-import '../components/error_view.dart';
-import '../services/anime_service.dart';
-import '../utils/utils.dart';
-import '../utils/app_options.dart';
+import '../models/media.dart';
 import '../models/media_list.dart';
 import '../models/media_list_entry.dart';
-import '../models/media.dart';
-
-import 'anime_page/tabs/info_tab.dart';
+import '../services/anime_service.dart';
+import '../theme/theme.dart';
+import '../utils/app_options.dart';
+import '../utils/utils.dart';
 import 'anime_page/tabs/characters_tab.dart';
-import 'anime_page/tabs/staff_tab.dart';
+import 'anime_page/tabs/info_tab.dart';
 import 'anime_page/tabs/media_tab.dart';
-import 'anime_page/tabs/relations_tab.dart';
-import 'anime_page/tabs/rankings_tab.dart';
 import 'anime_page/tabs/placeholder_tab.dart';
+import 'anime_page/tabs/rankings_tab.dart';
+import 'anime_page/tabs/relations_tab.dart';
+import 'anime_page/tabs/staff_tab.dart';
 import 'anime_page/widgets/anime_page_header.dart';
-import 'anime_page/widgets/sticky_header.dart';
 import 'anime_page/widgets/edit_entry_fab.dart';
+import 'anime_page/widgets/sticky_header.dart';
 
 /// A page displaying detailed information about an anime
 class AnimePage extends StatefulWidget {
@@ -128,7 +128,7 @@ class _AnimePageState extends State<AnimePage> {
   }
 
   /// Shows the anime options bottom sheet
-  void _showItemOptions() async {
+  Future<void> _showItemOptions() async {
     if (_mediaData == null) return;
 
     final media = _mediaData!;
@@ -148,7 +148,7 @@ class _AnimePageState extends State<AnimePage> {
       _didUpdate = true;
       setState(() {
         if (result.deleted) {
-          _mediaData = media.copyWith(mediaListEntry: null);
+          _mediaData = media.copyWith();
         } else if (result.entry != null) {
           final typedEntry = result.entry!;
           final updatedEntry = MediaListEntry(
@@ -387,8 +387,6 @@ class _AnimePageState extends State<AnimePage> {
                     selectedIndex: -1,
                     onTap: _handleNavTap,
                     quickNavSections: quickNavItems,
-                    isGridMode: null,
-                    onToggleGridMode: null,
                   ),
                 ],
               ),

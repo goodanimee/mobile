@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../widgets/airing_countdown.dart';
-import '../../../components/stat_item.dart';
-import '../../../components/html_description.dart';
+
 import '../../../components/app_pill.dart';
 import '../../../components/app_section.dart';
-import '../../../utils/utils.dart';
+import '../../../components/html_description.dart';
+import '../../../components/stat_item.dart';
 import '../../../models/media.dart';
 import '../../../models/media_misc.dart';
 import '../../../theme/theme.dart';
+import '../../../utils/utils.dart';
+import '../widgets/airing_countdown.dart';
 
 /// A tab displaying general information and synopsis for an anime
 class AnimeInfoTab extends StatelessWidget {
@@ -39,8 +40,8 @@ class AnimeInfoTab extends StatelessWidget {
     final tags = media.tags;
     final externalLinks = media.externalLinks;
 
-    bool hasSpoilers = tags.any((tag) => tag.isMediaSpoiler);
-    List<MediaTag> visibleTags = showSpoilers
+    final bool hasSpoilers = tags.any((tag) => tag.isMediaSpoiler);
+    final List<MediaTag> visibleTags = showSpoilers
         ? tags
         : tags.where((tag) => !tag.isMediaSpoiler).toList();
 
@@ -88,7 +89,6 @@ class AnimeInfoTab extends StatelessWidget {
         if (media.description.isNotEmpty)
           AppSection(
             title: 'Synopsis',
-            innerSpacing: 8,
             children: [HtmlDescription(html: media.description)],
           ),
         if (media.genres.isNotEmpty) ...[
@@ -129,7 +129,6 @@ class AnimeInfoTab extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(
                             showSpoilers
@@ -238,7 +237,7 @@ class AnimeInfoTab extends StatelessWidget {
           runSpacing: 8.0,
           children: (() {
             final uniqueStudios = <int, ({int id, String name, bool isMain})>{};
-            for (var edge in studioEdges) {
+            for (final edge in studioEdges) {
               final isMain = edge.isMain;
               final node = edge.node;
               final studioId = node.id;

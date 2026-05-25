@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import '../theme/theme.dart';
-import './anime_options/date_editor.dart';
-import './anime_options/score_slider.dart';
-import './anime_options/progress_editor.dart';
-import './anime_options/status_selector.dart';
+
 import '../models/common.dart';
 import '../models/media_list.dart';
-import '../utils/app_options.dart';
 import '../services/anime_list_service.dart';
+import '../theme/theme.dart';
+import '../utils/app_options.dart';
+import './anime_options/date_editor.dart';
+import './anime_options/progress_editor.dart';
+import './anime_options/score_slider.dart';
+import './anime_options/status_selector.dart';
 
 /// A bottom sheet for editing anime list entry options
 class AnimeOptionsSheet extends StatefulWidget {
@@ -113,7 +114,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
       decoration: BoxDecoration(
         color: const Color(0xFF161616),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        border: Border.all(color: cardBorderColor, width: 1.0),
+        border: Border.all(color: cardBorderColor),
       ),
       child: Column(
         children: [

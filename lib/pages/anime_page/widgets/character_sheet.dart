@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../theme/theme.dart';
-import '../../../components/section_title.dart';
+
 import '../../../components/app_network_image.dart';
 import '../../../components/html_description.dart';
-import '../../../models/media_character.dart';
+import '../../../components/section_title.dart';
 import '../../../models/common.dart';
+import '../../../models/media_character.dart';
+import '../../../theme/theme.dart';
 
 /// A bottom sheet displaying detailed information about a character
 class CharacterSheet extends StatefulWidget {
@@ -43,7 +44,6 @@ class _CharacterSheetState extends State<CharacterSheet> {
     final voiceActors = widget.character.voiceActors;
 
     return DraggableScrollableSheet(
-      initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.95,
       expand: false,
@@ -52,7 +52,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
           decoration: BoxDecoration(
             color: const Color(0xFF161616),
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-            border: Border.all(color: cardBorderColor, width: 1.0),
+            border: Border.all(color: cardBorderColor),
           ),
           child: Column(
             children: [
@@ -258,7 +258,6 @@ class _CharacterSheetState extends State<CharacterSheet> {
                         const SectionTitle(
                           title: 'Voice Actors',
                           fontSize: 16,
-                          bottomPadding: 16,
                         ),
                         ListView.separated(
                           shrinkWrap: true,

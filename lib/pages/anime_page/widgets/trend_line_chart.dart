@@ -1,13 +1,15 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
-import '../../../theme/theme.dart';
+
 import '../../../components/app_section.dart';
+import '../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
 /// A widget displaying a line chart of various anime trends
 class TrendLineChart extends StatefulWidget {
   /// The trend data
-  final List trends;
+  final List<dynamic> trends;
 
   /// Creates a trend line chart
   const TrendLineChart({super.key, required this.trends});
@@ -69,7 +71,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
   }
 
   /// Builds the main chart area
-  Widget _buildChart(BuildContext context, List trends) {
+  Widget _buildChart(BuildContext context, List<dynamic> trends) {
     if (trends.isEmpty) return const SizedBox.shrink();
 
     final firstDate = trends.first['date'] as int? ?? 0;
@@ -94,11 +96,9 @@ class _TrendLineChartState extends State<TrendLineChart> {
                       border: Border(
                         top: BorderSide(
                           color: Colors.white.withValues(alpha: 0.05),
-                          width: 1,
                         ),
                         bottom: BorderSide(
                           color: Colors.white.withValues(alpha: 0.05),
-                          width: 1,
                         ),
                       ),
                     ),
@@ -254,7 +254,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
 
 /// Painter for drawing the trend lines on the canvas
 class _TrendLinePainter extends CustomPainter {
-  final List trends;
+  final List<dynamic> trends;
 
   _TrendLinePainter({required this.trends});
 

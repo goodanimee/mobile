@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
+import '../../../models/media.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/utils.dart';
-import '../../../models/media.dart';
 
 /// A widget that displays a countdown until the next episode airs
 class AiringCountdown extends StatelessWidget {

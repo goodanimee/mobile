@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../../theme/theme.dart';
+
 import '../../../models/common.dart';
+import '../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
 /// A widget displaying a horizontal bar showing the status distribution of an anime
 class StatusDistributionBar extends StatefulWidget {
   /// The distribution data
-  final List distribution;
+  final List<dynamic> distribution;
 
   /// Creates a status distribution bar
   const StatusDistributionBar({super.key, required this.distribution});
@@ -79,8 +80,6 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
                             margin: EdgeInsets.only(right: isLast ? 0 : 3),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
                                 colors: [leftColor, rightColor],
                               ),
                               borderRadius: BorderRadius.circular(4),
@@ -100,7 +99,7 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
   }
 
   /// Shows a tooltip with detailed status distribution information
-  void _showStatusTooltip(BuildContext context, List distribution) {
+  void _showStatusTooltip(BuildContext context, List<dynamic> distribution) {
     StatTooltip.show(
       context: context,
       link: _statusLink,

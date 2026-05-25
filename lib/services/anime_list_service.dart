@@ -1,13 +1,15 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
 import '../models/media_list_entry.dart';
+import '../proto/api.pb.dart';
+import '../proto/media_list.pb.dart' as pb_list;
 import '../utils/app_options.dart';
 import 'auth_service.dart';
-import '../proto/media_list.pb.dart' as pb_list;
-import '../proto/api.pb.dart';
 
 /// Service for managing user anime list data and caches.
 class AnimeListService {
@@ -22,27 +24,35 @@ class AnimeListService {
       final cached = await _getListsFromDiskCache();
       if (cached != null) return cached;
     }
-    return await _fetchNetworkLists(userId);
+    return _fetchNetworkLists(userId);
   }
 
   /// Retrieves the user anime lists from local disk cache.
   static Future<List<MediaList>?> _getListsFromDiskCache() async {
     final prefs = await SharedPreferences.getInstance();
-    final cachedJson = prefs.getString(_cacheKeyLists);
-    if (cachedJson != null) {
+    final cachedStr = prefs.getString(_cacheKeyLists);
+    if (cachedStr != null) {
       try {
-        final List<dynamic> decoded = jsonDecode(cachedJson);
-        return decoded
-            .map(
-              (l) => MediaList.fromProto(
-                pb_list.MediaListGroup.fromBuffer(base64Decode(l as String)),
-              ),
-            )
-            .toList();
+        final collection = pb_list.MediaListCollection.fromBuffer(
+          base64Decode(cachedStr),
+        );
+        return collection.lists.map(MediaList.fromProto).toList();
       } catch (_) {}
     }
 
     return null;
+  }
+
+  /// Saves the user anime lists to local disk cache.
+  static Future<void> _saveListToDiskCache(List<MediaList> lists) async {
+    final prefs = await SharedPreferences.getInstance();
+    final collection = pb_list.MediaListCollection(
+      lists: lists.map((l) => l.toProto()),
+    );
+    await prefs.setString(
+      _cacheKeyLists,
+      base64Encode(collection.writeToBuffer()),
+    );
   }
 
   /// Fetches fresh user anime lists from the network.
@@ -103,15 +113,7 @@ class AnimeListService {
       }
     }
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-      _cacheKeyLists,
-      jsonEncode(
-        processedLists
-            .map((l) => base64Encode(l.toProto().writeToBuffer()))
-            .toList(),
-      ),
-    );
+    await _saveListToDiskCache(processedLists);
     return processedLists;
   }
 
@@ -132,15 +134,7 @@ class AnimeListService {
         );
       }).toList();
 
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-        _cacheKeyLists,
-        jsonEncode(
-          updatedLists
-              .map((l) => base64Encode(l.toProto().writeToBuffer()))
-              .toList(),
-        ),
-      );
+      await _saveListToDiskCache(updatedLists);
       return updatedLists;
     }
 
@@ -156,7 +150,7 @@ class AnimeListService {
     ];
 
     MediaListEntryWithMedia? movedEntry;
-    MediaListStatus? targetStatus = result.entry!.status;
+    final MediaListStatus? targetStatus = result.entry!.status;
 
     final updatedLists = currentLists.map((section) {
       final entries = List<MediaListEntryWithMedia>.from(section.entries);
@@ -217,15 +211,7 @@ class AnimeListService {
       }
     }
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-      _cacheKeyLists,
-      jsonEncode(
-        updatedLists
-            .map((l) => base64Encode(l.toProto().writeToBuffer()))
-            .toList(),
-      ),
-    );
+    await _saveListToDiskCache(updatedLists);
 
     return updatedLists;
   }
@@ -261,7 +247,7 @@ class AnimeListService {
       );
     }
 
-    return await MediaListApi.saveMediaListEntry(req, token);
+    return MediaListApi.saveMediaListEntry(req, token);
   }
 
   /// Deletes an anime list entry by its entry ID.

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import '../../../components/anime_list_card.dart';
-import '../../../components/section_title.dart';
 import '../../../components/error_view.dart';
-import '../../../utils/app_navigation.dart';
+import '../../../components/section_title.dart';
 import '../../../models/media_list.dart';
+import '../../../utils/app_navigation.dart';
 import '../../../utils/app_options.dart';
 
 /// A list view component representing a list of anime items in a linear format

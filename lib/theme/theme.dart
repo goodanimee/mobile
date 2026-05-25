@@ -179,7 +179,6 @@ const loveGradient = [paletteRed, paletteRedDark];
 const cardShadow = BoxShadow(
   color: Color(0x80000000),
   blurRadius: 4.0,
-  offset: Offset(0, 0),
 );
 
 /// Style for button containers

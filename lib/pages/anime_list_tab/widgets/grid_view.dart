@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../utils/app_navigation.dart';
-import '../../../components/app_media_card.dart';
+
 import '../../../components/app_badges.dart';
-import '../../../components/section_title.dart';
+import '../../../components/app_media_card.dart';
 import '../../../components/error_view.dart';
+import '../../../components/section_title.dart';
 import '../../../models/media_list.dart';
+import '../../../utils/app_navigation.dart';
 
 /// A grid view component representing a list of anime items
 class AnimeListGridView extends StatelessWidget {

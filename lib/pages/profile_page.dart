@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import '../theme/theme.dart';
+
 import '../components/user_profile.dart';
+import '../models/viewer.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
-import '../models/viewer.dart';
+import '../theme/theme.dart';
 
 /// A page displaying the user's profile and account options
 class ProfilePage extends StatefulWidget {

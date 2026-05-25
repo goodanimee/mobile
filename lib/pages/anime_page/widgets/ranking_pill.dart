@@ -21,7 +21,7 @@ class RankingPill extends StatelessWidget {
     final year = ranking['year'];
     final rank = ranking['rank'];
 
-    String titleText = isRated
+    final String titleText = isRated
         ? 'Highest Rated'
         : (isPopular ? 'Most Popular' : 'Ranked');
 
@@ -41,7 +41,7 @@ class RankingPill extends StatelessWidget {
       decoration: BoxDecoration(
         color: hoverBgColor,
         borderRadius: BorderRadius.circular(40),
-        border: Border.all(color: cardBorderColor, width: 1.0),
+        border: Border.all(color: cardBorderColor),
       ),
       child: Row(
         children: [

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
+import '../models/media_character.dart';
 import '../pages/anime_page.dart';
 import '../pages/anime_page/widgets/character_sheet.dart';
-import '../models/media_character.dart';
 import 'utils.dart';
 
 /// Centralized manager for app transitions and navigation
@@ -17,7 +18,9 @@ class AppNavigation {
   }) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AnimePage(mediaId: mediaId)),
+      MaterialPageRoute<dynamic>(
+        builder: (context) => AnimePage(mediaId: mediaId),
+      ),
     );
 
     if (result == true || CacheUtils.animeListNeedsRefresh.value) {
@@ -27,7 +30,7 @@ class AppNavigation {
 
   /// Open character details sheet
   static void toCharacter(BuildContext context, CharacterEdge character) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,

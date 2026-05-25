@@ -1,13 +1,15 @@
 import 'dart:async';
+
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:mix/mix.dart';
-import 'package:app_links/app_links.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../services/auth_service.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../theme/theme.dart';
+import 'package:mix/mix.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../components/app_button.dart';
+import '../services/auth_service.dart';
+import '../theme/theme.dart';
 
 /// A page for user authentication via AniList
 class LoginPage extends StatefulWidget {
@@ -61,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
           widget.onAuthenticated(token);
         }
       },
-      onError: (err) {
+      onError: (Object err) {
         debugPrint('Deep Link Error: $err');
       },
     );

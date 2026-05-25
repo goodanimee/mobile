@@ -292,10 +292,10 @@ class MediaStats {
   factory MediaStats.fromProto(pb.MediaStats pbObj) {
     return MediaStats(
       scoreDistribution: pbObj.scoreDistribution
-          .map((s) => ScoreDistribution.fromProto(s))
+          .map(ScoreDistribution.fromProto)
           .toList(),
       statusDistribution: pbObj.statusDistribution
-          .map((s) => StatusDistribution.fromProto(s))
+          .map(StatusDistribution.fromProto)
           .toList(),
     );
   }

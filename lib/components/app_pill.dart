@@ -37,7 +37,7 @@ class AppPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isSpoiler ? spoilerColor : Colors.white70;
 
-    Widget content = Container(
+    final Widget content = Container(
       padding: padding,
       decoration: BoxDecoration(
         color: isSpoiler

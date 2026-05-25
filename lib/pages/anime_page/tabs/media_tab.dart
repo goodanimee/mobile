@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import '../../../components/section_title.dart';
+
 import '../../../components/app_network_image.dart';
 import '../../../components/error_view.dart';
+import '../../../components/section_title.dart';
 import '../../../models/media.dart';
 import '../../../models/media_misc.dart';
 
@@ -179,7 +180,7 @@ class AnimeMediaTab extends StatelessWidget {
           const SizedBox(height: 24),
         ],
         if (!hasYoutubeTrailer && allEpisodes.isEmpty)
-          const AppErrorView(message: 'No media available', topPadding: 40),
+          const AppErrorView(message: 'No media available'),
       ],
     );
 

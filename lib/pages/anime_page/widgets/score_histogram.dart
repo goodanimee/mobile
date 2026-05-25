@@ -5,7 +5,7 @@ import 'stat_tooltip.dart';
 /// A widget displaying a histogram of scores for an anime
 class ScoreHistogram extends StatefulWidget {
   /// The score distribution data
-  final List distribution;
+  final List<dynamic> distribution;
 
   /// Creates a score histogram
   const ScoreHistogram({super.key, required this.distribution});
@@ -28,7 +28,8 @@ class _ScoreHistogramState extends State<ScoreHistogram> {
         .fold(0, (prev, element) => element > prev ? element : prev);
 
     final Map<int, int> scoresMap = {
-      for (var e in widget.distribution) e['score'] as int: e['amount'] as int,
+      for (final e in widget.distribution)
+        e['score'] as int: e['amount'] as int,
     };
     final List<int> allScores = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 

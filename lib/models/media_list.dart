@@ -99,7 +99,7 @@ class MediaList {
           ? MediaListStatus.fromProto(pbObj.status)
           : null,
       entries: pbObj.entries
-          .map((e) => MediaListEntryWithMedia.fromProto(e))
+          .map(MediaListEntryWithMedia.fromProto)
           .toList(),
     );
   }
@@ -130,7 +130,7 @@ class MediaListCollection {
   factory MediaListCollection.fromProto(pb.MediaListCollection pbObj) {
     return MediaListCollection(
       hasNextChunk: pbObj.hasNextChunk,
-      lists: pbObj.lists.map((l) => MediaList.fromProto(l)).toList(),
+      lists: pbObj.lists.map(MediaList.fromProto).toList(),
     );
   }
 

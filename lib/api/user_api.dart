@@ -1,9 +1,11 @@
 import 'dart:ffi' as ffi;
 import 'dart:isolate';
+
 import 'package:ffi/ffi.dart';
+
 import '../models/viewer.dart';
-import 'ffi_core.dart';
 import '../proto/api.pb.dart';
+import 'ffi_core.dart';
 
 /// Native function signature for fetching viewer information
 typedef _FetchViewerC =

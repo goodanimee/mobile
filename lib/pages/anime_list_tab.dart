@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../components/error_view.dart';
+import '../components/loading_indicator.dart';
 import '../models/common.dart';
+import '../models/media_list.dart';
 import '../services/anime_list_service.dart';
 import '../services/user_service.dart';
 import '../theme/theme.dart';
-import '../components/loading_indicator.dart';
-import '../components/error_view.dart';
-import '../utils/utils.dart';
 import '../utils/app_options.dart';
-import '../models/media_list.dart';
-
+import '../utils/utils.dart';
 import 'anime_list_tab/widgets/grid_view.dart';
 import 'anime_list_tab/widgets/list_view.dart';
 
@@ -171,7 +171,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
   }
 
   /// Shows the anime options bottom sheet
-  void _showItemOptions(
+  Future<void> _showItemOptions(
     BuildContext context,
     MediaListEntryWithMedia entry,
   ) async {
@@ -180,8 +180,8 @@ class _AnimeListTabState extends State<AnimeListTab> {
     if (result != null && mounted) {
       final mediaId = entry.media.id;
       if (mediaId != 0) {
-        CacheUtils.invalidateMedia(mediaId);
-        _handleEntryUpdated(mediaId, result);
+        await CacheUtils.invalidateMedia(mediaId);
+        await _handleEntryUpdated(mediaId, result);
       }
     }
   }

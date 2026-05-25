@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+
 import '../../../components/app_relation_card.dart';
 import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
-import '../../../utils/app_navigation.dart';
-import '../../../utils/utils.dart';
-import '../../../services/anime_service.dart';
-import '../../../theme/theme.dart';
 import '../../../models/media_edge.dart';
 import '../../../models/media_recommendation.dart';
+import '../../../services/anime_service.dart';
+import '../../../theme/theme.dart';
+import '../../../utils/app_navigation.dart';
+import '../../../utils/utils.dart';
 
 /// Tab displaying related and recommended media
 class AnimeRelationsTab extends StatefulWidget {

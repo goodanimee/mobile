@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import '../theme/theme.dart';
-import 'app_network_image.dart';
-import 'app_badges.dart';
+
 import '../models/common.dart';
 import '../models/media_list.dart';
-import '../utils/app_options.dart';
 import '../services/anime_list_service.dart';
+import '../theme/theme.dart';
+import '../utils/app_options.dart';
+import 'app_badges.dart';
+import 'app_network_image.dart';
 
 /// Builds a badge showing repeat count
 Widget _buildRepeatBadge(int repeat) {
@@ -280,11 +281,9 @@ class _AnimeListCardState extends State<AnimeListCard> {
               color.withValues(alpha: 0.15),
               Color.lerp(color.withValues(alpha: 0.15), hoverBgColor, 0.75)!,
             ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
           ),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withValues(alpha: 0.2), width: 1.0),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
@@ -309,7 +308,6 @@ class _AnimeListCardState extends State<AnimeListCard> {
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
                         child: Column(

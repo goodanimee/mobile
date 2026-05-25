@@ -1,8 +1,10 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
+
 import '../theme/theme.dart';
-import 'app_network_image.dart';
 import '../utils/utils.dart';
+import 'app_network_image.dart';
 
 /// A specialized card for media items (Anime) with dynamic borders and status badges
 class AppMediaCard extends StatelessWidget {

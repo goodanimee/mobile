@@ -1,14 +1,16 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../api/media_details_api.dart';
 import '../models/media.dart';
 import '../models/media_character.dart';
-import '../models/media_staff.dart';
 import '../models/media_recommendation.dart';
-import 'auth_service.dart';
-import '../utils/utils.dart';
+import '../models/media_staff.dart';
 import '../proto/api.pb.dart';
 import '../proto/media.pb.dart' as pb_media;
+import '../utils/utils.dart';
+import 'auth_service.dart';
 
 /// Service for managing anime details and favorites.
 class AnimeService {
@@ -72,7 +74,7 @@ class AnimeService {
       page: page,
       perPage: 25,
     );
-    return await MediaApi.fetchMediaCharacters(req, token);
+    return MediaApi.fetchMediaCharacters(req, token);
   }
 
   /// Fetches staff pagination results for an anime.
@@ -83,7 +85,7 @@ class AnimeService {
       page: page,
       perPage: 25,
     );
-    return await MediaApi.fetchMediaStaff(req, token);
+    return MediaApi.fetchMediaStaff(req, token);
   }
 
   /// Fetches recommendation pagination results for an anime.
@@ -97,7 +99,7 @@ class AnimeService {
       page: page,
       perPage: 25,
     );
-    return await MediaApi.fetchMediaRecommendations(req, token);
+    return MediaApi.fetchMediaRecommendations(req, token);
   }
 
   static Future<void> _saveToDiskCache(
@@ -105,7 +107,7 @@ class AnimeService {
     int mediaId,
     String rawData,
   ) async {
-    List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
+    final List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
     final idStr = mediaId.toString();
     keys.remove(idStr);
     keys.add(idStr);
@@ -126,7 +128,7 @@ class AnimeService {
     final cachedStr = prefs.getString('$_cachePrefix$mediaId');
     if (cachedStr == null) return null;
 
-    List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
+    final List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
     keys.remove(mediaId.toString());
     keys.add(mediaId.toString());
     await prefs.setStringList(_cacheKeysPref, keys);

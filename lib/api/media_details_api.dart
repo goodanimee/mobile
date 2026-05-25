@@ -1,12 +1,14 @@
 import 'dart:ffi' as ffi;
 import 'dart:isolate';
+
 import 'package:ffi/ffi.dart';
+
 import '../models/media.dart';
-import '../models/media_recommendation.dart';
 import '../models/media_character.dart';
+import '../models/media_recommendation.dart';
 import '../models/media_staff.dart';
-import 'ffi_core.dart';
 import '../proto/api.pb.dart';
+import 'ffi_core.dart';
 
 /// Native function signature for fetching media details
 typedef _FetchMediaDetailsC =

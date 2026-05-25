@@ -170,7 +170,7 @@ class CharacterEdge {
       role: pbObj.role,
       name: pbObj.name,
       node: pbObj.hasNode() ? Character.fromProto(pbObj.node) : null,
-      voiceActors: pbObj.voiceActors.map((v) => Staff.fromProto(v)).toList(),
+      voiceActors: pbObj.voiceActors.map(Staff.fromProto).toList(),
     );
   }
 
@@ -200,7 +200,7 @@ class CharacterConnection {
   /// Creates a character connection from a protobuf object
   factory CharacterConnection.fromProto(pb.CharacterConnection pbObj) {
     return CharacterConnection(
-      edges: pbObj.edges.map((e) => CharacterEdge.fromProto(e)).toList(),
+      edges: pbObj.edges.map(CharacterEdge.fromProto).toList(),
       pageInfo: PageInfo.fromProto(pbObj.pageInfo),
     );
   }

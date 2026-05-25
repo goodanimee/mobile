@@ -54,7 +54,7 @@ class MediaTrendConnection {
   /// Creates a media trend connection from a protobuf object
   factory MediaTrendConnection.fromProto(pb.MediaTrendConnection pbObj) {
     return MediaTrendConnection(
-      nodes: pbObj.nodes.map((n) => MediaTrend.fromProto(n)).toList(),
+      nodes: pbObj.nodes.map(MediaTrend.fromProto).toList(),
     );
   }
 

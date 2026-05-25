@@ -18,7 +18,7 @@ class EditEntryFab extends StatelessWidget {
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: cardBorderColor, width: 1.0),
+        border: Border.all(color: cardBorderColor),
       ),
       child: GestureDetector(
         onTap: onTap,

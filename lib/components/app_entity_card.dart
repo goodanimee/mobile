@@ -63,7 +63,6 @@ class AppEntityCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10, right: 8),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(

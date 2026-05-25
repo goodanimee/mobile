@@ -133,7 +133,7 @@ class StaffConnection {
   /// Creates a staff connection from a protobuf object
   factory StaffConnection.fromProto(pb.StaffConnection pbObj) {
     return StaffConnection(
-      edges: pbObj.edges.map((e) => StaffEdge.fromProto(e)).toList(),
+      edges: pbObj.edges.map(StaffEdge.fromProto).toList(),
       pageInfo: PageInfo.fromProto(pbObj.pageInfo),
     );
   }

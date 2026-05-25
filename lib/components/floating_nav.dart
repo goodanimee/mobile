@@ -38,7 +38,7 @@ const _duration = Duration(milliseconds: 300);
 final _boxDecoration = BoxDecoration(
   color: bgColor,
   borderRadius: BorderRadius.circular(16),
-  border: Border.all(color: cardBorderColor, width: 1.0),
+  border: Border.all(color: cardBorderColor),
 );
 
 /// A floating navigation bar with menu and view toggles
