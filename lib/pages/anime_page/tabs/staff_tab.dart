@@ -3,10 +3,8 @@ import '../../../components/loading_indicator.dart';
 import '../../../components/error_view.dart';
 import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
-import '../../../api/media_details_api.dart';
-import '../../../services/auth_service.dart';
 import '../../../models/media_staff.dart';
-import '../../../proto/api.pb.dart';
+import '../../../services/anime_service.dart';
 
 /// A tab displaying the production staff for an anime
 class AnimeStaffTab extends StatefulWidget {
@@ -96,13 +94,10 @@ class _AnimeStaffTabState extends State<AnimeStaffTab> {
   /// Fetches staff data from the backend
   Future<void> _fetchStaff() async {
     try {
-      final token = await AuthService.getRawToken() ?? '';
-      final req = FetchMediaStaffRequest(
-        mediaId: widget.mediaId,
-        page: _currentPage,
-        perPage: 25,
+      final connection = await AnimeService.getStaff(
+        widget.mediaId,
+        _currentPage,
       );
-      final connection = await MediaApi.fetchMediaStaff(req, token);
 
       if (mounted) {
         setState(() {

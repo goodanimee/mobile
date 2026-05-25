@@ -4,12 +4,10 @@ import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../utils/utils.dart';
-import '../../../api/media_details_api.dart';
-import '../../../services/auth_service.dart';
+import '../../../services/anime_service.dart';
 import '../../../theme/theme.dart';
 import '../../../models/media_edge.dart';
 import '../../../models/media_recommendation.dart';
-import '../../../proto/api.pb.dart';
 
 /// Tab displaying related and recommended media
 class AnimeRelationsTab extends StatefulWidget {
@@ -93,13 +91,10 @@ class _AnimeRelationsTabState extends State<AnimeRelationsTab> {
     setState(() => _isFetchingMore = true);
 
     try {
-      final token = await AuthService.getRawToken() ?? '';
-      final req = FetchMediaRecommendationsRequest(
-        mediaId: widget.mediaId,
-        page: _recommendationPage + 1,
-        perPage: 25,
+      final connection = await AnimeService.getRecommendations(
+        widget.mediaId,
+        _recommendationPage + 1,
       );
-      final connection = await MediaApi.fetchMediaRecommendations(req, token);
 
       if (mounted) {
         setState(() {

@@ -4,10 +4,8 @@ import '../../../components/error_view.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
-import '../../../api/media_details_api.dart';
-import '../../../services/auth_service.dart';
 import '../../../models/media_character.dart';
-import '../../../proto/api.pb.dart';
+import '../../../services/anime_service.dart';
 
 /// A tab displaying characters and cast for an anime
 class AnimeCharactersTab extends StatefulWidget {
@@ -97,13 +95,10 @@ class _AnimeCharactersTabState extends State<AnimeCharactersTab> {
   /// Fetches character data from the backend
   Future<void> _fetchCharacters() async {
     try {
-      final token = await AuthService.getRawToken() ?? '';
-      final req = FetchMediaCharactersRequest(
-        mediaId: widget.mediaId,
-        page: _currentPage,
-        perPage: 25,
+      final connection = await AnimeService.getCharacters(
+        widget.mediaId,
+        _currentPage,
       );
-      final connection = await MediaApi.fetchMediaCharacters(req, token);
 
       if (mounted) {
         setState(() {

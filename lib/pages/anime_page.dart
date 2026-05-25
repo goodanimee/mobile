@@ -4,7 +4,7 @@ import '../theme/theme.dart';
 import '../components/floating_nav.dart';
 import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
-import '../services/anime_repo.dart';
+import '../services/anime_service.dart';
 import '../utils/utils.dart';
 import '../utils/app_options.dart';
 import '../models/media_list.dart';
@@ -74,7 +74,7 @@ class _AnimePageState extends State<AnimePage> {
   /// Fetches anime details from cache or network
   Future<void> _fetchAnimeDetails({bool forceRefresh = false}) async {
     try {
-      final data = await AnimeRepo.getAnimeDetails(
+      final data = await AnimeService.getAnimeDetails(
         widget.mediaId,
         forceRefresh: forceRefresh,
       );
@@ -103,22 +103,16 @@ class _AnimePageState extends State<AnimePage> {
     setState(() => _isTogglingFavourite = true);
 
     try {
-      await AnimeRepo.toggleFavourite(widget.mediaId, _mediaData!);
+      await AnimeService.toggleFavourite(widget.mediaId, _mediaData!);
       setState(
         () => _mediaData = _mediaData!.copyWith(isFavourite: !currentFav),
       );
       _didUpdate = true;
     } catch (e) {
       if (mounted) {
-        setState(
-          () => _mediaData = _mediaData!.copyWith(isFavourite: currentFav),
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to toggle favourite: $e')),
         );
-        await AnimeRepo.restoreFavouriteCache(widget.mediaId, _mediaData!);
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to toggle favourite: $e')),
-          );
-        }
       }
     } finally {
       if (mounted) {
@@ -169,8 +163,6 @@ class _AnimePageState extends State<AnimePage> {
           _mediaData = media.copyWith(mediaListEntry: updatedEntry);
         }
       });
-
-      await AnimeRepo.restoreFavouriteCache(widget.mediaId, _mediaData!);
 
       await CacheUtils.invalidateMedia(widget.mediaId);
       CacheUtils.animeListNeedsRefresh.value = true;

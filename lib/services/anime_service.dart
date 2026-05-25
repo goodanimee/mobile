@@ -2,16 +2,21 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../api/media_details_api.dart';
 import '../models/media.dart';
+import '../models/media_character.dart';
+import '../models/media_staff.dart';
+import '../models/media_recommendation.dart';
 import 'auth_service.dart';
 import '../utils/utils.dart';
 import '../proto/api.pb.dart';
 import '../proto/media.pb.dart' as pb_media;
 
-class AnimeRepo {
+/// Service for managing anime details and favorites.
+class AnimeService {
   static const String _cachePrefix = 'anime_cache_';
   static const String _cacheKeysPref = 'anime_cache_keys';
   static const int _cacheCapacity = 50;
 
+  /// Fetches anime details from cache or network.
   static Future<Media?> getAnimeDetails(
     int mediaId, {
     bool forceRefresh = false,
@@ -19,19 +24,8 @@ class AnimeRepo {
     final prefs = await SharedPreferences.getInstance();
 
     if (!forceRefresh) {
-      final cachedStr = prefs.getString('$_cachePrefix$mediaId');
-      if (cachedStr != null) {
-        List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
-        keys.remove(mediaId.toString());
-        keys.add(mediaId.toString());
-        await prefs.setStringList(_cacheKeysPref, keys);
-
-        try {
-          return Media.fromProto(
-            pb_media.Media.fromBuffer(base64Decode(cachedStr)),
-          );
-        } catch (_) {}
-      }
+      final cachedMedia = await _getFromDiskCache(prefs, mediaId);
+      if (cachedMedia != null) return cachedMedia;
     } else {
       await prefs.remove('$_cachePrefix$mediaId');
     }
@@ -45,6 +39,7 @@ class AnimeRepo {
     return media;
   }
 
+  /// Toggles the favorite status of an anime.
   static Future<void> toggleFavourite(int mediaId, Media currentMedia) async {
     final token = await AuthService.getRawToken() ?? '';
     final req = ToggleFavouriteAnimeRequest()..animeId = mediaId;
@@ -66,16 +61,37 @@ class AnimeRepo {
     CacheUtils.animeListNeedsRefresh.value = true;
   }
 
-  static Future<void> restoreFavouriteCache(
-    int mediaId,
-    Media mediaData,
-  ) async {
-    final prefs = await SharedPreferences.getInstance();
-    await _saveToDiskCache(
-      prefs,
-      mediaId,
-      base64Encode(mediaData.toProto().writeToBuffer()),
+  /// Fetches character pagination results for an anime.
+  static Future<CharacterConnection> getCharacters(int mediaId, int page) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = FetchMediaCharactersRequest(
+      mediaId: mediaId,
+      page: page,
+      perPage: 25,
     );
+    return await MediaApi.fetchMediaCharacters(req, token);
+  }
+
+  /// Fetches staff pagination results for an anime.
+  static Future<StaffConnection> getStaff(int mediaId, int page) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = FetchMediaStaffRequest(
+      mediaId: mediaId,
+      page: page,
+      perPage: 25,
+    );
+    return await MediaApi.fetchMediaStaff(req, token);
+  }
+
+  /// Fetches recommendation pagination results for an anime.
+  static Future<RecommendationConnection> getRecommendations(int mediaId, int page) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = FetchMediaRecommendationsRequest(
+      mediaId: mediaId,
+      page: page,
+      perPage: 25,
+    );
+    return await MediaApi.fetchMediaRecommendations(req, token);
   }
 
   static Future<void> _saveToDiskCache(
@@ -95,5 +111,26 @@ class AnimeRepo {
 
     await prefs.setStringList(_cacheKeysPref, keys);
     await prefs.setString('$_cachePrefix$idStr', rawData);
+  }
+
+  static Future<Media?> _getFromDiskCache(
+    SharedPreferences prefs,
+    int mediaId,
+  ) async {
+    final cachedStr = prefs.getString('$_cachePrefix$mediaId');
+    if (cachedStr == null) return null;
+
+    List<String> keys = prefs.getStringList(_cacheKeysPref) ?? [];
+    keys.remove(mediaId.toString());
+    keys.add(mediaId.toString());
+    await prefs.setStringList(_cacheKeysPref, keys);
+
+    try {
+      return Media.fromProto(
+        pb_media.Media.fromBuffer(base64Decode(cachedStr)),
+      );
+    } catch (_) {
+      return null;
+    }
   }
 }
