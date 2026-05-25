@@ -66,6 +66,13 @@ class AnimeService {
     CacheUtils.animeListNeedsRefresh.value = true;
   }
 
+  /// Toggles the like status of an activity.
+  static Future<ToggleActivityLikeResponse> toggleActivityLike(int activityId) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = ToggleActivityLikeRequest()..activityId = activityId;
+    return MediaApi.toggleActivityLike(req, token);
+  }
+
   /// Fetches character pagination results for an anime.
   static Future<CharacterConnection> getCharacters(
     int mediaId,

@@ -121,6 +121,24 @@ typedef _ToggleFavouriteAnimeDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for toggling activity like status
+typedef _ToggleActivityLikeC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for toggling activity like status
+typedef _ToggleActivityLikeDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// Native function signature for rating media reviews
 typedef _RateReviewC =
     ffi.Pointer<ffi.Uint8> Function(
@@ -165,6 +183,7 @@ class MediaApi {
   static late _FetchMediaRecommendationsDart _fetchMediaRecommendations;
   static late _FetchMediaReviewsDart _fetchMediaReviews;
   static late _ToggleFavouriteAnimeDart _toggleFavouriteAnime;
+  static late _ToggleActivityLikeDart _toggleActivityLike;
   static late _RateReviewDart _rateReview;
   static late _FetchMediaActivitiesDart _fetchMediaActivities;
   static bool _initialized = false;
@@ -197,6 +216,10 @@ class MediaApi {
     _toggleFavouriteAnime = FfiCore.lib
         .lookupFunction<_ToggleFavouriteAnimeC, _ToggleFavouriteAnimeDart>(
           'ToggleFavouriteAnime',
+        );
+    _toggleActivityLike = FfiCore.lib
+        .lookupFunction<_ToggleActivityLikeC, _ToggleActivityLikeDart>(
+          'ToggleActivityLike',
         );
     _rateReview = FfiCore.lib
         .lookupFunction<_RateReviewC, _RateReviewDart>(
@@ -383,6 +406,38 @@ class MediaApi {
           ),
         );
         final response = ToggleFavouriteAnimeResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
+  /// Toggles the like status of an activity
+  static Future<ToggleActivityLikeResponse> toggleActivityLike(
+    ToggleActivityLikeRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      _init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = FfiCore.executeNativeCall(
+          (outLenPtr) => _toggleActivityLike(
+            reqPtr,
+            reqBytes.length,
+            tokenPtr,
+            outLenPtr,
+          ),
+        );
+        final response = ToggleActivityLikeResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
         return response;
       } finally {
