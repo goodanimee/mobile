@@ -351,6 +351,37 @@ final $typed_data.Uint8List toggleFavouriteAnimeResponseDescriptor =
         'lkEiEKDGlzX2Zhdm91cml0ZRgCIAEoCFILaXNGYXZvdXJpdGUSFAoFZXJyb3IYAyABKAlSBWVy'
         'cm9y');
 
+@$core.Deprecated('Use toggleActivityLikeRequestDescriptor instead')
+const ToggleActivityLikeRequest$json = {
+  '1': 'ToggleActivityLikeRequest',
+  '2': [
+    {'1': 'activity_id', '3': 1, '4': 1, '5': 5, '10': 'activityId'},
+  ],
+};
+
+/// Descriptor for `ToggleActivityLikeRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleActivityLikeRequestDescriptor =
+    $convert.base64Decode(
+        'ChlUb2dnbGVBY3Rpdml0eUxpa2VSZXF1ZXN0Eh8KC2FjdGl2aXR5X2lkGAEgASgFUgphY3Rpdm'
+        'l0eUlk');
+
+@$core.Deprecated('Use toggleActivityLikeResponseDescriptor instead')
+const ToggleActivityLikeResponse$json = {
+  '1': 'ToggleActivityLikeResponse',
+  '2': [
+    {'1': 'activity_id', '3': 1, '4': 1, '5': 5, '10': 'activityId'},
+    {'1': 'liked_user_ids', '3': 2, '4': 3, '5': 5, '10': 'likedUserIds'},
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `ToggleActivityLikeResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleActivityLikeResponseDescriptor =
+    $convert.base64Decode(
+        'ChpUb2dnbGVBY3Rpdml0eUxpa2VSZXNwb25zZRIfCgthY3Rpdml0eV9pZBgBIAEoBVIKYWN0aX'
+        'ZpdHlJZBIkCg5saWtlZF91c2VyX2lkcxgCIAMoBVIMbGlrZWRVc2VySWRzEhQKBWVycm9yGAMg'
+        'ASgJUgVlcnJvcg==');
+
 @$core.Deprecated('Use deleteMediaListEntryRequestDescriptor instead')
 const DeleteMediaListEntryRequest$json = {
   '1': 'DeleteMediaListEntryRequest',

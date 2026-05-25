@@ -1228,6 +1228,135 @@ class ToggleFavouriteAnimeResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(3);
 }
 
+class ToggleActivityLikeRequest extends $pb.GeneratedMessage {
+  factory ToggleActivityLikeRequest({
+    $core.int? activityId,
+  }) {
+    final result = create();
+    if (activityId != null) result.activityId = activityId;
+    return result;
+  }
+
+  ToggleActivityLikeRequest._();
+
+  factory ToggleActivityLikeRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ToggleActivityLikeRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ToggleActivityLikeRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'activityId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleActivityLikeRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleActivityLikeRequest copyWith(
+          void Function(ToggleActivityLikeRequest) updates) =>
+      super.copyWith((message) => updates(message as ToggleActivityLikeRequest))
+          as ToggleActivityLikeRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ToggleActivityLikeRequest create() => ToggleActivityLikeRequest._();
+  @$core.override
+  ToggleActivityLikeRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ToggleActivityLikeRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ToggleActivityLikeRequest>(create);
+  static ToggleActivityLikeRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get activityId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set activityId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasActivityId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearActivityId() => $_clearField(1);
+}
+
+class ToggleActivityLikeResponse extends $pb.GeneratedMessage {
+  factory ToggleActivityLikeResponse({
+    $core.int? activityId,
+    $core.Iterable<$core.int>? likedUserIds,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (activityId != null) result.activityId = activityId;
+    if (likedUserIds != null) result.likedUserIds.addAll(likedUserIds);
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  ToggleActivityLikeResponse._();
+
+  factory ToggleActivityLikeResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ToggleActivityLikeResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ToggleActivityLikeResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'activityId')
+    ..p<$core.int>(2, _omitFieldNames ? '' : 'likedUserIds', $pb.PbFieldType.K3)
+    ..aOS(3, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleActivityLikeResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleActivityLikeResponse copyWith(
+          void Function(ToggleActivityLikeResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as ToggleActivityLikeResponse))
+          as ToggleActivityLikeResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ToggleActivityLikeResponse create() => ToggleActivityLikeResponse._();
+  @$core.override
+  ToggleActivityLikeResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ToggleActivityLikeResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ToggleActivityLikeResponse>(create);
+  static ToggleActivityLikeResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get activityId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set activityId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasActivityId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearActivityId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $pb.PbList<$core.int> get likedUserIds => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $core.String get error => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set error($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasError() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearError() => $_clearField(3);
+}
+
 class DeleteMediaListEntryRequest extends $pb.GeneratedMessage {
   factory DeleteMediaListEntryRequest({
     $core.int? entryId,

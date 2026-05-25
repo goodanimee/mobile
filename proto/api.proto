@@ -100,6 +100,16 @@ message ToggleFavouriteAnimeResponse {
   string error = 3;
 }
 
+message ToggleActivityLikeRequest {
+  int32 activity_id = 1;
+}
+
+message ToggleActivityLikeResponse {
+  int32 activity_id = 1;
+  repeated int32 liked_user_ids = 2;
+  string error = 3;
+}
+
 message DeleteMediaListEntryRequest {
   int32 entry_id = 1;
 }
