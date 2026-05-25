@@ -33,12 +33,14 @@ var mediaRecommendationsQuery string
 //go:embed graphql/media_reviews.graphql
 var mediaReviewsQuery string
 
+//go:embed graphql/media_activities.graphql
+var mediaActivitiesQuery string
+
 //go:embed graphql/toggle_favourite.graphql
 var mediaToggleFavouriteMutation string
 
 //go:embed graphql/rate_review.graphql
 var rateReviewMutation string
-
 
 // FetchMediaDetails returns full details for a media ID
 //
@@ -323,5 +325,48 @@ func RateReview(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *
 		return marshalAndReturn(pbResponse, outLen)
 	}
 	pbResponse.Review = apiResp.Data.RateReview.ToProto()
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// FetchMediaActivities returns paginated recent activities for a media ID.
+//
+//export FetchMediaActivities
+func FetchMediaActivities(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.FetchMediaActivitiesResponse{}
+
+	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+	var req pb.FetchMediaActivitiesRequest
+	if err := proto.Unmarshal(reqBytes, &req); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]any{
+		"mediaId": req.MediaId,
+		"page":    req.Page,
+		"perPage": req.PerPage,
+	}
+
+	respBody, err := rawGraphqlRequest(tk, mediaActivitiesQuery, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	var apiResp models.GraphQLResponse[models.PageDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	pbResponse.PageInfo = apiResp.Data.Page.PageInfo.ToProto()
+	for _, act := range apiResp.Data.Page.Activities {
+		pbResponse.Activities = append(pbResponse.Activities, act.ToProto())
+	}
 	return marshalAndReturn(pbResponse, outLen)
 }
