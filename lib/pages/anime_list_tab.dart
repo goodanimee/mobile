@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/anime_list_repo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../services/anime_list_service.dart';
 import '../theme/theme.dart';
 import '../components/loading_indicator.dart';
 import '../components/error_view.dart';
@@ -90,16 +91,8 @@ class _AnimeListTabState extends State<AnimeListTab> {
   }
 
   Future<void> _fetchLists({bool forceRefresh = false}) async {
-    if (!forceRefresh) {
-      final cachedLists = await AnimeListRepo.getCachedLists();
-      if (cachedLists != null) {
-        _updateUIWithLists(cachedLists);
-        if (_hasFetchedThisSession) return;
-      }
-    }
-
     try {
-      final userId = await AnimeListRepo.getUserId();
+      final userId = await AnimeListService.getUserId();
       if (userId == null) {
         if (mounted && _lists.isEmpty) {
           setState(() {
@@ -110,7 +103,24 @@ class _AnimeListTabState extends State<AnimeListTab> {
         return;
       }
 
-      final freshLists = await AnimeListRepo.fetchNetworkLists(userId);
+      if (!forceRefresh) {
+        final lists = await AnimeListService.getLists(userId);
+        _updateUIWithLists(lists);
+
+        final prefs = await SharedPreferences.getInstance();
+        final hasCache = prefs.containsKey('cached_anime_lists');
+        if (hasCache) {
+          if (_hasFetchedThisSession) return;
+        } else {
+          _hasFetchedThisSession = true;
+          return;
+        }
+      }
+
+      final freshLists = await AnimeListService.getLists(
+        userId,
+        forceRefresh: true,
+      );
       _hasFetchedThisSession = true;
       _updateUIWithLists(freshLists);
     } catch (e) {
@@ -150,7 +160,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
     int mediaId,
     AnimeOptionsResult result,
   ) async {
-    final updatedLists = await AnimeListRepo.updateEntryInLists(
+    final updatedLists = await AnimeListService.updateEntryInLists(
       _lists,
       mediaId,
       result,

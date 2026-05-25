@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 import 'app_network_image.dart';
 import 'app_badges.dart';
-import '../services/auth_service.dart';
-import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
 import '../utils/app_options.dart';
-import '../proto/api.pb.dart';
+import '../services/anime_list_service.dart';
 
 /// Builds a badge showing repeat count
 Widget _buildRepeatBadge(int repeat) {
@@ -214,13 +212,11 @@ class _AnimeListCardState extends State<AnimeListCard> {
     });
 
     try {
-      final token = await AuthService.getRawToken() ?? '';
-      final req = SaveMediaListEntryRequest(
+      await AnimeListService.saveEntry(
         mediaId: mediaId,
         progress: newProgress,
         status: newStatus.toString(),
       );
-      await MediaListApi.saveMediaListEntry(req, token);
       widget.onEntryUpdated?.call(
         mediaId,
         AnimeOptionsResult(

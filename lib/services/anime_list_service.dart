@@ -4,14 +4,16 @@ import '../api/user_api.dart';
 import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
+import '../models/media_list_entry.dart';
 import '../utils/app_options.dart';
 import 'auth_service.dart';
 import '../proto/media_list.pb.dart' as pb_list;
 import '../proto/viewer.pb.dart' as pb_viewer;
+import '../proto/api.pb.dart';
 import '../models/viewer.dart';
 
-/// Repository for managing user anime list data and caches
-class AnimeListRepo {
+/// Service for managing user anime list data and caches.
+class AnimeListService {
   static const String _cacheKeyLists = 'cached_anime_lists';
   static const String _cacheKeyViewer = 'cached_viewer';
 
@@ -47,8 +49,20 @@ class AnimeListRepo {
     }
   }
 
-  /// Retrieves the user anime lists from local disk cache
-  static Future<List<MediaList>?> getCachedLists() async {
+  /// Retrieves the user anime lists from cache or network.
+  static Future<List<MediaList>> getLists(
+    int userId, {
+    bool forceRefresh = false,
+  }) async {
+    if (!forceRefresh) {
+      final cached = await _getListsFromDiskCache();
+      if (cached != null) return cached;
+    }
+    return await _fetchNetworkLists(userId);
+  }
+
+  /// Retrieves the user anime lists from local disk cache.
+  static Future<List<MediaList>?> _getListsFromDiskCache() async {
     final prefs = await SharedPreferences.getInstance();
     final cachedJson = prefs.getString(_cacheKeyLists);
     if (cachedJson != null) {
@@ -67,8 +81,8 @@ class AnimeListRepo {
     return null;
   }
 
-  /// Fetches fresh user anime lists from the network
-  static Future<List<MediaList>> fetchNetworkLists(int userId) async {
+  /// Fetches fresh user anime lists from the network.
+  static Future<List<MediaList>> _fetchNetworkLists(int userId) async {
     final token = await AuthService.getRawToken() ?? '';
     final response = await MediaListApi.fetchMediaList(userId, token);
     final rawLists = response.lists;
@@ -137,7 +151,7 @@ class AnimeListRepo {
     return processedLists;
   }
 
-  /// Updates or deletes an entry in the provided anime lists
+  /// Updates or deletes an entry in the provided anime lists.
   static Future<List<MediaList>> updateEntryInLists(
     List<MediaList> currentLists,
     int mediaId,
@@ -248,5 +262,46 @@ class AnimeListRepo {
     );
 
     return updatedLists;
+  }
+
+  /// Saves or updates an anime list entry.
+  static Future<MediaListEntry> saveEntry({
+    required int mediaId,
+    String? status,
+    int? progress,
+    double? score,
+    DateTime? startDate,
+    DateTime? finishDate,
+  }) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = SaveMediaListEntryRequest(mediaId: mediaId);
+
+    if (status != null) req.status = status;
+    if (progress != null) req.progress = progress;
+    if (score != null) req.score = score;
+
+    if (startDate != null) {
+      req.startedAt = FuzzyDateInput(
+        year: startDate.year,
+        month: startDate.month,
+        day: startDate.day,
+      );
+    }
+    if (finishDate != null) {
+      req.completedAt = FuzzyDateInput(
+        year: finishDate.year,
+        month: finishDate.month,
+        day: finishDate.day,
+      );
+    }
+
+    return await MediaListApi.saveMediaListEntry(req, token);
+  }
+
+  /// Deletes an anime list entry by its entry ID.
+  static Future<void> deleteEntry(int entryId) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = DeleteMediaListEntryRequest(entryId: entryId);
+    await MediaListApi.deleteMediaListEntry(req, token);
   }
 }

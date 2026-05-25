@@ -4,12 +4,10 @@ import './anime_options/date_editor.dart';
 import './anime_options/score_slider.dart';
 import './anime_options/progress_editor.dart';
 import './anime_options/status_selector.dart';
-import '../services/auth_service.dart';
-import '../api/media_list_api.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
 import '../utils/app_options.dart';
-import '../proto/api.pb.dart';
+import '../services/anime_list_service.dart';
 
 /// A bottom sheet for editing anime list entry options
 class AnimeOptionsSheet extends StatefulWidget {
@@ -280,9 +278,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
 
     setState(() => _isSaving = true);
     try {
-      final token = await AuthService.getRawToken() ?? '';
-      final req = DeleteMediaListEntryRequest(entryId: entryId);
-      await MediaListApi.deleteMediaListEntry(req, token);
+      await AnimeListService.deleteEntry(entryId);
 
       if (mounted) {
         Navigator.of(context).pop(const AnimeOptionsResult(deleted: true));
@@ -318,29 +314,14 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
 
     try {
       final finalStatus = _status ?? MediaListStatus.current;
-      final token = await AuthService.getRawToken() ?? '';
-      final req = SaveMediaListEntryRequest(mediaId: mediaId);
-
-      if (finalStatus != _initialStatus) req.status = finalStatus.toString();
-      if (_progress != _initialProgress) req.progress = _progress;
-      if (_score != _initialScore) req.score = _score;
-
-      if (_startDate != _initialStartDate) {
-        req.startedAt = FuzzyDateInput(
-          year: _startDate?.year,
-          month: _startDate?.month,
-          day: _startDate?.day,
-        );
-      }
-      if (_finishDate != _initialFinishDate) {
-        req.completedAt = FuzzyDateInput(
-          year: _finishDate?.year,
-          month: _finishDate?.month,
-          day: _finishDate?.day,
-        );
-      }
-
-      final response = await MediaListApi.saveMediaListEntry(req, token);
+      final response = await AnimeListService.saveEntry(
+        mediaId: mediaId,
+        status: finalStatus != _initialStatus ? finalStatus.toString() : null,
+        progress: _progress != _initialProgress ? _progress : null,
+        score: _score != _initialScore ? _score : null,
+        startDate: _startDate != _initialStartDate ? _startDate : null,
+        finishDate: _finishDate != _initialFinishDate ? _finishDate : null,
+      );
 
       if (mounted) {
         Navigator.of(context).pop(
