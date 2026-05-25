@@ -30,6 +30,7 @@ func (m *Media) ToProto() *pb.Media {
 		MeanScore:         m.MeanScore,
 		Favourites:        m.Favourites,
 		Synonyms:          m.Synonyms,
+		Reviews:           m.Reviews.ToProto(),
 	}
 
 	for _, tag := range m.Tags {
@@ -73,6 +74,7 @@ type Media struct {
 	Rankings          []MediaRank              `json:"rankings"`
 	Stats             MediaStats               `json:"stats"`
 	Trends            MediaTrendConnection     `json:"trends"`
+	Reviews           ReviewConnection         `json:"reviews"`
 	MeanScore         *int32                   `json:"meanScore"`
 	Favourites        *int32                   `json:"favourites"`
 	Synonyms          []string                 `json:"synonyms"`
