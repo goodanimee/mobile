@@ -81,6 +81,30 @@ class ReviewNode {
     return pbObj;
   }
 
+  /// Creates a copy of this review node with the given fields replaced.
+  ReviewNode copyWith({
+    int? id,
+    int? score,
+    int? rating,
+    int? ratingAmount,
+    String? summary,
+    ReviewUserRating? userRating,
+    Viewer? user,
+    String? body,
+  }) {
+    return ReviewNode(
+      id: id ?? this.id,
+      score: score ?? this.score,
+      rating: rating ?? this.rating,
+      ratingAmount: ratingAmount ?? this.ratingAmount,
+      summary: summary ?? this.summary,
+      userRating: userRating ?? this.userRating,
+      user: user ?? this.user,
+      body: body ?? this.body,
+    );
+  }
+
+
   static ReviewUserRating _mapUserRating(pb.ReviewUserRating rating) {
     switch (rating) {
       case pb.ReviewUserRating.REVIEW_USER_RATING_UP_VOTE:

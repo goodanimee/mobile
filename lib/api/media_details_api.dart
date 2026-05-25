@@ -119,6 +119,24 @@ typedef _ToggleFavouriteAnimeDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for rating media reviews
+typedef _RateReviewC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for rating media reviews
+typedef _RateReviewDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// API class for media-related operations
 class MediaApi {
   static late _FetchMediaDetailsDart _fetchMediaDetails;
@@ -127,6 +145,7 @@ class MediaApi {
   static late _FetchMediaRecommendationsDart _fetchMediaRecommendations;
   static late _FetchMediaReviewsDart _fetchMediaReviews;
   static late _ToggleFavouriteAnimeDart _toggleFavouriteAnime;
+  static late _RateReviewDart _rateReview;
   static bool _initialized = false;
 
   static void _init() {
@@ -158,8 +177,13 @@ class MediaApi {
         .lookupFunction<_ToggleFavouriteAnimeC, _ToggleFavouriteAnimeDart>(
           'ToggleFavouriteAnime',
         );
+    _rateReview = FfiCore.lib
+        .lookupFunction<_RateReviewC, _RateReviewDart>(
+          'RateReview',
+        );
     _initialized = true;
   }
+
 
   /// Fetches full anime details by using a media ID
   static Future<Media> fetchMediaDetails(
@@ -342,4 +366,33 @@ class MediaApi {
       }
     });
   }
+
+  /// Rates a media review.
+  static Future<ReviewNode> rateReview(
+    RateReviewRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      _init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = FfiCore.executeNativeCall(
+          (outLenPtr) =>
+              _rateReview(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
+        );
+        final response = RateReviewResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return ReviewNode.fromProto(response.review);
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
 }
+

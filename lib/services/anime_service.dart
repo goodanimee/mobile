@@ -10,6 +10,7 @@ import '../models/media_review.dart';
 import '../models/media_staff.dart';
 import '../proto/api.pb.dart';
 import '../proto/media.pb.dart' as pb_media;
+import '../proto/media_review.pb.dart' as pb_review;
 import '../utils/utils.dart';
 import 'auth_service.dart';
 
@@ -113,6 +114,29 @@ class AnimeService {
     );
     return MediaApi.fetchMediaReviews(req, token);
   }
+
+  /// Rates a review on AniList.
+  static Future<ReviewNode> rateReview(int reviewId, ReviewUserRating rating) async {
+    final token = await AuthService.getRawToken() ?? '';
+    pb_review.ReviewUserRating protoRating;
+    switch (rating) {
+      case ReviewUserRating.upVote:
+        protoRating = pb_review.ReviewUserRating.REVIEW_USER_RATING_UP_VOTE;
+        break;
+      case ReviewUserRating.downVote:
+        protoRating = pb_review.ReviewUserRating.REVIEW_USER_RATING_DOWN_VOTE;
+        break;
+      case ReviewUserRating.noVote:
+        protoRating = pb_review.ReviewUserRating.REVIEW_USER_RATING_NO_VOTE_UNSPECIFIED;
+        break;
+    }
+    final req = RateReviewRequest(
+      reviewId: reviewId,
+      rating: protoRating,
+    );
+    return MediaApi.rateReview(req, token);
+  }
+
 
   static Future<void> _saveToDiskCache(
     SharedPreferences prefs,

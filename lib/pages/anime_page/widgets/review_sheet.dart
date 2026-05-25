@@ -3,28 +3,91 @@ import 'package:flutter/material.dart';
 import '../../../components/app_network_image.dart';
 import '../../../components/html_description.dart';
 import '../../../models/media_review.dart';
+import '../../../services/anime_service.dart';
 import '../../../theme/theme.dart';
 
 /// A bottom sheet displaying details about a review
-class ReviewSheet extends StatelessWidget {
+class ReviewSheet extends StatefulWidget {
   /// The review data to display
   final ReviewNode review;
 
   /// The media/anime title
   final String mediaTitle;
 
+  /// Callback when the review is updated
+  final ValueChanged<ReviewNode>? onReviewUpdated;
+
   /// Creates a review sheet
   const ReviewSheet({
     super.key,
     required this.review,
     required this.mediaTitle,
+    this.onReviewUpdated,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final bool isUpVoted = review.userRating == ReviewUserRating.upVote;
-    final bool isDownVoted = review.userRating == ReviewUserRating.downVote;
+  State<ReviewSheet> createState() => _ReviewSheetState();
+}
 
+class _ReviewSheetState extends State<ReviewSheet> {
+  late ReviewUserRating _userRating;
+  late int _rating;
+  late int _ratingAmount;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _userRating = widget.review.userRating;
+    _rating = widget.review.rating;
+    _ratingAmount = widget.review.ratingAmount;
+  }
+
+  Future<void> _onVoteTapped(ReviewUserRating targetVote) async {
+    if (_isLoading) return;
+    ReviewUserRating finalVote;
+    if (targetVote == ReviewUserRating.upVote) {
+      finalVote = _userRating == ReviewUserRating.upVote
+          ? ReviewUserRating.noVote
+          : ReviewUserRating.upVote;
+    } else {
+      finalVote = _userRating == ReviewUserRating.downVote
+          ? ReviewUserRating.noVote
+          : ReviewUserRating.downVote;
+    }
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final responseReview = await AnimeService.rateReview(
+        widget.review.id,
+        finalVote,
+      );
+      if (mounted) {
+        setState(() {
+          _userRating = responseReview.userRating;
+          _rating = responseReview.rating;
+          _ratingAmount = responseReview.ratingAmount;
+        });
+        final updatedReview = widget.review.copyWith(
+          rating: responseReview.rating,
+          ratingAmount: responseReview.ratingAmount,
+          userRating: responseReview.userRating,
+        );
+        widget.onReviewUpdated?.call(updatedReview);
+      }
+    } catch (_) {
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       minChildSize: 0.5,
       maxChildSize: 0.95,
@@ -63,10 +126,10 @@ class ReviewSheet extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '$mediaTitle review',
+                        '${widget.mediaTitle} review',
                         style: const TextStyle(
                           color: textPrimary,
-                          fontSize: 24,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -76,7 +139,7 @@ class ReviewSheet extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(15),
                             child: AppNetworkImage(
-                              imageUrl: review.user?.avatarMedium ?? '',
+                              imageUrl: widget.review.user?.avatarMedium ?? '',
                               width: 30,
                               height: 30,
                               fallbackIcon: Icons.person,
@@ -86,12 +149,12 @@ class ReviewSheet extends StatelessWidget {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              review.user?.name ?? 'Anonymous',
+                              widget.review.user?.name ?? 'Anonymous',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: textSecondary,
-                                fontSize: 17,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -112,15 +175,17 @@ class ReviewSheet extends StatelessWidget {
                               children: [
                                 const Icon(
                                   Icons.star_rounded,
-                                  size: 16,
+                                  size: 18,
                                   color: scoreStar,
                                 ),
                                 const SizedBox(width: 2),
                                 Text(
-                                  (review.score / 10.0).toStringAsFixed(1),
+                                  (widget.review.score / 10.0).toStringAsFixed(
+                                    1,
+                                  ),
                                   style: const TextStyle(
                                     color: textPrimary,
-                                    fontSize: 14,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -128,25 +193,77 @@ class ReviewSheet extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 16),
+                          _isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => _onVoteTapped(
+                                        ReviewUserRating.upVote,
+                                      ),
+                                      behavior: HitTestBehavior.opaque,
+                                      child: Icon(
+                                        _userRating == ReviewUserRating.upVote
+                                            ? Icons.thumb_up_rounded
+                                            : Icons.thumb_up_outlined,
+                                        color:
+                                            _userRating ==
+                                                ReviewUserRating.upVote
+                                            ? Colors.white
+                                            : textHint,
+                                        size: 26,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 14),
+                                    GestureDetector(
+                                      onTap: () => _onVoteTapped(
+                                        ReviewUserRating.downVote,
+                                      ),
+                                      behavior: HitTestBehavior.opaque,
+                                      child: Icon(
+                                        _userRating == ReviewUserRating.downVote
+                                            ? Icons.thumb_down_rounded
+                                            : Icons.thumb_down_outlined,
+                                        color:
+                                            _userRating ==
+                                                ReviewUserRating.downVote
+                                            ? Colors.white
+                                            : textHint,
+                                        size: 26,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
                           Icon(
-                            isUpVoted
-                                ? Icons.thumb_up_rounded
-                                : Icons.thumb_up_outlined,
-                            color: isUpVoted ? Colors.white : textHint,
-                            size: 22,
+                            Icons.thumb_up_outlined,
+                            color: textHint.withValues(alpha: 0.6),
+                            size: 18,
                           ),
-                          const SizedBox(width: 14),
-                          Icon(
-                            isDownVoted
-                                ? Icons.thumb_down_rounded
-                                : Icons.thumb_down_outlined,
-                            color: isDownVoted ? Colors.white : textHint,
-                            size: 22,
+                          const SizedBox(width: 6),
+                          Text(
+                            '$_rating of $_ratingAmount people upvoted this review',
+                            style: const TextStyle(
+                              color: textHint,
+                              fontSize: 16,
+                            ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 24),
-                      HtmlDescription(html: review.body),
+                      HtmlDescription(html: widget.review.body),
                       const SizedBox(height: 40),
                     ],
                   ),

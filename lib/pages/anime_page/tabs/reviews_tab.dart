@@ -221,6 +221,11 @@ class _AnimeReviewsTabState extends State<AnimeReviewsTab> {
           builder: (context) => ReviewSheet(
             review: review,
             mediaTitle: widget.mediaName,
+            onReviewUpdated: (updatedReview) {
+              setState(() {
+                _reviews[index] = updatedReview;
+              });
+            },
           ),
         );
       },
