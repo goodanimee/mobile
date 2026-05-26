@@ -404,7 +404,10 @@ class _MediaPageState extends State<MediaPage> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  EditEntryFab(onTap: _showItemOptions),
+                  EditEntryFab(
+                    onTap: _showItemOptions,
+                    isEdit: media.mediaListEntry != null,
+                  ),
                   const SizedBox(height: 8),
                   FloatingNav(
                     selectedIndex: -1,

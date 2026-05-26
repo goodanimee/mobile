@@ -6,8 +6,11 @@ class EditEntryFab extends StatelessWidget {
   /// Callback when the FAB is tapped
   final VoidCallback onTap;
 
+  /// Whether we are editing an existing entry or adding a new one
+  final bool isEdit;
+
   /// Creates an edit entry floating action button
-  const EditEntryFab({super.key, required this.onTap});
+  const EditEntryFab({super.key, required this.onTap, this.isEdit = true});
 
   @override
   /// Builds the FAB widget
@@ -23,8 +26,12 @@ class EditEntryFab extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         behavior: HitTestBehavior.opaque,
-        child: const Center(
-          child: Icon(Icons.edit_rounded, color: textPrimary, size: 22),
+        child: Center(
+          child: Icon(
+            isEdit ? Icons.edit_rounded : Icons.add_rounded,
+            color: textPrimary,
+            size: 22,
+          ),
         ),
       ),
     );
