@@ -49,6 +49,7 @@ const MediaListEntry$json = {
       '6': '.goodanime.FuzzyDate',
       '10': 'completedAt'
     },
+    {'1': 'progress_volumes', '3': 8, '4': 1, '5': 5, '10': 'progressVolumes'},
   ],
   '8': [
     {'1': '_status'},
@@ -61,5 +62,5 @@ final $typed_data.Uint8List mediaListEntryDescriptor = $convert.base64Decode(
     'FuaW1lLk1lZGlhTGlzdFN0YXR1c0gAUgZzdGF0dXOIAQESGgoIcHJvZ3Jlc3MYAyABKAVSCHBy'
     'b2dyZXNzEhQKBXNjb3JlGAQgASgBUgVzY29yZRIWCgZyZXBlYXQYBSABKAVSBnJlcGVhdBIzCg'
     'pzdGFydGVkX2F0GAYgASgLMhQuZ29vZGFuaW1lLkZ1enp5RGF0ZVIJc3RhcnRlZEF0EjcKDGNv'
-    'bXBsZXRlZF9hdBgHIAEoCzIULmdvb2RhbmltZS5GdXp6eURhdGVSC2NvbXBsZXRlZEF0QgkKB1'
-    '9zdGF0dXM=');
+    'bXBsZXRlZF9hdBgHIAEoCzIULmdvb2RhbmltZS5GdXp6eURhdGVSC2NvbXBsZXRlZEF0EikKEH'
+    'Byb2dyZXNzX3ZvbHVtZXMYCCABKAVSD3Byb2dyZXNzVm9sdW1lc0IJCgdfc3RhdHVz');

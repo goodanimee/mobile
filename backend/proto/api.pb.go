@@ -246,15 +246,17 @@ func (x *FuzzyDateInput) GetDay() int32 {
 }
 
 type SaveMediaListEntryRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	MediaId       int32                  `protobuf:"varint,1,opt,name=media_id,json=mediaId,proto3" json:"media_id,omitempty"`
-	Progress      *int32                 `protobuf:"varint,2,opt,name=progress,proto3,oneof" json:"progress,omitempty"`
-	Status        *string                `protobuf:"bytes,3,opt,name=status,proto3,oneof" json:"status,omitempty"`
-	Score         *float64               `protobuf:"fixed64,4,opt,name=score,proto3,oneof" json:"score,omitempty"`
-	StartedAt     *FuzzyDateInput        `protobuf:"bytes,5,opt,name=started_at,json=startedAt,proto3,oneof" json:"started_at,omitempty"`
-	CompletedAt   *FuzzyDateInput        `protobuf:"bytes,6,opt,name=completed_at,json=completedAt,proto3,oneof" json:"completed_at,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	MediaId         int32                  `protobuf:"varint,1,opt,name=media_id,json=mediaId,proto3" json:"media_id,omitempty"`
+	Progress        *int32                 `protobuf:"varint,2,opt,name=progress,proto3,oneof" json:"progress,omitempty"`
+	Status          *string                `protobuf:"bytes,3,opt,name=status,proto3,oneof" json:"status,omitempty"`
+	Score           *float64               `protobuf:"fixed64,4,opt,name=score,proto3,oneof" json:"score,omitempty"`
+	StartedAt       *FuzzyDateInput        `protobuf:"bytes,5,opt,name=started_at,json=startedAt,proto3,oneof" json:"started_at,omitempty"`
+	CompletedAt     *FuzzyDateInput        `protobuf:"bytes,6,opt,name=completed_at,json=completedAt,proto3,oneof" json:"completed_at,omitempty"`
+	ProgressVolumes *int32                 `protobuf:"varint,7,opt,name=progress_volumes,json=progressVolumes,proto3,oneof" json:"progress_volumes,omitempty"`
+	Repeat          *int32                 `protobuf:"varint,8,opt,name=repeat,proto3,oneof" json:"repeat,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *SaveMediaListEntryRequest) Reset() {
@@ -327,6 +329,20 @@ func (x *SaveMediaListEntryRequest) GetCompletedAt() *FuzzyDateInput {
 		return x.CompletedAt
 	}
 	return nil
+}
+
+func (x *SaveMediaListEntryRequest) GetProgressVolumes() int32 {
+	if x != nil && x.ProgressVolumes != nil {
+		return *x.ProgressVolumes
+	}
+	return 0
+}
+
+func (x *SaveMediaListEntryRequest) GetRepeat() int32 {
+	if x != nil && x.Repeat != nil {
+		return *x.Repeat
+	}
+	return 0
 }
 
 type SaveMediaListEntryResponse struct {
@@ -1588,7 +1604,7 @@ const file_api_proto_rawDesc = "" +
 	"\x03day\x18\x03 \x01(\x05H\x02R\x03day\x88\x01\x01B\a\n" +
 	"\x05_yearB\b\n" +
 	"\x06_monthB\x06\n" +
-	"\x04_day\"\xd3\x02\n" +
+	"\x04_day\"\xc0\x03\n" +
 	"\x19SaveMediaListEntryRequest\x12\x19\n" +
 	"\bmedia_id\x18\x01 \x01(\x05R\amediaId\x12\x1f\n" +
 	"\bprogress\x18\x02 \x01(\x05H\x00R\bprogress\x88\x01\x01\x12\x1b\n" +
@@ -1596,12 +1612,16 @@ const file_api_proto_rawDesc = "" +
 	"\x05score\x18\x04 \x01(\x01H\x02R\x05score\x88\x01\x01\x12=\n" +
 	"\n" +
 	"started_at\x18\x05 \x01(\v2\x19.goodanime.FuzzyDateInputH\x03R\tstartedAt\x88\x01\x01\x12A\n" +
-	"\fcompleted_at\x18\x06 \x01(\v2\x19.goodanime.FuzzyDateInputH\x04R\vcompletedAt\x88\x01\x01B\v\n" +
+	"\fcompleted_at\x18\x06 \x01(\v2\x19.goodanime.FuzzyDateInputH\x04R\vcompletedAt\x88\x01\x01\x12.\n" +
+	"\x10progress_volumes\x18\a \x01(\x05H\x05R\x0fprogressVolumes\x88\x01\x01\x12\x1b\n" +
+	"\x06repeat\x18\b \x01(\x05H\x06R\x06repeat\x88\x01\x01B\v\n" +
 	"\t_progressB\t\n" +
 	"\a_statusB\b\n" +
 	"\x06_scoreB\r\n" +
 	"\v_started_atB\x0f\n" +
-	"\r_completed_at\"c\n" +
+	"\r_completed_atB\x13\n" +
+	"\x11_progress_volumesB\t\n" +
+	"\a_repeat\"c\n" +
 	"\x1aSaveMediaListEntryResponse\x12/\n" +
 	"\x05entry\x18\x01 \x01(\v2\x19.goodanime.MediaListEntryR\x05entry\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05error\"5\n" +

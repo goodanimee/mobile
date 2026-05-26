@@ -129,6 +129,16 @@ const SaveMediaListEntryRequest$json = {
       '10': 'completedAt',
       '17': true
     },
+    {
+      '1': 'progress_volumes',
+      '3': 7,
+      '4': 1,
+      '5': 5,
+      '9': 5,
+      '10': 'progressVolumes',
+      '17': true
+    },
+    {'1': 'repeat', '3': 8, '4': 1, '5': 5, '9': 6, '10': 'repeat', '17': true},
   ],
   '8': [
     {'1': '_progress'},
@@ -136,6 +146,8 @@ const SaveMediaListEntryRequest$json = {
     {'1': '_score'},
     {'1': '_started_at'},
     {'1': '_completed_at'},
+    {'1': '_progress_volumes'},
+    {'1': '_repeat'},
   ],
 };
 
@@ -145,9 +157,11 @@ final $typed_data.Uint8List saveMediaListEntryRequestDescriptor = $convert.base6
     '8KCHByb2dyZXNzGAIgASgFSABSCHByb2dyZXNziAEBEhsKBnN0YXR1cxgDIAEoCUgBUgZzdGF0'
     'dXOIAQESGQoFc2NvcmUYBCABKAFIAlIFc2NvcmWIAQESPQoKc3RhcnRlZF9hdBgFIAEoCzIZLm'
     'dvb2RhbmltZS5GdXp6eURhdGVJbnB1dEgDUglzdGFydGVkQXSIAQESQQoMY29tcGxldGVkX2F0'
-    'GAYgASgLMhkuZ29vZGFuaW1lLkZ1enp5RGF0ZUlucHV0SARSC2NvbXBsZXRlZEF0iAEBQgsKCV'
-    '9wcm9ncmVzc0IJCgdfc3RhdHVzQggKBl9zY29yZUINCgtfc3RhcnRlZF9hdEIPCg1fY29tcGxl'
-    'dGVkX2F0');
+    'GAYgASgLMhkuZ29vZGFuaW1lLkZ1enp5RGF0ZUlucHV0SARSC2NvbXBsZXRlZEF0iAEBEi4KEH'
+    'Byb2dyZXNzX3ZvbHVtZXMYByABKAVIBVIPcHJvZ3Jlc3NWb2x1bWVziAEBEhsKBnJlcGVhdBgI'
+    'IAEoBUgGUgZyZXBlYXSIAQFCCwoJX3Byb2dyZXNzQgkKB19zdGF0dXNCCAoGX3Njb3JlQg0KC1'
+    '9zdGFydGVkX2F0Qg8KDV9jb21wbGV0ZWRfYXRCEwoRX3Byb2dyZXNzX3ZvbHVtZXNCCQoHX3Jl'
+    'cGVhdA==');
 
 @$core.Deprecated('Use saveMediaListEntryResponseDescriptor instead')
 const SaveMediaListEntryResponse$json = {

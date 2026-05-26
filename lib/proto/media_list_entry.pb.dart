@@ -27,6 +27,7 @@ class MediaListEntry extends $pb.GeneratedMessage {
     $core.int? repeat,
     $0.FuzzyDate? startedAt,
     $0.FuzzyDate? completedAt,
+    $core.int? progressVolumes,
   }) {
     final result = create();
     if (id != null) result.id = id;
@@ -36,6 +37,7 @@ class MediaListEntry extends $pb.GeneratedMessage {
     if (repeat != null) result.repeat = repeat;
     if (startedAt != null) result.startedAt = startedAt;
     if (completedAt != null) result.completedAt = completedAt;
+    if (progressVolumes != null) result.progressVolumes = progressVolumes;
     return result;
   }
 
@@ -62,6 +64,7 @@ class MediaListEntry extends $pb.GeneratedMessage {
         subBuilder: $0.FuzzyDate.create)
     ..aOM<$0.FuzzyDate>(7, _omitFieldNames ? '' : 'completedAt',
         subBuilder: $0.FuzzyDate.create)
+    ..aI(8, _omitFieldNames ? '' : 'progressVolumes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -149,6 +152,15 @@ class MediaListEntry extends $pb.GeneratedMessage {
   void clearCompletedAt() => $_clearField(7);
   @$pb.TagNumber(7)
   $0.FuzzyDate ensureCompletedAt() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  $core.int get progressVolumes => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set progressVolumes($core.int value) => $_setSignedInt32(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasProgressVolumes() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearProgressVolumes() => $_clearField(8);
 }
 
 const $core.bool _omitFieldNames =

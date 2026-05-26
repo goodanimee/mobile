@@ -14,4 +14,5 @@ message MediaListEntry {
   int32 repeat = 5;
   FuzzyDate started_at = 6;
   FuzzyDate completed_at = 7;
+  int32 progress_volumes = 8;
 }
