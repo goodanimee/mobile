@@ -36,8 +36,11 @@ var mediaReviewsQuery string
 //go:embed graphql/media_activities.graphql
 var mediaActivitiesQuery string
 
-//go:embed graphql/toggle_favourite.graphql
-var mediaToggleFavouriteMutation string
+//go:embed graphql/toggle_favourite_anime.graphql
+var toggleFavouriteAnimeMutation string
+
+//go:embed graphql/toggle_favourite_manga.graphql
+var toggleFavouriteMangaMutation string
 
 //go:embed graphql/toggle_activity_like.graphql
 var toggleActivityLikeMutation string
@@ -260,7 +263,7 @@ func ToggleFavouriteAnime(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 
 	variables := map[string]any{"animeId": req.AnimeId}
 
-	respBody, err := rawGraphqlRequest(tk, mediaToggleFavouriteMutation, variables)
+	respBody, err := rawGraphqlRequest(tk, toggleFavouriteAnimeMutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
@@ -278,13 +281,57 @@ func ToggleFavouriteAnime(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 
 	s := apiResp.Data.ToggleFavourite
 
+	pbResponse.AnimeId = req.AnimeId
 	if len(s.Anime.Nodes) == 0 {
-		pbResponse.Error = "Empty response from AniList"
+		pbResponse.IsFavourite = false
+	} else {
+		pbResponse.IsFavourite = s.Anime.Nodes[0].IsFavourite
+	}
+
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// ToggleFavouriteManga toggles the favourite status of a manga on AniList.
+//
+//export ToggleFavouriteManga
+func ToggleFavouriteManga(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.ToggleFavouriteMangaResponse{}
+
+	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+	var req pb.ToggleFavouriteMangaRequest
+	if err := proto.Unmarshal(reqBytes, &req); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	pbResponse.AnimeId = req.AnimeId
-	pbResponse.IsFavourite = s.Anime.Nodes[0].IsFavourite
+	variables := map[string]any{"mangaId": req.MangaId}
+
+	respBody, err := rawGraphqlRequest(tk, toggleFavouriteMangaMutation, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	var apiResp models.GraphQLResponse[models.ToggleFavouriteMangaDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	s := apiResp.Data.ToggleFavourite
+
+	pbResponse.MangaId = req.MangaId
+	if len(s.Manga.Nodes) == 0 {
+		pbResponse.IsFavourite = false
+	} else {
+		pbResponse.IsFavourite = s.Manga.Nodes[0].IsFavourite
+	}
+
 	return marshalAndReturn(pbResponse, outLen)
 }
 
