@@ -7,9 +7,9 @@ import '../../../components/loading_indicator.dart';
 import '../../../models/media_staff.dart';
 import '../../../services/media_service.dart';
 
-/// A tab displaying the production staff for an anime
+/// A tab displaying the production staff for a media item
 class MediaStaffTab extends StatefulWidget {
-  /// The media ID of the anime
+  /// The ID of the media
   final int mediaId;
 
   /// Optional scroll controller for shared scrolling
@@ -34,7 +34,7 @@ class MediaStaffTab extends StatefulWidget {
   State<MediaStaffTab> createState() => _MediaStaffTabState();
 }
 
-/// State for AnimeStaffTab
+/// State for MediaStaffTab
 class _MediaStaffTabState extends State<MediaStaffTab> {
   bool _isLoading = true;
   bool _isFetchingMore = false;

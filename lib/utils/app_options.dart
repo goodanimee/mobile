@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../components/media_options_sheet.dart';
 import '../models/media_list.dart';
 
-/// The result from the anime options sheet
+/// The result from the media options sheet
 class MediaOptionsResult {
   /// Whether the entry was deleted
   final bool deleted;
@@ -14,7 +14,7 @@ class MediaOptionsResult {
   const MediaOptionsResult({this.deleted = false, this.entry});
 }
 
-/// Shows the anime options bottom sheet
+/// Shows the media options bottom sheet
 Future<MediaOptionsResult?> showMediaOptions(
   BuildContext context,
   MediaListEntryWithMedia entry,

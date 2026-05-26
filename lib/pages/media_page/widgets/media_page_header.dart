@@ -4,16 +4,16 @@ import '../../../components/app_network_image.dart';
 import '../../../models/media.dart';
 import '../../../theme/theme.dart';
 
-/// Header component for the anime details page
+/// Header component for the media details page
 class MediaPageHeader extends StatelessWidget {
-  /// The anime media data
+  /// The media data
   final Media media;
 
-  /// Creates an anime page header
+  /// Creates a media page header
   const MediaPageHeader({super.key, required this.media});
 
   @override
-  /// Builds the anime page header widget
+  /// Builds the media page header widget
   Widget build(BuildContext context) {
     final title = media.title.userPreferred.isNotEmpty
         ? media.title.userPreferred

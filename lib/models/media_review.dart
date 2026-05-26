@@ -19,7 +19,7 @@ class ReviewNode {
   /// Review ID
   final int id;
 
-  /// Score given to the anime
+  /// Score given to the media
   final int score;
 
   /// Upvote count

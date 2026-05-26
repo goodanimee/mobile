@@ -11,9 +11,9 @@ import '../../../theme/theme.dart';
 import '../../../utils/utils.dart';
 import '../widgets/airing_countdown.dart';
 
-/// A tab displaying general information and synopsis for an anime
+/// A tab displaying general information and synopsis for a media item
 class MediaInfoTab extends StatelessWidget {
-  /// The anime media data
+  /// The media data
   final Media media;
 
   /// Whether to show spoiler-tagged tags

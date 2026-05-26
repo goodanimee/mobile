@@ -8,9 +8,9 @@ import '../../../models/media_character.dart';
 import '../../../services/media_service.dart';
 import '../../../utils/app_navigation.dart';
 
-/// A tab displaying characters and cast for an anime
+/// A tab displaying characters and cast for a media item
 class MediaCharactersTab extends StatefulWidget {
-  /// The media ID of the anime
+  /// The ID of the media
   final int mediaId;
 
   /// Optional scroll controller for shared scrolling
@@ -35,7 +35,7 @@ class MediaCharactersTab extends StatefulWidget {
   State<MediaCharactersTab> createState() => _MediaCharactersTabState();
 }
 
-/// State for AnimeCharactersTab
+/// State for MediaCharactersTab
 class _MediaCharactersTabState extends State<MediaCharactersTab> {
   bool _isLoading = true;
   bool _isFetchingMore = false;

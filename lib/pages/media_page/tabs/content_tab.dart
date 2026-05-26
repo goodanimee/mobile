@@ -8,9 +8,9 @@ import '../../../components/section_title.dart';
 import '../../../models/media.dart';
 import '../../../models/media_misc.dart';
 
-/// A tab displaying trailers and streaming episodes for an anime
+/// A tab displaying trailers and streaming episodes for a media item
 class MediaContentTab extends StatelessWidget {
-  /// The anime media data
+  /// The media data
   final Media media;
 
   /// Whether this tab is mounted within another scroll view

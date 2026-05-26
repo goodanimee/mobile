@@ -12,13 +12,13 @@ import './media_options/status_selector.dart';
 
 /// A bottom sheet for editing media list entry options
 class MediaOptionsSheet extends StatefulWidget {
-  /// The anime list entry data
+  /// The media list entry data
   final MediaListEntryWithMedia entry;
 
   /// Optional scroll controller for the sheet
   final ScrollController? scrollController;
 
-  /// Creates an anime options sheet
+  /// Creates a media options sheet
   const MediaOptionsSheet({
     super.key,
     required this.entry,
@@ -29,7 +29,7 @@ class MediaOptionsSheet extends StatefulWidget {
   State<MediaOptionsSheet> createState() => _MediaOptionsSheetState();
 }
 
-/// State for AnimeOptionsSheet
+/// State for MediaOptionsSheet
 class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
   late MediaListStatus? _status;
   late int _progress;

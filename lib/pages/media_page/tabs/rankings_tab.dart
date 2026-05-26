@@ -10,15 +10,15 @@ import '../widgets/stat_tooltip.dart';
 import '../widgets/status_distribution_bar.dart';
 import '../widgets/trend_line_chart.dart';
 
-/// A tab displaying ranking and statistical information for an anime
+/// A tab displaying ranking and statistical information for a media item
 class MediaRankingsTab extends StatefulWidget {
-  /// The anime media data
+  /// The media data
   final Media media;
 
   /// Whether this tab is nested within another scroll view
   final bool isNested;
 
-  /// Creates an anime rankings tab
+  /// Creates a media rankings tab
   const MediaRankingsTab({
     super.key,
     required this.media,
@@ -29,7 +29,7 @@ class MediaRankingsTab extends StatefulWidget {
   State<MediaRankingsTab> createState() => _MediaRankingsTabState();
 }
 
-/// State for AnimeRankingsTab
+/// State for MediaRankingsTab
 class _MediaRankingsTabState extends State<MediaRankingsTab> {
   @override
   void dispose() {

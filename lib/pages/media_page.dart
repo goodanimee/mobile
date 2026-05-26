@@ -23,12 +23,12 @@ import 'media_page/widgets/edit_entry_fab.dart';
 import 'media_page/widgets/media_page_header.dart';
 import 'media_page/widgets/sticky_header.dart';
 
-/// A page displaying detailed information about an anime
+/// A page displaying detailed information about a media item
 class MediaPage extends StatefulWidget {
-  /// The media ID of the anime to display
+  /// The ID of the media to display
   final int mediaId;
 
-  /// Creates an anime page
+  /// Creates a media page
   const MediaPage({super.key, required this.mediaId});
 
   @override
@@ -73,7 +73,7 @@ class _MediaPageState extends State<MediaPage> {
     }
   }
 
-  /// Fetches anime details from cache or network
+  /// Fetches media details from cache or network
   Future<void> _fetchMediaDetails({bool forceRefresh = false}) async {
     try {
       final data = await MediaService.getMediaDetails(
@@ -97,7 +97,7 @@ class _MediaPageState extends State<MediaPage> {
     }
   }
 
-  /// Toggles the anime's favourite status
+  /// Toggles the media's favourite status
   Future<void> _toggleFavourite() async {
     if (_mediaData == null || _isTogglingFavourite) return;
     final bool currentFav = _mediaData!.isFavourite;
@@ -133,7 +133,7 @@ class _MediaPageState extends State<MediaPage> {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
-  /// Shows the anime options bottom sheet
+  /// Shows the media options bottom sheet
   Future<void> _showItemOptions() async {
     if (_mediaData == null) return;
 

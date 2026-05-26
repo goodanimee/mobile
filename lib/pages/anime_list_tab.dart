@@ -170,7 +170,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
     _updateUIWithLists(updatedLists);
   }
 
-  /// Shows the anime options bottom sheet
+  /// Shows the media options bottom sheet
   Future<void> _showItemOptions(
     BuildContext context,
     MediaListEntryWithMedia entry,

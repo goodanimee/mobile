@@ -108,7 +108,7 @@ class MediaListApi {
     });
   }
 
-  /// Saves or updates an anime list entry
+  /// Saves or updates a media list entry
   static Future<MediaListEntry> saveMediaListEntry(
     SaveMediaListEntryRequest request,
     String token,

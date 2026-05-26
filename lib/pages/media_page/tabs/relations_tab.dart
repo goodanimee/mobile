@@ -12,7 +12,7 @@ import '../../../utils/utils.dart';
 
 /// Tab displaying related and recommended media
 class MediaRelationsTab extends StatefulWidget {
-  /// The media ID of the anime
+  /// The ID of the media
   final int mediaId;
 
   /// Initial data for relations

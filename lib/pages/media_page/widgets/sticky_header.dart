@@ -6,15 +6,15 @@ import 'package:share_plus/share_plus.dart';
 import '../../../models/media.dart';
 import '../../../theme/theme.dart';
 
-/// A sticky app bar header widget for the anime details page
+/// A sticky app bar header widget for the media details page
 class StickyHeader extends StatelessWidget {
-  /// The anime media object
+  /// The media object
   final Media media;
 
   /// Whether the sticky bar should be fully visible
   final bool showStickyBar;
 
-  /// Whether this anime is marked as favourite
+  /// Whether this media is marked as favourite
   final bool isFavourite;
 
   /// Whether the favourite toggle is currently loading

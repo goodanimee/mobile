@@ -6,7 +6,7 @@ import '../../../utils/utils.dart';
 
 /// A widget that displays a countdown until the next episode airs
 class AiringCountdown extends StatelessWidget {
-  /// The anime media data
+  /// The media data
   final Media media;
 
   /// Creates an airing countdown widget

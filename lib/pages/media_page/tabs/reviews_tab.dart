@@ -11,15 +11,15 @@ import '../../../services/media_service.dart';
 import '../../../theme/theme.dart';
 import '../widgets/review_sheet.dart';
 
-/// Tab displaying paginated reviews for an anime
+/// Tab displaying paginated reviews for a media item
 class MediaReviewsTab extends StatefulWidget {
-  /// The media ID of the anime
+  /// The ID of the media
   final int mediaId;
 
   /// Initial reviews data
   final ReviewConnection? initialData;
 
-  /// The media/anime title name
+  /// The media title name
   final String mediaName;
 
   /// The media type - ANIME or MANGA.

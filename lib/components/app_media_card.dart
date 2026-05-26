@@ -6,7 +6,7 @@ import '../theme/theme.dart';
 import '../utils/utils.dart';
 import 'app_network_image.dart';
 
-/// A specialized card for media items (Anime) with dynamic borders and status badges
+/// A specialized card for media items with dynamic borders and status badges
 class AppMediaCard extends StatelessWidget {
   /// The image URL for the media
   final String imageUrl;

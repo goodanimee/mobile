@@ -254,7 +254,7 @@ class MediaApi {
     _initialized = true;
   }
 
-  /// Fetches full anime details by using a media ID
+  /// Fetches full media details by using a media ID
   static Future<Media> fetchMediaDetails(
     FetchMediaDetailsRequest request,
     String token,

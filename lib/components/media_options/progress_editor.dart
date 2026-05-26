@@ -6,7 +6,7 @@ class ProgressEditor extends StatelessWidget {
   /// The current episode progress
   final int progress;
 
-  /// The optional maximum episodes of the anime
+  /// The optional maximum progress limit of the media
   final int? maximum;
 
   /// Callback when progress changes
