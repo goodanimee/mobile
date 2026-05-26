@@ -31,6 +31,8 @@ func (m *Media) ToProto() *pb.Media {
 		Favourites:        m.Favourites,
 		Synonyms:          m.Synonyms,
 		Reviews:           m.Reviews.ToProto(),
+		Chapters:          m.Chapters,
+		Volumes:           m.Volumes,
 	}
 
 	for _, tag := range m.Tags {
@@ -77,6 +79,8 @@ type Media struct {
 	Reviews           ReviewConnection         `json:"reviews"`
 	MeanScore         *int32                   `json:"meanScore"`
 	Favourites        *int32                   `json:"favourites"`
+	Chapters          *int32                   `json:"chapters"`
+	Volumes           *int32                   `json:"volumes"`
 	Synonyms          []string                 `json:"synonyms"`
 }
 
@@ -98,4 +102,19 @@ type ToggleFavourite struct {
 // ToggleFavouriteDTO represents the DTO for a favourite toggle mutation
 type ToggleFavouriteDTO struct {
 	ToggleFavourite ToggleFavourite `json:"ToggleFavourite"`
+}
+
+// ToggleFavouriteManga represents the response for a favourite manga toggle
+type ToggleFavouriteManga struct {
+	Manga struct {
+		Nodes []struct {
+			ID          int32 `json:"id"`
+			IsFavourite bool  `json:"isFavourite"`
+		} `json:"nodes"`
+	} `json:"manga"`
+}
+
+// ToggleFavouriteMangaDTO represents the DTO for a favourite manga toggle mutation
+type ToggleFavouriteMangaDTO struct {
+	ToggleFavourite ToggleFavouriteManga `json:"ToggleFavourite"`
 }
