@@ -120,6 +120,7 @@ fragment MediaListEntryFields on MediaList {
         ...FuzzyDateFields
     }
     progress
+    progressVolumes
     repeat
     score(format: POINT_10_DECIMAL)
     startedAt {

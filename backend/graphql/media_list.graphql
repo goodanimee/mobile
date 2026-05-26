@@ -28,6 +28,7 @@ query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
                     }
                 }
                 progress
+                progressVolumes
                 repeat
                 status
                 score(format: POINT_10_DECIMAL)
