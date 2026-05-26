@@ -105,7 +105,11 @@ class _MediaPageState extends State<MediaPage> {
     setState(() => _isTogglingFavourite = true);
 
     try {
-      await MediaService.toggleFavouriteAnime(widget.mediaId, _mediaData!);
+      if (_mediaData!.type == 'MANGA') {
+        await MediaService.toggleFavouriteManga(widget.mediaId, _mediaData!);
+      } else {
+        await MediaService.toggleFavouriteAnime(widget.mediaId, _mediaData!);
+      }
       setState(
         () => _mediaData = _mediaData!.copyWith(isFavourite: !currentFav),
       );

@@ -91,23 +91,44 @@ class MediaPageHeader extends StatelessWidget {
                     const SizedBox(height: 16),
                     _buildInfoRow(
                       Icons.tv_outlined,
-                      media.format.isNotEmpty ? media.format : 'TV',
+                      media.format.isNotEmpty
+                          ? media.format.replaceAll('_', ' ')
+                          : 'TV',
                     ),
                     const SizedBox(height: 8),
-                    _buildInfoRow(
-                      Icons.timer_outlined,
-                      '${media.episodes > 0 ? media.episodes.toString() : '?'} Episodes',
-                    ),
-                    const SizedBox(height: 8),
-                    _buildInfoRow(
-                      Icons.rss_feed_rounded,
-                      media.status.isNotEmpty ? media.status : 'FINISHED',
-                    ),
-                    if (media.season.isNotEmpty && media.seasonYear > 0) ...[
+                    if (media.type == 'ANIME') ...[
+                      _buildInfoRow(
+                        Icons.timer_outlined,
+                        '${media.episodes > 0 ? media.episodes.toString() : '?'} Episodes',
+                      ),
                       const SizedBox(height: 8),
                       _buildInfoRow(
-                        Icons.calendar_today_rounded,
-                        '${media.season} ${media.seasonYear}'.toUpperCase(),
+                        Icons.rss_feed_rounded,
+                        media.status.isNotEmpty ? media.status : 'FINISHED',
+                      ),
+                      if (media.season.isNotEmpty && media.seasonYear > 0) ...[
+                        const SizedBox(height: 8),
+                        _buildInfoRow(
+                          Icons.calendar_today_rounded,
+                          '${media.season} ${media.seasonYear}'.toUpperCase(),
+                        ),
+                      ],
+                    ] else ...[
+                      _buildInfoRow(
+                        Icons.menu_book_outlined,
+                        '${media.chapters != null && media.chapters! > 0 ? media.chapters.toString() : '?'} Chapters',
+                      ),
+                      if (media.volumes != null && media.volumes! > 0) ...[
+                        const SizedBox(height: 8),
+                        _buildInfoRow(
+                          Icons.library_books_outlined,
+                          '${media.volumes} Volumes',
+                        ),
+                      ],
+                      const SizedBox(height: 8),
+                      _buildInfoRow(
+                        Icons.rss_feed_rounded,
+                        media.status.isNotEmpty ? media.status : 'FINISHED',
                       ),
                     ],
                   ],

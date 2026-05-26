@@ -185,7 +185,7 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
                         ? title.userPreferred
                         : 'Unknown';
                     final nativeName = title?.native ?? '';
-                    final format = node?.format ?? '';
+                    final format = node?.format.replaceAll('_', ' ') ?? '';
                     final relation = StringUtils.capitalize(
                       edge.relationType.replaceAll('_', ' '),
                     );
@@ -313,7 +313,7 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
         ? title.userPreferred
         : 'Unknown';
     final nativeName = title?.native ?? '';
-    final format = media?.format ?? '';
+    final format = media?.format.replaceAll('_', ' ') ?? '';
     final rating = node.rating.toString();
     final imageUrl = media?.coverImage.large ?? '';
     final colorHex = media?.coverImage.color;
