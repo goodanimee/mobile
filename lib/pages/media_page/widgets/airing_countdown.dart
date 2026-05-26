@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../models/media.dart';
 import '../../../theme/theme.dart';
@@ -41,7 +42,7 @@ class AiringCountdown extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.timer_outlined, color: borderColor, size: 18),
+          const Icon(LucideIcons.timer, color: borderColor, size: 18),
           const SizedBox(width: 12),
           Expanded(
             child: Text(

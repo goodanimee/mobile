@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goodanime/utils/app_navigation.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../components/error_view.dart';
 import '../components/floating_nav.dart';
@@ -270,7 +271,7 @@ class _MediaPageState extends State<MediaPage> {
 
     final quickNavItems = [
       QuickNavSection(
-        icon: Icons.info_outline,
+        icon: LucideIcons.info,
         label: 'Overview',
         isSelected: _selectedTabIndex == 0,
         onTap: () {
@@ -283,7 +284,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: Icons.perm_media_outlined,
+        icon: LucideIcons.film,
         label: 'Media',
         isSelected: _selectedTabIndex == 1,
         onTap: () {
@@ -296,7 +297,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: Icons.groups_outlined,
+        icon: LucideIcons.users,
         label: 'Staff',
         isSelected: _selectedTabIndex == 2,
         onTap: () {
@@ -309,7 +310,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: Icons.account_circle_outlined,
+        icon: LucideIcons.circleUser,
         label: 'Characters',
         isSelected: _selectedTabIndex == 3,
         onTap: () {
@@ -322,7 +323,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: Icons.shuffle_rounded,
+        icon: LucideIcons.shuffle,
         label: 'Relations',
         isSelected: _selectedTabIndex == 4,
         onTap: () {
@@ -335,7 +336,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: Icons.leaderboard_outlined,
+        icon: LucideIcons.trendingUp,
         label: 'Rankings',
         isSelected: _selectedTabIndex == 5,
         onTap: () {
@@ -348,7 +349,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: Icons.rate_review_outlined,
+        icon: LucideIcons.messageSquareText,
         label: 'Reviews',
         isSelected: _selectedTabIndex == 6,
         onTap: () {

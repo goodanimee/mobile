@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../models/common.dart';
 import '../../theme/theme.dart';
 
@@ -20,17 +21,17 @@ class StatusSelector extends StatelessWidget {
   IconData _getIcon(MediaListStatus status) {
     switch (status) {
       case MediaListStatus.current:
-        return Icons.play_circle_rounded;
+        return LucideIcons.circlePlay;
       case MediaListStatus.planning:
-        return Icons.bookmark_rounded;
+        return LucideIcons.bookmark;
       case MediaListStatus.completed:
-        return Icons.check_circle_rounded;
+        return LucideIcons.circleCheck;
       case MediaListStatus.repeating:
-        return Icons.repeat_rounded;
+        return LucideIcons.repeat;
       case MediaListStatus.paused:
-        return Icons.pause_circle_rounded;
+        return LucideIcons.circlePause;
       case MediaListStatus.dropped:
-        return Icons.cancel_rounded;
+        return LucideIcons.circleX;
     }
   }
 
@@ -145,9 +146,13 @@ class StatusSelector extends StatelessWidget {
                                   child: Icon(
                                     _getIcon(status),
                                     color: isSelected
-                                        ? Colors.white
+                                        ? Color.lerp(
+                                            borderColor,
+                                            Colors.white,
+                                            0.5,
+                                          )!
                                         : Colors.white30,
-                                    size: 22,
+                                    size: 26,
                                   ),
                                 ),
                               ),

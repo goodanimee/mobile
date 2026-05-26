@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
@@ -47,7 +48,7 @@ class _ScoreHistogramState extends State<ScoreHistogram> {
               ),
             ),
             SizedBox(width: 8),
-            Icon(Icons.info_outline_rounded, size: 12, color: textHint),
+            Icon(LucideIcons.info, size: 12, color: textHint),
             SizedBox(width: 4),
             Text(
               'Tap for details',

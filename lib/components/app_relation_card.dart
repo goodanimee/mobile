@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../theme/theme.dart';
 import 'app_network_image.dart';
 
@@ -76,7 +77,7 @@ class AppRelationCard extends StatelessWidget {
                   imageUrl: imageUrl,
                   width: 85,
                   height: double.infinity,
-                  fallbackIcon: Icons.movie_rounded,
+                  fallbackIcon: LucideIcons.clapperboard,
                   checkDefault: true,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(11),

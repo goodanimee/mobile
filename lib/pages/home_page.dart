@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goodanime/utils/app_navigation.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/floating_nav.dart';
@@ -22,12 +23,12 @@ class HomePage extends StatefulWidget {
 
 /// Returns an icon corresponding to a list status
 IconData _statusIcon(MediaListStatus status) => switch (status) {
-  MediaListStatus.current => Icons.play_circle_rounded,
-  MediaListStatus.repeating => Icons.repeat_rounded,
-  MediaListStatus.planning => Icons.bookmark_rounded,
-  MediaListStatus.completed => Icons.check_circle_rounded,
-  MediaListStatus.paused => Icons.pause_circle_rounded,
-  MediaListStatus.dropped => Icons.cancel_rounded,
+  MediaListStatus.current => LucideIcons.circlePlay,
+  MediaListStatus.repeating => LucideIcons.repeat,
+  MediaListStatus.planning => LucideIcons.bookmark,
+  MediaListStatus.completed => LucideIcons.circleCheck,
+  MediaListStatus.paused => LucideIcons.circlePause,
+  MediaListStatus.dropped => LucideIcons.circleX,
 };
 
 /// State for HomePage

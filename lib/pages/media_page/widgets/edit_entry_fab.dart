@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../theme/theme.dart';
 
 /// Floating action button to trigger entry editing
@@ -28,7 +29,7 @@ class EditEntryFab extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         child: Center(
           child: Icon(
-            isEdit ? Icons.edit_rounded : Icons.add_rounded,
+            isEdit ? LucideIcons.pencil : LucideIcons.plus,
             color: textPrimary,
             size: 22,
           ),

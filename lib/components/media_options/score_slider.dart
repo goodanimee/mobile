@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../theme/theme.dart';
+import '../lucide_icons_helper.dart';
 
 /// Slider component for updating score rating of a list entry
 class ScoreSlider extends StatelessWidget {
@@ -77,8 +78,8 @@ class ScoreSlider extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: List.generate(
                               10,
-                              (index) => Icon(
-                                Icons.star_rounded,
+                              (index) => LucideStarIcon(
+                                isFilled: false,
                                 color: Colors.white.withValues(alpha: 0.1),
                                 size: starWidth,
                               ),
@@ -93,8 +94,8 @@ class ScoreSlider extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: List.generate(
                                   10,
-                                  (index) => Icon(
-                                    Icons.star_rounded,
+                                  (index) => LucideStarIcon(
+                                    isFilled: true,
                                     color: Colors.amber,
                                     size: starWidth,
                                   ),

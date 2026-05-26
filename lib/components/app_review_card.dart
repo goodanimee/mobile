@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../models/media_review.dart';
 import '../theme/theme.dart';
 import 'app_network_image.dart';
+import 'lucide_icons_helper.dart';
 
 /// Card to display user reviews
 class AppReviewCard extends StatelessWidget {
@@ -42,7 +44,7 @@ class AppReviewCard extends StatelessWidget {
                   width: 24,
                   height: 24,
                   borderRadius: BorderRadius.circular(12),
-                  fallbackIcon: Icons.person,
+                  fallbackIcon: LucideIcons.user,
                   checkDefault: true,
                 ),
                 const SizedBox(width: 8),
@@ -72,8 +74,8 @@ class AppReviewCard extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
-                        Icons.star_rounded,
+                      const LucideStarIcon(
+                        isFilled: true,
                         size: 15,
                         color: scoreStar,
                       ),
@@ -107,7 +109,7 @@ class AppReviewCard extends StatelessWidget {
             const SizedBox(height: 4),
             Row(
               children: [
-                const Icon(Icons.thumb_up_rounded, size: 14, color: textHint),
+                const Icon(LucideIcons.thumbsUp, size: 14, color: textHint),
                 const SizedBox(width: 4),
                 Text(
                   ratingStr,

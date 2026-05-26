@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../components/app_network_image.dart';
 import '../../../components/html_description.dart';
@@ -118,20 +119,20 @@ class _CharacterSheetState extends State<CharacterSheet> {
                                   ),
                                 ],
                                 const SizedBox(height: 12),
-                                _buildInfoRow(Icons.person_outline, role),
+                                _buildInfoRow(LucideIcons.user, role),
                                 if (birthInfo.isNotEmpty) ...[
                                   const SizedBox(height: 6),
-                                  _buildInfoRow(Icons.cake_outlined, birthInfo),
+                                  _buildInfoRow(LucideIcons.cake, birthInfo),
                                 ],
                                 if (gender.toString().isNotEmpty) ...[
                                   const SizedBox(height: 6),
                                   _buildInfoRow(
                                     gender.toString().toLowerCase() == 'male'
-                                        ? Icons.male
+                                        ? LucideIcons.mars
                                         : gender.toString().toLowerCase() ==
                                               'female'
-                                        ? Icons.female
-                                        : Icons.transgender,
+                                        ? LucideIcons.venus
+                                        : LucideIcons.transgender,
                                     gender.toString(),
                                   ),
                                 ],
@@ -196,7 +197,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Icon(
-                                      Icons.warning_amber_rounded,
+                                      LucideIcons.triangleAlert,
                                       size: 14,
                                       color: spoilerColor,
                                     ),
@@ -275,7 +276,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
                                   width: 50,
                                   height: 50,
                                   borderRadius: BorderRadius.circular(8),
-                                  fallbackIcon: Icons.person,
+                                  fallbackIcon: LucideIcons.user,
                                   checkDefault: true,
                                 ),
                                 const SizedBox(width: 12),

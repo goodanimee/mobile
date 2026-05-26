@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../components/app_relation_card.dart';
 import '../../../components/app_section.dart';
@@ -124,7 +125,7 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                Icons.shuffle_rounded,
+                LucideIcons.shuffle,
                 size: 48,
                 color: textHint.withValues(alpha: 0.33),
               ),
@@ -203,7 +204,7 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
                       subtitle: '$format \u00B7 $relation',
                       color: color != Colors.transparent ? color : null,
                       trailing: Icon(
-                        Icons.chevron_right_rounded,
+                        LucideIcons.chevronRight,
                         size: 16,
                         color: textHint,
                       ),
@@ -324,13 +325,9 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
       title: name,
       nativeTitle: nativeName,
       subtitle: '$format \u00B7 $rating',
-      subtitleIcon: Icon(
-        Icons.thumb_up_rounded,
-        size: 12,
-        color: textSecondary,
-      ),
+      subtitleIcon: Icon(LucideIcons.thumbsUp, size: 12, color: textSecondary),
       color: color != Colors.transparent ? color : null,
-      trailing: Icon(Icons.chevron_right_rounded, size: 16, color: textHint),
+      trailing: Icon(LucideIcons.chevronRight, size: 16, color: textHint),
       onTap: media != null
           ? () => AppNavigation.toMedia(context, media.id)
           : null,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../components/app_network_image.dart';
 import '../../../models/media.dart';
@@ -90,7 +91,7 @@ class MediaPageHeader extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     _buildInfoRow(
-                      Icons.tv_outlined,
+                      LucideIcons.tv,
                       media.format.isNotEmpty
                           ? media.format.replaceAll('_', ' ')
                           : 'TV',
@@ -98,36 +99,36 @@ class MediaPageHeader extends StatelessWidget {
                     const SizedBox(height: 8),
                     if (media.type == 'ANIME') ...[
                       _buildInfoRow(
-                        Icons.timer_outlined,
+                        LucideIcons.timer,
                         '${media.episodes > 0 ? media.episodes.toString() : '?'} Episodes',
                       ),
                       const SizedBox(height: 8),
                       _buildInfoRow(
-                        Icons.rss_feed_rounded,
+                        LucideIcons.rss,
                         media.status.isNotEmpty ? media.status : 'FINISHED',
                       ),
                       if (media.season.isNotEmpty && media.seasonYear > 0) ...[
                         const SizedBox(height: 8),
                         _buildInfoRow(
-                          Icons.calendar_today_rounded,
+                          LucideIcons.calendar,
                           '${media.season} ${media.seasonYear}'.toUpperCase(),
                         ),
                       ],
                     ] else ...[
                       _buildInfoRow(
-                        Icons.menu_book_outlined,
+                        LucideIcons.bookOpen,
                         '${media.chapters != null && media.chapters! > 0 ? media.chapters.toString() : '?'} Chapters',
                       ),
                       if (media.volumes != null && media.volumes! > 0) ...[
                         const SizedBox(height: 8),
                         _buildInfoRow(
-                          Icons.library_books_outlined,
+                          LucideIcons.library,
                           '${media.volumes} Volumes',
                         ),
                       ],
                       const SizedBox(height: 8),
                       _buildInfoRow(
-                        Icons.rss_feed_rounded,
+                        LucideIcons.rss,
                         media.status.isNotEmpty ? media.status : 'FINISHED',
                       ),
                     ],

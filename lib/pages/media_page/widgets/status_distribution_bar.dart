@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../models/common.dart';
 import '../../../theme/theme.dart';
@@ -39,7 +40,7 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
               ),
             ),
             SizedBox(width: 8),
-            Icon(Icons.info_outline_rounded, size: 12, color: textHint),
+            Icon(LucideIcons.info, size: 12, color: textHint),
             SizedBox(width: 4),
             Text(
               'Tap for details',

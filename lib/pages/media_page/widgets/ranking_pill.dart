@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../components/lucide_icons_helper.dart';
 import '../../../theme/theme.dart';
 
 /// A pill-shaped widget displaying ranking information for an anime
@@ -85,13 +87,15 @@ class RankingPill extends StatelessWidget {
 
   /// Builds a gradient icon based on the ranking type
   Widget _buildPremiumIcon(bool isRated, bool isPopular) {
-    final IconData iconData = isRated
-        ? Icons.star_outline_rounded
-        : (isPopular ? Icons.favorite_border_rounded : Icons.info_outline);
-
     final List<Color> colors = isRated
         ? goldGradient
         : (isPopular ? loveGradient : [paletteGray, paletteGrayDark]);
+
+    final Widget iconWidget = isRated
+        ? const LucideStarIcon(isFilled: false, color: Colors.white)
+        : (isPopular
+              ? const LucideHeartIcon(isFilled: false, color: Colors.white)
+              : const Icon(LucideIcons.info, color: Colors.white, size: 24));
 
     return SizedBox(
       width: 32,
@@ -103,7 +107,7 @@ class RankingPill extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ).createShader(bounds),
-          child: Icon(iconData, color: Colors.white, size: 24),
+          child: iconWidget,
         ),
       ),
     );

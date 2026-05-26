@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../theme/theme.dart';
 
 /// Compact counter editor widget with controls.
@@ -138,7 +139,7 @@ class _CounterEditorState extends State<CounterEditor> {
                   ),
                   child: Center(
                     child: Icon(
-                      Icons.keyboard_arrow_left_rounded,
+                      LucideIcons.chevronLeft,
                       color: canDecrement ? Colors.white : Colors.white24,
                       size: 20,
                     ),
@@ -274,7 +275,7 @@ class _CounterEditorState extends State<CounterEditor> {
                   ),
                   child: Center(
                     child: Icon(
-                      Icons.keyboard_arrow_right_rounded,
+                      LucideIcons.chevronRight,
                       color: Colors.white,
                       size: 20,
                     ),

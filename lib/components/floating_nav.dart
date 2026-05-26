@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../theme/theme.dart';
 
 /// Represents a section in the quick navigation menu
@@ -25,9 +26,9 @@ class QuickNavSection {
 }
 
 const _navItems = [
-  (icon: Icons.tv_rounded, label: 'Anime List'),
-  (icon: Icons.explore_rounded, label: 'Discover'),
-  (icon: Icons.person_rounded, label: 'Profile'),
+  (icon: LucideIcons.tv, label: 'Anime List'),
+  (icon: LucideIcons.compass, label: 'Discover'),
+  (icon: LucideIcons.user, label: 'Profile'),
 ];
 
 const _fabSize = 52.0;
@@ -165,7 +166,7 @@ class _FloatingNavState extends State<FloatingNav>
             transitionBuilder: (child, anim) =>
                 ScaleTransition(scale: anim, child: child),
             child: Icon(
-              _expanded ? Icons.close_rounded : Icons.menu_rounded,
+              _expanded ? LucideIcons.x : LucideIcons.menu,
               key: ValueKey(_expanded),
               color: Colors.white,
               size: 22,
@@ -192,7 +193,7 @@ class _FloatingNavState extends State<FloatingNav>
             transitionBuilder: (child, anim) =>
                 ScaleTransition(scale: anim, child: child),
             child: Icon(
-              isGrid ? Icons.view_list_rounded : Icons.grid_view_rounded,
+              isGrid ? LucideIcons.list : LucideIcons.layoutGrid,
               key: ValueKey(isGrid),
               color: Colors.white,
               size: 22,

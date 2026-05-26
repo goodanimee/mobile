@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../components/app_network_image.dart';
@@ -103,7 +104,10 @@ class MediaContentTab extends StatelessWidget {
                       ),
                       errorWidget: (context, url, error) => Container(
                         color: Colors.white.withValues(alpha: 0.05),
-                        child: const Icon(Icons.error, color: Colors.white24),
+                        child: const Icon(
+                          LucideIcons.circleAlert,
+                          color: Colors.white24,
+                        ),
                       ),
                     ),
                   ),
@@ -122,9 +126,9 @@ class MediaContentTab extends StatelessWidget {
                       ],
                     ),
                     child: const Icon(
-                      Icons.play_arrow_rounded,
+                      LucideIcons.play,
                       color: Colors.white,
-                      size: 36,
+                      size: 28,
                     ),
                   ),
                 ],
@@ -250,9 +254,9 @@ class MediaContentTab extends StatelessWidget {
                       ],
                     ),
                     child: Icon(
-                      isWatched ? Icons.replay : Icons.play_arrow_rounded,
+                      isWatched ? LucideIcons.rotateCcw : LucideIcons.play,
                       color: Colors.white,
-                      size: 28,
+                      size: 22,
                     ),
                   ),
                 ],

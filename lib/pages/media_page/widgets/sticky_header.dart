@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../components/lucide_icons_helper.dart';
 import '../../../models/media.dart';
 import '../../../theme/theme.dart';
 
@@ -75,7 +77,7 @@ class StickyHeader extends StatelessWidget {
                     onTap: onBack,
                     child: _buildGlassCircle(
                       child: const Icon(
-                        Icons.arrow_back_rounded,
+                        LucideIcons.arrowLeft,
                         color: textPrimary,
                         size: 24,
                       ),
@@ -132,14 +134,11 @@ class StickyHeader extends StatelessWidget {
                                     ),
                                   ),
                                 )
-                              : Icon(
-                                  isFavourite
-                                      ? Icons.favorite_rounded
-                                      : Icons.favorite_border_rounded,
+                              : LucideHeartIcon(
+                                  isFilled: isFavourite,
                                   color: isFavourite
                                       ? Colors.redAccent.shade400
                                       : textPrimary,
-                                  size: 24,
                                 ),
                         ),
                       ),
@@ -148,12 +147,12 @@ class StickyHeader extends StatelessWidget {
                         onTap: () {
                           final url = media.siteUrl;
                           if (url.isNotEmpty) {
-                            Share.share(url);
+                            SharePlus.instance.share(ShareParams(text: url));
                           }
                         },
                         child: _buildGlassCircle(
                           child: Icon(
-                            Icons.share_rounded,
+                            LucideIcons.share2,
                             color: textPrimary,
                             size: 24,
                           ),

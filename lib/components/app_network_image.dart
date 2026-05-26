@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../theme/theme.dart';
 
@@ -34,7 +35,7 @@ class AppNetworkImage extends StatelessWidget {
     this.height,
     this.fit = BoxFit.cover,
     this.borderRadius,
-    this.fallbackIcon = Icons.error,
+    this.fallbackIcon = LucideIcons.imageOff,
     this.checkDefault = false,
   });
 

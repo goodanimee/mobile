@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
+import 'lucide_icons_helper.dart';
 
 /// A badge indicating adult/18+ content with glassmorphism effect
 class AppAdultBadge extends StatelessWidget {
@@ -60,7 +61,7 @@ class AppFavouriteBadge extends StatelessWidget {
   @override
   /// Builds the favorite badge widget
   Widget build(BuildContext context) {
-    final icon = Icon(Icons.favorite_rounded, size: size, color: heartIcon);
+    final icon = LucideHeartIcon(isFilled: true, size: size, color: heartIcon);
 
     if (!hasBackground) return icon;
 

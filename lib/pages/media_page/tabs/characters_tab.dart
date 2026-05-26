@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
@@ -178,7 +179,7 @@ class _MediaCharactersTabState extends State<MediaCharactersTab> {
                   nativeName: nativeName,
                   subtitle: role,
                   trailing: Icon(
-                    Icons.info_outline_rounded,
+                    LucideIcons.info,
                     size: 14,
                     color: Colors.white.withValues(alpha: 0.25),
                   ),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../components/app_network_image.dart';
 import '../../../components/app_review_card.dart';
 import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
+import '../../../components/lucide_icons_helper.dart';
 import '../../../models/media_activity.dart';
 import '../../../models/media_review.dart';
 import '../../../services/media_service.dart';
@@ -349,7 +351,7 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                Icons.history_rounded,
+                LucideIcons.history,
                 size: 40,
                 color: textHint.withValues(alpha: 0.33),
               ),
@@ -469,7 +471,7 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
             width: 38,
             height: 38,
             borderRadius: BorderRadius.circular(19),
-            fallbackIcon: Icons.person,
+            fallbackIcon: LucideIcons.user,
             checkDefault: true,
           ),
           const SizedBox(width: 12),
@@ -533,10 +535,8 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
                             ),
                           ),
                         )
-                      : Icon(
-                          activity.isLiked
-                              ? Icons.favorite_rounded
-                              : Icons.favorite_border_rounded,
+                      : LucideHeartIcon(
+                          isFilled: activity.isLiked,
                           color: activity.isLiked ? paletteRed : textMuted,
                           size: 20,
                         ),

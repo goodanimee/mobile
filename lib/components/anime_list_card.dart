@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../models/common.dart';
 import '../models/media_list.dart';
@@ -7,6 +8,7 @@ import '../theme/theme.dart';
 import '../utils/app_options.dart';
 import 'app_badges.dart';
 import 'app_network_image.dart';
+import 'lucide_icons_helper.dart';
 
 /// Builds a badge showing repeat count
 Widget _buildRepeatBadge(int repeat) {
@@ -19,7 +21,7 @@ Widget _buildRepeatBadge(int repeat) {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Icons.repeat_rounded, size: 14, color: textSecondary),
+        const Icon(LucideIcons.repeat, size: 14, color: textSecondary),
         const SizedBox(width: 4),
         Text(
           repeat.toString(),
@@ -58,11 +60,7 @@ Widget _buildProgressBadge(
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.format_list_bulleted_rounded,
-            size: 14,
-            color: Colors.white70,
-          ),
+          const Icon(LucideIcons.list, size: 14, color: Colors.white70),
           const SizedBox(width: 4),
           Text('$episodes eps', style: labelStyle),
         ],
@@ -71,10 +69,10 @@ Widget _buildProgressBadge(
   }
 
   final icon = switch (status) {
-    MediaListStatus.completed => Icons.check_circle_rounded,
-    MediaListStatus.paused => Icons.pause_circle_rounded,
-    MediaListStatus.dropped => Icons.cancel_rounded,
-    _ => Icons.play_circle_fill_rounded,
+    MediaListStatus.completed => LucideIcons.circleCheck,
+    MediaListStatus.paused => LucideIcons.circlePause,
+    MediaListStatus.dropped => LucideIcons.circleX,
+    _ => LucideIcons.circlePlay,
   };
 
   return Container(
@@ -99,7 +97,7 @@ Widget _buildScoreBadge(num score) {
   return Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      const Icon(Icons.star_rounded, size: 14, color: scoreStar),
+      const LucideStarIcon(isFilled: true, size: 14, color: scoreStar),
       const SizedBox(width: 4),
       Text(
         display,
@@ -135,11 +133,7 @@ Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
                   strokeWidth: 2,
                 ),
               )
-            : const Icon(
-                Icons.play_arrow_rounded,
-                size: 28,
-                color: textSecondary,
-              ),
+            : const Icon(LucideIcons.play, size: 28, color: textSecondary),
       ),
     ),
   );
@@ -347,8 +341,8 @@ class _AnimeListCardState extends State<AnimeListCard> {
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
-                                    const Icon(
-                                      Icons.star_rounded,
+                                    const LucideStarIcon(
+                                      isFilled: true,
                                       size: 12,
                                       color: scoreStar,
                                     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'app_network_image.dart';
 
 /// Card for entities (staff/characters)
@@ -51,7 +52,7 @@ class AppEntityCard extends StatelessWidget {
                   imageUrl: imageUrl,
                   width: 85,
                   height: double.infinity,
-                  fallbackIcon: Icons.person,
+                  fallbackIcon: LucideIcons.user,
                   checkDefault: true,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(11),

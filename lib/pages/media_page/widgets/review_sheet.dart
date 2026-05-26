@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../components/app_network_image.dart';
 import '../../../components/html_description.dart';
+import '../../../components/lucide_icons_helper.dart';
 import '../../../models/media_review.dart';
 import '../../../services/media_service.dart';
 import '../../../theme/theme.dart';
@@ -142,7 +144,7 @@ class _ReviewSheetState extends State<ReviewSheet> {
                               imageUrl: widget.review.user?.avatarMedium ?? '',
                               width: 30,
                               height: 30,
-                              fallbackIcon: Icons.person,
+                              fallbackIcon: LucideIcons.user,
                               checkDefault: true,
                             ),
                           ),
@@ -173,8 +175,8 @@ class _ReviewSheetState extends State<ReviewSheet> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(
-                                  Icons.star_rounded,
+                                const LucideStarIcon(
+                                  isFilled: true,
                                   size: 18,
                                   color: scoreStar,
                                 ),
@@ -211,9 +213,7 @@ class _ReviewSheetState extends State<ReviewSheet> {
                                       ),
                                       behavior: HitTestBehavior.opaque,
                                       child: Icon(
-                                        _userRating == ReviewUserRating.upVote
-                                            ? Icons.thumb_up_rounded
-                                            : Icons.thumb_up_outlined,
+                                        LucideIcons.thumbsUp,
                                         color:
                                             _userRating ==
                                                 ReviewUserRating.upVote
@@ -229,9 +229,7 @@ class _ReviewSheetState extends State<ReviewSheet> {
                                       ),
                                       behavior: HitTestBehavior.opaque,
                                       child: Icon(
-                                        _userRating == ReviewUserRating.downVote
-                                            ? Icons.thumb_down_rounded
-                                            : Icons.thumb_down_outlined,
+                                        LucideIcons.thumbsDown,
                                         color:
                                             _userRating ==
                                                 ReviewUserRating.downVote
@@ -248,7 +246,7 @@ class _ReviewSheetState extends State<ReviewSheet> {
                       Row(
                         children: [
                           Icon(
-                            Icons.thumb_up_outlined,
+                            LucideIcons.thumbsUp,
                             color: textHint.withValues(alpha: 0.6),
                             size: 18,
                           ),

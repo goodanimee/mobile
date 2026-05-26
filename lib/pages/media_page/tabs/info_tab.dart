@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../components/app_pill.dart';
@@ -131,9 +132,7 @@ class MediaInfoTab extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            showSpoilers
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
+                            showSpoilers ? LucideIcons.eyeOff : LucideIcons.eye,
                             size: 14,
                             color: spoilerColor,
                           ),
@@ -185,7 +184,7 @@ class MediaInfoTab extends StatelessWidget {
                     label: site,
                     leadingText: leadingText,
                     trailing: const Icon(
-                      Icons.open_in_new,
+                      LucideIcons.externalLink,
                       size: 12,
                       color: Colors.white38,
                     ),
