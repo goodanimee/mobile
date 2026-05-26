@@ -121,7 +121,7 @@ class AnimeListService {
   static Future<List<MediaList>> updateEntryInLists(
     List<MediaList> currentLists,
     int mediaId,
-    AnimeOptionsResult result,
+    MediaOptionsResult result,
   ) async {
     if (result.deleted) {
       final updatedLists = currentLists.map((section) {

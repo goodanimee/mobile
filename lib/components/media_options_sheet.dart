@@ -5,13 +5,13 @@ import '../models/media_list.dart';
 import '../services/anime_list_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
-import './anime_options/date_editor.dart';
-import './anime_options/progress_editor.dart';
-import './anime_options/score_slider.dart';
-import './anime_options/status_selector.dart';
+import './media_options/date_editor.dart';
+import './media_options/progress_editor.dart';
+import './media_options/score_slider.dart';
+import './media_options/status_selector.dart';
 
-/// A bottom sheet for editing anime list entry options
-class AnimeOptionsSheet extends StatefulWidget {
+/// A bottom sheet for editing media list entry options
+class MediaOptionsSheet extends StatefulWidget {
   /// The anime list entry data
   final MediaListEntryWithMedia entry;
 
@@ -19,18 +19,18 @@ class AnimeOptionsSheet extends StatefulWidget {
   final ScrollController? scrollController;
 
   /// Creates an anime options sheet
-  const AnimeOptionsSheet({
+  const MediaOptionsSheet({
     super.key,
     required this.entry,
     this.scrollController,
   });
 
   @override
-  State<AnimeOptionsSheet> createState() => _AnimeOptionsSheetState();
+  State<MediaOptionsSheet> createState() => _MediaOptionsSheetState();
 }
 
 /// State for AnimeOptionsSheet
-class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
+class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
   late MediaListStatus? _status;
   late int _progress;
   late double _score;
@@ -282,7 +282,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
       await AnimeListService.deleteEntry(entryId);
 
       if (mounted) {
-        Navigator.of(context).pop(const AnimeOptionsResult(deleted: true));
+        Navigator.of(context).pop(const MediaOptionsResult(deleted: true));
       }
     } catch (e) {
       if (mounted) {
@@ -326,7 +326,7 @@ class _AnimeOptionsSheetState extends State<AnimeOptionsSheet> {
 
       if (mounted) {
         Navigator.of(context).pop(
-          AnimeOptionsResult(
+          MediaOptionsResult(
             entry: widget.entry.copyWith(
               id: response.id,
               status: finalStatus,

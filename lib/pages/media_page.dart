@@ -148,7 +148,7 @@ class _MediaPageState extends State<MediaPage> {
       completedAt: media.mediaListEntry?.completedAt,
       media: media,
     );
-    final result = await showAnimeOptions(context, typedEntry);
+    final result = await showMediaOptions(context, typedEntry);
 
     if (result != null && mounted) {
       _didUpdate = true;
@@ -231,6 +231,7 @@ class _MediaPageState extends State<MediaPage> {
         return MediaReviewsTab(
           mediaId: widget.mediaId,
           mediaName: name,
+          mediaType: media.type,
           initialData: media.reviews,
           isNested: true,
           refreshTrigger: _refreshCount,

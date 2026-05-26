@@ -22,7 +22,7 @@ class AnimeListView extends StatelessWidget {
   final VoidCallback onRefresh;
 
   /// Callback when a list entry is updated
-  final void Function(int mediaId, AnimeOptionsResult result) onEntryUpdated;
+  final void Function(int mediaId, MediaOptionsResult result) onEntryUpdated;
 
   /// Callback when a card is long-pressed
   final void Function(BuildContext context, MediaListEntryWithMedia entry)

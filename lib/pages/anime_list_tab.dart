@@ -160,7 +160,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
 
   Future<void> _handleEntryUpdated(
     int mediaId,
-    AnimeOptionsResult result,
+    MediaOptionsResult result,
   ) async {
     final updatedLists = await AnimeListService.updateEntryInLists(
       _lists,
@@ -175,7 +175,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
     BuildContext context,
     MediaListEntryWithMedia entry,
   ) async {
-    final result = await showAnimeOptions(context, entry);
+    final result = await showMediaOptions(context, entry);
 
     if (result != null && mounted) {
       final mediaId = entry.media.id;

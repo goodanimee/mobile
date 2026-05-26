@@ -22,6 +22,9 @@ class MediaReviewsTab extends StatefulWidget {
   /// The media/anime title name
   final String mediaName;
 
+  /// The media type - ANIME or MANGA.
+  final String mediaType;
+
   /// Whether this tab is nested
   final bool isNested;
 
@@ -33,6 +36,7 @@ class MediaReviewsTab extends StatefulWidget {
     super.key,
     required this.mediaId,
     required this.mediaName,
+    required this.mediaType,
     this.initialData,
     this.isNested = false,
     this.refreshTrigger = 0,
@@ -424,14 +428,8 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     final s = status.toLowerCase();
     final animeName = widget.mediaName;
 
-    if (s == 'watched episode' ||
-        s == 'watched' ||
-        (s == 'current' && progress.isNotEmpty)) {
-      return 'Watched episode $progress of $animeName';
-    } else if (s == 'plans to watch' || s == 'planning') {
-      return 'Plans to watch $animeName';
-    } else if (s == 'completed') {
-      return 'Completed watching $animeName';
+    if (s == 'completed') {
+      return 'Completed ${widget.mediaType == 'ANIME' ? 'watching' : 'reading'} $animeName';
     } else {
       final capitalizedStatus = status.isNotEmpty
           ? '${status[0].toUpperCase()}${status.substring(1)}'

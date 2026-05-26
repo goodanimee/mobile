@@ -151,7 +151,7 @@ class AnimeListCard extends StatefulWidget {
   final MediaListEntryWithMedia entry;
 
   /// Callback when the entry is updated
-  final void Function(int mediaId, AnimeOptionsResult result)? onEntryUpdated;
+  final void Function(int mediaId, MediaOptionsResult result)? onEntryUpdated;
 
   /// Callback for long press
   final VoidCallback? onLongPress;
@@ -220,7 +220,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
       );
       widget.onEntryUpdated?.call(
         mediaId,
-        AnimeOptionsResult(
+        MediaOptionsResult(
           entry: widget.entry.copyWith(
             progress: newProgress,
             status: newStatus,
