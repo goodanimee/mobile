@@ -91,8 +91,6 @@ class _CounterEditorState extends State<CounterEditor> {
   @override
   Widget build(BuildContext context) {
     final bool canDecrement = widget.value > 0;
-    final bool canIncrement =
-        widget.maximum == null || widget.value < widget.maximum!;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -261,29 +259,23 @@ class _CounterEditorState extends State<CounterEditor> {
                 ),
               ),
               GestureDetector(
-                onTap: canIncrement
-                    ? () => widget.onChanged(widget.value + 1)
-                    : null,
+                onTap: () => widget.onChanged(widget.value + 1),
                 behavior: HitTestBehavior.opaque,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: canIncrement
-                        ? Colors.white.withValues(alpha: 0.03)
-                        : Colors.transparent,
+                    color: Colors.white.withValues(alpha: 0.03),
                     border: Border.all(
-                      color: canIncrement
-                          ? Colors.white.withValues(alpha: 0.06)
-                          : Colors.white.withValues(alpha: 0.01),
+                      color: Colors.white.withValues(alpha: 0.06),
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
                     child: Icon(
                       Icons.keyboard_arrow_right_rounded,
-                      color: canIncrement ? Colors.white : Colors.white24,
+                      color: Colors.white,
                       size: 20,
                     ),
                   ),

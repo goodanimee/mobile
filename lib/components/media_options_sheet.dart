@@ -107,39 +107,150 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
   }
 
   void _setStatus(MediaListStatus newStatus) {
-    setState(() => _status = newStatus);
+    setState(() {
+      final previousStatus = _status;
+      _status = newStatus;
+
+      if (newStatus == MediaListStatus.completed) {
+        if (_maxProgress != null) {
+          _progress = _maxProgress!;
+        }
+        if (_maxProgressVolumes != null) {
+          _progressVolumes = _maxProgressVolumes!;
+        }
+        if (previousStatus != MediaListStatus.completed && _repeat == 0) {
+          _finishDate = DateTime.now();
+        }
+      } else if (previousStatus == MediaListStatus.completed && _repeat == 0) {
+        _finishDate = null;
+      }
+    });
   }
 
   void _updateProgress(int newProgress) {
     setState(() {
-      final oldProgress = _progress;
-      final oldStatus = _status;
+      final previousStatus = _status;
+      final now = DateTime.now();
+
+      final isOverflow = _maxProgress != null && newProgress > _maxProgress!;
+      if (isOverflow) {
+        _progress = 1;
+        _repeat += 1;
+        _progressVolumes = 0;
+        _status = MediaListStatus.repeating;
+        return;
+      }
+
+      final isUndoingRepeat =
+          newProgress == 0 && _repeat > 0 && _maxProgress != null;
+      if (isUndoingRepeat) {
+        _progress = _maxProgress!;
+        if (_maxProgressVolumes != null) {
+          _progressVolumes = _maxProgressVolumes!;
+        }
+        _repeat -= 1;
+        _status = MediaListStatus.completed;
+        return;
+      }
 
       _progress = newProgress;
-
-      if (_maxProgress != null && _progress >= _maxProgress!) {
+      if (_progress == 0) {
+        _progressVolumes = 0;
+      }
+      final isCompleted = _maxProgress != null && _progress >= _maxProgress!;
+      if (isCompleted) {
         _status = MediaListStatus.completed;
+        if (_maxProgressVolumes != null) {
+          _progressVolumes = _maxProgressVolumes!;
+        }
       } else {
-        _status = MediaListStatus.current;
+        _status = _repeat > 0
+            ? MediaListStatus.repeating
+            : MediaListStatus.current;
       }
 
-      final now = DateTime.now();
-      if (oldProgress == 0 && newProgress > 0) {
+      if (_progress > 0 && _startDate == null && _repeat == 0) {
         _startDate = now;
       }
-      if (oldStatus != MediaListStatus.completed &&
-          _status == MediaListStatus.completed) {
+      if (_progress == 0 && _progressVolumes == 0 && _repeat == 0) {
+        _startDate = null;
+      }
+
+      final wasCompleted = previousStatus == MediaListStatus.completed;
+      if (!wasCompleted &&
+          _status == MediaListStatus.completed &&
+          _repeat == 0) {
         _finishDate = now;
+      }
+      if (wasCompleted &&
+          _status != MediaListStatus.completed &&
+          _repeat == 0) {
+        _finishDate = null;
       }
     });
   }
 
   void _updateProgressVolumes(int newVolumes) {
-    setState(() => _progressVolumes = newVolumes);
+    setState(() {
+      final previousStatus = _status;
+      final now = DateTime.now();
+
+      final isOverflow =
+          _maxProgressVolumes != null && newVolumes > _maxProgressVolumes!;
+      if (isOverflow) {
+        _progressVolumes = 1;
+        _progress = 1;
+        _repeat += 1;
+        _status = MediaListStatus.repeating;
+        return;
+      }
+
+      _progressVolumes = newVolumes;
+
+      final isCompleted =
+          _maxProgressVolumes != null &&
+          _progressVolumes >= _maxProgressVolumes!;
+      if (isCompleted) {
+        _status = MediaListStatus.completed;
+        if (_maxProgress != null) {
+          _progress = _maxProgress!;
+        }
+        if (_repeat == 0) {
+          _startDate ??= now;
+        }
+        if (previousStatus != MediaListStatus.completed && _repeat == 0) {
+          _finishDate = now;
+        }
+      } else {
+        _status = _repeat > 0
+            ? MediaListStatus.repeating
+            : MediaListStatus.current;
+      }
+
+      if (_progressVolumes > 0 && _startDate == null && _repeat == 0) {
+        _startDate = now;
+      }
+
+      final wasCompleted = previousStatus == MediaListStatus.completed;
+      if (wasCompleted &&
+          _status != MediaListStatus.completed &&
+          _repeat == 0) {
+        _finishDate = null;
+      }
+
+      if (_progress == 0 && _progressVolumes == 0 && _repeat == 0) {
+        _startDate = null;
+      }
+    });
   }
 
   void _updateRepeat(int newRepeat) {
-    setState(() => _repeat = newRepeat);
+    setState(() {
+      _repeat = newRepeat;
+      if (_progress == 0 && _progressVolumes == 0 && _repeat == 0) {
+        _startDate = null;
+      }
+    });
   }
 
   Widget _buildCountersSection() {
