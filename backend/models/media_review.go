@@ -66,4 +66,3 @@ type ReviewConnection struct {
 type RateReviewDTO struct {
 	RateReview ReviewNode `json:"RateReview"`
 }
-

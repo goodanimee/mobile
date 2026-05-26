@@ -90,6 +90,12 @@ func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 	if req.CompletedAt != nil {
 		variables["completedAt"] = req.CompletedAt
 	}
+	if req.ProgressVolumes != nil {
+		variables["progressVolumes"] = *req.ProgressVolumes
+	}
+	if req.Repeat != nil {
+		variables["repeat"] = *req.Repeat
+	}
 
 	respBody, err := rawGraphqlRequest(tk, saveMediaListEntryMutation, variables)
 	if err != nil {

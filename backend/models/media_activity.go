@@ -49,4 +49,3 @@ type ToggleActivityLike struct {
 type ToggleActivityLikeDTO struct {
 	ToggleActivityLike []ToggleActivityLike `json:"ToggleLike"`
 }
-
