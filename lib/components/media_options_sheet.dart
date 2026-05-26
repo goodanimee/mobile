@@ -78,10 +78,10 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
       _maxProgressVolumes = null;
     }
 
-    _progressVolumes = 0;
+    _progressVolumes = isManga ? widget.entry.progressVolumes : 0;
     _initialProgressVolumes = _progressVolumes;
 
-    _repeat = 0;
+    _repeat = widget.entry.repeat;
     _initialRepeat = _repeat;
 
     _startDate = _parseFuzzyDate(widget.entry.startedAt);
@@ -430,6 +430,10 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
         score: _score != _initialScore ? _score : null,
         startDate: _startDate != _initialStartDate ? _startDate : null,
         finishDate: _finishDate != _initialFinishDate ? _finishDate : null,
+        progressVolumes: _progressVolumes != _initialProgressVolumes
+            ? _progressVolumes
+            : null,
+        repeat: _repeat != _initialRepeat ? _repeat : null,
       );
 
       if (mounted) {
@@ -441,6 +445,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
               progress: _progress,
               score: _score,
               repeat: _repeat,
+              progressVolumes: _progressVolumes,
               startedAt: _startDate != null
                   ? FuzzyDate(
                       year: _startDate!.year,
