@@ -174,10 +174,30 @@ const Media$json = {
       '6': '.goodanime.ReviewConnection',
       '10': 'reviews'
     },
+    {
+      '1': 'chapters',
+      '3': 28,
+      '4': 1,
+      '5': 5,
+      '9': 2,
+      '10': 'chapters',
+      '17': true
+    },
+    {
+      '1': 'volumes',
+      '3': 29,
+      '4': 1,
+      '5': 5,
+      '9': 3,
+      '10': 'volumes',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_mean_score'},
     {'1': '_favourites'},
+    {'1': '_chapters'},
+    {'1': '_volumes'},
   ],
 };
 
@@ -205,5 +225,6 @@ final $typed_data.Uint8List mediaDescriptor = $convert.base64Decode(
     'RzGBcgASgLMh8uZ29vZGFuaW1lLk1lZGlhVHJlbmRDb25uZWN0aW9uUgZ0cmVuZHMSIgoKbWVh'
     'bl9zY29yZRgYIAEoBUgAUgltZWFuU2NvcmWIAQESIwoKZmF2b3VyaXRlcxgZIAEoBUgBUgpmYX'
     'ZvdXJpdGVziAEBEhoKCHN5bm9ueW1zGBogAygJUghzeW5vbnltcxI1CgdyZXZpZXdzGBsgASgL'
-    'MhsuZ29vZGFuaW1lLlJldmlld0Nvbm5lY3Rpb25SB3Jldmlld3NCDQoLX21lYW5fc2NvcmVCDQ'
-    'oLX2Zhdm91cml0ZXM=');
+    'MhsuZ29vZGFuaW1lLlJldmlld0Nvbm5lY3Rpb25SB3Jldmlld3MSHwoIY2hhcHRlcnMYHCABKA'
+    'VIAlIIY2hhcHRlcnOIAQESHQoHdm9sdW1lcxgdIAEoBUgDUgd2b2x1bWVziAEBQg0KC19tZWFu'
+    'X3Njb3JlQg0KC19mYXZvdXJpdGVzQgsKCV9jaGFwdGVyc0IKCghfdm9sdW1lcw==');

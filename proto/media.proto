@@ -43,4 +43,6 @@ message Media {
   optional int32 favourites = 25;
   repeated string synonyms = 26;
   ReviewConnection reviews = 27;
+  optional int32 chapters = 28;
+  optional int32 volumes = 29;
 }

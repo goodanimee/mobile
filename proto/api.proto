@@ -100,6 +100,16 @@ message ToggleFavouriteAnimeResponse {
   string error = 3;
 }
 
+message ToggleFavouriteMangaRequest {
+  int32 manga_id = 1;
+}
+
+message ToggleFavouriteMangaResponse {
+  int32 manga_id = 1;
+  bool is_favourite = 2;
+  string error = 3;
+}
+
 message ToggleActivityLikeRequest {
   int32 activity_id = 1;
 }

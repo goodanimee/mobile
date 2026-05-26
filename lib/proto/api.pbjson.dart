@@ -351,6 +351,37 @@ final $typed_data.Uint8List toggleFavouriteAnimeResponseDescriptor =
         'lkEiEKDGlzX2Zhdm91cml0ZRgCIAEoCFILaXNGYXZvdXJpdGUSFAoFZXJyb3IYAyABKAlSBWVy'
         'cm9y');
 
+@$core.Deprecated('Use toggleFavouriteMangaRequestDescriptor instead')
+const ToggleFavouriteMangaRequest$json = {
+  '1': 'ToggleFavouriteMangaRequest',
+  '2': [
+    {'1': 'manga_id', '3': 1, '4': 1, '5': 5, '10': 'mangaId'},
+  ],
+};
+
+/// Descriptor for `ToggleFavouriteMangaRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFavouriteMangaRequestDescriptor =
+    $convert.base64Decode(
+        'ChtUb2dnbGVGYXZvdXJpdGVNYW5nYVJlcXVlc3QSGQoIbWFuZ2FfaWQYASABKAVSB21hbmdhSW'
+        'Q=');
+
+@$core.Deprecated('Use toggleFavouriteMangaResponseDescriptor instead')
+const ToggleFavouriteMangaResponse$json = {
+  '1': 'ToggleFavouriteMangaResponse',
+  '2': [
+    {'1': 'manga_id', '3': 1, '4': 1, '5': 5, '10': 'mangaId'},
+    {'1': 'is_favourite', '3': 2, '4': 1, '5': 8, '10': 'isFavourite'},
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `ToggleFavouriteMangaResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFavouriteMangaResponseDescriptor =
+    $convert.base64Decode(
+        'ChxUb2dnbGVGYXZvdXJpdGVNYW5nYVJlc3BvbnNlEhkKCG1hbmdhX2lkGAEgASgFUgdtYW5nYU'
+        'lkEiEKDGlzX2Zhdm91cml0ZRgCIAEoCFILaXNGYXZvdXJpdGUSFAoFZXJyb3IYAyABKAlSBWVy'
+        'cm9y');
+
 @$core.Deprecated('Use toggleActivityLikeRequestDescriptor instead')
 const ToggleActivityLikeRequest$json = {
   '1': 'ToggleActivityLikeRequest',

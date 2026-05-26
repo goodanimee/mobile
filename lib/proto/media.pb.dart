@@ -56,6 +56,8 @@ class Media extends $pb.GeneratedMessage {
     $core.int? favourites,
     $core.Iterable<$core.String>? synonyms,
     $9.ReviewConnection? reviews,
+    $core.int? chapters,
+    $core.int? volumes,
   }) {
     final result = create();
     if (base != null) result.base = base;
@@ -86,6 +88,8 @@ class Media extends $pb.GeneratedMessage {
     if (favourites != null) result.favourites = favourites;
     if (synonyms != null) result.synonyms.addAll(synonyms);
     if (reviews != null) result.reviews = reviews;
+    if (chapters != null) result.chapters = chapters;
+    if (volumes != null) result.volumes = volumes;
     return result;
   }
 
@@ -146,6 +150,8 @@ class Media extends $pb.GeneratedMessage {
     ..pPS(26, _omitFieldNames ? '' : 'synonyms')
     ..aOM<$9.ReviewConnection>(27, _omitFieldNames ? '' : 'reviews',
         subBuilder: $9.ReviewConnection.create)
+    ..aI(28, _omitFieldNames ? '' : 'chapters')
+    ..aI(29, _omitFieldNames ? '' : 'volumes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -397,6 +403,24 @@ class Media extends $pb.GeneratedMessage {
   void clearReviews() => $_clearField(27);
   @$pb.TagNumber(27)
   $9.ReviewConnection ensureReviews() => $_ensure(26);
+
+  @$pb.TagNumber(28)
+  $core.int get chapters => $_getIZ(27);
+  @$pb.TagNumber(28)
+  set chapters($core.int value) => $_setSignedInt32(27, value);
+  @$pb.TagNumber(28)
+  $core.bool hasChapters() => $_has(27);
+  @$pb.TagNumber(28)
+  void clearChapters() => $_clearField(28);
+
+  @$pb.TagNumber(29)
+  $core.int get volumes => $_getIZ(28);
+  @$pb.TagNumber(29)
+  set volumes($core.int value) => $_setSignedInt32(28, value);
+  @$pb.TagNumber(29)
+  $core.bool hasVolumes() => $_has(28);
+  @$pb.TagNumber(29)
+  void clearVolumes() => $_clearField(29);
 }
 
 const $core.bool _omitFieldNames =
