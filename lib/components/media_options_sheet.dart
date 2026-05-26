@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/common.dart';
+import '../models/media.dart';
 import '../models/media_list.dart';
 import '../services/anime_list_service.dart';
 import '../theme/theme.dart';
@@ -36,13 +37,19 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
   late double _score;
   DateTime? _startDate;
   DateTime? _finishDate;
-  int? _episodes;
+  int? _maxProgress;
+  int? _maxProgressVolumes;
+
+  late int _progressVolumes;
+  late int _repeat;
 
   late MediaListStatus? _initialStatus;
   late int _initialProgress;
   late double _initialScore;
   DateTime? _initialStartDate;
   DateTime? _initialFinishDate;
+  late int _initialProgressVolumes;
+  late int _initialRepeat;
 
   bool _isSaving = false;
 
@@ -53,9 +60,29 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
     _progress = widget.entry.progress;
     _score = widget.entry.score;
 
-    _episodes = widget.entry.media.episodes > 0
-        ? widget.entry.media.episodes
-        : null;
+    final isManga =
+        widget.entry.media is Media &&
+        (widget.entry.media as Media).type == 'MANGA';
+    if (isManga) {
+      final fullMedia = widget.entry.media as Media;
+      _maxProgress = fullMedia.chapters != null && fullMedia.chapters! > 0
+          ? fullMedia.chapters
+          : null;
+      _maxProgressVolumes = fullMedia.volumes != null && fullMedia.volumes! > 0
+          ? fullMedia.volumes
+          : null;
+    } else {
+      _maxProgress = widget.entry.media.episodes > 0
+          ? widget.entry.media.episodes
+          : null;
+      _maxProgressVolumes = null;
+    }
+
+    _progressVolumes = 0;
+    _initialProgressVolumes = _progressVolumes;
+
+    _repeat = 0;
+    _initialRepeat = _repeat;
 
     _startDate = _parseFuzzyDate(widget.entry.startedAt);
     _finishDate = _parseFuzzyDate(widget.entry.completedAt);
@@ -90,7 +117,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
 
       _progress = newProgress;
 
-      if (_episodes != null && _progress >= _episodes!) {
+      if (_maxProgress != null && _progress >= _maxProgress!) {
         _status = MediaListStatus.completed;
       } else {
         _status = MediaListStatus.current;
@@ -107,6 +134,82 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
     });
   }
 
+  void _updateProgressVolumes(int newVolumes) {
+    setState(() => _progressVolumes = newVolumes);
+  }
+
+  void _updateRepeat(int newRepeat) {
+    setState(() => _repeat = newRepeat);
+  }
+
+  Widget _buildCountersSection() {
+    final media = widget.entry.media;
+    final isManga = media is Media && media.type == 'MANGA';
+
+    if (isManga) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: CounterEditor(
+                    label: 'Chapters',
+                    value: _progress,
+                    maximum: _maxProgress,
+                    onChanged: _updateProgress,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: CounterEditor(
+                    label: 'Volumes',
+                    value: _progressVolumes,
+                    maximum: _maxProgressVolumes,
+                    onChanged: _updateProgressVolumes,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            CounterEditor(
+              label: 'Reread Count',
+              value: _repeat,
+              showMaxLimit: false,
+              onChanged: _updateRepeat,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        child: Row(
+          children: [
+            Expanded(
+              child: CounterEditor(
+                label: 'Episodes',
+                value: _progress,
+                maximum: _maxProgress,
+                onChanged: _updateProgress,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: CounterEditor(
+                label: 'Rewatch Count',
+                value: _repeat,
+                showMaxLimit: false,
+                onChanged: _updateRepeat,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -121,70 +224,62 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
           border: Border.all(color: cardBorderColor),
         ),
         child: Column(
-        children: [
-          SizedBox(
-            height: 32,
-            child: SingleChildScrollView(
-              controller: widget.scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Container(
-                height: 32,
-                width: double.infinity,
-                color: Colors.transparent,
+          children: [
+            SizedBox(
+              height: 32,
+              child: SingleChildScrollView(
+                controller: widget.scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Container(
+                  height: 32,
+                  width: double.infinity,
+                  color: Colors.transparent,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 12),
+                      Container(
+                        width: 40,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 12),
-                    Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
+                    StatusSelector(
+                      currentStatus: _status,
+                      onStatusChanged: _setStatus,
                     ),
+                    _buildCountersSection(),
+                    DateEditor(
+                      startDate: _startDate,
+                      finishDate: _finishDate,
+                      onStartDateChanged: (date) =>
+                          setState(() => _startDate = date),
+                      onFinishDateChanged: (date) =>
+                          setState(() => _finishDate = date),
+                    ),
+                    ScoreSlider(
+                      score: _score,
+                      onScoreChanged: (score) => setState(() => _score = score),
+                    ),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  StatusSelector(
-                    currentStatus: _status,
-                    onStatusChanged: _setStatus,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    child: CounterEditor(
-                      label: 'Episodes',
-                      value: _progress,
-                      maximum: _episodes,
-                      onChanged: _updateProgress,
-                    ),
-                  ),
-                  DateEditor(
-                    startDate: _startDate,
-                    finishDate: _finishDate,
-                    onStartDateChanged: (date) =>
-                        setState(() => _startDate = date),
-                    onFinishDateChanged: (date) =>
-                        setState(() => _finishDate = date),
-                  ),
-                  ScoreSlider(
-                    score: _score,
-                    onScoreChanged: (score) => setState(() => _score = score),
-                  ),
-                  const SizedBox(height: 24),
-                ],
-              ),
-            ),
-          ),
-          _buildActionButtons(),
-        ],
+            _buildActionButtons(),
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -196,7 +291,9 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
         _progress != _initialProgress ||
         _score != _initialScore ||
         _startDate != _initialStartDate ||
-        _finishDate != _initialFinishDate;
+        _finishDate != _initialFinishDate ||
+        _progressVolumes != _initialProgressVolumes ||
+        _repeat != _initialRepeat;
 
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 24),
@@ -313,7 +410,9 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
         _progress != _initialProgress ||
         _score != _initialScore ||
         _startDate != _initialStartDate ||
-        _finishDate != _initialFinishDate;
+        _finishDate != _initialFinishDate ||
+        _progressVolumes != _initialProgressVolumes ||
+        _repeat != _initialRepeat;
 
     if (!hasChanges) {
       Navigator.of(context).pop();
@@ -341,6 +440,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
               status: finalStatus,
               progress: _progress,
               score: _score,
+              repeat: _repeat,
               startedAt: _startDate != null
                   ? FuzzyDate(
                       year: _startDate!.year,
