@@ -109,14 +109,18 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: const Color(0xFF161616),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        border: Border.all(color: cardBorderColor),
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
-      child: Column(
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: const Color(0xFF161616),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: Border.all(color: cardBorderColor),
+        ),
+        child: Column(
         children: [
           SizedBox(
             height: 32,
@@ -180,6 +184,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
           _buildActionButtons(),
         ],
       ),
+    ),
     );
   }
 

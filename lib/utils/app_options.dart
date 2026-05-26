@@ -25,6 +25,7 @@ Future<MediaOptionsResult?> showMediaOptions(
     backgroundColor: Colors.transparent,
     builder: (BuildContext context) {
       return DraggableScrollableSheet(
+        initialChildSize: 0.65,
         minChildSize: 0.3,
         maxChildSize: 0.95,
         expand: false,

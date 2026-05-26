@@ -98,7 +98,6 @@ class StatusSelector extends StatelessWidget {
                               color: borderColor.withValues(alpha: 0.2),
                               border: Border.all(
                                 color: borderColor.withValues(alpha: 0.4),
-                                width: 1,
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
