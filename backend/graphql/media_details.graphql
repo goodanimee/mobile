@@ -61,6 +61,8 @@ fragment MediaFields on Media {
     bannerImage
     format
     episodes
+    chapters
+    volumes
     status
     seasonYear
     season
