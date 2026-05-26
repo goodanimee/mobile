@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "common.proto";
+import "media_min.proto";
+
+option go_package = "goodanime/backend/proto";
+
+message Recommendation {
+  int32 rating = 1;
+  MediaMin media_recommendation = 2;
+}
+
+message RecommendationEdge {
+  Recommendation node = 1;
+}
+
+message RecommendationConnection {
+  PageInfo page_info = 1;
+  repeated RecommendationEdge edges = 2;
+}

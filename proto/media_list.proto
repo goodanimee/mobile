@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "common.proto";
+import "media_list_entry.proto";
+import "media_min.proto";
+
+option go_package = "goodanime/backend/proto";
+
+message MediaListEntryWithMedia {
+  MediaListEntry entry = 1;
+  MediaMin media = 2;
+}
+
+message MediaListGroup {
+  string name = 1;
+  optional MediaListStatus status = 2;
+  repeated MediaListEntryWithMedia entries = 3;
+}
+
+message MediaListCollection {
+  bool has_next_chunk = 1;
+  repeated MediaListGroup lists = 2;
+}

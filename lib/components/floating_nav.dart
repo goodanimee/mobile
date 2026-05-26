@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 
+/// Represents a section in the quick navigation menu
 class QuickNavSection {
+  /// Icon for the section
   final IconData icon;
+
+  /// Label for the section
   final String label;
+
+  /// Callback when the section is tapped
   final VoidCallback onTap;
 
+  /// Whether the section is currently active
+  final bool isSelected;
+
+  /// Creates a quick nav section
   const QuickNavSection({
     required this.icon,
     required this.label,
     required this.onTap,
+    this.isSelected = false,
   });
 }
 
 const _navItems = [
-  (icon: Icons.home_rounded, label: 'Home'),
+  (icon: Icons.tv_rounded, label: 'Anime List'),
   (icon: Icons.explore_rounded, label: 'Discover'),
-  (icon: Icons.download_rounded, label: 'Downloads'),
-  (icon: Icons.settings_rounded, label: 'Settings'),
+  (icon: Icons.person_rounded, label: 'Profile'),
 ];
 
 const _fabSize = 52.0;
@@ -28,16 +38,30 @@ const _duration = Duration(milliseconds: 300);
 final _boxDecoration = BoxDecoration(
   color: bgColor,
   borderRadius: BorderRadius.circular(16),
-  border: Border.all(color: cardBorderColor, width: 1.0),
+  border: Border.all(color: cardBorderColor),
 );
 
+/// A floating navigation bar with menu and view toggles
 class FloatingNav extends StatefulWidget {
+  /// Index of the currently selected navigation item
   final int selectedIndex;
+
+  /// Callback when a navigation item is tapped
   final void Function(int index) onTap;
+
+  /// Optional quick navigation sections
   final List<QuickNavSection>? quickNavSections;
+
+  /// Current grid mode state
   final bool? isGridMode;
+
+  /// Callback to toggle grid mode
   final VoidCallback? onToggleGridMode;
 
+  /// Callback when expansion state changes
+  final void Function(bool expanded)? onExpandChanged;
+
+  /// Creates a floating navigation bar
   const FloatingNav({
     super.key,
     required this.selectedIndex,
@@ -45,12 +69,14 @@ class FloatingNav extends StatefulWidget {
     this.quickNavSections,
     this.isGridMode,
     this.onToggleGridMode,
+    this.onExpandChanged,
   });
 
   @override
   State<FloatingNav> createState() => _FloatingNavState();
 }
 
+/// State for FloatingNav
 class _FloatingNavState extends State<FloatingNav>
     with SingleTickerProviderStateMixin {
   bool _expanded = false;
@@ -78,12 +104,15 @@ class _FloatingNavState extends State<FloatingNav>
     super.dispose();
   }
 
+  /// Toggles the expansion state
   void _toggle() {
     setState(() => _expanded = !_expanded);
     _expanded ? _controller.forward() : _controller.reverse();
+    widget.onExpandChanged?.call(_expanded);
   }
 
   @override
+  /// Builds the floating navigation component
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
@@ -121,6 +150,7 @@ class _FloatingNavState extends State<FloatingNav>
     );
   }
 
+  /// Builds the main floating action button
   Widget _buildFab() {
     return Container(
       width: _fabSize,
@@ -146,6 +176,7 @@ class _FloatingNavState extends State<FloatingNav>
     );
   }
 
+  /// Builds the view toggle floating action button
   Widget _buildViewToggleFab() {
     final isGrid = widget.isGridMode ?? false;
     return Container(
@@ -161,7 +192,7 @@ class _FloatingNavState extends State<FloatingNav>
             transitionBuilder: (child, anim) =>
                 ScaleTransition(scale: anim, child: child),
             child: Icon(
-              isGrid ? Icons.list_rounded : Icons.grid_view_rounded,
+              isGrid ? Icons.view_list_rounded : Icons.grid_view_rounded,
               key: ValueKey(isGrid),
               color: Colors.white,
               size: 22,
@@ -172,6 +203,7 @@ class _FloatingNavState extends State<FloatingNav>
     );
   }
 
+  /// Builds the expanded horizontal navigation bar
   Widget _buildNavBar() {
     return Container(
       width: _navBarWidth * _widthFactor.value,
@@ -224,6 +256,7 @@ class _FloatingNavState extends State<FloatingNav>
     );
   }
 
+  /// Builds the vertical quick navigation bar
   Widget _buildQuickNavBar() {
     final sections = widget.quickNavSections!;
     final totalHeight = sections.length.toDouble() * _fabSize;
@@ -259,7 +292,9 @@ class _FloatingNavState extends State<FloatingNav>
                       child: Icon(
                         section.icon,
                         size: 20,
-                        color: Colors.white.withValues(alpha: 0.8),
+                        color: section.isSelected
+                            ? borderColor
+                            : Colors.white.withValues(alpha: 0.8),
                       ),
                     ),
                   ),

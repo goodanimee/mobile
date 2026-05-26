@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mix/mix.dart';
+
+import '../models/viewer.dart';
 import '../theme/theme.dart';
 import 'app_button.dart';
 
+/// A widget displaying user profile information
 class UserProfile extends StatelessWidget {
-  final Map<String, dynamic> userData;
+  /// The user data to display
+  final Viewer userData;
+
+  /// Callback for signing out
   final VoidCallback onSignOut;
 
+  /// Creates a user profile widget
   const UserProfile({
     super.key,
     required this.userData,
@@ -14,6 +21,7 @@ class UserProfile extends StatelessWidget {
   });
 
   @override
+  /// Builds the user profile component
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -21,11 +29,11 @@ class UserProfile extends StatelessWidget {
         CircleAvatar(
           radius: 45,
           backgroundColor: borderColor,
-          backgroundImage: NetworkImage(userData['avatar']['medium']),
+          backgroundImage: NetworkImage(userData.avatarMedium),
         ),
         const SizedBox(height: 16),
         Text(
-          'Welcome, ${userData['name']}',
+          'Welcome, ${userData.name}',
           style: const TextStyle(
             color: textColor,
             fontSize: 20,
@@ -34,7 +42,7 @@ class UserProfile extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'ID: ${userData['id']}',
+          'ID: ${userData.id}',
           style: TextStyle(
             color: textColor.withValues(alpha: 0.6),
             fontSize: 14,

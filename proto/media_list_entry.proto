@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "common.proto";
+
+option go_package = "goodanime/backend/proto";
+
+message MediaListEntry {
+  int32 id = 1;
+  optional MediaListStatus status = 2;
+  int32 progress = 3;
+  double score = 4;
+  int32 repeat = 5;
+  FuzzyDate started_at = 6;
+  FuzzyDate completed_at = 7;
+  int32 progress_volumes = 8;
+}

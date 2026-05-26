@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "media_character.proto";
+import "media_edge.proto";
+import "media_list_entry.proto";
+import "media_min.proto";
+import "media_misc.proto";
+import "media_recommendation.proto";
+import "media_review.proto";
+import "media_staff.proto";
+import "media_studio.proto";
+import "media_trend.proto";
+
+option go_package = "goodanime/backend/proto";
+
+message Media {
+  MediaMin base = 1;
+  string description = 2;
+  string banner_image = 3;
+  string status = 4;
+  repeated string genres = 5;
+  int32 popularity = 6;
+  string season = 7;
+  int32 season_year = 8;
+  string type = 9;
+  Trailer trailer = 10;
+  MediaListEntry media_list_entry = 11;
+  StudioConnection studios = 12;
+  repeated MediaTag tags = 13;
+  repeated ExternalLink external_links = 14;
+  repeated StreamingEpisode streaming_episodes = 15;
+  StaffConnection staff = 16;
+  AiringSchedule next_airing_episode = 17;
+  CharacterConnection characters = 18;
+  MediaConnection relations = 19;
+  RecommendationConnection recommendations = 20;
+  repeated MediaRank rankings = 21;
+  MediaStats stats = 22;
+  MediaTrendConnection trends = 23;
+  optional int32 mean_score = 24;
+  optional int32 favourites = 25;
+  repeated string synonyms = 26;
+  ReviewConnection reviews = 27;
+  optional int32 chapters = 28;
+  optional int32 volumes = 29;
+}

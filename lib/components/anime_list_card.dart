@@ -1,26 +1,30 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../theme/theme.dart';
-import '../utils/backend_helper.dart';
-import '../services/auth_service.dart';
-import '../proto/medialist.pb.dart';
 
+import '../models/common.dart';
+import '../models/media_list.dart';
+import '../services/anime_list_service.dart';
+import '../theme/theme.dart';
+import '../utils/app_options.dart';
+import 'app_badges.dart';
+import 'app_network_image.dart';
+
+/// Builds a badge showing repeat count
 Widget _buildRepeatBadge(int repeat) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
     decoration: const BoxDecoration(
-      color: Colors.black38,
+      color: surfaceBackground,
       borderRadius: BorderRadius.all(Radius.circular(6)),
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Icons.repeat_rounded, size: 14, color: Colors.white70),
+        const Icon(Icons.repeat_rounded, size: 14, color: textSecondary),
         const SizedBox(width: 4),
         Text(
           repeat.toString(),
           style: const TextStyle(
-            color: Colors.white,
+            color: textPrimary,
             fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
@@ -30,19 +34,24 @@ Widget _buildRepeatBadge(int repeat) {
   );
 }
 
-Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
+/// Builds a badge showing progress and status
+Widget _buildProgressBadge(
+  MediaListStatus? status,
+  int progress,
+  dynamic episodes,
+) {
   const badgeDecoration = BoxDecoration(
     color: Colors.black38,
     borderRadius: BorderRadius.all(Radius.circular(6)),
   );
   const badgePadding = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   const labelStyle = TextStyle(
-    color: Colors.white,
+    color: textPrimary,
     fontSize: 12,
     fontWeight: FontWeight.w600,
   );
 
-  if (status == 'PLANNING') {
+  if (status == MediaListStatus.planning) {
     return Container(
       padding: badgePadding,
       decoration: badgeDecoration,
@@ -62,9 +71,9 @@ Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
   }
 
   final icon = switch (status) {
-    'COMPLETED' => Icons.check_circle_rounded,
-    'PAUSED' => Icons.pause_circle_rounded,
-    'DROPPED' => Icons.cancel_rounded,
+    MediaListStatus.completed => Icons.check_circle_rounded,
+    MediaListStatus.paused => Icons.pause_circle_rounded,
+    MediaListStatus.dropped => Icons.cancel_rounded,
     _ => Icons.play_circle_fill_rounded,
   };
 
@@ -74,7 +83,7 @@ Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 14, color: Colors.white70),
+        Icon(icon, size: 14, color: textSecondary),
         const SizedBox(width: 4),
         Text('$progress / $episodes', style: labelStyle),
       ],
@@ -82,6 +91,7 @@ Widget _buildProgressBadge(String status, int progress, dynamic episodes) {
   );
 }
 
+/// Builds a badge showing the score
 Widget _buildScoreBadge(num score) {
   final display = score % 1 == 0
       ? score.toInt().toString()
@@ -89,7 +99,7 @@ Widget _buildScoreBadge(num score) {
   return Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      const Icon(Icons.star_rounded, size: 14, color: Colors.amber),
+      const Icon(Icons.star_rounded, size: 14, color: scoreStar),
       const SizedBox(width: 4),
       Text(
         display,
@@ -103,6 +113,7 @@ Widget _buildScoreBadge(num score) {
   );
 }
 
+/// Builds a button to increment progress
 Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
   return GestureDetector(
     onTap: onTap,
@@ -111,7 +122,7 @@ Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
       width: 55,
       height: 55,
       decoration: const BoxDecoration(
-        color: Colors.black38,
+        color: surfaceBackground,
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Center(
@@ -120,70 +131,80 @@ Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
-                  color: Colors.white70,
+                  color: textSecondary,
                   strokeWidth: 2,
                 ),
               )
             : const Icon(
                 Icons.play_arrow_rounded,
                 size: 28,
-                color: Colors.white70,
+                color: textSecondary,
               ),
       ),
     ),
   );
 }
 
+/// A card widget displaying an anime entry in a list
 class AnimeListCard extends StatefulWidget {
-  final Map<String, dynamic> entry;
-  final void Function(int mediaId, Map<String, dynamic> updates)?
-  onEntryUpdated;
+  /// The anime list entry data
+  final MediaListEntryWithMedia entry;
+
+  /// Callback when the entry is updated
+  final void Function(int mediaId, MediaOptionsResult result)? onEntryUpdated;
+
+  /// Callback for long press
   final VoidCallback? onLongPress;
 
+  /// Callback for tap
+  final VoidCallback? onTap;
+
+  /// Creates an anime list card
   const AnimeListCard({
     super.key,
     required this.entry,
     this.onEntryUpdated,
     this.onLongPress,
+    this.onTap,
   });
 
   @override
   State<AnimeListCard> createState() => _AnimeListCardState();
 }
 
+/// State for AnimeListCard
 class _AnimeListCardState extends State<AnimeListCard> {
   late int _progress;
-  late String _status;
+  late MediaListStatus? _status;
   bool _isUpdating = false;
 
   @override
   void initState() {
     super.initState();
-    _progress = widget.entry['progress'] as int? ?? 0;
-    _status = widget.entry['status'] as String? ?? '';
+    _progress = widget.entry.progress;
+    _status = widget.entry.status;
   }
 
   @override
+  /// Updates state when widget properties change
   void didUpdateWidget(AnimeListCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.entry != widget.entry) {
-      _progress = widget.entry['progress'] as int? ?? 0;
-      _status = widget.entry['status'] as String? ?? '';
+      _progress = widget.entry.progress;
+      _status = widget.entry.status;
     }
   }
 
+  /// Increments the progress of the anime entry
   Future<void> _incrementProgress() async {
     if (_isUpdating) return;
 
-    final media = widget.entry['media'] as Map<String, dynamic>? ?? {};
-    final mediaId = media['id'] as int?;
-    if (mediaId == null) return;
-
-    final epCount = media['episodes'] as int?;
+    final mediaId = widget.entry.media.id;
+    final epCount = widget.entry.media.episodes;
     final newProgress = _progress + 1;
-    final newStatus = (epCount != null && newProgress >= epCount)
-        ? 'COMPLETED'
-        : 'CURRENT';
+    final newStatus = (epCount > 0 && newProgress >= epCount)
+        ? MediaListStatus.completed
+        : MediaListStatus.current;
 
     setState(() {
       _progress = newProgress;
@@ -192,21 +213,24 @@ class _AnimeListCardState extends State<AnimeListCard> {
     });
 
     try {
-      final token = await AuthService.getRawToken() ?? '';
-      final req = SaveMediaListEntryRequest(
+      await AnimeListService.saveEntry(
         mediaId: mediaId,
         progress: newProgress,
         status: newStatus,
       );
-      await BackendHelper.saveMediaListEntry(req, token);
-      widget.onEntryUpdated?.call(mediaId, {
-        'progress': newProgress,
-        'status': newStatus,
-      });
+      widget.onEntryUpdated?.call(
+        mediaId,
+        MediaOptionsResult(
+          entry: widget.entry.copyWith(
+            progress: newProgress,
+            status: newStatus,
+          ),
+        ),
+      );
     } catch (e) {
       setState(() {
-        _progress = widget.entry['progress'] as int? ?? 0;
-        _status = widget.entry['status'] as String? ?? '';
+        _progress = widget.entry.progress;
+        _status = widget.entry.status;
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -220,25 +244,32 @@ class _AnimeListCardState extends State<AnimeListCard> {
 
   @override
   Widget build(BuildContext context) {
-    final media = widget.entry['media'] as Map<String, dynamic>? ?? {};
-    final title = media['title']?['userPreferred'] ?? 'Unknown';
-    final coverImage = media['coverImage']?['large'];
-    final imageColorHex = media['coverImage']?['color'];
-    final color = imageColorHex != null
+    final title = widget.entry.media.title.userPreferred;
+    final coverImage = widget.entry.media.coverImage.large;
+    final imageColorHex = widget.entry.media.coverImage.color;
+    final color = imageColorHex.isNotEmpty
         ? Color(int.parse(imageColorHex.replaceAll('#', '0xFF')))
         : borderColor;
-    final labelColor = Color.lerp(const Color(0xFFEEEEEE), color, 0.35)!;
+    final labelColor = Color.lerp(neutralLight, color, 0.35)!;
 
-    final format = media['format']?.toString().replaceAll('_', ' ') ?? '';
-    final averageScore = media['averageScore'] as int?;
-    final episodes = media['episodes'] ?? '?';
-    final repeat = widget.entry['repeat'] as int? ?? 0;
-    final score = (widget.entry['score'] as num?) ?? 0;
+    final format = widget.entry.media.format.replaceAll('_', ' ');
+    final averageScore = widget.entry.media.averageScore;
+    final episodes = widget.entry.media.episodes > 0
+        ? widget.entry.media.episodes
+        : '?';
+    final repeat = widget.entry.repeat;
+    final score = widget.entry.score;
+
+    final isAdult = widget.entry.media.isAdult;
+    final isFavourite = widget.entry.media.isFavourite;
 
     final showPlayButton =
-        _status == 'CURRENT' || _status == 'PLANNING' || _status == 'PAUSED';
+        _status == MediaListStatus.current ||
+        _status == MediaListStatus.planning ||
+        _status == MediaListStatus.paused;
 
     return GestureDetector(
+      onTap: widget.onTap,
       onLongPress: widget.onLongPress,
       behavior: HitTestBehavior.opaque,
       child: Container(
@@ -250,11 +281,9 @@ class _AnimeListCardState extends State<AnimeListCard> {
               color.withValues(alpha: 0.15),
               Color.lerp(color.withValues(alpha: 0.15), hoverBgColor, 0.75)!,
             ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
           ),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withValues(alpha: 0.2), width: 1.0),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
@@ -267,15 +296,11 @@ class _AnimeListCardState extends State<AnimeListCard> {
                   fit: StackFit.expand,
                   children: [
                     Container(color: color.withValues(alpha: 0.2)),
-                    if (coverImage != null)
-                      CachedNetworkImage(
-                        imageUrl: coverImage,
-                        fit: BoxFit.cover,
-                        errorWidget: (_, _, _) => const Icon(
-                          Icons.broken_image,
-                          color: Colors.white54,
-                        ),
-                      ),
+                    AppNetworkImage(
+                      imageUrl: coverImage,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
                   ],
                 ),
               ),
@@ -283,7 +308,6 @@ class _AnimeListCardState extends State<AnimeListCard> {
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
                         child: Column(
@@ -294,7 +318,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: textPrimary,
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 height: 1.2,
@@ -314,8 +338,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
                                       letterSpacing: 0.5,
                                     ),
                                   ),
-                                  if (averageScore != null &&
-                                      averageScore > 0) ...[
+                                  if (averageScore > 0) ...[
                                     Text(
                                       ' · ',
                                       style: TextStyle(
@@ -327,7 +350,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
                                     const Icon(
                                       Icons.star_rounded,
                                       size: 12,
-                                      color: Colors.amber,
+                                      color: scoreStar,
                                     ),
                                     const SizedBox(width: 3),
                                     Text(
@@ -357,10 +380,18 @@ class _AnimeListCardState extends State<AnimeListCard> {
                                       const SizedBox(width: 6),
                                       _buildRepeatBadge(repeat),
                                     ],
+                                    if (isAdult) ...[
+                                      const SizedBox(width: 6),
+                                      const AppAdultBadge(),
+                                    ],
+                                    if (isFavourite) ...[
+                                      const SizedBox(width: 6),
+                                      const AppFavouriteBadge(size: 16),
+                                    ],
                                   ],
                                 ),
-                                if ((_status == 'COMPLETED' ||
-                                        _status == 'DROPPED') &&
+                                if ((_status == MediaListStatus.completed ||
+                                        _status == MediaListStatus.dropped) &&
                                     score > 0)
                                   _buildScoreBadge(score),
                               ],

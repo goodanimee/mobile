@@ -1,0 +1,380 @@
+// This is a generated file - do not edit.
+//
+// Generated from media_staff.proto.
+
+// @dart = 3.3
+
+// ignore_for_file: annotate_overrides, camel_case_types, comment_references
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_relative_imports
+
+import 'dart:core' as $core;
+
+import 'package:protobuf/protobuf.dart' as $pb;
+
+import 'common.pb.dart' as $0;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
+
+class StaffName extends $pb.GeneratedMessage {
+  factory StaffName({
+    $core.String? full,
+    $core.String? native,
+    $core.String? userPreferred,
+  }) {
+    final result = create();
+    if (full != null) result.full = full;
+    if (native != null) result.native = native;
+    if (userPreferred != null) result.userPreferred = userPreferred;
+    return result;
+  }
+
+  StaffName._();
+
+  factory StaffName.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StaffName.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StaffName',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'full')
+    ..aOS(2, _omitFieldNames ? '' : 'native')
+    ..aOS(3, _omitFieldNames ? '' : 'userPreferred')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StaffName clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StaffName copyWith(void Function(StaffName) updates) =>
+      super.copyWith((message) => updates(message as StaffName)) as StaffName;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StaffName create() => StaffName._();
+  @$core.override
+  StaffName createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static StaffName getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StaffName>(create);
+  static StaffName? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get full => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set full($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasFull() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFull() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get native => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set native($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasNative() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNative() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get userPreferred => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set userPreferred($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasUserPreferred() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearUserPreferred() => $_clearField(3);
+}
+
+class StaffImage extends $pb.GeneratedMessage {
+  factory StaffImage({
+    $core.String? large,
+    $core.String? medium,
+  }) {
+    final result = create();
+    if (large != null) result.large = large;
+    if (medium != null) result.medium = medium;
+    return result;
+  }
+
+  StaffImage._();
+
+  factory StaffImage.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StaffImage.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StaffImage',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'large')
+    ..aOS(2, _omitFieldNames ? '' : 'medium')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StaffImage clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StaffImage copyWith(void Function(StaffImage) updates) =>
+      super.copyWith((message) => updates(message as StaffImage)) as StaffImage;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StaffImage create() => StaffImage._();
+  @$core.override
+  StaffImage createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static StaffImage getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StaffImage>(create);
+  static StaffImage? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get large => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set large($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasLarge() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLarge() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get medium => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set medium($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasMedium() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMedium() => $_clearField(2);
+}
+
+class Staff extends $pb.GeneratedMessage {
+  factory Staff({
+    StaffName? name,
+    StaffImage? image,
+    $core.String? languageV2,
+  }) {
+    final result = create();
+    if (name != null) result.name = name;
+    if (image != null) result.image = image;
+    if (languageV2 != null) result.languageV2 = languageV2;
+    return result;
+  }
+
+  Staff._();
+
+  factory Staff.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Staff.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Staff',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOM<StaffName>(1, _omitFieldNames ? '' : 'name',
+        subBuilder: StaffName.create)
+    ..aOM<StaffImage>(2, _omitFieldNames ? '' : 'image',
+        subBuilder: StaffImage.create)
+    ..aOS(3, _omitFieldNames ? '' : 'languageV2')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  Staff clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  Staff copyWith(void Function(Staff) updates) =>
+      super.copyWith((message) => updates(message as Staff)) as Staff;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static Staff create() => Staff._();
+  @$core.override
+  Staff createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static Staff getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Staff>(create);
+  static Staff? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  StaffName get name => $_getN(0);
+  @$pb.TagNumber(1)
+  set name(StaffName value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearName() => $_clearField(1);
+  @$pb.TagNumber(1)
+  StaffName ensureName() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  StaffImage get image => $_getN(1);
+  @$pb.TagNumber(2)
+  set image(StaffImage value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasImage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearImage() => $_clearField(2);
+  @$pb.TagNumber(2)
+  StaffImage ensureImage() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.String get languageV2 => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set languageV2($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasLanguageV2() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearLanguageV2() => $_clearField(3);
+}
+
+class StaffEdge extends $pb.GeneratedMessage {
+  factory StaffEdge({
+    $core.String? role,
+    Staff? node,
+  }) {
+    final result = create();
+    if (role != null) result.role = role;
+    if (node != null) result.node = node;
+    return result;
+  }
+
+  StaffEdge._();
+
+  factory StaffEdge.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StaffEdge.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StaffEdge',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'role')
+    ..aOM<Staff>(2, _omitFieldNames ? '' : 'node', subBuilder: Staff.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StaffEdge clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StaffEdge copyWith(void Function(StaffEdge) updates) =>
+      super.copyWith((message) => updates(message as StaffEdge)) as StaffEdge;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StaffEdge create() => StaffEdge._();
+  @$core.override
+  StaffEdge createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static StaffEdge getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StaffEdge>(create);
+  static StaffEdge? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get role => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set role($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasRole() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRole() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  Staff get node => $_getN(1);
+  @$pb.TagNumber(2)
+  set node(Staff value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasNode() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNode() => $_clearField(2);
+  @$pb.TagNumber(2)
+  Staff ensureNode() => $_ensure(1);
+}
+
+class StaffConnection extends $pb.GeneratedMessage {
+  factory StaffConnection({
+    $core.Iterable<StaffEdge>? edges,
+    $0.PageInfo? pageInfo,
+  }) {
+    final result = create();
+    if (edges != null) result.edges.addAll(edges);
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    return result;
+  }
+
+  StaffConnection._();
+
+  factory StaffConnection.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory StaffConnection.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'StaffConnection',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..pPM<StaffEdge>(1, _omitFieldNames ? '' : 'edges',
+        subBuilder: StaffEdge.create)
+    ..aOM<$0.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $0.PageInfo.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StaffConnection clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  StaffConnection copyWith(void Function(StaffConnection) updates) =>
+      super.copyWith((message) => updates(message as StaffConnection))
+          as StaffConnection;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static StaffConnection create() => StaffConnection._();
+  @$core.override
+  StaffConnection createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static StaffConnection getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StaffConnection>(create);
+  static StaffConnection? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<StaffEdge> get edges => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $0.PageInfo get pageInfo => $_getN(1);
+  @$pb.TagNumber(2)
+  set pageInfo($0.PageInfo value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPageInfo() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPageInfo() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $0.PageInfo ensurePageInfo() => $_ensure(1);
+}
+
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

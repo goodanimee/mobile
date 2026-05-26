@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package goodanime;
+
+option go_package = "goodanime/backend/proto";
+
+message MediaTrend {
+  int32 average_score = 1;
+  int32 date = 2;
+  int32 in_progress = 3;
+  int32 popularity = 4;
+}
+
+message MediaTrendConnection {
+  repeated MediaTrend nodes = 1;
+}

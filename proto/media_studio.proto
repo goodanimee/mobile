@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package goodanime;
+
+option go_package = "goodanime/backend/proto";
+
+message Studio {
+  int32 id = 1;
+  string name = 2;
+}
+
+message StudioEdge {
+  bool is_main = 1;
+  Studio node = 2;
+}
+
+message StudioConnection {
+  repeated StudioEdge edges = 1;
+}

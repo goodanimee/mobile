@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "common.proto";
+import "media.proto";
+import "media_activity.proto";
+import "media_list.proto";
+import "media_list_entry.proto";
+import "media_review.proto";
+import "viewer.proto";
+
+option go_package = "goodanime/backend/proto";
+
+message FetchMediaListRequest {
+  int32 user_id = 1;
+  string type = 2;
+  repeated string sort = 3;
+}
+
+message FetchMediaListResponse {
+  MediaListCollection collection = 1;
+  string error = 2;
+}
+
+message FetchViewerResponse {
+  Viewer viewer = 1;
+  string error = 2;
+}
+
+message FuzzyDateInput {
+  optional int32 year = 1;
+  optional int32 month = 2;
+  optional int32 day = 3;
+}
+
+message SaveMediaListEntryRequest {
+  int32 media_id = 1;
+  optional int32 progress = 2;
+  optional string status = 3;
+  optional double score = 4;
+  optional FuzzyDateInput started_at = 5;
+  optional FuzzyDateInput completed_at = 6;
+  optional int32 progress_volumes = 7;
+  optional int32 repeat = 8;
+}
+
+message SaveMediaListEntryResponse {
+  MediaListEntry entry = 1;
+  string error = 2;
+}
+
+message FetchMediaDetailsRequest {
+  int32 media_id = 1;
+}
+
+message FetchMediaDetailsResponse {
+  Media media = 1;
+  string error = 2;
+}
+
+message FetchMediaStaffRequest {
+  int32 media_id = 1;
+  int32 page = 2;
+  int32 per_page = 3;
+}
+
+message FetchMediaStaffResponse {
+  Media media = 1;
+  string error = 2;
+}
+
+message FetchMediaCharactersRequest {
+  int32 media_id = 1;
+  int32 page = 2;
+  int32 per_page = 3;
+}
+
+message FetchMediaCharactersResponse {
+  Media media = 1;
+  string error = 2;
+}
+
+message FetchMediaRecommendationsRequest {
+  int32 media_id = 1;
+  int32 page = 2;
+  int32 per_page = 3;
+}
+
+message FetchMediaRecommendationsResponse {
+  Media media = 1;
+  string error = 2;
+}
+
+message ToggleFavouriteAnimeRequest {
+  int32 anime_id = 1;
+}
+
+message ToggleFavouriteAnimeResponse {
+  int32 anime_id = 1;
+  bool is_favourite = 2;
+  string error = 3;
+}
+
+message ToggleFavouriteMangaRequest {
+  int32 manga_id = 1;
+}
+
+message ToggleFavouriteMangaResponse {
+  int32 manga_id = 1;
+  bool is_favourite = 2;
+  string error = 3;
+}
+
+message ToggleActivityLikeRequest {
+  int32 activity_id = 1;
+}
+
+message ToggleActivityLikeResponse {
+  int32 activity_id = 1;
+  repeated int32 liked_user_ids = 2;
+  string error = 3;
+}
+
+message DeleteMediaListEntryRequest {
+  int32 entry_id = 1;
+}
+
+message DeleteMediaListEntryResponse {
+  int32 entry_id = 1;
+  bool deleted = 2;
+  string error = 3;
+}
+
+message FetchMediaReviewsRequest {
+  int32 media_id = 1;
+  int32 page = 2;
+  int32 per_page = 3;
+}
+
+message FetchMediaReviewsResponse {
+  Media media = 1;
+  string error = 2;
+}
+
+message RateReviewRequest {
+  int32 review_id = 1;
+  ReviewUserRating rating = 2;
+}
+
+message RateReviewResponse {
+  ReviewNode review = 1;
+  string error = 2;
+}
+
+message FetchMediaActivitiesRequest {
+  int32 media_id = 1;
+  int32 page = 2;
+  int32 per_page = 3;
+}
+
+message FetchMediaActivitiesResponse {
+  PageInfo page_info = 1;
+  repeated ListActivity activities = 2;
+  string error = 3;
+}

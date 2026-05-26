@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package goodanime;
+
+option go_package = "goodanime/backend/proto";
+
+message Trailer {
+  string id = 1;
+  string site = 2;
+  string thumbnail = 3;
+}
+
+message MediaTag {
+  int32 id = 1;
+  bool is_general_spoiler = 2;
+  bool is_media_spoiler = 3;
+  string name = 4;
+  int32 rank = 5;
+}
+
+message ExternalLink {
+  string language = 1;
+  string site = 2;
+  string url = 3;
+}
+
+message AiringSchedule {
+  int32 airing_at = 1;
+  int32 episode = 2;
+  int32 time_until_airing = 3;
+}
+
+message StreamingEpisode {
+  string thumbnail = 1;
+  string title = 2;
+  string url = 3;
+}
+
+message MediaRank {
+  bool all_time = 1;
+  int32 rank = 2;
+  string type = 3;
+  string season = 4;
+  int32 year = 5;
+}
+
+message ScoreDistribution {
+  int32 amount = 1;
+  int32 score = 2;
+}
+
+message StatusDistribution {
+  int32 amount = 1;
+  string status = 2;
+}
+
+message MediaStats {
+  repeated ScoreDistribution score_distribution = 1;
+  repeated StatusDistribution status_distribution = 2;
+}

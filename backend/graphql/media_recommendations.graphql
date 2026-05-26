@@ -1,0 +1,37 @@
+query Media($mediaId: Int, $page: Int, $perPage: Int) {
+    Media(id: $mediaId) {
+        id
+        recommendations(page: $page, perPage: $perPage, sort: [RATING_DESC]) {
+            pageInfo {
+                hasNextPage
+                currentPage
+            }
+            edges {
+                node {
+                    rating
+                    mediaRecommendation {
+                        id
+                        averageScore
+                        episodes
+                        format
+                        isAdult
+                        isFavourite
+                        siteUrl
+                        title {
+                            english
+                            native
+                            romaji
+                            userPreferred
+                        }
+                        coverImage {
+                            color
+                            medium
+                            large
+                            extraLarge
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

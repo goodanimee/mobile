@@ -1,7 +1,7 @@
 name: goodanime
 description: "A new Flutter project."
 publish_to: "none"
-version: 0.1.0+1
+version: 0.2.0+2
 
 environment:
   sdk: ^3.11.5
@@ -16,10 +16,12 @@ dependencies:
   url_launcher: ^6.3.2
   app_links: ^7.0.0
   shared_preferences: ^2.5.5
-  http: ^1.6.0
   cached_network_image: ^3.4.1
   protobuf: ^6.0.0
   flutter_dotenv: ^6.0.1
+  html: ^0.15.6
+  share_plus: 10.1.4
+  timeago: ^3.7.0
 
 dev_dependencies:
   flutter_test:

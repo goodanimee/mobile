@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "media_min.proto";
+
+option go_package = "goodanime/backend/proto";
+
+message MediaEdge {
+  string relation_type = 1;
+  MediaMin node = 2;
+}
+
+message MediaConnection {
+  repeated MediaEdge edges = 1;
+}
