@@ -21,17 +21,17 @@ class StatusSelector extends StatelessWidget {
   IconData _getIcon(MediaListStatus status) {
     switch (status) {
       case MediaListStatus.current:
-        return LucideIcons.circlePlay;
+        return LucideIcons.playCircle;
       case MediaListStatus.planning:
         return LucideIcons.bookmark;
       case MediaListStatus.completed:
-        return LucideIcons.circleCheck;
+        return LucideIcons.badgeCheck;
       case MediaListStatus.repeating:
-        return LucideIcons.repeat;
+        return LucideIcons.rotateCcw;
       case MediaListStatus.paused:
         return LucideIcons.circlePause;
       case MediaListStatus.dropped:
-        return LucideIcons.circleX;
+        return LucideIcons.ban;
     }
   }
 

@@ -23,12 +23,12 @@ class HomePage extends StatefulWidget {
 
 /// Returns an icon corresponding to a list status
 IconData _statusIcon(MediaListStatus status) => switch (status) {
-  MediaListStatus.current => LucideIcons.circlePlay,
-  MediaListStatus.repeating => LucideIcons.repeat,
+  MediaListStatus.current => LucideIcons.playCircle,
+  MediaListStatus.repeating => LucideIcons.rotateCcw,
   MediaListStatus.planning => LucideIcons.bookmark,
-  MediaListStatus.completed => LucideIcons.circleCheck,
+  MediaListStatus.completed => LucideIcons.badgeCheck,
   MediaListStatus.paused => LucideIcons.circlePause,
-  MediaListStatus.dropped => LucideIcons.circleX,
+  MediaListStatus.dropped => LucideIcons.ban,
 };
 
 /// State for HomePage

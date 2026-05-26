@@ -125,7 +125,7 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                LucideIcons.shuffle,
+                LucideIcons.network,
                 size: 48,
                 color: textHint.withValues(alpha: 0.33),
               ),

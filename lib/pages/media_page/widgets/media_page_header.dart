@@ -91,7 +91,7 @@ class MediaPageHeader extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     _buildInfoRow(
-                      LucideIcons.tv,
+                      _getFormatIcon(media.format),
                       media.format.isNotEmpty
                           ? media.format.replaceAll('_', ' ')
                           : 'TV',
@@ -110,19 +110,19 @@ class MediaPageHeader extends StatelessWidget {
                       if (media.season.isNotEmpty && media.seasonYear > 0) ...[
                         const SizedBox(height: 8),
                         _buildInfoRow(
-                          LucideIcons.calendar,
+                          LucideIcons.calendarDays,
                           '${media.season} ${media.seasonYear}'.toUpperCase(),
                         ),
                       ],
                     ] else ...[
                       _buildInfoRow(
-                        LucideIcons.bookOpen,
+                        LucideIcons.bookOpenText,
                         '${media.chapters != null && media.chapters! > 0 ? media.chapters.toString() : '?'} Chapters',
                       ),
                       if (media.volumes != null && media.volumes! > 0) ...[
                         const SizedBox(height: 8),
                         _buildInfoRow(
-                          LucideIcons.library,
+                          LucideIcons.bookCopy,
                           '${media.volumes} Volumes',
                         ),
                       ],
@@ -162,5 +162,32 @@ class MediaPageHeader extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  /// Returns the corresponding Lucide icon for a media format.
+  IconData _getFormatIcon(String format) {
+    switch (format.toUpperCase()) {
+      case 'TV':
+      case 'TV_SHORT':
+        return LucideIcons.monitor;
+      case 'MOVIE':
+        return LucideIcons.clapperboard;
+      case 'SPECIAL':
+        return LucideIcons.ticket;
+      case 'OVA':
+        return LucideIcons.disc;
+      case 'ONA':
+        return LucideIcons.globe;
+      case 'MUSIC':
+        return LucideIcons.music;
+      case 'MANGA':
+        return LucideIcons.bookImage;
+      case 'NOVEL':
+        return LucideIcons.book;
+      case 'ONE_SHOT':
+        return LucideIcons.fileText;
+      default:
+        return LucideIcons.monitor;
+    }
   }
 }

@@ -95,7 +95,11 @@ class RankingPill extends StatelessWidget {
         ? const LucideStarIcon(isFilled: false, color: Colors.white)
         : (isPopular
               ? const LucideHeartIcon(isFilled: false, color: Colors.white)
-              : const Icon(LucideIcons.info, color: Colors.white, size: 24));
+              : const Icon(
+                  LucideIcons.badgeInfo,
+                  color: Colors.white,
+                  size: 24,
+                ));
 
     return SizedBox(
       width: 32,

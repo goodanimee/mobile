@@ -284,7 +284,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: LucideIcons.film,
+        icon: LucideIcons.monitorPlay,
         label: 'Media',
         isSelected: _selectedTabIndex == 1,
         onTap: () {
@@ -310,7 +310,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: LucideIcons.circleUser,
+        icon: LucideIcons.userRound,
         label: 'Characters',
         isSelected: _selectedTabIndex == 3,
         onTap: () {
@@ -323,7 +323,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: LucideIcons.shuffle,
+        icon: LucideIcons.network,
         label: 'Relations',
         isSelected: _selectedTabIndex == 4,
         onTap: () {
@@ -336,7 +336,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: LucideIcons.trendingUp,
+        icon: LucideIcons.barChart3,
         label: 'Rankings',
         isSelected: _selectedTabIndex == 5,
         onTap: () {
@@ -349,7 +349,7 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: LucideIcons.messageSquareText,
+        icon: LucideIcons.messageSquareHeart,
         label: 'Reviews',
         isSelected: _selectedTabIndex == 6,
         onTap: () {

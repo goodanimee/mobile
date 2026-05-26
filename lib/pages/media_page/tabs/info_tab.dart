@@ -184,7 +184,7 @@ class MediaInfoTab extends StatelessWidget {
                     label: site,
                     leadingText: leadingText,
                     trailing: const Icon(
-                      LucideIcons.externalLink,
+                      LucideIcons.arrowUpRight,
                       size: 12,
                       color: Colors.white38,
                     ),

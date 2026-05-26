@@ -179,7 +179,7 @@ class _MediaCharactersTabState extends State<MediaCharactersTab> {
                   nativeName: nativeName,
                   subtitle: role,
                   trailing: Icon(
-                    LucideIcons.info,
+                    LucideIcons.badgeInfo,
                     size: 14,
                     color: Colors.white.withValues(alpha: 0.25),
                   ),

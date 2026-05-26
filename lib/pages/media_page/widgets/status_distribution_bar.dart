@@ -40,7 +40,7 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
               ),
             ),
             SizedBox(width: 8),
-            Icon(LucideIcons.info, size: 12, color: textHint),
+            Icon(LucideIcons.badgeInfo, size: 12, color: textHint),
             SizedBox(width: 4),
             Text(
               'Tap for details',

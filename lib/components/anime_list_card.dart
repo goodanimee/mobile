@@ -21,7 +21,7 @@ Widget _buildRepeatBadge(int repeat) {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(LucideIcons.repeat, size: 14, color: textSecondary),
+        const Icon(LucideIcons.rotateCcw, size: 14, color: textSecondary),
         const SizedBox(width: 4),
         Text(
           repeat.toString(),
@@ -60,7 +60,7 @@ Widget _buildProgressBadge(
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(LucideIcons.list, size: 14, color: Colors.white70),
+          const Icon(LucideIcons.timer, size: 14, color: Colors.white70),
           const SizedBox(width: 4),
           Text('$episodes eps', style: labelStyle),
         ],
@@ -69,10 +69,10 @@ Widget _buildProgressBadge(
   }
 
   final icon = switch (status) {
-    MediaListStatus.completed => LucideIcons.circleCheck,
+    MediaListStatus.completed => LucideIcons.badgeCheck,
     MediaListStatus.paused => LucideIcons.circlePause,
-    MediaListStatus.dropped => LucideIcons.circleX,
-    _ => LucideIcons.circlePlay,
+    MediaListStatus.dropped => LucideIcons.ban,
+    _ => LucideIcons.playCircle,
   };
 
   return Container(

@@ -27,8 +27,8 @@ class QuickNavSection {
 
 const _navItems = [
   (icon: LucideIcons.tv, label: 'Anime List'),
-  (icon: LucideIcons.compass, label: 'Discover'),
-  (icon: LucideIcons.user, label: 'Profile'),
+  (icon: LucideIcons.sparkles, label: 'Discover'),
+  (icon: LucideIcons.circleUser, label: 'Profile'),
 ];
 
 const _fabSize = 52.0;
@@ -193,7 +193,7 @@ class _FloatingNavState extends State<FloatingNav>
             transitionBuilder: (child, anim) =>
                 ScaleTransition(scale: anim, child: child),
             child: Icon(
-              isGrid ? LucideIcons.list : LucideIcons.layoutGrid,
+              isGrid ? LucideIcons.list : LucideIcons.grid2X2,
               key: ValueKey(isGrid),
               color: Colors.white,
               size: 22,

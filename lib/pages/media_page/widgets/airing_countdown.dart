@@ -42,7 +42,7 @@ class AiringCountdown extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(LucideIcons.timer, color: borderColor, size: 18),
+          const Icon(LucideIcons.clock, color: borderColor, size: 18),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
