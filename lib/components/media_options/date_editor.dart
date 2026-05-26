@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../theme/theme.dart';
-import '../section_title.dart';
 
 /// Editor component for editing start and finish dates of a list entry
 class DateEditor extends StatelessWidget {
@@ -29,33 +28,50 @@ class DateEditor extends StatelessWidget {
   /// Builds the date editor widget
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle(title: 'Dates', fontSize: 14, bottomPadding: 12),
-          Row(
-            children: [
-              Expanded(
-                child: _buildDateBox(
-                  context,
-                  'Start Date',
-                  startDate,
-                  onStartDateChanged,
-                ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF161616),
+          border: Border.all(color: cardBorderColor),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'DATES',
+              style: TextStyle(
+                color: textMuted,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.8,
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _buildDateBox(
-                  context,
-                  'Finish Date',
-                  finishDate,
-                  onFinishDateChanged,
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildDateBox(
+                    context,
+                    'Start Date',
+                    startDate,
+                    onStartDateChanged,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildDateBox(
+                    context,
+                    'Finish Date',
+                    finishDate,
+                    onFinishDateChanged,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -94,13 +110,13 @@ class DateEditor extends StatelessWidget {
         );
         if (selected != null) onChanged(selected);
       },
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
           color: Colors.white.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,10 +125,11 @@ class DateEditor extends StatelessWidget {
               label,
               style: TextStyle(
                 color: Colors.white.withValues(alpha: 0.5),
-                fontSize: 12,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             Text(
               _formatDate(date),
               style: const TextStyle(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../section_title.dart';
+import '../../theme/theme.dart';
 
 /// Slider component for updating score rating of a list entry
 class ScoreSlider extends StatelessWidget {
@@ -27,72 +27,89 @@ class ScoreSlider extends StatelessWidget {
   /// Builds the score slider widget
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionTitle(title: 'Score', fontSize: 14, bottomPadding: 12),
-          Column(
-            children: [
-              Text(
-                score.toStringAsFixed(1),
-                style: const TextStyle(
-                  color: Colors.amber,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF161616),
+          border: Border.all(color: cardBorderColor),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'SCORE',
+              style: TextStyle(
+                color: textMuted,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.8,
               ),
-              const SizedBox(height: 8),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final starWidth = constraints.maxWidth / 10;
-                  return GestureDetector(
-                    onPanUpdate: (details) => _handleInteraction(
-                      details.localPosition.dx,
-                      constraints.maxWidth,
-                    ),
-                    onTapDown: (details) => _handleInteraction(
-                      details.localPosition.dx,
-                      constraints.maxWidth,
-                    ),
-                    child: Stack(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(
-                            10,
-                            (index) => Icon(
-                              Icons.star_rounded,
-                              color: Colors.white.withValues(alpha: 0.1),
-                              size: starWidth,
+            ),
+            const SizedBox(height: 12),
+            Column(
+              children: [
+                Text(
+                  score.toStringAsFixed(1),
+                  style: const TextStyle(
+                    color: Colors.amber,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final starWidth = constraints.maxWidth / 10;
+                    return GestureDetector(
+                      onPanUpdate: (details) => _handleInteraction(
+                        details.localPosition.dx,
+                        constraints.maxWidth,
+                      ),
+                      onTapDown: (details) => _handleInteraction(
+                        details.localPosition.dx,
+                        constraints.maxWidth,
+                      ),
+                      child: Stack(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(
+                              10,
+                              (index) => Icon(
+                                Icons.star_rounded,
+                                color: Colors.white.withValues(alpha: 0.1),
+                                size: starWidth,
+                              ),
                             ),
                           ),
-                        ),
-                        ClipRect(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            widthFactor: score / 10.0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: List.generate(
-                                10,
-                                (index) => Icon(
-                                  Icons.star_rounded,
-                                  color: Colors.amber,
-                                  size: starWidth,
+                          ClipRect(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              widthFactor: score / 10.0,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: List.generate(
+                                  10,
+                                  (index) => Icon(
+                                    Icons.star_rounded,
+                                    color: Colors.amber,
+                                    size: starWidth,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ],
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

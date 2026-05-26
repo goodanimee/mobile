@@ -5,8 +5,8 @@ import '../models/media_list.dart';
 import '../services/anime_list_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
+import './media_options/counter_editor.dart';
 import './media_options/date_editor.dart';
-import './media_options/progress_editor.dart';
 import './media_options/score_slider.dart';
 import './media_options/status_selector.dart';
 
@@ -151,10 +151,14 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
                     currentStatus: _status,
                     onStatusChanged: _setStatus,
                   ),
-                  ProgressEditor(
-                    progress: _progress,
-                    onProgressChanged: _updateProgress,
-                    maximum: _episodes,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    child: CounterEditor(
+                      label: 'Episodes',
+                      value: _progress,
+                      maximum: _episodes,
+                      onChanged: _updateProgress,
+                    ),
                   ),
                   DateEditor(
                     startDate: _startDate,
