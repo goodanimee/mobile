@@ -224,6 +224,8 @@ class AnimeListService {
     double? score,
     DateTime? startDate,
     DateTime? finishDate,
+    int? progressVolumes,
+    int? repeat,
   }) async {
     final token = await AuthService.getRawToken() ?? '';
     final req = SaveMediaListEntryRequest(mediaId: mediaId);
@@ -231,6 +233,8 @@ class AnimeListService {
     if (status != null) req.status = status.toString();
     if (progress != null) req.progress = progress;
     if (score != null) req.score = score;
+    if (progressVolumes != null) req.progressVolumes = progressVolumes;
+    if (repeat != null) req.repeat = repeat;
 
     if (startDate != null) {
       req.startedAt = FuzzyDateInput(

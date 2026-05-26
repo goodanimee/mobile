@@ -45,7 +45,9 @@ class StatusSelector extends StatelessWidget {
       MediaListStatus.dropped,
     ];
 
-    final int selectedIndex = currentStatus != null ? statuses.indexOf(currentStatus!) : -1;
+    final int selectedIndex = currentStatus != null
+        ? statuses.indexOf(currentStatus!)
+        : -1;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -106,7 +108,8 @@ class StatusSelector extends StatelessWidget {
                       Positioned.fill(
                         child: Row(
                           children: List.generate(statuses.length, (index) {
-                            final bool showDivider = index < statuses.length - 1;
+                            final bool showDivider =
+                                index < statuses.length - 1;
                             return Expanded(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -115,7 +118,9 @@ class StatusSelector extends StatelessWidget {
                                     Container(
                                       width: 1,
                                       height: 16,
-                                      color: Colors.white.withValues(alpha: 0.08),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.08,
+                                      ),
                                     )
                                   else
                                     const SizedBox(width: 1),
@@ -139,7 +144,9 @@ class StatusSelector extends StatelessWidget {
                                   alignment: Alignment.center,
                                   child: Icon(
                                     _getIcon(status),
-                                    color: isSelected ? Colors.white : Colors.white30,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.white30,
                                     size: 22,
                                   ),
                                 ),

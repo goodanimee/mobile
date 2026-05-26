@@ -18,6 +18,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
     required super.progress,
     required super.score,
     required super.repeat,
+    required super.progressVolumes,
     super.startedAt,
     super.completedAt,
     required this.media,
@@ -33,6 +34,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
       progress: pbObj.entry.progress,
       score: pbObj.entry.score,
       repeat: pbObj.entry.repeat,
+      progressVolumes: pbObj.entry.progressVolumes,
       startedAt: pbObj.entry.hasStartedAt()
           ? FuzzyDate.fromProto(pbObj.entry.startedAt)
           : null,
@@ -60,6 +62,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
     int? progress,
     double? score,
     int? repeat,
+    int? progressVolumes,
     FuzzyDate? startedAt,
     FuzzyDate? completedAt,
     MediaMin? media,
@@ -70,6 +73,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
       progress: progress ?? this.progress,
       score: score ?? this.score,
       repeat: repeat ?? this.repeat,
+      progressVolumes: progressVolumes ?? this.progressVolumes,
       startedAt: startedAt ?? this.startedAt,
       completedAt: completedAt ?? this.completedAt,
       media: media ?? this.media,

@@ -19,6 +19,9 @@ class MediaListEntry {
   /// Number of rewatches
   final int repeat;
 
+  /// Number of volumes read
+  final int progressVolumes;
+
   /// Date the user started watching
   final FuzzyDate? startedAt;
 
@@ -32,6 +35,7 @@ class MediaListEntry {
     required this.progress,
     required this.score,
     required this.repeat,
+    required this.progressVolumes,
     this.startedAt,
     this.completedAt,
   });
@@ -46,6 +50,7 @@ class MediaListEntry {
       progress: pbObj.progress,
       score: pbObj.score,
       repeat: pbObj.repeat,
+      progressVolumes: pbObj.progressVolumes,
       startedAt: pbObj.hasStartedAt()
           ? FuzzyDate.fromProto(pbObj.startedAt)
           : null,
@@ -62,6 +67,7 @@ class MediaListEntry {
       progress: progress,
       score: score,
       repeat: repeat,
+      progressVolumes: progressVolumes,
     );
     if (status != null) pbObj.status = status!.toProto();
     if (startedAt != null) pbObj.startedAt = startedAt!.toProto();
@@ -76,6 +82,7 @@ class MediaListEntry {
     int? progress,
     double? score,
     int? repeat,
+    int? progressVolumes,
     FuzzyDate? startedAt,
     FuzzyDate? completedAt,
   }) {
@@ -85,6 +92,7 @@ class MediaListEntry {
       progress: progress ?? this.progress,
       score: score ?? this.score,
       repeat: repeat ?? this.repeat,
+      progressVolumes: progressVolumes ?? this.progressVolumes,
       startedAt: startedAt ?? this.startedAt,
       completedAt: completedAt ?? this.completedAt,
     );

@@ -89,7 +89,8 @@ class ScoreSlider extends StatelessWidget {
                               alignment: Alignment.centerLeft,
                               widthFactor: score / 10.0,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: List.generate(
                                   10,
                                   (index) => Icon(

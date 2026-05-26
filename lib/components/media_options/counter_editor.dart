@@ -91,7 +91,8 @@ class _CounterEditorState extends State<CounterEditor> {
   @override
   Widget build(BuildContext context) {
     final bool canDecrement = widget.value > 0;
-    final bool canIncrement = widget.maximum == null || widget.value < widget.maximum!;
+    final bool canIncrement =
+        widget.maximum == null || widget.value < widget.maximum!;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -118,7 +119,9 @@ class _CounterEditorState extends State<CounterEditor> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: canDecrement ? () => widget.onChanged(widget.value - 1) : null,
+                onTap: canDecrement
+                    ? () => widget.onChanged(widget.value - 1)
+                    : null,
                 behavior: HitTestBehavior.opaque,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
@@ -176,7 +179,9 @@ class _CounterEditorState extends State<CounterEditor> {
                                 decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   isDense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 4),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    vertical: 4,
+                                  ),
                                 ),
                                 onSubmitted: _submitValue,
                                 onTapOutside: (_) => _focusNode.unfocus(),
@@ -185,37 +190,49 @@ class _CounterEditorState extends State<CounterEditor> {
                           : ClipRect(
                               child: AnimatedSwitcher(
                                 duration: const Duration(milliseconds: 250),
-                                transitionBuilder: (Widget child, Animation<double> animation) {
-                                  final isIncoming = child.key == ValueKey<int>(widget.value);
-                                  final bool isIncreasing = widget.value >= _lastValue;
+                                transitionBuilder:
+                                    (
+                                      Widget child,
+                                      Animation<double> animation,
+                                    ) {
+                                      final isIncoming =
+                                          child.key ==
+                                          ValueKey<int>(widget.value);
+                                      final bool isIncreasing =
+                                          widget.value >= _lastValue;
 
-                                  final Offset beginOffset;
-                                  final Offset endOffset = Offset.zero;
+                                      final Offset beginOffset;
+                                      final Offset endOffset = Offset.zero;
 
-                                  if (isIncreasing) {
-                                    beginOffset = isIncoming ? const Offset(1.5, 0.0) : const Offset(-1.5, 0.0);
-                                  } else {
-                                    beginOffset = isIncoming ? const Offset(-1.5, 0.0) : const Offset(1.5, 0.0);
-                                  }
+                                      if (isIncreasing) {
+                                        beginOffset = isIncoming
+                                            ? const Offset(1.5, 0.0)
+                                            : const Offset(-1.5, 0.0);
+                                      } else {
+                                        beginOffset = isIncoming
+                                            ? const Offset(-1.5, 0.0)
+                                            : const Offset(1.5, 0.0);
+                                      }
 
-                                  final slideAnimation = Tween<Offset>(
-                                    begin: beginOffset,
-                                    end: endOffset,
-                                  ).animate(
-                                    CurvedAnimation(
-                                      parent: animation,
-                                      curve: Curves.easeInOutCubic,
-                                    ),
-                                  );
+                                      final slideAnimation =
+                                          Tween<Offset>(
+                                            begin: beginOffset,
+                                            end: endOffset,
+                                          ).animate(
+                                            CurvedAnimation(
+                                              parent: animation,
+                                              curve: Curves.easeInOutCubic,
+                                            ),
+                                          );
 
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: SlideTransition(
-                                      position: slideAnimation,
-                                      child: child,
-                                    ),
-                                  );
-                                },
+                                      return FadeTransition(
+                                        opacity: animation,
+                                        child: SlideTransition(
+                                          position: slideAnimation,
+                                          child: child,
+                                        ),
+                                      );
+                                    },
                                 child: Text(
                                   '${widget.value}',
                                   key: ValueKey<int>(widget.value),
@@ -227,22 +244,26 @@ class _CounterEditorState extends State<CounterEditor> {
                                 ),
                               ),
                             ),
-                    if (widget.showMaxLimit) ...[
-                      Text(
-                        widget.maximum != null ? ' / ${widget.maximum}' : ' / ?',
-                        style: const TextStyle(
-                          color: textMuted,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                      if (widget.showMaxLimit) ...[
+                        Text(
+                          widget.maximum != null
+                              ? ' / ${widget.maximum}'
+                              : ' / ?',
+                          style: const TextStyle(
+                            color: textMuted,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
-              ),
               GestureDetector(
-                onTap: canIncrement ? () => widget.onChanged(widget.value + 1) : null,
+                onTap: canIncrement
+                    ? () => widget.onChanged(widget.value + 1)
+                    : null,
                 behavior: HitTestBehavior.opaque,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),

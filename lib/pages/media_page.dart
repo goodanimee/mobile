@@ -144,6 +144,7 @@ class _MediaPageState extends State<MediaPage> {
       progress: media.mediaListEntry?.progress ?? 0,
       score: media.mediaListEntry?.score ?? 0,
       repeat: media.mediaListEntry?.repeat ?? 0,
+      progressVolumes: media.mediaListEntry?.progressVolumes ?? 0,
       startedAt: media.mediaListEntry?.startedAt,
       completedAt: media.mediaListEntry?.completedAt,
       media: media,
@@ -163,6 +164,7 @@ class _MediaPageState extends State<MediaPage> {
             progress: typedEntry.progress,
             score: typedEntry.score,
             repeat: typedEntry.repeat,
+            progressVolumes: typedEntry.progressVolumes,
             startedAt: typedEntry.startedAt,
             completedAt: typedEntry.completedAt,
           );
