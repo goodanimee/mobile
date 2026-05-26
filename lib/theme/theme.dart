@@ -176,10 +176,7 @@ const goldGradient = [paletteYellow, paletteYellowDark];
 const loveGradient = [paletteRed, paletteRedDark];
 
 /// Standard shadow style for cards
-const cardShadow = BoxShadow(
-  color: Color(0x80000000),
-  blurRadius: 4.0,
-);
+const cardShadow = BoxShadow(color: Color(0x80000000), blurRadius: 4.0);
 
 /// Style for button containers
 final buttonBoxStyle = BoxStyler()

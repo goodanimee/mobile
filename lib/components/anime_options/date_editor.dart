@@ -37,11 +37,21 @@ class DateEditor extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _buildDateBox(context, 'Start Date', startDate, onStartDateChanged),
+                child: _buildDateBox(
+                  context,
+                  'Start Date',
+                  startDate,
+                  onStartDateChanged,
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
-                child: _buildDateBox(context, 'Finish Date', finishDate, onFinishDateChanged),
+                child: _buildDateBox(
+                  context,
+                  'Finish Date',
+                  finishDate,
+                  onFinishDateChanged,
+                ),
               ),
             ],
           ),

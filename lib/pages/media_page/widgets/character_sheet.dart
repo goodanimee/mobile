@@ -255,10 +255,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
                       const SizedBox(height: 32),
 
                       if (voiceActors.isNotEmpty) ...[
-                        const SectionTitle(
-                          title: 'Voice Actors',
-                          fontSize: 16,
-                        ),
+                        const SectionTitle(title: 'Voice Actors', fontSize: 16),
                         ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),

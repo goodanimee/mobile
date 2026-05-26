@@ -13,11 +13,7 @@ class AppReviewCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   /// Creates a review card
-  const AppReviewCard({
-    super.key,
-    required this.review,
-    this.onTap,
-  });
+  const AppReviewCard({super.key, required this.review, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -111,18 +107,11 @@ class AppReviewCard extends StatelessWidget {
             const SizedBox(height: 4),
             Row(
               children: [
-                const Icon(
-                  Icons.thumb_up_rounded,
-                  size: 14,
-                  color: textHint,
-                ),
+                const Icon(Icons.thumb_up_rounded, size: 14, color: textHint),
                 const SizedBox(width: 4),
                 Text(
                   ratingStr,
-                  style: const TextStyle(
-                    color: textHint,
-                    fontSize: 13,
-                  ),
+                  style: const TextStyle(color: textHint, fontSize: 13),
                 ),
               ],
             ),

@@ -94,8 +94,5 @@ class ListActivityConnection {
   final List<ListActivity> nodes;
 
   /// Creates a list activity connection.
-  const ListActivityConnection({
-    required this.pageInfo,
-    required this.nodes,
-  });
+  const ListActivityConnection({required this.pageInfo, required this.nodes});
 }

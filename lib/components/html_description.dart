@@ -31,7 +31,8 @@ class HtmlDescription extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 12),
               child: Text(
                 text,
-                style: style ??
+                style:
+                    style ??
                     const TextStyle(
                       color: Colors.white70,
                       fontSize: 15,
@@ -48,7 +49,8 @@ class HtmlDescription extends StatelessWidget {
     void traverse(dom.Node node) {
       if (node.nodeType == dom.Node.TEXT_NODE) {
         currentTextBuffer.write(node.text);
-      } else if (node.nodeType == dom.Node.ELEMENT_NODE && node is dom.Element) {
+      } else if (node.nodeType == dom.Node.ELEMENT_NODE &&
+          node is dom.Element) {
         if (node.localName == 'img') {
           final src = node.attributes['src'];
           if (src != null && src.isNotEmpty) {

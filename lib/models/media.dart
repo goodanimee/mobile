@@ -36,6 +36,12 @@ class Media extends MediaMin {
   /// Number of favourites
   final int? favourites;
 
+  /// Number of chapters
+  final int? chapters;
+
+  /// Number of volumes
+  final int? volumes;
+
   /// Popularity score
   final int popularity;
 
@@ -111,6 +117,8 @@ class Media extends MediaMin {
     required this.season,
     this.meanScore,
     this.favourites,
+    this.chapters,
+    this.volumes,
     required this.popularity,
     required this.description,
     required this.genres,
@@ -151,6 +159,8 @@ class Media extends MediaMin {
       season: pbObj.season,
       meanScore: pbObj.hasMeanScore() ? pbObj.meanScore : null,
       favourites: pbObj.hasFavourites() ? pbObj.favourites : null,
+      chapters: pbObj.hasChapters() ? pbObj.chapters : null,
+      volumes: pbObj.hasVolumes() ? pbObj.volumes : null,
       popularity: pbObj.popularity,
       description: pbObj.description,
       genres: pbObj.genres,
@@ -158,9 +168,7 @@ class Media extends MediaMin {
       trailer: pbObj.hasTrailer() ? Trailer.fromProto(pbObj.trailer) : null,
       studios: pbObj.studios.edges.map(StudioEdge.fromProto).toList(),
       tags: pbObj.tags.map(MediaTag.fromProto).toList(),
-      externalLinks: pbObj.externalLinks
-          .map(ExternalLink.fromProto)
-          .toList(),
+      externalLinks: pbObj.externalLinks.map(ExternalLink.fromProto).toList(),
       mediaListEntry: pbObj.hasMediaListEntry()
           ? MediaListEntry.fromProto(pbObj.mediaListEntry)
           : null,
@@ -214,6 +222,8 @@ class Media extends MediaMin {
 
     if (meanScore != null) pbObj.meanScore = meanScore!;
     if (favourites != null) pbObj.favourites = favourites!;
+    if (chapters != null) pbObj.chapters = chapters!;
+    if (volumes != null) pbObj.volumes = volumes!;
     if (trailer != null) pbObj.trailer = trailer!.toProto();
     if (mediaListEntry != null) {
       pbObj.mediaListEntry =
@@ -254,6 +264,8 @@ class Media extends MediaMin {
     String? season,
     int? meanScore,
     int? favourites,
+    int? chapters,
+    int? volumes,
     int? popularity,
     String? description,
     List<String>? genres,
@@ -291,6 +303,8 @@ class Media extends MediaMin {
       season: season ?? this.season,
       meanScore: meanScore ?? this.meanScore,
       favourites: favourites ?? this.favourites,
+      chapters: chapters ?? this.chapters,
+      volumes: volumes ?? this.volumes,
       popularity: popularity ?? this.popularity,
       description: description ?? this.description,
       genres: genres ?? this.genres,

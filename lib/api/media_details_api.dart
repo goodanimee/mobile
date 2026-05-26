@@ -121,6 +121,24 @@ typedef _ToggleFavouriteAnimeDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for toggling favourite manga
+typedef _ToggleFavouriteMangaC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for toggling favourite manga
+typedef _ToggleFavouriteMangaDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// Native function signature for toggling activity like status
 typedef _ToggleActivityLikeC =
     ffi.Pointer<ffi.Uint8> Function(
@@ -183,6 +201,7 @@ class MediaApi {
   static late _FetchMediaRecommendationsDart _fetchMediaRecommendations;
   static late _FetchMediaReviewsDart _fetchMediaReviews;
   static late _ToggleFavouriteAnimeDart _toggleFavouriteAnime;
+  static late _ToggleFavouriteMangaDart _toggleFavouriteManga;
   static late _ToggleActivityLikeDart _toggleActivityLike;
   static late _RateReviewDart _rateReview;
   static late _FetchMediaActivitiesDart _fetchMediaActivities;
@@ -217,21 +236,23 @@ class MediaApi {
         .lookupFunction<_ToggleFavouriteAnimeC, _ToggleFavouriteAnimeDart>(
           'ToggleFavouriteAnime',
         );
+    _toggleFavouriteManga = FfiCore.lib
+        .lookupFunction<_ToggleFavouriteMangaC, _ToggleFavouriteMangaDart>(
+          'ToggleFavouriteManga',
+        );
     _toggleActivityLike = FfiCore.lib
         .lookupFunction<_ToggleActivityLikeC, _ToggleActivityLikeDart>(
           'ToggleActivityLike',
         );
-    _rateReview = FfiCore.lib
-        .lookupFunction<_RateReviewC, _RateReviewDart>(
-          'RateReview',
-        );
+    _rateReview = FfiCore.lib.lookupFunction<_RateReviewC, _RateReviewDart>(
+      'RateReview',
+    );
     _fetchMediaActivities = FfiCore.lib
         .lookupFunction<_FetchMediaActivitiesC, _FetchMediaActivitiesDart>(
           'FetchMediaActivities',
         );
     _initialized = true;
   }
-
 
   /// Fetches full anime details by using a media ID
   static Future<Media> fetchMediaDetails(
@@ -415,6 +436,38 @@ class MediaApi {
     });
   }
 
+  /// Toggles the favourite status of a manga.
+  static Future<ToggleFavouriteMangaResponse> toggleFavouriteManga(
+    ToggleFavouriteMangaRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      _init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = FfiCore.executeNativeCall(
+          (outLenPtr) => _toggleFavouriteManga(
+            reqPtr,
+            reqBytes.length,
+            tokenPtr,
+            outLenPtr,
+          ),
+        );
+        final response = ToggleFavouriteMangaResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
   /// Toggles the like status of an activity
   static Future<ToggleActivityLikeResponse> toggleActivityLike(
     ToggleActivityLikeRequest request,
@@ -430,12 +483,8 @@ class MediaApi {
           reqPtr[i] = reqBytes[i];
         }
         final bytes = FfiCore.executeNativeCall(
-          (outLenPtr) => _toggleActivityLike(
-            reqPtr,
-            reqBytes.length,
-            tokenPtr,
-            outLenPtr,
-          ),
+          (outLenPtr) =>
+              _toggleActivityLike(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
         );
         final response = ToggleActivityLikeResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
@@ -510,4 +559,3 @@ class MediaApi {
     });
   }
 }
-

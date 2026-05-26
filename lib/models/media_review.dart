@@ -104,7 +104,6 @@ class ReviewNode {
     );
   }
 
-
   static ReviewUserRating _mapUserRating(pb.ReviewUserRating rating) {
     switch (rating) {
       case pb.ReviewUserRating.REVIEW_USER_RATING_UP_VOTE:

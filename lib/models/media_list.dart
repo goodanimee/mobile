@@ -98,9 +98,7 @@ class MediaList {
       status: pbObj.hasStatus()
           ? MediaListStatus.fromProto(pbObj.status)
           : null,
-      entries: pbObj.entries
-          .map(MediaListEntryWithMedia.fromProto)
-          .toList(),
+      entries: pbObj.entries.map(MediaListEntryWithMedia.fromProto).toList(),
     );
   }
 

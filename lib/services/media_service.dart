@@ -69,6 +69,31 @@ class MediaService {
     CacheUtils.animeListNeedsRefresh.value = true;
   }
 
+  /// Toggles the favorite status of a manga.
+  static Future<void> toggleFavouriteManga(
+    int mediaId,
+    Media currentMedia,
+  ) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = ToggleFavouriteMangaRequest()..mangaId = mediaId;
+
+    await MediaApi.toggleFavouriteManga(req, token);
+
+    final updatedMedia = currentMedia.copyWith(
+      isFavourite: !currentMedia.isFavourite,
+    );
+
+    final prefs = await SharedPreferences.getInstance();
+    await _saveToDiskCache(
+      prefs,
+      mediaId,
+      base64Encode(updatedMedia.toProto().writeToBuffer()),
+    );
+
+    await CacheUtils.invalidateMedia(mediaId);
+    CacheUtils.animeListNeedsRefresh.value = true;
+  }
+
   /// Toggles the like status of an activity.
   static Future<ToggleActivityLikeResponse> toggleActivityLike(
     int activityId,

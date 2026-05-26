@@ -110,7 +110,6 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final relationEdges = widget.relationsData?.edges ?? [];
@@ -208,7 +207,9 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
                         size: 16,
                         color: textHint,
                       ),
-                      onTap: node != null ? () => AppNavigation.toMedia(context, node.id) : null,
+                      onTap: node != null
+                          ? () => AppNavigation.toMedia(context, node.id)
+                          : null,
                     );
                   },
                 ),
@@ -330,7 +331,9 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
       ),
       color: color != Colors.transparent ? color : null,
       trailing: Icon(Icons.chevron_right_rounded, size: 16, color: textHint),
-      onTap: media != null ? () => AppNavigation.toMedia(context, media.id) : null,
+      onTap: media != null
+          ? () => AppNavigation.toMedia(context, media.id)
+          : null,
     );
   }
 }
