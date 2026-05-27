@@ -83,7 +83,8 @@ class AppEntityCard extends StatelessWidget {
                                 height: 1.2,
                               ),
                             ),
-                            if (nativeName != null && nativeName!.isNotEmpty) ...[
+                            if (nativeName != null &&
+                                nativeName!.isNotEmpty) ...[
                               const SizedBox(height: 2),
                               Text(
                                 nativeName!,

@@ -99,18 +99,42 @@ class _CounterEditorState extends State<CounterEditor> {
         final cardWidth = constraints.maxWidth;
         final bool isCompact = cardWidth < 150.0;
 
-        final double horizontalPadding = getResponsiveSize(context, isCompact ? 8.0 : 16.0);
-        final double verticalPadding = getResponsiveSize(context, isCompact ? 8.0 : 12.0);
-        final double buttonSize = getResponsiveSize(context, isCompact ? 28.0 : 36.0);
-        final double buttonIconSize = getResponsiveSize(context, isCompact ? 16.0 : 20.0);
+        final double horizontalPadding = getResponsiveSize(
+          context,
+          isCompact ? 8.0 : 16.0,
+        );
+        final double verticalPadding = getResponsiveSize(
+          context,
+          isCompact ? 8.0 : 12.0,
+        );
+        final double buttonSize = getResponsiveSize(
+          context,
+          isCompact ? 28.0 : 36.0,
+        );
+        final double buttonIconSize = getResponsiveSize(
+          context,
+          isCompact ? 16.0 : 20.0,
+        );
 
-        final double valueFontSize = getResponsiveFontSize(context, isCompact ? 14.0 : 16.0);
-        final double maxFontSize = getResponsiveFontSize(context, isCompact ? 12.0 : 14.0);
-        final double labelFontSize = getResponsiveFontSize(context, isCompact ? 10.0 : 11.0);
+        final double valueFontSize = getResponsiveFontSize(
+          context,
+          isCompact ? 14.0 : 16.0,
+        );
+        final double maxFontSize = getResponsiveFontSize(
+          context,
+          isCompact ? 12.0 : 14.0,
+        );
+        final double labelFontSize = getResponsiveFontSize(
+          context,
+          isCompact ? 10.0 : 11.0,
+        );
         final double verticalSpacing = isCompact ? 4.0 : 8.0;
 
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+          padding: EdgeInsets.symmetric(
+            horizontal: horizontalPadding,
+            vertical: verticalPadding,
+          ),
           decoration: BoxDecoration(
             color: const Color(0xFF161616),
             border: Border.all(color: cardBorderColor),

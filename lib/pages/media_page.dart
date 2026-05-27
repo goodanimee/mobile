@@ -12,14 +12,13 @@ import '../services/media_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
 import '../utils/utils.dart';
-import 'media_page/tabs/characters_tab.dart';
 import 'media_page/tabs/content_tab.dart';
 import 'media_page/tabs/info_tab.dart';
+import 'media_page/tabs/people_tab.dart';
 import 'media_page/tabs/placeholder_tab.dart';
 import 'media_page/tabs/rankings_tab.dart';
 import 'media_page/tabs/relations_tab.dart';
 import 'media_page/tabs/reviews_tab.dart';
-import 'media_page/tabs/staff_tab.dart';
 import 'media_page/widgets/edit_entry_fab.dart';
 import 'media_page/widgets/media_page_header.dart';
 import 'media_page/widgets/sticky_header.dart';
@@ -186,7 +185,7 @@ class _MediaPageState extends State<MediaPage> {
   /// Handles manual pull-to-refresh
   Future<void> _handleRefresh() async {
     await _fetchMediaDetails(forceRefresh: true);
-    if (_selectedTabIndex == 6) {
+    if (_selectedTabIndex == 5) {
       setState(() {
         _refreshCount++;
       });
@@ -207,29 +206,22 @@ class _MediaPageState extends State<MediaPage> {
       case 1:
         return MediaContentTab(media: media, isNested: true);
       case 2:
-        return MediaStaffTab(
+        return MediaPeopleTab(
           mediaId: widget.mediaId,
-          scrollController: _scrollController,
           isNested: true,
-          initialData: media.staff,
+          initialCharacters: media.characters,
+          initialStaff: media.staff,
         );
       case 3:
-        return MediaCharactersTab(
-          mediaId: widget.mediaId,
-          scrollController: _scrollController,
-          isNested: true,
-          initialData: media.characters,
-        );
-      case 4:
         return MediaRelationsTab(
           mediaId: widget.mediaId,
           relationsData: media.relations,
           initialRecommendations: media.recommendations,
           isNested: true,
         );
-      case 5:
+      case 4:
         return MediaRankingsTab(media: media, isNested: true);
-      case 6:
+      case 5:
         final name = media.title.english.isNotEmpty
             ? media.title.english
             : media.title.romaji.isNotEmpty
@@ -276,7 +268,7 @@ class _MediaPageState extends State<MediaPage> {
     final quickNavItems = [
       QuickNavSection(
         icon: LucideIcons.info,
-        label: 'Overview',
+        label: 'Info',
         isSelected: _selectedTabIndex == 0,
         onTap: () {
           setState(() => _selectedTabIndex = 0);
@@ -289,7 +281,7 @@ class _MediaPageState extends State<MediaPage> {
       ),
       QuickNavSection(
         icon: LucideIcons.monitorPlay,
-        label: 'Media',
+        label: 'Content',
         isSelected: _selectedTabIndex == 1,
         onTap: () {
           setState(() => _selectedTabIndex = 1);
@@ -302,7 +294,7 @@ class _MediaPageState extends State<MediaPage> {
       ),
       QuickNavSection(
         icon: LucideIcons.users,
-        label: 'Staff',
+        label: 'People',
         isSelected: _selectedTabIndex == 2,
         onTap: () {
           setState(() => _selectedTabIndex = 2);
@@ -314,8 +306,8 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: LucideIcons.userRound,
-        label: 'Characters',
+        icon: LucideIcons.network,
+        label: 'Relations',
         isSelected: _selectedTabIndex == 3,
         onTap: () {
           setState(() => _selectedTabIndex = 3);
@@ -327,8 +319,8 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: LucideIcons.network,
-        label: 'Relations',
+        icon: LucideIcons.barChart3,
+        label: 'Stats',
         isSelected: _selectedTabIndex == 4,
         onTap: () {
           setState(() => _selectedTabIndex = 4);
@@ -340,24 +332,11 @@ class _MediaPageState extends State<MediaPage> {
         },
       ),
       QuickNavSection(
-        icon: LucideIcons.barChart3,
-        label: 'Rankings',
+        icon: LucideIcons.messageSquareHeart,
+        label: 'Social',
         isSelected: _selectedTabIndex == 5,
         onTap: () {
           setState(() => _selectedTabIndex = 5);
-          _scrollController.animateTo(
-            0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-        },
-      ),
-      QuickNavSection(
-        icon: LucideIcons.messageSquareHeart,
-        label: 'Reviews',
-        isSelected: _selectedTabIndex == 6,
-        onTap: () {
-          setState(() => _selectedTabIndex = 6);
           _scrollController.animateTo(
             0,
             duration: const Duration(milliseconds: 300),

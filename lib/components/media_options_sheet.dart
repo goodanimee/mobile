@@ -406,14 +406,34 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
     final screenWidth = MediaQuery.of(context).size.width;
     final bool isSmallScreen = screenWidth < 360.0;
 
-    final double btnPaddingHorizontal = getResponsiveSize(context, isSmallScreen ? 12.0 : 20.0);
-    final double savePaddingHorizontal = getResponsiveSize(context, isSmallScreen ? 16.0 : 24.0);
-    final double deletePaddingHorizontal = getResponsiveSize(context, isSmallScreen ? 8.0 : 16.0);
-    final double buttonSpacing = getResponsiveSize(context, isSmallScreen ? 6.0 : 12.0);
-    final double sidePadding = getResponsiveSize(context, isSmallScreen ? 12.0 : 20.0);
+    final double btnPaddingHorizontal = getResponsiveSize(
+      context,
+      isSmallScreen ? 12.0 : 20.0,
+    );
+    final double savePaddingHorizontal = getResponsiveSize(
+      context,
+      isSmallScreen ? 16.0 : 24.0,
+    );
+    final double deletePaddingHorizontal = getResponsiveSize(
+      context,
+      isSmallScreen ? 8.0 : 16.0,
+    );
+    final double buttonSpacing = getResponsiveSize(
+      context,
+      isSmallScreen ? 6.0 : 12.0,
+    );
+    final double sidePadding = getResponsiveSize(
+      context,
+      isSmallScreen ? 12.0 : 20.0,
+    );
 
     return Padding(
-      padding: EdgeInsets.only(left: sidePadding, right: sidePadding, top: 12, bottom: 24),
+      padding: EdgeInsets.only(
+        left: sidePadding,
+        right: sidePadding,
+        top: 12,
+        bottom: 24,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

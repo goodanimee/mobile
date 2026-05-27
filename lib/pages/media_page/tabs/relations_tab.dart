@@ -146,12 +146,11 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
       );
     }
 
-    final screenWidth = MediaQuery.of(context).size.width;
-    final cardWidth = screenWidth * 0.68;
+    const cardWidth = 320.0;
     const carouselHeight = 245.0;
     const spacing = 12.0;
     final rowHeight = (carouselHeight - spacing) / 2;
-    final childAspectRatio = cardWidth / rowHeight;
+    final childAspectRatio = rowHeight / cardWidth;
 
     final content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +167,7 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
                   scrollDirection: Axis.horizontal,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 1 / childAspectRatio,
+                    childAspectRatio: childAspectRatio,
                     crossAxisSpacing: spacing,
                     mainAxisSpacing: spacing,
                   ),
