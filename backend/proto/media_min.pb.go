@@ -168,6 +168,8 @@ type MediaMin struct {
 	IsAdult       bool                   `protobuf:"varint,7,opt,name=is_adult,json=isAdult,proto3" json:"is_adult,omitempty"`
 	IsFavourite   bool                   `protobuf:"varint,8,opt,name=is_favourite,json=isFavourite,proto3" json:"is_favourite,omitempty"`
 	SiteUrl       string                 `protobuf:"bytes,9,opt,name=site_url,json=siteUrl,proto3" json:"site_url,omitempty"`
+	Chapters      int32                  `protobuf:"varint,10,opt,name=chapters,proto3" json:"chapters,omitempty"`
+	Type          string                 `protobuf:"bytes,11,opt,name=type,proto3" json:"type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -265,6 +267,20 @@ func (x *MediaMin) GetSiteUrl() string {
 	return ""
 }
 
+func (x *MediaMin) GetChapters() int32 {
+	if x != nil {
+		return x.Chapters
+	}
+	return 0
+}
+
+func (x *MediaMin) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
 var File_media_min_proto protoreflect.FileDescriptor
 
 const file_media_min_proto_rawDesc = "" +
@@ -281,7 +297,7 @@ const file_media_min_proto_rawDesc = "" +
 	"\x05large\x18\x02 \x01(\tR\x05large\x12\x1f\n" +
 	"\vextra_large\x18\x03 \x01(\tR\n" +
 	"extraLarge\x12\x14\n" +
-	"\x05color\x18\x04 \x01(\tR\x05color\"\xac\x02\n" +
+	"\x05color\x18\x04 \x01(\tR\x05color\"\xdc\x02\n" +
 	"\bMediaMin\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12&\n" +
 	"\x05title\x18\x02 \x01(\v2\x10.goodanime.TitleR\x05title\x12#\n" +
@@ -292,7 +308,10 @@ const file_media_min_proto_rawDesc = "" +
 	"\x06format\x18\x06 \x01(\tR\x06format\x12\x19\n" +
 	"\bis_adult\x18\a \x01(\bR\aisAdult\x12!\n" +
 	"\fis_favourite\x18\b \x01(\bR\visFavourite\x12\x19\n" +
-	"\bsite_url\x18\t \x01(\tR\asiteUrlB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\bsite_url\x18\t \x01(\tR\asiteUrl\x12\x1a\n" +
+	"\bchapters\x18\n" +
+	" \x01(\x05R\bchapters\x12\x12\n" +
+	"\x04type\x18\v \x01(\tR\x04typeB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_media_min_proto_rawDescOnce sync.Once

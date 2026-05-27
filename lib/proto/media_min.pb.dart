@@ -205,6 +205,8 @@ class MediaMin extends $pb.GeneratedMessage {
     $core.bool? isAdult,
     $core.bool? isFavourite,
     $core.String? siteUrl,
+    $core.int? chapters,
+    $core.String? type,
   }) {
     final result = create();
     if (id != null) result.id = id;
@@ -216,6 +218,8 @@ class MediaMin extends $pb.GeneratedMessage {
     if (isAdult != null) result.isAdult = isAdult;
     if (isFavourite != null) result.isFavourite = isFavourite;
     if (siteUrl != null) result.siteUrl = siteUrl;
+    if (chapters != null) result.chapters = chapters;
+    if (type != null) result.type = type;
     return result;
   }
 
@@ -242,6 +246,8 @@ class MediaMin extends $pb.GeneratedMessage {
     ..aOB(7, _omitFieldNames ? '' : 'isAdult')
     ..aOB(8, _omitFieldNames ? '' : 'isFavourite')
     ..aOS(9, _omitFieldNames ? '' : 'siteUrl')
+    ..aI(10, _omitFieldNames ? '' : 'chapters')
+    ..aOS(11, _omitFieldNames ? '' : 'type')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -346,6 +352,24 @@ class MediaMin extends $pb.GeneratedMessage {
   $core.bool hasSiteUrl() => $_has(8);
   @$pb.TagNumber(9)
   void clearSiteUrl() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.int get chapters => $_getIZ(9);
+  @$pb.TagNumber(10)
+  set chapters($core.int value) => $_setSignedInt32(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasChapters() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearChapters() => $_clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.String get type => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set type($core.String value) => $_setString(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasType() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearType() => $_clearField(11);
 }
 
 const $core.bool _omitFieldNames =

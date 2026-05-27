@@ -11,8 +11,10 @@ query Media($mediaId: Int, $page: Int, $perPage: Int) {
                     rating
                     mediaRecommendation {
                         id
+                        type
                         averageScore
                         episodes
+                        chapters
                         format
                         isAdult
                         isFavourite

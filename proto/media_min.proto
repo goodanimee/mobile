@@ -28,4 +28,6 @@ message MediaMin {
   bool is_adult = 7;
   bool is_favourite = 8;
   string site_url = 9;
+  int32 chapters = 10;
+  string type = 11;
 }
