@@ -115,8 +115,10 @@ class _FloatingNavState extends State<FloatingNav>
   }
 
   @override
+  @override
   /// Builds the floating navigation component
   Widget build(BuildContext context) {
+    final double gap = getResponsiveSize(context, _gap);
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, _) {
@@ -130,11 +132,11 @@ class _FloatingNavState extends State<FloatingNav>
             if (_widthFactor.value == 0.0 &&
                 widget.onToggleGridMode != null) ...[
               _buildViewToggleFab(),
-              const SizedBox(height: _gap),
+              SizedBox(height: gap),
             ],
             if (_widthFactor.value > 0.0 && hasQuickNav) ...[
               _buildQuickNavBar(),
-              const SizedBox(height: _gap),
+              SizedBox(height: gap),
             ],
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -142,7 +144,7 @@ class _FloatingNavState extends State<FloatingNav>
               children: [
                 _buildFab(),
                 if (_widthFactor.value > 0.0) ...[
-                  const SizedBox(width: _gap),
+                  SizedBox(width: gap),
                   _buildNavBar(),
                 ],
               ],
@@ -155,9 +157,11 @@ class _FloatingNavState extends State<FloatingNav>
 
   /// Builds the main floating action button
   Widget _buildFab() {
+    final double fabSize = getResponsiveSize(context, _fabSize);
+    final double iconSize = getResponsiveSize(context, 22.0);
     return Container(
-      width: _fabSize,
-      height: _fabSize,
+      width: fabSize,
+      height: fabSize,
       decoration: _boxDecoration,
       child: GestureDetector(
         onTap: _toggle,
@@ -171,7 +175,7 @@ class _FloatingNavState extends State<FloatingNav>
               _expanded ? LucideIcons.x : LucideIcons.menu,
               key: ValueKey(_expanded),
               color: Colors.white,
-              size: 22,
+              size: iconSize,
             ),
           ),
         ),
@@ -182,9 +186,11 @@ class _FloatingNavState extends State<FloatingNav>
   /// Builds the view toggle floating action button
   Widget _buildViewToggleFab() {
     final isGrid = widget.isGridMode ?? false;
+    final double fabSize = getResponsiveSize(context, _fabSize);
+    final double iconSize = getResponsiveSize(context, 22.0);
     return Container(
-      width: _fabSize,
-      height: _fabSize,
+      width: fabSize,
+      height: fabSize,
       decoration: _boxDecoration,
       child: GestureDetector(
         onTap: widget.onToggleGridMode,
@@ -198,7 +204,7 @@ class _FloatingNavState extends State<FloatingNav>
               isGrid ? LucideIcons.list : LucideIcons.grid2X2,
               key: ValueKey(isGrid),
               color: Colors.white,
-              size: 22,
+              size: iconSize,
             ),
           ),
         ),
@@ -208,9 +214,16 @@ class _FloatingNavState extends State<FloatingNav>
 
   /// Builds the expanded horizontal navigation bar
   Widget _buildNavBar() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final targetWidth = (screenWidth < 486.0)
+        ? (_navBarWidth * (screenWidth / 486.0)).clamp(200.0, _navBarWidth)
+        : _navBarWidth;
+    final double fabSize = getResponsiveSize(context, _fabSize);
+    final double iconSize = getResponsiveSize(context, 22.0);
+
     return Container(
-      width: _navBarWidth * _widthFactor.value,
-      height: _fabSize,
+      width: targetWidth * _widthFactor.value,
+      height: fabSize,
       decoration: _boxDecoration,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
@@ -219,8 +232,8 @@ class _FloatingNavState extends State<FloatingNav>
           child: Directionality(
             textDirection: TextDirection.ltr,
             child: OverflowBox(
-              minWidth: _navBarWidth,
-              maxWidth: _navBarWidth,
+              minWidth: targetWidth,
+              maxWidth: targetWidth,
               alignment: Alignment.centerLeft,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -242,7 +255,7 @@ class _FloatingNavState extends State<FloatingNav>
                         ),
                         child: Icon(
                           item.icon,
-                          size: 22,
+                          size: iconSize,
                           color: selected
                               ? borderColor
                               : Colors.white.withValues(alpha: 0.55),
@@ -262,10 +275,12 @@ class _FloatingNavState extends State<FloatingNav>
   /// Builds the vertical quick navigation bar
   Widget _buildQuickNavBar() {
     final sections = widget.quickNavSections!;
-    final totalHeight = sections.length.toDouble() * _fabSize;
+    final double fabSize = getResponsiveSize(context, _fabSize);
+    final double totalHeight = sections.length.toDouble() * fabSize;
+    final double iconSize = getResponsiveSize(context, 20.0);
 
     return Container(
-      width: _fabSize,
+      width: fabSize,
       height: totalHeight * _widthFactor.value,
       decoration: _boxDecoration,
       child: ClipRRect(
@@ -294,7 +309,7 @@ class _FloatingNavState extends State<FloatingNav>
                       ),
                       child: Icon(
                         section.icon,
-                        size: 20,
+                        size: iconSize,
                         color: section.isSelected
                             ? borderColor
                             : Colors.white.withValues(alpha: 0.8),

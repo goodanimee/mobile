@@ -403,8 +403,17 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
         _progressVolumes != _initialProgressVolumes ||
         _repeat != _initialRepeat;
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final bool isSmallScreen = screenWidth < 360.0;
+
+    final double btnPaddingHorizontal = getResponsiveSize(context, isSmallScreen ? 12.0 : 20.0);
+    final double savePaddingHorizontal = getResponsiveSize(context, isSmallScreen ? 16.0 : 24.0);
+    final double deletePaddingHorizontal = getResponsiveSize(context, isSmallScreen ? 8.0 : 16.0);
+    final double buttonSpacing = getResponsiveSize(context, isSmallScreen ? 6.0 : 12.0);
+    final double sidePadding = getResponsiveSize(context, isSmallScreen ? 12.0 : 20.0);
+
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 24),
+      padding: EdgeInsets.only(left: sidePadding, right: sidePadding, top: 12, bottom: 24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -413,8 +422,8 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
               onPressed: _isSaving ? null : _deleteEntry,
               style: TextButton.styleFrom(
                 foregroundColor: Colors.redAccent,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
+                padding: EdgeInsets.symmetric(
+                  horizontal: deletePaddingHorizontal,
                   vertical: 12,
                 ),
               ),
@@ -431,8 +440,8 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
               TextButton(
                 onPressed: _isSaving ? null : () => Navigator.of(context).pop(),
                 style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: btnPaddingHorizontal,
                     vertical: 12,
                   ),
                   shape: RoundedRectangleBorder(
@@ -448,14 +457,14 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: buttonSpacing),
               ElevatedButton(
                 onPressed: (_isSaving || !hasChanges) ? null : _saveChanges,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: borderColor,
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: savePaddingHorizontal,
                     vertical: 12,
                   ),
                   elevation: 0,

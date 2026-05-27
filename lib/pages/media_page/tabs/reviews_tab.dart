@@ -457,8 +457,15 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     );
     final timeStr = _formatTimeAgo(activity.createdAt);
 
+    final double hPadding = getResponsiveSize(context, 12.0);
+    final double vPadding = getResponsiveSize(context, 8.0);
+    final double avatarSize = getResponsiveSize(context, 38.0);
+    final double gap = getResponsiveSize(context, 12.0);
+    final double likeColWidth = getResponsiveSize(context, 48.0);
+    final double heartIconSize = getResponsiveSize(context, 20.0);
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: vPadding),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.03),
         borderRadius: BorderRadius.circular(12),
@@ -468,13 +475,13 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
         children: [
           AppNetworkImage(
             imageUrl: avatarUrl,
-            width: 38,
-            height: 38,
-            borderRadius: BorderRadius.circular(19),
+            width: avatarSize,
+            height: avatarSize,
+            borderRadius: BorderRadius.circular(avatarSize / 2),
             fallbackIcon: LucideIcons.user,
             checkDefault: true,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: gap),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -484,18 +491,25 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
                   crossAxisAlignment: CrossAxisAlignment.baseline,
                   textBaseline: TextBaseline.alphabetic,
                   children: [
-                    Text(
-                      username,
-                      style: const TextStyle(
-                        color: textSecondary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                    Flexible(
+                      child: Text(
+                        username,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: textSecondary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: getResponsiveFontSize(context, 14.0),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       timeStr,
-                      style: const TextStyle(color: textHint, fontSize: 11.5),
+                      style: TextStyle(
+                        color: textHint,
+                        fontSize: getResponsiveFontSize(context, 11.5),
+                      ),
                     ),
                   ],
                 ),
@@ -504,30 +518,30 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
                   actionText,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: textMuted,
-                    fontSize: 13.5,
+                    fontSize: getResponsiveFontSize(context, 13.5),
                     height: 1.3,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: gap),
           GestureDetector(
             onTap: () => _handleToggleLike(activity),
             behavior: HitTestBehavior.opaque,
             child: SizedBox(
-              width: 48,
+              width: likeColWidth,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _togglingActivities.contains(activity.id)
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: Padding(
+                      ? SizedBox(
+                          width: heartIconSize,
+                          height: heartIconSize,
+                          child: const Padding(
                             padding: EdgeInsets.all(2.0),
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
@@ -538,14 +552,14 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
                       : LucideHeartIcon(
                           isFilled: activity.isLiked,
                           color: activity.isLiked ? paletteRed : textMuted,
-                          size: 20,
+                          size: heartIconSize,
                         ),
                   const SizedBox(height: 4),
                   Text(
                     '${activity.likeCount}',
                     style: TextStyle(
                       color: activity.isLiked ? paletteRed : textMuted,
-                      fontSize: 12,
+                      fontSize: getResponsiveFontSize(context, 12.0),
                       fontWeight: FontWeight.bold,
                     ),
                   ),

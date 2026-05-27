@@ -7,6 +7,7 @@ import '../../../components/error_view.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../models/media_character.dart';
 import '../../../services/media_service.dart';
+import '../../../theme/theme.dart';
 import '../../../utils/app_navigation.dart';
 
 /// A tab displaying characters and cast for a media item
@@ -180,7 +181,7 @@ class _MediaCharactersTabState extends State<MediaCharactersTab> {
                   subtitle: role,
                   trailing: Icon(
                     LucideIcons.badgeInfo,
-                    size: 14,
+                    size: getResponsiveSize(context, 14.0),
                     color: Colors.white.withValues(alpha: 0.25),
                   ),
                   onTap: () => AppNavigation.toCharacter(context, edge),
