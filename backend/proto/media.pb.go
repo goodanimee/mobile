@@ -31,27 +31,24 @@ type Media struct {
 	Popularity        int32                     `protobuf:"varint,6,opt,name=popularity,proto3" json:"popularity,omitempty"`
 	Season            string                    `protobuf:"bytes,7,opt,name=season,proto3" json:"season,omitempty"`
 	SeasonYear        int32                     `protobuf:"varint,8,opt,name=season_year,json=seasonYear,proto3" json:"season_year,omitempty"`
-	Type              string                    `protobuf:"bytes,9,opt,name=type,proto3" json:"type,omitempty"`
-	Trailer           *Trailer                  `protobuf:"bytes,10,opt,name=trailer,proto3" json:"trailer,omitempty"`
-	MediaListEntry    *MediaListEntry           `protobuf:"bytes,11,opt,name=media_list_entry,json=mediaListEntry,proto3" json:"media_list_entry,omitempty"`
-	Studios           *StudioConnection         `protobuf:"bytes,12,opt,name=studios,proto3" json:"studios,omitempty"`
-	Tags              []*MediaTag               `protobuf:"bytes,13,rep,name=tags,proto3" json:"tags,omitempty"`
-	ExternalLinks     []*ExternalLink           `protobuf:"bytes,14,rep,name=external_links,json=externalLinks,proto3" json:"external_links,omitempty"`
-	StreamingEpisodes []*StreamingEpisode       `protobuf:"bytes,15,rep,name=streaming_episodes,json=streamingEpisodes,proto3" json:"streaming_episodes,omitempty"`
-	Staff             *StaffConnection          `protobuf:"bytes,16,opt,name=staff,proto3" json:"staff,omitempty"`
-	NextAiringEpisode *AiringSchedule           `protobuf:"bytes,17,opt,name=next_airing_episode,json=nextAiringEpisode,proto3" json:"next_airing_episode,omitempty"`
-	Characters        *CharacterConnection      `protobuf:"bytes,18,opt,name=characters,proto3" json:"characters,omitempty"`
-	Relations         *MediaConnection          `protobuf:"bytes,19,opt,name=relations,proto3" json:"relations,omitempty"`
-	Recommendations   *RecommendationConnection `protobuf:"bytes,20,opt,name=recommendations,proto3" json:"recommendations,omitempty"`
-	Rankings          []*MediaRank              `protobuf:"bytes,21,rep,name=rankings,proto3" json:"rankings,omitempty"`
-	Stats             *MediaStats               `protobuf:"bytes,22,opt,name=stats,proto3" json:"stats,omitempty"`
-	Trends            *MediaTrendConnection     `protobuf:"bytes,23,opt,name=trends,proto3" json:"trends,omitempty"`
-	MeanScore         *int32                    `protobuf:"varint,24,opt,name=mean_score,json=meanScore,proto3,oneof" json:"mean_score,omitempty"`
-	Favourites        *int32                    `protobuf:"varint,25,opt,name=favourites,proto3,oneof" json:"favourites,omitempty"`
-	Synonyms          []string                  `protobuf:"bytes,26,rep,name=synonyms,proto3" json:"synonyms,omitempty"`
-	Reviews           *ReviewConnection         `protobuf:"bytes,27,opt,name=reviews,proto3" json:"reviews,omitempty"`
-	Chapters          *int32                    `protobuf:"varint,28,opt,name=chapters,proto3,oneof" json:"chapters,omitempty"`
-	Volumes           *int32                    `protobuf:"varint,29,opt,name=volumes,proto3,oneof" json:"volumes,omitempty"`
+	Trailer           *Trailer                  `protobuf:"bytes,9,opt,name=trailer,proto3" json:"trailer,omitempty"`
+	MediaListEntry    *MediaListEntry           `protobuf:"bytes,10,opt,name=media_list_entry,json=mediaListEntry,proto3" json:"media_list_entry,omitempty"`
+	Studios           *StudioConnection         `protobuf:"bytes,11,opt,name=studios,proto3" json:"studios,omitempty"`
+	Tags              []*MediaTag               `protobuf:"bytes,12,rep,name=tags,proto3" json:"tags,omitempty"`
+	ExternalLinks     []*ExternalLink           `protobuf:"bytes,13,rep,name=external_links,json=externalLinks,proto3" json:"external_links,omitempty"`
+	StreamingEpisodes []*StreamingEpisode       `protobuf:"bytes,14,rep,name=streaming_episodes,json=streamingEpisodes,proto3" json:"streaming_episodes,omitempty"`
+	Staff             *StaffConnection          `protobuf:"bytes,15,opt,name=staff,proto3" json:"staff,omitempty"`
+	NextAiringEpisode *AiringSchedule           `protobuf:"bytes,16,opt,name=next_airing_episode,json=nextAiringEpisode,proto3" json:"next_airing_episode,omitempty"`
+	Characters        *CharacterConnection      `protobuf:"bytes,17,opt,name=characters,proto3" json:"characters,omitempty"`
+	Relations         *MediaConnection          `protobuf:"bytes,18,opt,name=relations,proto3" json:"relations,omitempty"`
+	Recommendations   *RecommendationConnection `protobuf:"bytes,19,opt,name=recommendations,proto3" json:"recommendations,omitempty"`
+	Rankings          []*MediaRank              `protobuf:"bytes,20,rep,name=rankings,proto3" json:"rankings,omitempty"`
+	Stats             *MediaStats               `protobuf:"bytes,21,opt,name=stats,proto3" json:"stats,omitempty"`
+	Trends            *MediaTrendConnection     `protobuf:"bytes,22,opt,name=trends,proto3" json:"trends,omitempty"`
+	MeanScore         *int32                    `protobuf:"varint,23,opt,name=mean_score,json=meanScore,proto3,oneof" json:"mean_score,omitempty"`
+	Favourites        *int32                    `protobuf:"varint,24,opt,name=favourites,proto3,oneof" json:"favourites,omitempty"`
+	Synonyms          []string                  `protobuf:"bytes,25,rep,name=synonyms,proto3" json:"synonyms,omitempty"`
+	Reviews           *ReviewConnection         `protobuf:"bytes,26,opt,name=reviews,proto3" json:"reviews,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -140,13 +137,6 @@ func (x *Media) GetSeasonYear() int32 {
 		return x.SeasonYear
 	}
 	return 0
-}
-
-func (x *Media) GetType() string {
-	if x != nil {
-		return x.Type
-	}
-	return ""
 }
 
 func (x *Media) GetTrailer() *Trailer {
@@ -275,26 +265,11 @@ func (x *Media) GetReviews() *ReviewConnection {
 	return nil
 }
 
-func (x *Media) GetChapters() int32 {
-	if x != nil && x.Chapters != nil {
-		return *x.Chapters
-	}
-	return 0
-}
-
-func (x *Media) GetVolumes() int32 {
-	if x != nil && x.Volumes != nil {
-		return *x.Volumes
-	}
-	return 0
-}
-
 var File_media_proto protoreflect.FileDescriptor
 
 const file_media_proto_rawDesc = "" +
 	"\n" +
-	"\vmedia.proto\x12\tgoodanime\x1a\x15media_character.proto\x1a\x10media_edge.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x1amedia_recommendation.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\x11media_trend.proto\"\xe2\n" +
-	"\n" +
+	"\vmedia.proto\x12\tgoodanime\x1a\x15media_character.proto\x1a\x10media_edge.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x1amedia_recommendation.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\x11media_trend.proto\"\xf5\t\n" +
 	"\x05Media\x12'\n" +
 	"\x04base\x18\x01 \x01(\v2\x13.goodanime.MediaMinR\x04base\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12!\n" +
@@ -306,39 +281,33 @@ const file_media_proto_rawDesc = "" +
 	"popularity\x12\x16\n" +
 	"\x06season\x18\a \x01(\tR\x06season\x12\x1f\n" +
 	"\vseason_year\x18\b \x01(\x05R\n" +
-	"seasonYear\x12\x12\n" +
-	"\x04type\x18\t \x01(\tR\x04type\x12,\n" +
-	"\atrailer\x18\n" +
-	" \x01(\v2\x12.goodanime.TrailerR\atrailer\x12C\n" +
-	"\x10media_list_entry\x18\v \x01(\v2\x19.goodanime.MediaListEntryR\x0emediaListEntry\x125\n" +
-	"\astudios\x18\f \x01(\v2\x1b.goodanime.StudioConnectionR\astudios\x12'\n" +
-	"\x04tags\x18\r \x03(\v2\x13.goodanime.MediaTagR\x04tags\x12>\n" +
-	"\x0eexternal_links\x18\x0e \x03(\v2\x17.goodanime.ExternalLinkR\rexternalLinks\x12J\n" +
-	"\x12streaming_episodes\x18\x0f \x03(\v2\x1b.goodanime.StreamingEpisodeR\x11streamingEpisodes\x120\n" +
-	"\x05staff\x18\x10 \x01(\v2\x1a.goodanime.StaffConnectionR\x05staff\x12I\n" +
-	"\x13next_airing_episode\x18\x11 \x01(\v2\x19.goodanime.AiringScheduleR\x11nextAiringEpisode\x12>\n" +
+	"seasonYear\x12,\n" +
+	"\atrailer\x18\t \x01(\v2\x12.goodanime.TrailerR\atrailer\x12C\n" +
+	"\x10media_list_entry\x18\n" +
+	" \x01(\v2\x19.goodanime.MediaListEntryR\x0emediaListEntry\x125\n" +
+	"\astudios\x18\v \x01(\v2\x1b.goodanime.StudioConnectionR\astudios\x12'\n" +
+	"\x04tags\x18\f \x03(\v2\x13.goodanime.MediaTagR\x04tags\x12>\n" +
+	"\x0eexternal_links\x18\r \x03(\v2\x17.goodanime.ExternalLinkR\rexternalLinks\x12J\n" +
+	"\x12streaming_episodes\x18\x0e \x03(\v2\x1b.goodanime.StreamingEpisodeR\x11streamingEpisodes\x120\n" +
+	"\x05staff\x18\x0f \x01(\v2\x1a.goodanime.StaffConnectionR\x05staff\x12I\n" +
+	"\x13next_airing_episode\x18\x10 \x01(\v2\x19.goodanime.AiringScheduleR\x11nextAiringEpisode\x12>\n" +
 	"\n" +
-	"characters\x18\x12 \x01(\v2\x1e.goodanime.CharacterConnectionR\n" +
+	"characters\x18\x11 \x01(\v2\x1e.goodanime.CharacterConnectionR\n" +
 	"characters\x128\n" +
-	"\trelations\x18\x13 \x01(\v2\x1a.goodanime.MediaConnectionR\trelations\x12M\n" +
-	"\x0frecommendations\x18\x14 \x01(\v2#.goodanime.RecommendationConnectionR\x0frecommendations\x120\n" +
-	"\brankings\x18\x15 \x03(\v2\x14.goodanime.MediaRankR\brankings\x12+\n" +
-	"\x05stats\x18\x16 \x01(\v2\x15.goodanime.MediaStatsR\x05stats\x127\n" +
-	"\x06trends\x18\x17 \x01(\v2\x1f.goodanime.MediaTrendConnectionR\x06trends\x12\"\n" +
+	"\trelations\x18\x12 \x01(\v2\x1a.goodanime.MediaConnectionR\trelations\x12M\n" +
+	"\x0frecommendations\x18\x13 \x01(\v2#.goodanime.RecommendationConnectionR\x0frecommendations\x120\n" +
+	"\brankings\x18\x14 \x03(\v2\x14.goodanime.MediaRankR\brankings\x12+\n" +
+	"\x05stats\x18\x15 \x01(\v2\x15.goodanime.MediaStatsR\x05stats\x127\n" +
+	"\x06trends\x18\x16 \x01(\v2\x1f.goodanime.MediaTrendConnectionR\x06trends\x12\"\n" +
 	"\n" +
-	"mean_score\x18\x18 \x01(\x05H\x00R\tmeanScore\x88\x01\x01\x12#\n" +
+	"mean_score\x18\x17 \x01(\x05H\x00R\tmeanScore\x88\x01\x01\x12#\n" +
 	"\n" +
-	"favourites\x18\x19 \x01(\x05H\x01R\n" +
+	"favourites\x18\x18 \x01(\x05H\x01R\n" +
 	"favourites\x88\x01\x01\x12\x1a\n" +
-	"\bsynonyms\x18\x1a \x03(\tR\bsynonyms\x125\n" +
-	"\areviews\x18\x1b \x01(\v2\x1b.goodanime.ReviewConnectionR\areviews\x12\x1f\n" +
-	"\bchapters\x18\x1c \x01(\x05H\x02R\bchapters\x88\x01\x01\x12\x1d\n" +
-	"\avolumes\x18\x1d \x01(\x05H\x03R\avolumes\x88\x01\x01B\r\n" +
+	"\bsynonyms\x18\x19 \x03(\tR\bsynonyms\x125\n" +
+	"\areviews\x18\x1a \x01(\v2\x1b.goodanime.ReviewConnectionR\areviewsB\r\n" +
 	"\v_mean_scoreB\r\n" +
-	"\v_favouritesB\v\n" +
-	"\t_chaptersB\n" +
-	"\n" +
-	"\b_volumesB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\v_favouritesB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_media_proto_rawDescOnce sync.Once

@@ -246,8 +246,11 @@ fragment MediaTrendsFields on MediaTrendConnection {
 
 fragment MediaMinFields on Media {
     id
+    type
     averageScore
     episodes
+    chapters
+    volumes
     format
     isAdult
     isFavourite

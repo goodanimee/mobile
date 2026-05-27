@@ -10,8 +10,15 @@ class StatusDistributionBar extends StatefulWidget {
   /// The distribution data
   final List<dynamic> distribution;
 
+  /// Whether this is for a manga
+  final bool isManga;
+
   /// Creates a status distribution bar
-  const StatusDistributionBar({super.key, required this.distribution});
+  const StatusDistributionBar({
+    super.key,
+    required this.distribution,
+    this.isManga = false,
+  });
 
   @override
   State<StatusDistributionBar> createState() => _StatusDistributionBarState();
@@ -208,6 +215,8 @@ class _StatusDistributionBarState extends State<StatusDistributionBar> {
 
   /// Formats the status string for display
   String _formatStatus(String status) {
-    return MediaListStatus.fromString(status).displayName;
+    return MediaListStatus.fromString(
+      status,
+    ).displayName(isManga: widget.isManga);
   }
 }

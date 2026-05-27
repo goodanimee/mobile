@@ -26,13 +26,15 @@ class QuickNavSection {
 }
 
 const _navItems = [
-  (icon: LucideIcons.tv, label: 'Anime List'),
   (icon: LucideIcons.sparkles, label: 'Discover'),
+  (icon: LucideIcons.tv, label: 'Anime'),
+  (icon: LucideIcons.library, label: 'Manga'),
+  (icon: LucideIcons.search, label: 'Search'),
   (icon: LucideIcons.circleUser, label: 'Profile'),
 ];
 
 const _fabSize = 52.0;
-const _navBarWidth = 240.0;
+const _navBarWidth = 360.0;
 const _gap = 8.0;
 const _duration = Duration(milliseconds: 300);
 

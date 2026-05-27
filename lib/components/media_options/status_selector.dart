@@ -11,17 +11,21 @@ class StatusSelector extends StatelessWidget {
   /// Callback triggered on status change.
   final ValueChanged<MediaListStatus> onStatusChanged;
 
+  /// Whether this is a manga entry.
+  final bool isManga;
+
   /// Creates a status selector.
   const StatusSelector({
     super.key,
     required this.currentStatus,
     required this.onStatusChanged,
+    this.isManga = false,
   });
 
   IconData _getIcon(MediaListStatus status) {
     switch (status) {
       case MediaListStatus.current:
-        return LucideIcons.playCircle;
+        return isManga ? LucideIcons.bookOpenText : LucideIcons.playCircle;
       case MediaListStatus.planning:
         return LucideIcons.bookmark;
       case MediaListStatus.completed:

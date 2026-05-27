@@ -76,6 +76,9 @@ const MediaMin$json = {
     {'1': 'is_adult', '3': 7, '4': 1, '5': 8, '10': 'isAdult'},
     {'1': 'is_favourite', '3': 8, '4': 1, '5': 8, '10': 'isFavourite'},
     {'1': 'site_url', '3': 9, '4': 1, '5': 9, '10': 'siteUrl'},
+    {'1': 'chapters', '3': 10, '4': 1, '5': 5, '10': 'chapters'},
+    {'1': 'volumes', '3': 11, '4': 1, '5': 5, '10': 'volumes'},
+    {'1': 'type', '3': 12, '4': 1, '5': 9, '10': 'type'},
   ],
 };
 
@@ -86,4 +89,5 @@ final $typed_data.Uint8List mediaMinDescriptor = $convert.base64Decode(
     'cl9pbWFnZRgEIAEoCzIVLmdvb2RhbmltZS5Db3ZlckltYWdlUgpjb3ZlckltYWdlEhoKCGVwaX'
     'NvZGVzGAUgASgFUghlcGlzb2RlcxIWCgZmb3JtYXQYBiABKAlSBmZvcm1hdBIZCghpc19hZHVs'
     'dBgHIAEoCFIHaXNBZHVsdBIhCgxpc19mYXZvdXJpdGUYCCABKAhSC2lzRmF2b3VyaXRlEhkKCH'
-    'NpdGVfdXJsGAkgASgJUgdzaXRlVXJs');
+    'NpdGVfdXJsGAkgASgJUgdzaXRlVXJsEhoKCGNoYXB0ZXJzGAogASgFUghjaGFwdGVycxIYCgd2'
+    'b2x1bWVzGAsgASgFUgd2b2x1bWVzEhIKBHR5cGUYDCABKAlSBHR5cGU=');

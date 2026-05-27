@@ -1,6 +1,5 @@
 query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
     MediaListCollection(userId: $userId, type: $type, sort: $sort) {
-        hasNextChunk
         lists {
             name
             status
@@ -8,8 +7,11 @@ query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
                 id
                 media {
                     id
+                    type
                     averageScore
                     episodes
+                    chapters
+                    volumes
                     format
                     isAdult
                     isFavourite

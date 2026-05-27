@@ -10,6 +10,7 @@ import '../services/auth_service.dart';
 import '../theme/theme.dart';
 import 'anime_list_tab.dart';
 import 'login_page.dart';
+import 'manga_list_tab.dart';
 import 'profile_page.dart';
 
 /// The main container page for the application
@@ -22,20 +23,22 @@ class HomePage extends StatefulWidget {
 }
 
 /// Returns an icon corresponding to a list status
-IconData _statusIcon(MediaListStatus status) => switch (status) {
-  MediaListStatus.current => LucideIcons.playCircle,
-  MediaListStatus.repeating => LucideIcons.rotateCcw,
-  MediaListStatus.planning => LucideIcons.bookmark,
-  MediaListStatus.completed => LucideIcons.badgeCheck,
-  MediaListStatus.paused => LucideIcons.circlePause,
-  MediaListStatus.dropped => LucideIcons.ban,
-};
+IconData _statusIcon(MediaListStatus status, {bool isManga = false}) =>
+    switch (status) {
+      MediaListStatus.current =>
+        isManga ? LucideIcons.bookOpenText : LucideIcons.playCircle,
+      MediaListStatus.planning => LucideIcons.bookmark,
+      MediaListStatus.completed => LucideIcons.badgeCheck,
+      MediaListStatus.repeating => LucideIcons.rotateCcw,
+      MediaListStatus.paused => LucideIcons.circlePause,
+      MediaListStatus.dropped => LucideIcons.ban,
+    };
 
 /// State for HomePage
 class _HomePageState extends State<HomePage> {
   String? _token;
   bool _isLoading = true;
-  int _navIndex = 0;
+  int _navIndex = 1;
   bool _isGridMode = true;
   List<QuickNavSection> _quickNavSections = [];
 
@@ -89,7 +92,7 @@ class _HomePageState extends State<HomePage> {
   void _handleSignOut() {
     setState(() {
       _token = null;
-      _navIndex = 0;
+      _navIndex = 1;
     });
   }
 
@@ -104,8 +107,8 @@ class _HomePageState extends State<HomePage> {
       _quickNavSections = statuses
           .map(
             (s) => QuickNavSection(
-              icon: _statusIcon(s),
-              label: s.displayName,
+              icon: _statusIcon(s, isManga: _navIndex == 2),
+              label: s.displayName(isManga: _navIndex == 2),
               onTap: () => scrollTo(s),
               isSelected: s == activeStatus,
             ),
@@ -117,13 +120,19 @@ class _HomePageState extends State<HomePage> {
   /// Builds the body content based on the selected navigation index
   Widget _buildBody() {
     switch (_navIndex) {
-      case 0:
+      case 1:
         return AnimeListTab(
           isGridMode: _isGridMode,
           onSignOut: _handleSignOut,
           onSectionsChanged: _handleSectionsChanged,
         );
       case 2:
+        return MangaListTab(
+          isGridMode: _isGridMode,
+          onSignOut: _handleSignOut,
+          onSectionsChanged: _handleSectionsChanged,
+        );
+      case 4:
         return ProfilePage(onSignOut: _handleSignOut);
       default:
         return Center(
@@ -157,9 +166,15 @@ class _HomePageState extends State<HomePage> {
               child: FloatingNav(
                 selectedIndex: _navIndex,
                 onTap: (i) => AppNavigation.currentTab.value = i,
-                quickNavSections: _navIndex == 0 ? _quickNavSections : null,
-                isGridMode: _navIndex == 0 ? _isGridMode : null,
-                onToggleGridMode: _navIndex == 0 ? _toggleGridMode : null,
+                quickNavSections: (_navIndex == 1 || _navIndex == 2)
+                    ? _quickNavSections
+                    : null,
+                isGridMode: (_navIndex == 1 || _navIndex == 2)
+                    ? _isGridMode
+                    : null,
+                onToggleGridMode: (_navIndex == 1 || _navIndex == 2)
+                    ? _toggleGridMode
+                    : null,
               ),
             ),
           ],

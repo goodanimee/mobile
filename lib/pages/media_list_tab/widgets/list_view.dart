@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../components/anime_list_card.dart';
 import '../../../components/error_view.dart';
+import '../../../components/media_list_card.dart';
 import '../../../components/section_title.dart';
 import '../../../models/media_list.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../utils/app_options.dart';
 
-/// A list view component representing a list of anime items in a linear format
-class AnimeListView extends StatelessWidget {
+/// A list view component representing a list of media items in a linear format
+class MediaListView extends StatelessWidget {
   /// The active name/title of the list section
   final String activeName;
 
@@ -28,8 +28,11 @@ class AnimeListView extends StatelessWidget {
   final void Function(BuildContext context, MediaListEntryWithMedia entry)
   onLongPress;
 
-  /// Creates an anime list view widget
-  const AnimeListView({
+  /// The text to show when list is empty
+  final String emptyLabel;
+
+  /// Creates a media list view widget
+  const MediaListView({
     super.key,
     required this.activeName,
     required this.entries,
@@ -37,10 +40,11 @@ class AnimeListView extends StatelessWidget {
     required this.onRefresh,
     required this.onEntryUpdated,
     required this.onLongPress,
+    this.emptyLabel = 'No anime',
   });
 
   @override
-  /// Builds the anime list view widget
+  /// Builds the media list view widget
   Widget build(BuildContext context) {
     if (entries.isEmpty) {
       return ListView(
@@ -55,7 +59,7 @@ class AnimeListView extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.6,
             child: AppErrorView(
-              message: 'No anime currently in $activeName',
+              message: '$emptyLabel currently in $activeName',
               topPadding: 0,
             ),
           ),
@@ -78,7 +82,7 @@ class AnimeListView extends StatelessWidget {
 
         final entry = entries[index - 1];
 
-        return AnimeListCard(
+        return MediaListCard(
           entry: entry,
           onEntryUpdated: onEntryUpdated,
           onTap: () {

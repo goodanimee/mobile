@@ -36,6 +36,9 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme.dark(surface: bgColor),
       ),
       home: const HomePage(),
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (_) => const HomePage());
+      },
     );
   }
 }

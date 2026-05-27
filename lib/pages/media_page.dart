@@ -174,7 +174,11 @@ class _MediaPageState extends State<MediaPage> {
       });
 
       await CacheUtils.invalidateMedia(widget.mediaId);
-      CacheUtils.animeListNeedsRefresh.value = true;
+      if (_mediaData!.type == 'ANIME') {
+        CacheUtils.animeListNeedsRefresh.value = true;
+      } else if (_mediaData!.type == 'MANGA') {
+        CacheUtils.mangaListNeedsRefresh.value = true;
+      }
       await _fetchMediaDetails(forceRefresh: true);
     }
   }

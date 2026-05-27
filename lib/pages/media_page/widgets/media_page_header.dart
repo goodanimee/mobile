@@ -116,10 +116,10 @@ class MediaPageHeader extends StatelessWidget {
                       ],
                     ] else ...[
                       _buildInfoRow(
-                        LucideIcons.bookOpenText,
-                        '${media.chapters != null && media.chapters! > 0 ? media.chapters.toString() : '?'} Chapters',
+                        LucideIcons.bookOpen,
+                        '${media.chapters > 0 ? media.chapters.toString() : '?'} Chapters',
                       ),
-                      if (media.volumes != null && media.volumes! > 0) ...[
+                      if (media.volumes > 0) ...[
                         const SizedBox(height: 8),
                         _buildInfoRow(
                           LucideIcons.bookCopy,

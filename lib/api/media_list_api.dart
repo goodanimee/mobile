@@ -13,6 +13,7 @@ typedef _FetchMediaListC =
     ffi.Pointer<ffi.Uint8> Function(
       ffi.Int32 userId,
       ffi.Pointer<Utf8> token,
+      ffi.Pointer<Utf8> type,
       ffi.Pointer<ffi.Int32> outLen,
     );
 
@@ -21,6 +22,7 @@ typedef _FetchMediaListDart =
     ffi.Pointer<ffi.Uint8> Function(
       int userId,
       ffi.Pointer<Utf8> token,
+      ffi.Pointer<Utf8> type,
       ffi.Pointer<ffi.Int32> outLen,
     );
 
@@ -89,13 +91,15 @@ class MediaListApi {
   static Future<MediaListCollection> fetchMediaList(
     int userId,
     String token,
+    String mediaType,
   ) async {
     return Isolate.run(() {
       _init();
       final tokenPtr = token.toNativeUtf8();
+      final typePtr = mediaType.toNativeUtf8();
       try {
         final bytes = FfiCore.executeNativeCall(
-          (outLenPtr) => _fetchMediaList(userId, tokenPtr, outLenPtr),
+          (outLenPtr) => _fetchMediaList(userId, tokenPtr, typePtr, outLenPtr),
         );
         final response = FetchMediaListResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) {

@@ -8,7 +8,7 @@ import 'utils.dart';
 /// Centralized manager for app transitions and navigation
 class AppNavigation {
   /// Global state for the active tab on the HomePage
-  static final ValueNotifier<int> currentTab = ValueNotifier<int>(0);
+  static final ValueNotifier<int> currentTab = ValueNotifier<int>(1);
 
   /// Navigate to Media details
   static Future<void> toMedia(
@@ -23,7 +23,9 @@ class AppNavigation {
       ),
     );
 
-    if (result == true || CacheUtils.animeListNeedsRefresh.value) {
+    if (result == true ||
+        CacheUtils.animeListNeedsRefresh.value ||
+        CacheUtils.mangaListNeedsRefresh.value) {
       onRefresh?.call();
     }
   }

@@ -91,7 +91,7 @@ class MediaService {
     );
 
     await CacheUtils.invalidateMedia(mediaId);
-    CacheUtils.animeListNeedsRefresh.value = true;
+    CacheUtils.mangaListNeedsRefresh.value = true;
   }
 
   /// Toggles the like status of an activity.

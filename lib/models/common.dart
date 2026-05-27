@@ -105,8 +105,9 @@ enum MediaListStatus {
   }
 
   /// Gets the display name for the status
-  String get displayName =>
-      this == MediaListStatus.current ? 'WATCHING' : name.toUpperCase();
+  String displayName({bool isManga = false}) => this == MediaListStatus.current
+      ? (isManga ? 'READING' : 'WATCHING')
+      : name.toUpperCase();
 
   /// Get the string representation of the enum value
   @override
