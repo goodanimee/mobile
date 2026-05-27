@@ -34,10 +34,9 @@ const Media$json = {
     {'1': 'popularity', '3': 6, '4': 1, '5': 5, '10': 'popularity'},
     {'1': 'season', '3': 7, '4': 1, '5': 9, '10': 'season'},
     {'1': 'season_year', '3': 8, '4': 1, '5': 5, '10': 'seasonYear'},
-    {'1': 'type', '3': 9, '4': 1, '5': 9, '10': 'type'},
     {
       '1': 'trailer',
-      '3': 10,
+      '3': 9,
       '4': 1,
       '5': 11,
       '6': '.goodanime.Trailer',
@@ -45,7 +44,7 @@ const Media$json = {
     },
     {
       '1': 'media_list_entry',
-      '3': 11,
+      '3': 10,
       '4': 1,
       '5': 11,
       '6': '.goodanime.MediaListEntry',
@@ -53,7 +52,7 @@ const Media$json = {
     },
     {
       '1': 'studios',
-      '3': 12,
+      '3': 11,
       '4': 1,
       '5': 11,
       '6': '.goodanime.StudioConnection',
@@ -61,7 +60,7 @@ const Media$json = {
     },
     {
       '1': 'tags',
-      '3': 13,
+      '3': 12,
       '4': 3,
       '5': 11,
       '6': '.goodanime.MediaTag',
@@ -69,7 +68,7 @@ const Media$json = {
     },
     {
       '1': 'external_links',
-      '3': 14,
+      '3': 13,
       '4': 3,
       '5': 11,
       '6': '.goodanime.ExternalLink',
@@ -77,7 +76,7 @@ const Media$json = {
     },
     {
       '1': 'streaming_episodes',
-      '3': 15,
+      '3': 14,
       '4': 3,
       '5': 11,
       '6': '.goodanime.StreamingEpisode',
@@ -85,7 +84,7 @@ const Media$json = {
     },
     {
       '1': 'staff',
-      '3': 16,
+      '3': 15,
       '4': 1,
       '5': 11,
       '6': '.goodanime.StaffConnection',
@@ -93,7 +92,7 @@ const Media$json = {
     },
     {
       '1': 'next_airing_episode',
-      '3': 17,
+      '3': 16,
       '4': 1,
       '5': 11,
       '6': '.goodanime.AiringSchedule',
@@ -101,7 +100,7 @@ const Media$json = {
     },
     {
       '1': 'characters',
-      '3': 18,
+      '3': 17,
       '4': 1,
       '5': 11,
       '6': '.goodanime.CharacterConnection',
@@ -109,7 +108,7 @@ const Media$json = {
     },
     {
       '1': 'relations',
-      '3': 19,
+      '3': 18,
       '4': 1,
       '5': 11,
       '6': '.goodanime.MediaConnection',
@@ -117,7 +116,7 @@ const Media$json = {
     },
     {
       '1': 'recommendations',
-      '3': 20,
+      '3': 19,
       '4': 1,
       '5': 11,
       '6': '.goodanime.RecommendationConnection',
@@ -125,7 +124,7 @@ const Media$json = {
     },
     {
       '1': 'rankings',
-      '3': 21,
+      '3': 20,
       '4': 3,
       '5': 11,
       '6': '.goodanime.MediaRank',
@@ -133,7 +132,7 @@ const Media$json = {
     },
     {
       '1': 'stats',
-      '3': 22,
+      '3': 21,
       '4': 1,
       '5': 11,
       '6': '.goodanime.MediaStats',
@@ -141,7 +140,7 @@ const Media$json = {
     },
     {
       '1': 'trends',
-      '3': 23,
+      '3': 22,
       '4': 1,
       '5': 11,
       '6': '.goodanime.MediaTrendConnection',
@@ -149,7 +148,7 @@ const Media$json = {
     },
     {
       '1': 'mean_score',
-      '3': 24,
+      '3': 23,
       '4': 1,
       '5': 5,
       '9': 0,
@@ -158,37 +157,28 @@ const Media$json = {
     },
     {
       '1': 'favourites',
-      '3': 25,
+      '3': 24,
       '4': 1,
       '5': 5,
       '9': 1,
       '10': 'favourites',
       '17': true
     },
-    {'1': 'synonyms', '3': 26, '4': 3, '5': 9, '10': 'synonyms'},
+    {'1': 'synonyms', '3': 25, '4': 3, '5': 9, '10': 'synonyms'},
     {
       '1': 'reviews',
-      '3': 27,
+      '3': 26,
       '4': 1,
       '5': 11,
       '6': '.goodanime.ReviewConnection',
       '10': 'reviews'
     },
     {
-      '1': 'chapters',
-      '3': 28,
+      '1': 'volumes',
+      '3': 27,
       '4': 1,
       '5': 5,
       '9': 2,
-      '10': 'chapters',
-      '17': true
-    },
-    {
-      '1': 'volumes',
-      '3': 29,
-      '4': 1,
-      '5': 5,
-      '9': 3,
       '10': 'volumes',
       '17': true
     },
@@ -196,7 +186,6 @@ const Media$json = {
   '8': [
     {'1': '_mean_score'},
     {'1': '_favourites'},
-    {'1': '_chapters'},
     {'1': '_volumes'},
   ],
 };
@@ -207,24 +196,23 @@ final $typed_data.Uint8List mediaDescriptor = $convert.base64Decode(
     'NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIhCgxiYW5uZXJfaW1hZ2UYAyABKAlSC2Jhbm5l'
     'ckltYWdlEhYKBnN0YXR1cxgEIAEoCVIGc3RhdHVzEhYKBmdlbnJlcxgFIAMoCVIGZ2VucmVzEh'
     '4KCnBvcHVsYXJpdHkYBiABKAVSCnBvcHVsYXJpdHkSFgoGc2Vhc29uGAcgASgJUgZzZWFzb24S'
-    'HwoLc2Vhc29uX3llYXIYCCABKAVSCnNlYXNvblllYXISEgoEdHlwZRgJIAEoCVIEdHlwZRIsCg'
-    'd0cmFpbGVyGAogASgLMhIuZ29vZGFuaW1lLlRyYWlsZXJSB3RyYWlsZXISQwoQbWVkaWFfbGlz'
-    'dF9lbnRyeRgLIAEoCzIZLmdvb2RhbmltZS5NZWRpYUxpc3RFbnRyeVIObWVkaWFMaXN0RW50cn'
-    'kSNQoHc3R1ZGlvcxgMIAEoCzIbLmdvb2RhbmltZS5TdHVkaW9Db25uZWN0aW9uUgdzdHVkaW9z'
-    'EicKBHRhZ3MYDSADKAsyEy5nb29kYW5pbWUuTWVkaWFUYWdSBHRhZ3MSPgoOZXh0ZXJuYWxfbG'
-    'lua3MYDiADKAsyFy5nb29kYW5pbWUuRXh0ZXJuYWxMaW5rUg1leHRlcm5hbExpbmtzEkoKEnN0'
-    'cmVhbWluZ19lcGlzb2RlcxgPIAMoCzIbLmdvb2RhbmltZS5TdHJlYW1pbmdFcGlzb2RlUhFzdH'
-    'JlYW1pbmdFcGlzb2RlcxIwCgVzdGFmZhgQIAEoCzIaLmdvb2RhbmltZS5TdGFmZkNvbm5lY3Rp'
-    'b25SBXN0YWZmEkkKE25leHRfYWlyaW5nX2VwaXNvZGUYESABKAsyGS5nb29kYW5pbWUuQWlyaW'
-    '5nU2NoZWR1bGVSEW5leHRBaXJpbmdFcGlzb2RlEj4KCmNoYXJhY3RlcnMYEiABKAsyHi5nb29k'
-    'YW5pbWUuQ2hhcmFjdGVyQ29ubmVjdGlvblIKY2hhcmFjdGVycxI4CglyZWxhdGlvbnMYEyABKA'
-    'syGi5nb29kYW5pbWUuTWVkaWFDb25uZWN0aW9uUglyZWxhdGlvbnMSTQoPcmVjb21tZW5kYXRp'
-    'b25zGBQgASgLMiMuZ29vZGFuaW1lLlJlY29tbWVuZGF0aW9uQ29ubmVjdGlvblIPcmVjb21tZW'
-    '5kYXRpb25zEjAKCHJhbmtpbmdzGBUgAygLMhQuZ29vZGFuaW1lLk1lZGlhUmFua1IIcmFua2lu'
-    'Z3MSKwoFc3RhdHMYFiABKAsyFS5nb29kYW5pbWUuTWVkaWFTdGF0c1IFc3RhdHMSNwoGdHJlbm'
-    'RzGBcgASgLMh8uZ29vZGFuaW1lLk1lZGlhVHJlbmRDb25uZWN0aW9uUgZ0cmVuZHMSIgoKbWVh'
-    'bl9zY29yZRgYIAEoBUgAUgltZWFuU2NvcmWIAQESIwoKZmF2b3VyaXRlcxgZIAEoBUgBUgpmYX'
-    'ZvdXJpdGVziAEBEhoKCHN5bm9ueW1zGBogAygJUghzeW5vbnltcxI1CgdyZXZpZXdzGBsgASgL'
-    'MhsuZ29vZGFuaW1lLlJldmlld0Nvbm5lY3Rpb25SB3Jldmlld3MSHwoIY2hhcHRlcnMYHCABKA'
-    'VIAlIIY2hhcHRlcnOIAQESHQoHdm9sdW1lcxgdIAEoBUgDUgd2b2x1bWVziAEBQg0KC19tZWFu'
-    'X3Njb3JlQg0KC19mYXZvdXJpdGVzQgsKCV9jaGFwdGVyc0IKCghfdm9sdW1lcw==');
+    'HwoLc2Vhc29uX3llYXIYCCABKAVSCnNlYXNvblllYXISLAoHdHJhaWxlchgJIAEoCzISLmdvb2'
+    'RhbmltZS5UcmFpbGVyUgd0cmFpbGVyEkMKEG1lZGlhX2xpc3RfZW50cnkYCiABKAsyGS5nb29k'
+    'YW5pbWUuTWVkaWFMaXN0RW50cnlSDm1lZGlhTGlzdEVudHJ5EjUKB3N0dWRpb3MYCyABKAsyGy'
+    '5nb29kYW5pbWUuU3R1ZGlvQ29ubmVjdGlvblIHc3R1ZGlvcxInCgR0YWdzGAwgAygLMhMuZ29v'
+    'ZGFuaW1lLk1lZGlhVGFnUgR0YWdzEj4KDmV4dGVybmFsX2xpbmtzGA0gAygLMhcuZ29vZGFuaW'
+    '1lLkV4dGVybmFsTGlua1INZXh0ZXJuYWxMaW5rcxJKChJzdHJlYW1pbmdfZXBpc29kZXMYDiAD'
+    'KAsyGy5nb29kYW5pbWUuU3RyZWFtaW5nRXBpc29kZVIRc3RyZWFtaW5nRXBpc29kZXMSMAoFc3'
+    'RhZmYYDyABKAsyGi5nb29kYW5pbWUuU3RhZmZDb25uZWN0aW9uUgVzdGFmZhJJChNuZXh0X2Fp'
+    'cmluZ19lcGlzb2RlGBAgASgLMhkuZ29vZGFuaW1lLkFpcmluZ1NjaGVkdWxlUhFuZXh0QWlyaW'
+    '5nRXBpc29kZRI+CgpjaGFyYWN0ZXJzGBEgASgLMh4uZ29vZGFuaW1lLkNoYXJhY3RlckNvbm5l'
+    'Y3Rpb25SCmNoYXJhY3RlcnMSOAoJcmVsYXRpb25zGBIgASgLMhouZ29vZGFuaW1lLk1lZGlhQ2'
+    '9ubmVjdGlvblIJcmVsYXRpb25zEk0KD3JlY29tbWVuZGF0aW9ucxgTIAEoCzIjLmdvb2Rhbmlt'
+    'ZS5SZWNvbW1lbmRhdGlvbkNvbm5lY3Rpb25SD3JlY29tbWVuZGF0aW9ucxIwCghyYW5raW5ncx'
+    'gUIAMoCzIULmdvb2RhbmltZS5NZWRpYVJhbmtSCHJhbmtpbmdzEisKBXN0YXRzGBUgASgLMhUu'
+    'Z29vZGFuaW1lLk1lZGlhU3RhdHNSBXN0YXRzEjcKBnRyZW5kcxgWIAEoCzIfLmdvb2RhbmltZS'
+    '5NZWRpYVRyZW5kQ29ubmVjdGlvblIGdHJlbmRzEiIKCm1lYW5fc2NvcmUYFyABKAVIAFIJbWVh'
+    'blNjb3JliAEBEiMKCmZhdm91cml0ZXMYGCABKAVIAVIKZmF2b3VyaXRlc4gBARIaCghzeW5vbn'
+    'ltcxgZIAMoCVIIc3lub255bXMSNQoHcmV2aWV3cxgaIAEoCzIbLmdvb2RhbmltZS5SZXZpZXdD'
+    'b25uZWN0aW9uUgdyZXZpZXdzEh0KB3ZvbHVtZXMYGyABKAVIAlIHdm9sdW1lc4gBAUINCgtfbW'
+    'Vhbl9zY29yZUINCgtfZmF2b3VyaXRlc0IKCghfdm9sdW1lcw==');

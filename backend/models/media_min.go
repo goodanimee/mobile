@@ -66,9 +66,11 @@ type Title struct {
 type MediaMin struct {
 	ID           int32      `json:"id"`
 	Title        Title      `json:"title"`
+	Type         string     `json:"type"`
 	AverageScore int32      `json:"averageScore"`
 	CoverImage   CoverImage `json:"coverImage"`
 	Episodes     int32      `json:"episodes"`
+	Chapters     int32      `json:"chapters"`
 	Format       string     `json:"format"`
 	IsAdult      bool       `json:"isAdult"`
 	IsFavourite  bool       `json:"isFavourite"`

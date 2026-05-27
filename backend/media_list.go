@@ -27,18 +27,19 @@ var saveMediaListEntryMutation string
 //go:embed graphql/delete_list_entry.graphql
 var deleteMediaListEntryMutation string
 
-// FetchMediaList returns authenticated user's anime list
+// FetchMediaList returns authenticated user's media (ANIME or MANGA) list
 //
 //export FetchMediaList
-func FetchMediaList(userId C.int, token *C.char, outLen *C.int) *C.uint8_t {
+func FetchMediaList(userId C.int, token *C.char, mediaType *C.char, outLen *C.int) *C.uint8_t {
 	uID := int32(userId)
 	tk := C.GoString(token)
+	mT := C.GoString(mediaType)
 
 	pbResponse := &pb.FetchMediaListResponse{}
 
 	respBody, err := rawGraphqlRequest(tk, mediaListQuery, map[string]any{
 		"userId": uID,
-		"type":   "ANIME",
+		"type":   mT,
 		"sort":   []string{"SCORE_DESC"},
 	})
 	if err != nil {

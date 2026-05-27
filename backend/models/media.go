@@ -16,7 +16,6 @@ func (m *Media) ToProto() *pb.Media {
 		Popularity:        m.Popularity,
 		Season:            m.Season,
 		SeasonYear:        m.SeasonYear,
-		Type:              m.Type,
 		Trailer:           m.Trailer.ToProto(),
 		MediaListEntry:    m.MediaListEntry.ToProto(),
 		Studios:           m.Studios.ToProto(),
@@ -31,7 +30,6 @@ func (m *Media) ToProto() *pb.Media {
 		Favourites:        m.Favourites,
 		Synonyms:          m.Synonyms,
 		Reviews:           m.Reviews.ToProto(),
-		Chapters:          m.Chapters,
 		Volumes:           m.Volumes,
 	}
 
@@ -61,7 +59,6 @@ type Media struct {
 	Popularity        int32                    `json:"popularity"`
 	Season            string                   `json:"season"`
 	SeasonYear        int32                    `json:"seasonYear"`
-	Type              string                   `json:"type"`
 	Trailer           *Trailer                 `json:"trailer"`
 	MediaListEntry    *MediaListEntry          `json:"mediaListEntry"`
 	Studios           *StudioConnection        `json:"studios"`
@@ -79,7 +76,6 @@ type Media struct {
 	Reviews           ReviewConnection         `json:"reviews"`
 	MeanScore         *int32                   `json:"meanScore"`
 	Favourites        *int32                   `json:"favourites"`
-	Chapters          *int32                   `json:"chapters"`
 	Volumes           *int32                   `json:"volumes"`
 	Synonyms          []string                 `json:"synonyms"`
 }
