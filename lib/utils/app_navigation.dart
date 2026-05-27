@@ -23,7 +23,9 @@ class AppNavigation {
       ),
     );
 
-    if (result == true || CacheUtils.animeListNeedsRefresh.value) {
+    if (result == true ||
+        CacheUtils.animeListNeedsRefresh.value ||
+        CacheUtils.mangaListNeedsRefresh.value) {
       onRefresh?.call();
     }
   }
