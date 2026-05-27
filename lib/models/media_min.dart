@@ -92,6 +92,9 @@ class MediaMin {
   /// Media ID
   final int id;
 
+  /// Media type
+  final String type;
+
   /// Media title
   final Title title;
 
@@ -103,6 +106,12 @@ class MediaMin {
 
   /// Total episode count
   final int episodes;
+
+  /// Total chapter count
+  final int chapters;
+
+  /// Total volume count
+  final int volumes;
 
   /// Media format
   final String format;
@@ -119,10 +128,13 @@ class MediaMin {
   /// Creates a minimal media
   const MediaMin({
     required this.id,
+    required this.type,
     required this.title,
     required this.averageScore,
     required this.coverImage,
     required this.episodes,
+    required this.chapters,
+    required this.volumes,
     required this.format,
     required this.isAdult,
     required this.isFavourite,
@@ -133,10 +145,13 @@ class MediaMin {
   factory MediaMin.fromProto(pb.MediaMin pbObj) {
     return MediaMin(
       id: pbObj.id,
+      type: pbObj.type,
       title: Title.fromProto(pbObj.title),
       averageScore: pbObj.averageScore,
       coverImage: CoverImage.fromProto(pbObj.coverImage),
       episodes: pbObj.episodes,
+      chapters: pbObj.chapters,
+      volumes: pbObj.volumes,
       format: pbObj.format,
       isAdult: pbObj.isAdult,
       isFavourite: pbObj.isFavourite,
@@ -148,10 +163,13 @@ class MediaMin {
   GeneratedMessage toProto() {
     return pb.MediaMin(
       id: id,
+      type: type,
       title: title.toProto(),
       averageScore: averageScore,
       coverImage: coverImage.toProto(),
       episodes: episodes,
+      chapters: chapters,
+      volumes: volumes,
       format: format,
       isAdult: isAdult,
       isFavourite: isFavourite,
@@ -162,10 +180,13 @@ class MediaMin {
   /// Creates a copy of this object with the given fields replaced
   MediaMin copyWith({
     int? id,
+    String? type,
     Title? title,
     int? averageScore,
     CoverImage? coverImage,
     int? episodes,
+    int? chapters,
+    int? volumes,
     String? format,
     bool? isAdult,
     bool? isFavourite,
@@ -173,10 +194,13 @@ class MediaMin {
   }) {
     return MediaMin(
       id: id ?? this.id,
+      type: type ?? this.type,
       title: title ?? this.title,
       averageScore: averageScore ?? this.averageScore,
       coverImage: coverImage ?? this.coverImage,
       episodes: episodes ?? this.episodes,
+      chapters: chapters ?? this.chapters,
+      volumes: volumes ?? this.volumes,
       format: format ?? this.format,
       isAdult: isAdult ?? this.isAdult,
       isFavourite: isFavourite ?? this.isFavourite,

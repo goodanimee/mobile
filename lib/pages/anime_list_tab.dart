@@ -5,7 +5,7 @@ import '../components/error_view.dart';
 import '../components/loading_indicator.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
-import '../services/anime_list_service.dart';
+import '../services/media_list_service.dart';
 import '../services/user_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
@@ -106,7 +106,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
       }
 
       if (!forceRefresh) {
-        final lists = await AnimeListService.getLists(userId);
+        final lists = await MediaListService.getLists(userId, 'ANIME');
         _updateUIWithLists(lists);
 
         final prefs = await SharedPreferences.getInstance();
@@ -119,8 +119,9 @@ class _AnimeListTabState extends State<AnimeListTab> {
         }
       }
 
-      final freshLists = await AnimeListService.getLists(
+      final freshLists = await MediaListService.getLists(
         userId,
+        'ANIME',
         forceRefresh: true,
       );
       _hasFetchedThisSession = true;
@@ -162,10 +163,11 @@ class _AnimeListTabState extends State<AnimeListTab> {
     int mediaId,
     MediaOptionsResult result,
   ) async {
-    final updatedLists = await AnimeListService.updateEntryInLists(
+    final updatedLists = await MediaListService.updateEntryInLists(
       _lists,
       mediaId,
       result,
+      'ANIME',
     );
     _updateUIWithLists(updatedLists);
   }

@@ -15,9 +15,6 @@ import 'media_trend.dart';
 
 /// Represents the core media domain model
 class Media extends MediaMin {
-  /// Media type
-  final String type;
-
   /// Banner image URL
   final String bannerImage;
 
@@ -35,12 +32,6 @@ class Media extends MediaMin {
 
   /// Number of favourites
   final int? favourites;
-
-  /// Number of chapters
-  final int? chapters;
-
-  /// Number of volumes
-  final int? volumes;
 
   /// Popularity score
   final int popularity;
@@ -106,19 +97,19 @@ class Media extends MediaMin {
     required super.averageScore,
     required super.coverImage,
     required super.episodes,
+    required super.chapters,
+    required super.volumes,
     required super.format,
     required super.isAdult,
     required super.isFavourite,
     required super.siteUrl,
-    required this.type,
+    required super.type,
     required this.bannerImage,
     required this.status,
     required this.seasonYear,
     required this.season,
     this.meanScore,
     this.favourites,
-    this.chapters,
-    this.volumes,
     required this.popularity,
     required this.description,
     required this.genres,
@@ -152,15 +143,15 @@ class Media extends MediaMin {
       isAdult: pbObj.base.isAdult,
       isFavourite: pbObj.base.isFavourite,
       siteUrl: pbObj.base.siteUrl,
-      type: pbObj.type,
+      type: pbObj.base.type,
       bannerImage: pbObj.bannerImage,
       status: pbObj.status,
       seasonYear: pbObj.seasonYear,
       season: pbObj.season,
       meanScore: pbObj.hasMeanScore() ? pbObj.meanScore : null,
       favourites: pbObj.hasFavourites() ? pbObj.favourites : null,
-      chapters: pbObj.hasChapters() ? pbObj.chapters : null,
-      volumes: pbObj.hasVolumes() ? pbObj.volumes : null,
+      chapters: pbObj.base.chapters,
+      volumes: pbObj.base.volumes,
       popularity: pbObj.popularity,
       description: pbObj.description,
       genres: pbObj.genres,
@@ -204,7 +195,6 @@ class Media extends MediaMin {
   pb.Media toProto() {
     final pbObj = pb.Media(
       base: super.toProto() as pbm.MediaMin,
-      type: type,
       bannerImage: bannerImage,
       status: status,
       seasonYear: seasonYear,
@@ -222,8 +212,6 @@ class Media extends MediaMin {
 
     if (meanScore != null) pbObj.meanScore = meanScore!;
     if (favourites != null) pbObj.favourites = favourites!;
-    if (chapters != null) pbObj.chapters = chapters!;
-    if (volumes != null) pbObj.volumes = volumes!;
     if (trailer != null) pbObj.trailer = trailer!.toProto();
     if (mediaListEntry != null) {
       pbObj.mediaListEntry =

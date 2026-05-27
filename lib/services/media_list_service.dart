@@ -11,26 +11,32 @@ import '../proto/media_list.pb.dart' as pb_list;
 import '../utils/app_options.dart';
 import 'auth_service.dart';
 
-/// Service for managing user anime list data and caches.
-class AnimeListService {
-  static const String _cacheKeyLists = 'cached_anime_lists';
+/// Service for managing user media lists and caches.
+class MediaListService {
+  static const String _cacheKeyAnimeLists = 'cached_anime_lists';
+  static const String _cacheKeyMangaLists = 'cached_manga_lists';
 
-  /// Retrieves the user anime lists from cache or network.
+  /// Retrieves the user media lists from cache or network.
   static Future<List<MediaList>> getLists(
-    int userId, {
+    int userId,
+    String mediaType, {
     bool forceRefresh = false,
   }) async {
     if (!forceRefresh) {
-      final cached = await _getListsFromDiskCache();
+      final cached = await _getListsFromDiskCache(mediaType);
       if (cached != null) return cached;
     }
-    return _fetchNetworkLists(userId);
+    return _fetchNetworkLists(userId, mediaType);
   }
 
-  /// Retrieves the user anime lists from local disk cache.
-  static Future<List<MediaList>?> _getListsFromDiskCache() async {
+  /// Retrieves the user media lists from local disk cache.
+  static Future<List<MediaList>?> _getListsFromDiskCache(
+    String mediaType,
+  ) async {
     final prefs = await SharedPreferences.getInstance();
-    final cachedStr = prefs.getString(_cacheKeyLists);
+    final cachedStr = prefs.getString(
+      mediaType == 'MANGA' ? _cacheKeyMangaLists : _cacheKeyAnimeLists,
+    );
     if (cachedStr != null) {
       try {
         final collection = pb_list.MediaListCollection.fromBuffer(
@@ -43,22 +49,32 @@ class AnimeListService {
     return null;
   }
 
-  /// Saves the user anime lists to local disk cache.
-  static Future<void> _saveListToDiskCache(List<MediaList> lists) async {
+  /// Saves the user media lists to local disk cache.
+  static Future<void> _saveListToDiskCache(
+    List<MediaList> lists,
+    String mediaType,
+  ) async {
     final prefs = await SharedPreferences.getInstance();
     final collection = pb_list.MediaListCollection(
       lists: lists.map((l) => l.toProto()),
     );
     await prefs.setString(
-      _cacheKeyLists,
+      mediaType == 'MANGA' ? _cacheKeyMangaLists : _cacheKeyAnimeLists,
       base64Encode(collection.writeToBuffer()),
     );
   }
 
-  /// Fetches fresh user anime lists from the network.
-  static Future<List<MediaList>> _fetchNetworkLists(int userId) async {
+  /// Fetches fresh user media lists from the network.
+  static Future<List<MediaList>> _fetchNetworkLists(
+    int userId,
+    String mediaType,
+  ) async {
     final token = await AuthService.getRawToken() ?? '';
-    final response = await MediaListApi.fetchMediaList(userId, token);
+    final response = await MediaListApi.fetchMediaList(
+      userId,
+      token,
+      mediaType,
+    );
     final rawLists = response.lists;
 
     final allEntries = <MediaListEntryWithMedia>[];
@@ -113,15 +129,16 @@ class AnimeListService {
       }
     }
 
-    await _saveListToDiskCache(processedLists);
+    await _saveListToDiskCache(processedLists, mediaType);
     return processedLists;
   }
 
-  /// Updates or deletes an entry in the provided anime lists.
+  /// Updates or deletes an entry in the provided media lists.
   static Future<List<MediaList>> updateEntryInLists(
     List<MediaList> currentLists,
     int mediaId,
     MediaOptionsResult result,
+    String mediaType,
   ) async {
     if (result.deleted) {
       final updatedLists = currentLists.map((section) {
@@ -134,7 +151,7 @@ class AnimeListService {
         );
       }).toList();
 
-      await _saveListToDiskCache(updatedLists);
+      await _saveListToDiskCache(updatedLists, mediaType);
       return updatedLists;
     }
 
@@ -211,12 +228,12 @@ class AnimeListService {
       }
     }
 
-    await _saveListToDiskCache(updatedLists);
+    await _saveListToDiskCache(updatedLists, mediaType);
 
     return updatedLists;
   }
 
-  /// Saves or updates an anime list entry.
+  /// Saves or updates an media list entry.
   static Future<MediaListEntry> saveEntry({
     required int mediaId,
     MediaListStatus? status,
@@ -254,7 +271,7 @@ class AnimeListService {
     return MediaListApi.saveMediaListEntry(req, token);
   }
 
-  /// Deletes an anime list entry by its entry ID.
+  /// Deletes an media list entry by its entry ID.
   static Future<void> deleteEntry(int entryId) async {
     final token = await AuthService.getRawToken() ?? '';
     final req = DeleteMediaListEntryRequest(entryId: entryId);

@@ -3,7 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../models/common.dart';
 import '../models/media_list.dart';
-import '../services/anime_list_service.dart';
+import '../services/media_list_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
 import 'app_badges.dart';
@@ -207,7 +207,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
     });
 
     try {
-      await AnimeListService.saveEntry(
+      await MediaListService.saveEntry(
         mediaId: mediaId,
         progress: newProgress,
         status: newStatus,

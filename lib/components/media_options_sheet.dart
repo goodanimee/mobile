@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/common.dart';
 import '../models/media.dart';
 import '../models/media_list.dart';
-import '../services/anime_list_service.dart';
+import '../services/media_list_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
 import './media_options/counter_editor.dart';
@@ -60,16 +60,13 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
     _progress = widget.entry.progress;
     _score = widget.entry.score;
 
-    final isManga =
-        widget.entry.media is Media &&
-        (widget.entry.media as Media).type == 'MANGA';
+    final isManga = widget.entry.media.type == 'MANGA';
     if (isManga) {
-      final fullMedia = widget.entry.media as Media;
-      _maxProgress = fullMedia.chapters != null && fullMedia.chapters! > 0
-          ? fullMedia.chapters
+      _maxProgress = widget.entry.media.chapters > 0
+          ? widget.entry.media.chapters
           : null;
-      _maxProgressVolumes = fullMedia.volumes != null && fullMedia.volumes! > 0
-          ? fullMedia.volumes
+      _maxProgressVolumes = widget.entry.media.volumes > 0
+          ? widget.entry.media.volumes
           : null;
     } else {
       _maxProgress = widget.entry.media.episodes > 0
@@ -496,7 +493,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
 
     setState(() => _isSaving = true);
     try {
-      await AnimeListService.deleteEntry(entryId);
+      await MediaListService.deleteEntry(entryId);
 
       if (mounted) {
         Navigator.of(context).pop(const MediaOptionsResult(deleted: true));
@@ -534,7 +531,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
 
     try {
       final finalStatus = _status ?? MediaListStatus.current;
-      final response = await AnimeListService.saveEntry(
+      final response = await MediaListService.saveEntry(
         mediaId: mediaId,
         status: finalStatus != _initialStatus ? finalStatus : null,
         progress: _progress != _initialProgress ? _progress : null,
