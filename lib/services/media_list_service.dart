@@ -86,7 +86,6 @@ class MediaListService {
 
     final Map<MediaListStatus, List<MediaListEntryWithMedia>> grouped = {
       MediaListStatus.current: [],
-      MediaListStatus.repeating: [],
       MediaListStatus.planning: [],
       MediaListStatus.completed: [],
       MediaListStatus.paused: [],
@@ -95,15 +94,17 @@ class MediaListService {
 
     for (final entry in allEntries) {
       final status = entry.status ?? MediaListStatus.current;
-      grouped[status] ??= [];
-      grouped[status]!.add(entry);
+      final displayStatus = status == MediaListStatus.repeating
+          ? MediaListStatus.current
+          : status;
+      grouped[displayStatus] ??= [];
+      grouped[displayStatus]!.add(entry);
     }
 
     final orderedStatuses = [
       MediaListStatus.current,
       MediaListStatus.planning,
       MediaListStatus.completed,
-      MediaListStatus.repeating,
       MediaListStatus.paused,
       MediaListStatus.dropped,
     ];
@@ -161,7 +162,6 @@ class MediaListService {
       MediaListStatus.current,
       MediaListStatus.planning,
       MediaListStatus.completed,
-      MediaListStatus.repeating,
       MediaListStatus.paused,
       MediaListStatus.dropped,
     ];
@@ -181,7 +181,14 @@ class MediaListService {
       final oldStatus = entry.status;
       final newStatus = result.entry!.status;
 
-      if (targetStatus != null && oldStatus != newStatus) {
+      final oldSectionStatus = oldStatus == MediaListStatus.repeating
+          ? MediaListStatus.current
+          : oldStatus;
+      final newSectionStatus = newStatus == MediaListStatus.repeating
+          ? MediaListStatus.current
+          : newStatus;
+
+      if (targetStatus != null && oldSectionStatus != newSectionStatus) {
         movedEntry = result.entry;
         entries.removeAt(idx);
       } else {
@@ -196,8 +203,11 @@ class MediaListService {
     }).toList();
 
     if (movedEntry != null && targetStatus != null) {
+      final targetSectionStatus = targetStatus == MediaListStatus.repeating
+          ? MediaListStatus.current
+          : targetStatus;
       final targetIdx = updatedLists.indexWhere(
-        (s) => s.status == targetStatus,
+        (s) => s.status == targetSectionStatus,
       );
       if (targetIdx != -1) {
         final section = updatedLists[targetIdx];
@@ -213,11 +223,11 @@ class MediaListService {
           final pos = s.status != null
               ? orderedStatuses.indexOf(s.status!)
               : -1;
-          return pos > orderedStatuses.indexOf(targetStatus);
+          return pos > orderedStatuses.indexOf(targetSectionStatus);
         });
         final newSection = MediaList(
-          name: targetStatus.displayName(isManga: mediaType == 'MANGA'),
-          status: targetStatus,
+          name: targetSectionStatus.displayName(isManga: mediaType == 'MANGA'),
+          status: targetSectionStatus,
           entries: [movedEntry!],
         );
         if (insertAt == -1) {
