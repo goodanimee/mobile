@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mix/mix.dart';
 
+export 'typography.dart';
+
 /// Primary brand red
 const paletteRed = Color(0xFF963E3C);
 

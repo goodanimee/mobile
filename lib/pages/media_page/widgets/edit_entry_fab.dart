@@ -16,9 +16,11 @@ class EditEntryFab extends StatelessWidget {
   @override
   /// Builds the FAB widget
   Widget build(BuildContext context) {
+    final double fabSize = getResponsiveSize(context, 52.0);
+    final double iconSize = getResponsiveSize(context, 22.0);
     return Container(
-      width: 52,
-      height: 52,
+      width: fabSize,
+      height: fabSize,
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(16),
@@ -31,7 +33,7 @@ class EditEntryFab extends StatelessWidget {
           child: Icon(
             isEdit ? LucideIcons.pencil : LucideIcons.plus,
             color: textPrimary,
-            size: 22,
+            size: iconSize,
           ),
         ),
       ),
