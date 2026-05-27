@@ -15,6 +15,7 @@ query Media($mediaId: Int, $page: Int, $perPage: Int) {
                         averageScore
                         episodes
                         chapters
+                        volumes
                         format
                         isAdult
                         isFavourite

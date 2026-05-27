@@ -35,10 +35,13 @@ func (m *MediaMin) ToProto() *pb.MediaMin {
 	}
 	return &pb.MediaMin{
 		Id:           m.ID,
+		Type:         m.Type,
 		Title:        m.Title.ToProto(),
 		AverageScore: m.AverageScore,
 		CoverImage:   m.CoverImage.ToProto(),
 		Episodes:     m.Episodes,
+		Chapters:     m.Chapters,
+		Volumes:      m.Volumes,
 		Format:       m.Format,
 		IsAdult:      m.IsAdult,
 		IsFavourite:  m.IsFavourite,
@@ -71,6 +74,7 @@ type MediaMin struct {
 	CoverImage   CoverImage `json:"coverImage"`
 	Episodes     int32      `json:"episodes"`
 	Chapters     int32      `json:"chapters"`
+	Volumes      int32      `json:"volumes"`
 	Format       string     `json:"format"`
 	IsAdult      bool       `json:"isAdult"`
 	IsFavourite  bool       `json:"isFavourite"`

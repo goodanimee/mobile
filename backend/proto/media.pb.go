@@ -49,7 +49,6 @@ type Media struct {
 	Favourites        *int32                    `protobuf:"varint,24,opt,name=favourites,proto3,oneof" json:"favourites,omitempty"`
 	Synonyms          []string                  `protobuf:"bytes,25,rep,name=synonyms,proto3" json:"synonyms,omitempty"`
 	Reviews           *ReviewConnection         `protobuf:"bytes,26,opt,name=reviews,proto3" json:"reviews,omitempty"`
-	Volumes           *int32                    `protobuf:"varint,27,opt,name=volumes,proto3,oneof" json:"volumes,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -266,19 +265,11 @@ func (x *Media) GetReviews() *ReviewConnection {
 	return nil
 }
 
-func (x *Media) GetVolumes() int32 {
-	if x != nil && x.Volumes != nil {
-		return *x.Volumes
-	}
-	return 0
-}
-
 var File_media_proto protoreflect.FileDescriptor
 
 const file_media_proto_rawDesc = "" +
 	"\n" +
-	"\vmedia.proto\x12\tgoodanime\x1a\x15media_character.proto\x1a\x10media_edge.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x1amedia_recommendation.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\x11media_trend.proto\"\xa0\n" +
-	"\n" +
+	"\vmedia.proto\x12\tgoodanime\x1a\x15media_character.proto\x1a\x10media_edge.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x1amedia_recommendation.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\x11media_trend.proto\"\xf5\t\n" +
 	"\x05Media\x12'\n" +
 	"\x04base\x18\x01 \x01(\v2\x13.goodanime.MediaMinR\x04base\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12!\n" +
@@ -314,12 +305,9 @@ const file_media_proto_rawDesc = "" +
 	"favourites\x18\x18 \x01(\x05H\x01R\n" +
 	"favourites\x88\x01\x01\x12\x1a\n" +
 	"\bsynonyms\x18\x19 \x03(\tR\bsynonyms\x125\n" +
-	"\areviews\x18\x1a \x01(\v2\x1b.goodanime.ReviewConnectionR\areviews\x12\x1d\n" +
-	"\avolumes\x18\x1b \x01(\x05H\x02R\avolumes\x88\x01\x01B\r\n" +
+	"\areviews\x18\x1a \x01(\v2\x1b.goodanime.ReviewConnectionR\areviewsB\r\n" +
 	"\v_mean_scoreB\r\n" +
-	"\v_favouritesB\n" +
-	"\n" +
-	"\b_volumesB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\v_favouritesB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_media_proto_rawDescOnce sync.Once

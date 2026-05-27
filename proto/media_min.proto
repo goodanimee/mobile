@@ -29,5 +29,6 @@ message MediaMin {
   bool is_favourite = 8;
   string site_url = 9;
   int32 chapters = 10;
-  string type = 11;
+  int32 volumes = 11;
+  string type = 12;
 }

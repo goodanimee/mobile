@@ -55,7 +55,6 @@ class Media extends $pb.GeneratedMessage {
     $core.int? favourites,
     $core.Iterable<$core.String>? synonyms,
     $9.ReviewConnection? reviews,
-    $core.int? volumes,
   }) {
     final result = create();
     if (base != null) result.base = base;
@@ -85,7 +84,6 @@ class Media extends $pb.GeneratedMessage {
     if (favourites != null) result.favourites = favourites;
     if (synonyms != null) result.synonyms.addAll(synonyms);
     if (reviews != null) result.reviews = reviews;
-    if (volumes != null) result.volumes = volumes;
     return result;
   }
 
@@ -145,7 +143,6 @@ class Media extends $pb.GeneratedMessage {
     ..pPS(25, _omitFieldNames ? '' : 'synonyms')
     ..aOM<$9.ReviewConnection>(26, _omitFieldNames ? '' : 'reviews',
         subBuilder: $9.ReviewConnection.create)
-    ..aI(27, _omitFieldNames ? '' : 'volumes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -388,15 +385,6 @@ class Media extends $pb.GeneratedMessage {
   void clearReviews() => $_clearField(26);
   @$pb.TagNumber(26)
   $9.ReviewConnection ensureReviews() => $_ensure(25);
-
-  @$pb.TagNumber(27)
-  $core.int get volumes => $_getIZ(26);
-  @$pb.TagNumber(27)
-  set volumes($core.int value) => $_setSignedInt32(26, value);
-  @$pb.TagNumber(27)
-  $core.bool hasVolumes() => $_has(26);
-  @$pb.TagNumber(27)
-  void clearVolumes() => $_clearField(27);
 }
 
 const $core.bool _omitFieldNames =

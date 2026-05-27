@@ -11,6 +11,7 @@ query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
                     averageScore
                     episodes
                     chapters
+                    volumes
                     format
                     isAdult
                     isFavourite

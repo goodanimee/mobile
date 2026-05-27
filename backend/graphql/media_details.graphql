@@ -250,6 +250,7 @@ fragment MediaMinFields on Media {
     averageScore
     episodes
     chapters
+    volumes
     format
     isAdult
     isFavourite
