@@ -13,8 +13,8 @@ import '../utils/utils.dart';
 import 'media_list_tab/widgets/grid_view.dart';
 import 'media_list_tab/widgets/list_view.dart';
 
-/// Display user's anime lists
-class AnimeListTab extends StatefulWidget {
+/// Display user's manga lists
+class MangaListTab extends StatefulWidget {
   /// Whether to display items in a grid
   final bool isGridMode;
 
@@ -30,7 +30,7 @@ class AnimeListTab extends StatefulWidget {
   onSectionsChanged;
 
   /// Creates a home tab
-  const AnimeListTab({
+  const MangaListTab({
     super.key,
     this.isGridMode = false,
     required this.onSignOut,
@@ -38,11 +38,11 @@ class AnimeListTab extends StatefulWidget {
   });
 
   @override
-  State<AnimeListTab> createState() => _AnimeListTabState();
+  State<MangaListTab> createState() => _MangaListTabState();
 }
 
-/// State for AnimeListTab
-class _AnimeListTabState extends State<AnimeListTab> {
+/// State for MangaListTab
+class _MangaListTabState extends State<MangaListTab> {
   bool _isLoading = true;
   List<MediaList> _lists = [];
   String? _error;
@@ -55,12 +55,12 @@ class _AnimeListTabState extends State<AnimeListTab> {
   void initState() {
     super.initState();
     _fetchLists();
-    CacheUtils.animeListNeedsRefresh.addListener(_onCacheInvalidated);
+    CacheUtils.mangaListNeedsRefresh.addListener(_onCacheInvalidated);
   }
 
   void _onCacheInvalidated() {
-    if (CacheUtils.animeListNeedsRefresh.value) {
-      CacheUtils.animeListNeedsRefresh.value = false;
+    if (CacheUtils.mangaListNeedsRefresh.value) {
+      CacheUtils.mangaListNeedsRefresh.value = false;
       _fetchLists(forceRefresh: true);
     }
   }
@@ -69,7 +69,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
   /// Disposes the scroll controller and removes cache listener
   void dispose() {
     _scrollController.dispose();
-    CacheUtils.animeListNeedsRefresh.removeListener(_onCacheInvalidated);
+    CacheUtils.mangaListNeedsRefresh.removeListener(_onCacheInvalidated);
     super.dispose();
   }
 
@@ -106,11 +106,11 @@ class _AnimeListTabState extends State<AnimeListTab> {
       }
 
       if (!forceRefresh) {
-        final lists = await MediaListService.getLists(userId, 'ANIME');
+        final lists = await MediaListService.getLists(userId, 'MANGA');
         _updateUIWithLists(lists);
 
         final prefs = await SharedPreferences.getInstance();
-        final hasCache = prefs.containsKey('cached_anime_lists');
+        final hasCache = prefs.containsKey('cached_manga_lists');
         if (hasCache) {
           if (_hasFetchedThisSession) return;
         } else {
@@ -121,7 +121,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
 
       final freshLists = await MediaListService.getLists(
         userId,
-        'ANIME',
+        'MANGA',
         forceRefresh: true,
       );
       _hasFetchedThisSession = true;
@@ -167,7 +167,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
       _lists,
       mediaId,
       result,
-      'ANIME',
+      'MANGA',
     );
     _updateUIWithLists(updatedLists);
   }
@@ -203,7 +203,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
     }
 
     if (_lists.isEmpty) {
-      return const AppErrorView(message: 'No anime lists found.');
+      return const AppErrorView(message: 'No manga lists found.');
     }
 
     final activeList = _lists.firstWhere(
@@ -224,6 +224,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
               scrollController: _scrollController,
               onRefresh: () => _fetchLists(forceRefresh: true),
               onLongPress: _showItemOptions,
+              emptyLabel: 'No manga',
             )
           : MediaListView(
               activeName: activeName,
@@ -232,6 +233,7 @@ class _AnimeListTabState extends State<AnimeListTab> {
               onRefresh: () => _fetchLists(forceRefresh: true),
               onEntryUpdated: _handleEntryUpdated,
               onLongPress: _showItemOptions,
+              emptyLabel: 'No manga',
             ),
     );
   }

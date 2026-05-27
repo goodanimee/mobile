@@ -365,6 +365,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
                     StatusSelector(
                       currentStatus: _status,
                       onStatusChanged: _setStatus,
+                      isManga: widget.entry.media.type == 'MANGA',
                     ),
                     _buildCountersSection(),
                     DateEditor(

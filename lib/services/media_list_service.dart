@@ -112,7 +112,7 @@ class MediaListService {
 
     for (final status in orderedStatuses) {
       if (grouped.containsKey(status)) {
-        final name = status.displayName;
+        final name = status.displayName(isManga: mediaType == 'MANGA');
 
         processedLists.add(
           MediaList(name: name, status: status, entries: grouped[status] ?? []),
@@ -122,7 +122,7 @@ class MediaListService {
 
     for (final status in grouped.keys) {
       if (!orderedStatuses.contains(status) && grouped[status]!.isNotEmpty) {
-        final name = status.displayName;
+        final name = status.displayName(isManga: mediaType == 'MANGA');
         processedLists.add(
           MediaList(name: name, status: status, entries: grouped[status] ?? []),
         );
@@ -216,7 +216,7 @@ class MediaListService {
           return pos > orderedStatuses.indexOf(targetStatus);
         });
         final newSection = MediaList(
-          name: targetStatus.displayName,
+          name: targetStatus.displayName(isManga: mediaType == 'MANGA'),
           status: targetStatus,
           entries: [movedEntry!],
         );

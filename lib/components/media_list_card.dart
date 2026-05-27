@@ -40,7 +40,8 @@ Widget _buildRepeatBadge(int repeat) {
 Widget _buildProgressBadge(
   MediaListStatus? status,
   int progress,
-  dynamic episodes,
+  dynamic maximum,
+  String type,
 ) {
   const badgeDecoration = BoxDecoration(
     color: Colors.black38,
@@ -62,7 +63,10 @@ Widget _buildProgressBadge(
         children: [
           const Icon(LucideIcons.timer, size: 14, color: Colors.white70),
           const SizedBox(width: 4),
-          Text('$episodes eps', style: labelStyle),
+          Text(
+            type == 'ANIME' ? '$maximum eps' : '$maximum chs',
+            style: labelStyle,
+          ),
         ],
       ),
     );
@@ -72,7 +76,7 @@ Widget _buildProgressBadge(
     MediaListStatus.completed => LucideIcons.badgeCheck,
     MediaListStatus.paused => LucideIcons.circlePause,
     MediaListStatus.dropped => LucideIcons.ban,
-    _ => LucideIcons.playCircle,
+    _ => type == 'ANIME' ? LucideIcons.playCircle : LucideIcons.bookOpenText,
   };
 
   return Container(
@@ -83,7 +87,7 @@ Widget _buildProgressBadge(
       children: [
         Icon(icon, size: 14, color: textSecondary),
         const SizedBox(width: 4),
-        Text('$progress / $episodes', style: labelStyle),
+        Text('$progress / $maximum', style: labelStyle),
       ],
     ),
   );
@@ -112,7 +116,11 @@ Widget _buildScoreBadge(num score) {
 }
 
 /// Builds a button to increment progress
-Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
+Widget _buildPlayButton({
+  VoidCallback? onTap,
+  bool isLoading = false,
+  bool isManga = false,
+}) {
   return GestureDetector(
     onTap: onTap,
     behavior: HitTestBehavior.opaque,
@@ -133,15 +141,19 @@ Widget _buildPlayButton({VoidCallback? onTap, bool isLoading = false}) {
                   strokeWidth: 2,
                 ),
               )
-            : const Icon(LucideIcons.play, size: 28, color: textSecondary),
+            : Icon(
+                isManga ? LucideIcons.bookMarked : LucideIcons.play,
+                size: 28,
+                color: textSecondary,
+              ),
       ),
     ),
   );
 }
 
-/// A card widget displaying an anime entry in a list
-class AnimeListCard extends StatefulWidget {
-  /// The anime list entry data
+/// A card widget displaying an media entry in a list
+class MediaListCard extends StatefulWidget {
+  /// The media list entry data
   final MediaListEntryWithMedia entry;
 
   /// Callback when the entry is updated
@@ -154,7 +166,7 @@ class AnimeListCard extends StatefulWidget {
   final VoidCallback? onTap;
 
   /// Creates an anime list card
-  const AnimeListCard({
+  const MediaListCard({
     super.key,
     required this.entry,
     this.onEntryUpdated,
@@ -163,11 +175,11 @@ class AnimeListCard extends StatefulWidget {
   });
 
   @override
-  State<AnimeListCard> createState() => _AnimeListCardState();
+  State<MediaListCard> createState() => _MediaListCardState();
 }
 
-/// State for AnimeListCard
-class _AnimeListCardState extends State<AnimeListCard> {
+/// State for MediaListCard
+class _MediaListCardState extends State<MediaListCard> {
   late int _progress;
   late MediaListStatus? _status;
   bool _isUpdating = false;
@@ -181,7 +193,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
 
   @override
   /// Updates state when widget properties change
-  void didUpdateWidget(AnimeListCard oldWidget) {
+  void didUpdateWidget(MediaListCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.entry != widget.entry) {
       _progress = widget.entry.progress;
@@ -194,9 +206,13 @@ class _AnimeListCardState extends State<AnimeListCard> {
     if (_isUpdating) return;
 
     final mediaId = widget.entry.media.id;
-    final epCount = widget.entry.media.episodes;
+
+    final isAnime = widget.entry.media.type == 'ANIME';
+    final maxProgress = isAnime
+        ? widget.entry.media.episodes
+        : widget.entry.media.chapters;
     final newProgress = _progress + 1;
-    final newStatus = (epCount > 0 && newProgress >= epCount)
+    final newStatus = (maxProgress > 0 && newProgress >= maxProgress)
         ? MediaListStatus.completed
         : MediaListStatus.current;
 
@@ -248,9 +264,9 @@ class _AnimeListCardState extends State<AnimeListCard> {
 
     final format = widget.entry.media.format.replaceAll('_', ' ');
     final averageScore = widget.entry.media.averageScore;
-    final episodes = widget.entry.media.episodes > 0
-        ? widget.entry.media.episodes
-        : '?';
+    final maximum = widget.entry.media.type == 'ANIME'
+        ? (widget.entry.media.episodes > 0 ? widget.entry.media.episodes : '?')
+        : (widget.entry.media.chapters > 0 ? widget.entry.media.chapters : '?');
     final repeat = widget.entry.repeat;
     final score = widget.entry.score;
 
@@ -259,6 +275,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
 
     final showPlayButton =
         _status == MediaListStatus.current ||
+        _status == MediaListStatus.repeating ||
         _status == MediaListStatus.planning ||
         _status == MediaListStatus.paused;
 
@@ -368,7 +385,8 @@ class _AnimeListCardState extends State<AnimeListCard> {
                                     _buildProgressBadge(
                                       _status,
                                       _progress,
-                                      episodes,
+                                      maximum,
+                                      widget.entry.media.type,
                                     ),
                                     if (repeat > 0) ...[
                                       const SizedBox(width: 6),
@@ -398,6 +416,7 @@ class _AnimeListCardState extends State<AnimeListCard> {
                         _buildPlayButton(
                           onTap: _isUpdating ? null : _incrementProgress,
                           isLoading: _isUpdating,
+                          isManga: widget.entry.media.type == 'MANGA',
                         ),
                       ],
                     ],

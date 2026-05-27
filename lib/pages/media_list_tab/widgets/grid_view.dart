@@ -7,8 +7,8 @@ import '../../../components/section_title.dart';
 import '../../../models/media_list.dart';
 import '../../../utils/app_navigation.dart';
 
-/// A grid view component representing a list of anime items
-class AnimeListGridView extends StatelessWidget {
+/// A grid view component representing a list of media items
+class MediaListGridView extends StatelessWidget {
   /// The active name/title of the list section
   final String activeName;
 
@@ -25,18 +25,22 @@ class AnimeListGridView extends StatelessWidget {
   final void Function(BuildContext context, MediaListEntryWithMedia entry)
   onLongPress;
 
-  /// Creates an anime list grid view widget
-  const AnimeListGridView({
+  /// The text to show when list is empty
+  final String emptyLabel;
+
+  /// Creates a media list grid view widget
+  const MediaListGridView({
     super.key,
     required this.activeName,
     required this.entries,
     required this.scrollController,
     required this.onRefresh,
     required this.onLongPress,
+    this.emptyLabel = 'No anime',
   });
 
   @override
-  /// Builds the anime list grid view widget
+  /// Builds the media list grid view widget
   Widget build(BuildContext context) {
     return CustomScrollView(
       controller: scrollController,
@@ -52,7 +56,7 @@ class AnimeListGridView extends StatelessWidget {
           SliverFillRemaining(
             hasScrollBody: false,
             child: AppErrorView(
-              message: 'No anime currently in $activeName',
+              message: '$emptyLabel currently in $activeName',
               topPadding: 0,
             ),
           )

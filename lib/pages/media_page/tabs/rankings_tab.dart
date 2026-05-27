@@ -133,10 +133,13 @@ class _MediaRankingsTabState extends State<MediaRankingsTab> {
     return AppSection(
       title: 'Stats',
       children: [
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         ScoreHistogram(distribution: scoreDist),
-        const SizedBox(height: 40),
-        StatusDistributionBar(distribution: statusDist),
+        const SizedBox(height: 16),
+        StatusDistributionBar(
+          distribution: statusDist,
+          isManga: widget.media.type == 'MANGA',
+        ),
       ],
     );
   }
