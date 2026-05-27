@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/common.dart';
-import '../models/media.dart';
 import '../models/media_list.dart';
 import '../services/media_list_service.dart';
 import '../theme/theme.dart';
@@ -252,7 +251,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
 
   Widget _buildCountersSection() {
     final media = widget.entry.media;
-    final isManga = media is Media && media.type == 'MANGA';
+    final isManga = media.type == 'MANGA';
 
     if (isManga) {
       return Padding(
