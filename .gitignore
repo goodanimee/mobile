@@ -51,3 +51,6 @@ backend/*.h
 # Local configuration — copy .env.example to .env and fill in values
 .env
 schema.graphql
+
+# FVM Version Cache
+.fvm/
