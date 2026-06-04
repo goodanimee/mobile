@@ -67,8 +67,8 @@ class StringUtils {
 
 /// Utilities for cache management
 class CacheUtils {
-  static const String _cachePrefix = 'anime_cache_';
-  static const String _cacheKeysPref = 'anime_cache_keys';
+  static const String _cachePrefix = 'media_cache_';
+  static const String _cacheKeysPref = 'media_cache_keys';
 
   /// Notification flag for AnimeListTab stale data
   static final animeListNeedsRefresh = ValueNotifier<bool>(false);

@@ -6,6 +6,7 @@ import '../models/media_list.dart';
 import '../services/media_list_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
+import '../utils/media_list_mutations.dart';
 import 'app_badges.dart';
 import 'app_network_image.dart';
 import 'lucide_icons_helper.dart';
@@ -206,36 +207,38 @@ class _MediaListCardState extends State<MediaListCard> {
     if (_isUpdating) return;
 
     final mediaId = widget.entry.media.id;
-
-    final isAnime = widget.entry.media.type == 'ANIME';
-    final maxProgress = isAnime
-        ? widget.entry.media.episodes
-        : widget.entry.media.chapters;
-    final newProgress = _progress + 1;
-    final newStatus = (maxProgress > 0 && newProgress >= maxProgress)
-        ? MediaListStatus.completed
-        : MediaListStatus.current;
+    final updatedEntry = widget.entry.incrementProgress();
 
     setState(() {
-      _progress = newProgress;
-      _status = newStatus;
+      _progress = updatedEntry.progress;
+      _status = updatedEntry.status;
       _isUpdating = true;
     });
+
+    DateTime? parseFuzzyDate(FuzzyDate? fuzzyDate) {
+      if (fuzzyDate == null) return null;
+      final y = fuzzyDate.year;
+      final m = fuzzyDate.month;
+      final d = fuzzyDate.day;
+      if (y != null && m != null && d != null) {
+        return DateTime(y, m, d);
+      }
+      return null;
+    }
 
     try {
       await MediaListService.saveEntry(
         mediaId: mediaId,
-        progress: newProgress,
-        status: newStatus,
+        progress: updatedEntry.progress,
+        status: updatedEntry.status,
+        startDate: parseFuzzyDate(updatedEntry.startedAt),
+        finishDate: parseFuzzyDate(updatedEntry.completedAt),
+        progressVolumes: updatedEntry.progressVolumes,
+        repeat: updatedEntry.repeat,
       );
       widget.onEntryUpdated?.call(
         mediaId,
-        MediaOptionsResult(
-          entry: widget.entry.copyWith(
-            progress: newProgress,
-            status: newStatus,
-          ),
-        ),
+        MediaOptionsResult(entry: updatedEntry),
       );
     } catch (e) {
       setState(() {

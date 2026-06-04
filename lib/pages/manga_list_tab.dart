@@ -163,6 +163,7 @@ class _MangaListTabState extends State<MangaListTab> {
     int mediaId,
     MediaOptionsResult result,
   ) async {
+    await CacheUtils.invalidateMedia(mediaId);
     final updatedLists = await MediaListService.updateEntryInLists(
       _lists,
       mediaId,

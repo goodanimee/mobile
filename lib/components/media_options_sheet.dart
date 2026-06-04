@@ -5,6 +5,7 @@ import '../models/media_list.dart';
 import '../services/media_list_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
+import '../utils/media_list_mutations.dart';
 import './media_options/counter_editor.dart';
 import './media_options/date_editor.dart';
 import './media_options/score_slider.dart';
@@ -31,33 +32,17 @@ class MediaOptionsSheet extends StatefulWidget {
 
 /// State for MediaOptionsSheet
 class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
-  late MediaListStatus? _status;
-  late int _progress;
-  late double _score;
-  DateTime? _startDate;
-  DateTime? _finishDate;
+  late MediaListEntryWithMedia _currentEntry;
+  late MediaListEntryWithMedia _initialEntry;
   int? _maxProgress;
   int? _maxProgressVolumes;
-
-  late int _progressVolumes;
-  late int _repeat;
-
-  late MediaListStatus? _initialStatus;
-  late int _initialProgress;
-  late double _initialScore;
-  DateTime? _initialStartDate;
-  DateTime? _initialFinishDate;
-  late int _initialProgressVolumes;
-  late int _initialRepeat;
-
   bool _isSaving = false;
 
   @override
   void initState() {
     super.initState();
-    _status = widget.entry.status;
-    _progress = widget.entry.progress;
-    _score = widget.entry.score;
+    _currentEntry = widget.entry;
+    _initialEntry = widget.entry;
 
     final isManga = widget.entry.media.type == 'MANGA';
     if (isManga) {
@@ -73,21 +58,6 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
           : null;
       _maxProgressVolumes = null;
     }
-
-    _progressVolumes = isManga ? widget.entry.progressVolumes : 0;
-    _initialProgressVolumes = _progressVolumes;
-
-    _repeat = widget.entry.repeat;
-    _initialRepeat = _repeat;
-
-    _startDate = _parseFuzzyDate(widget.entry.startedAt);
-    _finishDate = _parseFuzzyDate(widget.entry.completedAt);
-
-    _initialStatus = _status;
-    _initialProgress = _progress;
-    _initialScore = _score;
-    _initialStartDate = _startDate;
-    _initialFinishDate = _finishDate;
   }
 
   /// Parses a FuzzyDate into a DateTime object
@@ -104,148 +74,25 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
 
   void _setStatus(MediaListStatus newStatus) {
     setState(() {
-      final previousStatus = _status;
-      _status = newStatus;
-
-      if (newStatus == MediaListStatus.completed) {
-        if (_maxProgress != null) {
-          _progress = _maxProgress!;
-        }
-        if (_maxProgressVolumes != null) {
-          _progressVolumes = _maxProgressVolumes!;
-        }
-        if (previousStatus != MediaListStatus.completed && _repeat == 0) {
-          _finishDate = DateTime.now();
-        }
-      } else if (previousStatus == MediaListStatus.completed && _repeat == 0) {
-        _finishDate = null;
-      }
+      _currentEntry = _currentEntry.updateStatus(newStatus);
     });
   }
 
   void _updateProgress(int newProgress) {
     setState(() {
-      final previousStatus = _status;
-      final now = DateTime.now();
-
-      final isOverflow = _maxProgress != null && newProgress > _maxProgress!;
-      if (isOverflow) {
-        _progress = 1;
-        _repeat += 1;
-        _progressVolumes = 0;
-        _status = MediaListStatus.repeating;
-        return;
-      }
-
-      final isUndoingRepeat =
-          newProgress == 0 && _repeat > 0 && _maxProgress != null;
-      if (isUndoingRepeat) {
-        _progress = _maxProgress!;
-        if (_maxProgressVolumes != null) {
-          _progressVolumes = _maxProgressVolumes!;
-        }
-        _repeat -= 1;
-        _status = MediaListStatus.completed;
-        return;
-      }
-
-      _progress = newProgress;
-      if (_progress == 0) {
-        _progressVolumes = 0;
-      }
-      final isCompleted = _maxProgress != null && _progress >= _maxProgress!;
-      if (isCompleted) {
-        _status = MediaListStatus.completed;
-        if (_maxProgressVolumes != null) {
-          _progressVolumes = _maxProgressVolumes!;
-        }
-      } else {
-        _status = _repeat > 0
-            ? MediaListStatus.repeating
-            : MediaListStatus.current;
-      }
-
-      if (_progress > 0 && _startDate == null && _repeat == 0) {
-        _startDate = now;
-      }
-      if (_progress == 0 && _progressVolumes == 0 && _repeat == 0) {
-        _startDate = null;
-      }
-
-      final wasCompleted = previousStatus == MediaListStatus.completed;
-      if (!wasCompleted &&
-          _status == MediaListStatus.completed &&
-          _repeat == 0) {
-        _finishDate = now;
-      }
-      if (wasCompleted &&
-          _status != MediaListStatus.completed &&
-          _repeat == 0) {
-        _finishDate = null;
-      }
+      _currentEntry = _currentEntry.updateProgress(newProgress);
     });
   }
 
   void _updateProgressVolumes(int newVolumes) {
     setState(() {
-      final previousStatus = _status;
-      final now = DateTime.now();
-
-      final isOverflow =
-          _maxProgressVolumes != null && newVolumes > _maxProgressVolumes!;
-      if (isOverflow) {
-        _progressVolumes = 1;
-        _progress = 1;
-        _repeat += 1;
-        _status = MediaListStatus.repeating;
-        return;
-      }
-
-      _progressVolumes = newVolumes;
-
-      final isCompleted =
-          _maxProgressVolumes != null &&
-          _progressVolumes >= _maxProgressVolumes!;
-      if (isCompleted) {
-        _status = MediaListStatus.completed;
-        if (_maxProgress != null) {
-          _progress = _maxProgress!;
-        }
-        if (_repeat == 0) {
-          _startDate ??= now;
-        }
-        if (previousStatus != MediaListStatus.completed && _repeat == 0) {
-          _finishDate = now;
-        }
-      } else {
-        _status = _repeat > 0
-            ? MediaListStatus.repeating
-            : MediaListStatus.current;
-      }
-
-      if (_progressVolumes > 0 && _startDate == null && _repeat == 0) {
-        _startDate = now;
-      }
-
-      final wasCompleted = previousStatus == MediaListStatus.completed;
-      if (wasCompleted &&
-          _status != MediaListStatus.completed &&
-          _repeat == 0) {
-        _finishDate = null;
-      }
-
-      if (_progress == 0 && _progressVolumes == 0 && _repeat == 0) {
-        _startDate = null;
-      }
+      _currentEntry = _currentEntry.updateProgressVolumes(newVolumes);
     });
   }
 
   void _updateRepeat(int newRepeat) {
     setState(() {
-      _repeat = newRepeat;
-      if (_progress == 0 && _progressVolumes == 0 && _repeat == 0) {
-        _startDate = null;
-      }
+      _currentEntry = _currentEntry.updateRepeat(newRepeat);
     });
   }
 
@@ -263,7 +110,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
                 Expanded(
                   child: CounterEditor(
                     label: 'Chapters',
-                    value: _progress,
+                    value: _currentEntry.progress,
                     maximum: _maxProgress,
                     onChanged: _updateProgress,
                   ),
@@ -272,7 +119,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
                 Expanded(
                   child: CounterEditor(
                     label: 'Volumes',
-                    value: _progressVolumes,
+                    value: _currentEntry.progressVolumes,
                     maximum: _maxProgressVolumes,
                     onChanged: _updateProgressVolumes,
                   ),
@@ -282,7 +129,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
             const SizedBox(height: 12),
             CounterEditor(
               label: 'Reread Count',
-              value: _repeat,
+              value: _currentEntry.repeat,
               showMaxLimit: false,
               onChanged: _updateRepeat,
             ),
@@ -297,7 +144,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
             Expanded(
               child: CounterEditor(
                 label: 'Episodes',
-                value: _progress,
+                value: _currentEntry.progress,
                 maximum: _maxProgress,
                 onChanged: _updateProgress,
               ),
@@ -306,7 +153,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
             Expanded(
               child: CounterEditor(
                 label: 'Rewatch Count',
-                value: _repeat,
+                value: _currentEntry.repeat,
                 showMaxLimit: false,
                 onChanged: _updateRepeat,
               ),
@@ -362,22 +209,44 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
                 child: Column(
                   children: [
                     StatusSelector(
-                      currentStatus: _status,
+                      currentStatus: _currentEntry.status,
                       onStatusChanged: _setStatus,
                       isManga: widget.entry.media.type == 'MANGA',
                     ),
                     _buildCountersSection(),
                     DateEditor(
-                      startDate: _startDate,
-                      finishDate: _finishDate,
-                      onStartDateChanged: (date) =>
-                          setState(() => _startDate = date),
-                      onFinishDateChanged: (date) =>
-                          setState(() => _finishDate = date),
+                      startDate: _parseFuzzyDate(_currentEntry.startedAt),
+                      finishDate: _parseFuzzyDate(_currentEntry.completedAt),
+                      onStartDateChanged: (date) => setState(
+                        () => _currentEntry = _currentEntry.copyWith(
+                          startedAt: date != null
+                              ? FuzzyDate(
+                                  year: date.year,
+                                  month: date.month,
+                                  day: date.day,
+                                )
+                              : null,
+                        ),
+                      ),
+                      onFinishDateChanged: (date) => setState(
+                        () => _currentEntry = _currentEntry.copyWith(
+                          completedAt: date != null
+                              ? FuzzyDate(
+                                  year: date.year,
+                                  month: date.month,
+                                  day: date.day,
+                                )
+                              : null,
+                        ),
+                      ),
                     ),
                     ScoreSlider(
-                      score: _score,
-                      onScoreChanged: (score) => setState(() => _score = score),
+                      score: _currentEntry.score,
+                      onScoreChanged: (score) => setState(
+                        () => _currentEntry = _currentEntry.copyWith(
+                          score: score,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 24),
                   ],
@@ -395,13 +264,13 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
   Widget _buildActionButtons() {
     final bool hasEntryId = widget.entry.id > 0;
     final bool hasChanges =
-        _status != _initialStatus ||
-        _progress != _initialProgress ||
-        _score != _initialScore ||
-        _startDate != _initialStartDate ||
-        _finishDate != _initialFinishDate ||
-        _progressVolumes != _initialProgressVolumes ||
-        _repeat != _initialRepeat;
+        _currentEntry.status != _initialEntry.status ||
+        _currentEntry.progress != _initialEntry.progress ||
+        _currentEntry.score != _initialEntry.score ||
+        _currentEntry.startedAt != _initialEntry.startedAt ||
+        _currentEntry.completedAt != _initialEntry.completedAt ||
+        _currentEntry.progressVolumes != _initialEntry.progressVolumes ||
+        _currentEntry.repeat != _initialEntry.repeat;
 
     final screenWidth = MediaQuery.of(context).size.width;
     final bool isSmallScreen = screenWidth < 360.0;
@@ -543,13 +412,13 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
     if (mediaId <= 0) return;
 
     final bool hasChanges =
-        _status != _initialStatus ||
-        _progress != _initialProgress ||
-        _score != _initialScore ||
-        _startDate != _initialStartDate ||
-        _finishDate != _initialFinishDate ||
-        _progressVolumes != _initialProgressVolumes ||
-        _repeat != _initialRepeat;
+        _currentEntry.status != _initialEntry.status ||
+        _currentEntry.progress != _initialEntry.progress ||
+        _currentEntry.score != _initialEntry.score ||
+        _currentEntry.startedAt != _initialEntry.startedAt ||
+        _currentEntry.completedAt != _initialEntry.completedAt ||
+        _currentEntry.progressVolumes != _initialEntry.progressVolumes ||
+        _currentEntry.repeat != _initialEntry.repeat;
 
     if (!hasChanges) {
       Navigator.of(context).pop();
@@ -559,46 +428,34 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
     setState(() => _isSaving = true);
 
     try {
-      final finalStatus = _status ?? MediaListStatus.current;
+      final finalStatus = _currentEntry.status ?? MediaListStatus.current;
       final response = await MediaListService.saveEntry(
         mediaId: mediaId,
-        status: finalStatus != _initialStatus ? finalStatus : null,
-        progress: _progress != _initialProgress ? _progress : null,
-        score: _score != _initialScore ? _score : null,
-        startDate: _startDate != _initialStartDate ? _startDate : null,
-        finishDate: _finishDate != _initialFinishDate ? _finishDate : null,
-        progressVolumes: _progressVolumes != _initialProgressVolumes
-            ? _progressVolumes
+        status: finalStatus != _initialEntry.status ? finalStatus : null,
+        progress: _currentEntry.progress != _initialEntry.progress
+            ? _currentEntry.progress
             : null,
-        repeat: _repeat != _initialRepeat ? _repeat : null,
+        score: _currentEntry.score != _initialEntry.score
+            ? _currentEntry.score
+            : null,
+        startDate: _currentEntry.startedAt != _initialEntry.startedAt
+            ? _parseFuzzyDate(_currentEntry.startedAt)
+            : null,
+        finishDate: _currentEntry.completedAt != _initialEntry.completedAt
+            ? _parseFuzzyDate(_currentEntry.completedAt)
+            : null,
+        progressVolumes:
+            _currentEntry.progressVolumes != _initialEntry.progressVolumes
+            ? _currentEntry.progressVolumes
+            : null,
+        repeat: _currentEntry.repeat != _initialEntry.repeat
+            ? _currentEntry.repeat
+            : null,
       );
 
       if (mounted) {
         Navigator.of(context).pop(
-          MediaOptionsResult(
-            entry: widget.entry.copyWith(
-              id: response.id,
-              status: finalStatus,
-              progress: _progress,
-              score: _score,
-              repeat: _repeat,
-              progressVolumes: _progressVolumes,
-              startedAt: _startDate != null
-                  ? FuzzyDate(
-                      year: _startDate!.year,
-                      month: _startDate!.month,
-                      day: _startDate!.day,
-                    )
-                  : null,
-              completedAt: _finishDate != null
-                  ? FuzzyDate(
-                      year: _finishDate!.year,
-                      month: _finishDate!.month,
-                      day: _finishDate!.day,
-                    )
-                  : null,
-            ),
-          ),
+          MediaOptionsResult(entry: _currentEntry.copyWith(id: response.id)),
         );
       }
     } catch (e) {

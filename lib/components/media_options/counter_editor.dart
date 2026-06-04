@@ -76,11 +76,7 @@ class _CounterEditorState extends State<CounterEditor> {
   void _submitValue(String val) {
     final parsed = int.tryParse(val);
     if (parsed != null && parsed >= 0) {
-      if (widget.maximum == null || parsed <= widget.maximum!) {
-        widget.onChanged(parsed);
-      } else {
-        widget.onChanged(widget.maximum!);
-      }
+      widget.onChanged(parsed);
     }
     if (mounted) {
       setState(() {
