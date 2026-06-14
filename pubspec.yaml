@@ -23,6 +23,7 @@ dependencies:
   html: ^0.15.6
   share_plus: 13.1.0
   timeago: ^3.7.0
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

@@ -91,8 +91,13 @@ class _StudioPageState extends State<StudioPage> {
       await MediaService.toggleFavouriteStudio(_studio!.id);
       if (mounted) {
         setState(() {
+          final wasFav = _studio!.isFavourite ?? false;
+          final currentCount = _studio!.favourites ?? 0;
           _studio = _studio!.copyWith(
-            isFavourite: !(_studio!.isFavourite ?? false),
+            isFavourite: !wasFav,
+            favourites: !wasFav
+                ? currentCount + 1
+                : (currentCount > 0 ? currentCount - 1 : 0),
           );
           _isFavouriteLoading = false;
         });
@@ -295,7 +300,7 @@ class _StudioPageState extends State<StudioPage> {
                 ),
                 Positioned.fill(
                   left: 56,
-                  right: 56,
+                  right: 110,
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -317,25 +322,39 @@ class _StudioPageState extends State<StudioPage> {
                   child: Center(
                     child: _isLoading
                         ? const SizedBox.shrink()
-                        : GestureDetector(
-                            onTap: _isFavouriteLoading
-                                ? null
-                                : _toggleFavourite,
-                            child: _isFavouriteLoading
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2.5,
-                                      color: textPrimary,
-                                    ),
-                                  )
-                                : LucideHeartIcon(
-                                    isFilled: isFav,
-                                    color: isFav
-                                        ? Colors.redAccent.shade400
-                                        : textPrimary,
-                                  ),
+                        : Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '(${StringUtils.formatCompactNumber(_studio?.favourites ?? 0)})',
+                                style: TextStyle(
+                                  color: textSecondary,
+                                  fontSize: fontBody(context),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              GestureDetector(
+                                onTap: _isFavouriteLoading
+                                    ? null
+                                    : _toggleFavourite,
+                                child: _isFavouriteLoading
+                                    ? const SizedBox(
+                                        width: 24,
+                                        height: 24,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2.5,
+                                          color: textPrimary,
+                                        ),
+                                      )
+                                    : LucideHeartIcon(
+                                        isFilled: isFav,
+                                        color: isFav
+                                            ? Colors.redAccent.shade400
+                                            : textPrimary,
+                                      ),
+                              ),
+                            ],
                           ),
                   ),
                 ),

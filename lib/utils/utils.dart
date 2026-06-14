@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Utilities for working with colors
@@ -62,6 +63,11 @@ class StringUtils {
     } else {
       return 'an hour';
     }
+  }
+
+  /// Format numbers compactly (e.g. 4312 -> 4.3k, 1104299 -> 1.1m)
+  static String formatCompactNumber(int number) {
+    return NumberFormat.compact().format(number).toLowerCase();
   }
 }
 
