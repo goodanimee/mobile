@@ -140,6 +140,24 @@ typedef _ToggleFavouriteMangaDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for toggling favourite studio
+typedef _ToggleFavouriteStudioC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for toggling favourite studio
+typedef _ToggleFavouriteStudioDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// Native function signature for toggling activity like status
 typedef _ToggleActivityLikeC =
     ffi.Pointer<ffi.Uint8> Function(
@@ -225,6 +243,7 @@ class MediaApi {
   static late _RateReviewDart _rateReview;
   static late _FetchMediaActivitiesDart _fetchMediaActivities;
   static late _FetchStudioDetailsDart _fetchStudioDetails;
+  static late _ToggleFavouriteStudioDart _toggleFavouriteStudio;
   static bool _initialized = false;
 
   static void _init() {
@@ -274,6 +293,10 @@ class MediaApi {
     _fetchStudioDetails = FfiCore.lib
         .lookupFunction<_FetchStudioDetailsC, _FetchStudioDetailsDart>(
           'FetchStudioDetails',
+        );
+    _toggleFavouriteStudio = FfiCore.lib
+        .lookupFunction<_ToggleFavouriteStudioC, _ToggleFavouriteStudioDart>(
+          'ToggleFavouriteStudio',
         );
     _initialized = true;
   }
@@ -604,6 +627,38 @@ class MediaApi {
         final response = FetchStudioDetailsResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
         return Studio.fromProto(response.studio);
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
+  /// Toggles the favourite status of a studio.
+  static Future<ToggleFavouriteStudioResponse> toggleFavouriteStudio(
+    ToggleFavouriteStudioRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      _init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = FfiCore.executeNativeCall(
+          (outLenPtr) => _toggleFavouriteStudio(
+            reqPtr,
+            reqBytes.length,
+            tokenPtr,
+            outLenPtr,
+          ),
+        );
+        final response = ToggleFavouriteStudioResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);

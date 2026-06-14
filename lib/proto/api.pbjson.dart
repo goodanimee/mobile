@@ -620,3 +620,32 @@ final $typed_data.Uint8List fetchStudioDetailsResponseDescriptor =
     $convert.base64Decode(
         'ChpGZXRjaFN0dWRpb0RldGFpbHNSZXNwb25zZRIpCgZzdHVkaW8YASABKAsyES5nb29kYW5pbW'
         'UuU3R1ZGlvUgZzdHVkaW8SFAoFZXJyb3IYAiABKAlSBWVycm9y');
+
+@$core.Deprecated('Use toggleFavouriteStudioRequestDescriptor instead')
+const ToggleFavouriteStudioRequest$json = {
+  '1': 'ToggleFavouriteStudioRequest',
+  '2': [
+    {'1': 'studio_id', '3': 1, '4': 1, '5': 5, '10': 'studioId'},
+  ],
+};
+
+/// Descriptor for `ToggleFavouriteStudioRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFavouriteStudioRequestDescriptor =
+    $convert.base64Decode(
+        'ChxUb2dnbGVGYXZvdXJpdGVTdHVkaW9SZXF1ZXN0EhsKCXN0dWRpb19pZBgBIAEoBVIIc3R1ZG'
+        'lvSWQ=');
+
+@$core.Deprecated('Use toggleFavouriteStudioResponseDescriptor instead')
+const ToggleFavouriteStudioResponse$json = {
+  '1': 'ToggleFavouriteStudioResponse',
+  '2': [
+    {'1': 'studio_id', '3': 1, '4': 1, '5': 5, '10': 'studioId'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `ToggleFavouriteStudioResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFavouriteStudioResponseDescriptor =
+    $convert.base64Decode(
+        'Ch1Ub2dnbGVGYXZvdXJpdGVTdHVkaW9SZXNwb25zZRIbCglzdHVkaW9faWQYASABKAVSCHN0dW'
+        'Rpb0lkEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');

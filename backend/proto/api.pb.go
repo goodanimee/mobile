@@ -1685,6 +1685,102 @@ func (x *FetchStudioDetailsResponse) GetError() string {
 	return ""
 }
 
+type ToggleFavouriteStudioRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StudioId      int32                  `protobuf:"varint,1,opt,name=studio_id,json=studioId,proto3" json:"studio_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleFavouriteStudioRequest) Reset() {
+	*x = ToggleFavouriteStudioRequest{}
+	mi := &file_api_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleFavouriteStudioRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleFavouriteStudioRequest) ProtoMessage() {}
+
+func (x *ToggleFavouriteStudioRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleFavouriteStudioRequest.ProtoReflect.Descriptor instead.
+func (*ToggleFavouriteStudioRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *ToggleFavouriteStudioRequest) GetStudioId() int32 {
+	if x != nil {
+		return x.StudioId
+	}
+	return 0
+}
+
+type ToggleFavouriteStudioResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StudioId      int32                  `protobuf:"varint,1,opt,name=studio_id,json=studioId,proto3" json:"studio_id,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleFavouriteStudioResponse) Reset() {
+	*x = ToggleFavouriteStudioResponse{}
+	mi := &file_api_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleFavouriteStudioResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleFavouriteStudioResponse) ProtoMessage() {}
+
+func (x *ToggleFavouriteStudioResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleFavouriteStudioResponse.ProtoReflect.Descriptor instead.
+func (*ToggleFavouriteStudioResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *ToggleFavouriteStudioResponse) GetStudioId() int32 {
+	if x != nil {
+		return x.StudioId
+	}
+	return 0
+}
+
+func (x *ToggleFavouriteStudioResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
@@ -1809,6 +1905,11 @@ const file_api_proto_rawDesc = "" +
 	"\x04page\x18\x02 \x01(\x05R\x04page\"]\n" +
 	"\x1aFetchStudioDetailsResponse\x12)\n" +
 	"\x06studio\x18\x01 \x01(\v2\x11.goodanime.StudioR\x06studio\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\";\n" +
+	"\x1cToggleFavouriteStudioRequest\x12\x1b\n" +
+	"\tstudio_id\x18\x01 \x01(\x05R\bstudioId\"R\n" +
+	"\x1dToggleFavouriteStudioResponse\x12\x1b\n" +
+	"\tstudio_id\x18\x01 \x01(\x05R\bstudioId\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
@@ -1823,7 +1924,7 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
@@ -1855,32 +1956,34 @@ var file_api_proto_goTypes = []any{
 	(*FetchMediaActivitiesResponse)(nil),      // 27: goodanime.FetchMediaActivitiesResponse
 	(*FetchStudioDetailsRequest)(nil),         // 28: goodanime.FetchStudioDetailsRequest
 	(*FetchStudioDetailsResponse)(nil),        // 29: goodanime.FetchStudioDetailsResponse
-	(*MediaListCollection)(nil),               // 30: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 31: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 32: goodanime.MediaListEntry
-	(*Media)(nil),                             // 33: goodanime.Media
-	(ReviewUserRating)(0),                     // 34: goodanime.ReviewUserRating
-	(*ReviewNode)(nil),                        // 35: goodanime.ReviewNode
-	(*PageInfo)(nil),                          // 36: goodanime.PageInfo
-	(*ListActivity)(nil),                      // 37: goodanime.ListActivity
-	(*Studio)(nil),                            // 38: goodanime.Studio
+	(*ToggleFavouriteStudioRequest)(nil),      // 30: goodanime.ToggleFavouriteStudioRequest
+	(*ToggleFavouriteStudioResponse)(nil),     // 31: goodanime.ToggleFavouriteStudioResponse
+	(*MediaListCollection)(nil),               // 32: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 33: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 34: goodanime.MediaListEntry
+	(*Media)(nil),                             // 35: goodanime.Media
+	(ReviewUserRating)(0),                     // 36: goodanime.ReviewUserRating
+	(*ReviewNode)(nil),                        // 37: goodanime.ReviewNode
+	(*PageInfo)(nil),                          // 38: goodanime.PageInfo
+	(*ListActivity)(nil),                      // 39: goodanime.ListActivity
+	(*Studio)(nil),                            // 40: goodanime.Studio
 }
 var file_api_proto_depIdxs = []int32{
-	30, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	31, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	32, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	33, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	32, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	33, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	33, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	33, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	33, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	33, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
-	34, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
-	35, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
-	36, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
-	37, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
-	38, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
+	34, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	35, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	35, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	35, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	35, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	35, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	36, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
+	37, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
+	38, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	39, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
+	40, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
 	15, // [15:15] is the sub-list for method output_type
 	15, // [15:15] is the sub-list for method input_type
 	15, // [15:15] is the sub-list for extension type_name
@@ -1909,7 +2012,7 @@ func file_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   30,
+			NumMessages:   32,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

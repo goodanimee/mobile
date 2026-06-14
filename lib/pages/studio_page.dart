@@ -30,6 +30,7 @@ class _StudioPageState extends State<StudioPage> {
   int _currentPage = 1;
   bool _hasNextPage = false;
   bool _isFetchingMore = false;
+  bool _isFavouriteLoading = false;
   bool _isLoading = true;
   Studio? _studio;
   String? _error;
@@ -75,6 +76,35 @@ class _StudioPageState extends State<StudioPage> {
           _error = 'Failed to load studio: $e';
           _isLoading = false;
         });
+      }
+    }
+  }
+
+  Future<void> _toggleFavourite() async {
+    if (_studio == null || _isFavouriteLoading) return;
+
+    setState(() {
+      _isFavouriteLoading = true;
+    });
+
+    try {
+      await MediaService.toggleFavouriteStudio(_studio!.id);
+      if (mounted) {
+        setState(() {
+          _studio = _studio!.copyWith(
+            isFavourite: !(_studio!.isFavourite ?? false),
+          );
+          _isFavouriteLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isFavouriteLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update favourite: $e')),
+        );
       }
     }
   }
@@ -287,11 +317,25 @@ class _StudioPageState extends State<StudioPage> {
                   child: Center(
                     child: _isLoading
                         ? const SizedBox.shrink()
-                        : LucideHeartIcon(
-                            isFilled: isFav,
-                            color: isFav
-                                ? Colors.redAccent.shade400
-                                : textPrimary,
+                        : GestureDetector(
+                            onTap: _isFavouriteLoading
+                                ? null
+                                : _toggleFavourite,
+                            child: _isFavouriteLoading
+                                ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.5,
+                                      color: textPrimary,
+                                    ),
+                                  )
+                                : LucideHeartIcon(
+                                    isFilled: isFav,
+                                    color: isFav
+                                        ? Colors.redAccent.shade400
+                                        : textPrimary,
+                                  ),
                           ),
                   ),
                 ),

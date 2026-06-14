@@ -1,0 +1,9 @@
+mutation ToggleFavourite($studioId: Int) {
+    ToggleFavourite(studioId: $studioId) {
+        studios {
+            nodes {
+                id
+            }
+        }
+    }
+}

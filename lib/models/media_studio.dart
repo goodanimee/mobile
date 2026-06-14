@@ -99,6 +99,23 @@ class Studio {
       media: media?.toProto(),
     );
   }
+
+  /// Creates a copy of this object with the given fields replaced
+  Studio copyWith({
+    int? id,
+    String? name,
+    int? favourites,
+    bool? isFavourite,
+    StudioMediaConnection? media,
+  }) {
+    return Studio(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      favourites: favourites ?? this.favourites,
+      isFavourite: isFavourite ?? this.isFavourite,
+      media: media ?? this.media,
+    );
+  }
 }
 
 /// Represents a studio's media connection

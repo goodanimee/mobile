@@ -198,6 +198,13 @@ class MediaService {
     return MediaApi.fetchStudioDetails(req, token);
   }
 
+  /// Toggles the favorite status of a studio.
+  static Future<void> toggleFavouriteStudio(int studioId) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = ToggleFavouriteStudioRequest()..studioId = studioId;
+    await MediaApi.toggleFavouriteStudio(req, token);
+  }
+
   static Future<void> _saveToDiskCache(
     SharedPreferences prefs,
     int mediaId,

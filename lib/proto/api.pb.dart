@@ -2241,6 +2241,132 @@ class FetchStudioDetailsResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(2);
 }
 
+class ToggleFavouriteStudioRequest extends $pb.GeneratedMessage {
+  factory ToggleFavouriteStudioRequest({
+    $core.int? studioId,
+  }) {
+    final result = create();
+    if (studioId != null) result.studioId = studioId;
+    return result;
+  }
+
+  ToggleFavouriteStudioRequest._();
+
+  factory ToggleFavouriteStudioRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ToggleFavouriteStudioRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ToggleFavouriteStudioRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'studioId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteStudioRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteStudioRequest copyWith(
+          void Function(ToggleFavouriteStudioRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as ToggleFavouriteStudioRequest))
+          as ToggleFavouriteStudioRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteStudioRequest create() =>
+      ToggleFavouriteStudioRequest._();
+  @$core.override
+  ToggleFavouriteStudioRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteStudioRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStudioRequest>(create);
+  static ToggleFavouriteStudioRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get studioId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set studioId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStudioId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStudioId() => $_clearField(1);
+}
+
+class ToggleFavouriteStudioResponse extends $pb.GeneratedMessage {
+  factory ToggleFavouriteStudioResponse({
+    $core.int? studioId,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (studioId != null) result.studioId = studioId;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  ToggleFavouriteStudioResponse._();
+
+  factory ToggleFavouriteStudioResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ToggleFavouriteStudioResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ToggleFavouriteStudioResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'studioId')
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteStudioResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteStudioResponse copyWith(
+          void Function(ToggleFavouriteStudioResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as ToggleFavouriteStudioResponse))
+          as ToggleFavouriteStudioResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteStudioResponse create() =>
+      ToggleFavouriteStudioResponse._();
+  @$core.override
+  ToggleFavouriteStudioResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteStudioResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStudioResponse>(create);
+  static ToggleFavouriteStudioResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get studioId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set studioId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStudioId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStudioId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

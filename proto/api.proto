@@ -175,3 +175,12 @@ message FetchStudioDetailsResponse {
   Studio studio = 1;
   string error = 2;
 }
+
+message ToggleFavouriteStudioRequest {
+  int32 studio_id = 1;
+}
+
+message ToggleFavouriteStudioResponse {
+  int32 studio_id = 1;
+  string error = 2;
+}
