@@ -20,6 +20,7 @@ import 'media_activity.pb.dart' as $6;
 import 'media_list.pb.dart' as $0;
 import 'media_list_entry.pb.dart' as $2;
 import 'media_review.pb.dart' as $4;
+import 'media_studio.pb.dart' as $7;
 import 'viewer.pb.dart' as $1;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -2100,6 +2101,144 @@ class FetchMediaActivitiesResponse extends $pb.GeneratedMessage {
   $core.bool hasError() => $_has(2);
   @$pb.TagNumber(3)
   void clearError() => $_clearField(3);
+}
+
+class FetchStudioDetailsRequest extends $pb.GeneratedMessage {
+  factory FetchStudioDetailsRequest({
+    $core.int? studioId,
+    $core.int? page,
+  }) {
+    final result = create();
+    if (studioId != null) result.studioId = studioId;
+    if (page != null) result.page = page;
+    return result;
+  }
+
+  FetchStudioDetailsRequest._();
+
+  factory FetchStudioDetailsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchStudioDetailsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchStudioDetailsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'studioId')
+    ..aI(2, _omitFieldNames ? '' : 'page')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStudioDetailsRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStudioDetailsRequest copyWith(
+          void Function(FetchStudioDetailsRequest) updates) =>
+      super.copyWith((message) => updates(message as FetchStudioDetailsRequest))
+          as FetchStudioDetailsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchStudioDetailsRequest create() => FetchStudioDetailsRequest._();
+  @$core.override
+  FetchStudioDetailsRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchStudioDetailsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchStudioDetailsRequest>(create);
+  static FetchStudioDetailsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get studioId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set studioId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStudioId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStudioId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+}
+
+class FetchStudioDetailsResponse extends $pb.GeneratedMessage {
+  factory FetchStudioDetailsResponse({
+    $7.Studio? studio,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (studio != null) result.studio = studio;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchStudioDetailsResponse._();
+
+  factory FetchStudioDetailsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchStudioDetailsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchStudioDetailsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOM<$7.Studio>(1, _omitFieldNames ? '' : 'studio',
+        subBuilder: $7.Studio.create)
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStudioDetailsResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStudioDetailsResponse copyWith(
+          void Function(FetchStudioDetailsResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as FetchStudioDetailsResponse))
+          as FetchStudioDetailsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchStudioDetailsResponse create() => FetchStudioDetailsResponse._();
+  @$core.override
+  FetchStudioDetailsResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchStudioDetailsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchStudioDetailsResponse>(create);
+  static FetchStudioDetailsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $7.Studio get studio => $_getN(0);
+  @$pb.TagNumber(1)
+  set studio($7.Studio value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStudio() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStudio() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $7.Studio ensureStudio() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
 }
 
 const $core.bool _omitFieldNames =

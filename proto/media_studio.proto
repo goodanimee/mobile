@@ -2,18 +2,34 @@ syntax = "proto3";
 
 package goodanime;
 
+import "common.proto";
+import "media_min.proto";
+
 option go_package = "goodanime/backend/proto";
 
-message Studio {
+message StudioMin {
   int32 id = 1;
   string name = 2;
 }
 
 message StudioEdge {
   bool is_main = 1;
-  Studio node = 2;
+  StudioMin node = 2;
 }
 
 message StudioConnection {
   repeated StudioEdge edges = 1;
+}
+
+message Studio {
+  int32 id = 1;
+  string name = 2;
+  optional int32 favourites = 3;
+  optional bool is_favourite = 4;
+  StudioMediaConnection media = 5;
+}
+
+message StudioMediaConnection {
+  PageInfo page_info = 1;
+  repeated MediaMin nodes = 2;
 }

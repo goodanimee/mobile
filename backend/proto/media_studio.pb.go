@@ -21,7 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Studio struct {
+type StudioMin struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -29,20 +29,20 @@ type Studio struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Studio) Reset() {
-	*x = Studio{}
+func (x *StudioMin) Reset() {
+	*x = StudioMin{}
 	mi := &file_media_studio_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Studio) String() string {
+func (x *StudioMin) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Studio) ProtoMessage() {}
+func (*StudioMin) ProtoMessage() {}
 
-func (x *Studio) ProtoReflect() protoreflect.Message {
+func (x *StudioMin) ProtoReflect() protoreflect.Message {
 	mi := &file_media_studio_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -54,19 +54,19 @@ func (x *Studio) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Studio.ProtoReflect.Descriptor instead.
-func (*Studio) Descriptor() ([]byte, []int) {
+// Deprecated: Use StudioMin.ProtoReflect.Descriptor instead.
+func (*StudioMin) Descriptor() ([]byte, []int) {
 	return file_media_studio_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Studio) GetId() int32 {
+func (x *StudioMin) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *Studio) GetName() string {
+func (x *StudioMin) GetName() string {
 	if x != nil {
 		return x.Name
 	}
@@ -76,7 +76,7 @@ func (x *Studio) GetName() string {
 type StudioEdge struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	IsMain        bool                   `protobuf:"varint,1,opt,name=is_main,json=isMain,proto3" json:"is_main,omitempty"`
-	Node          *Studio                `protobuf:"bytes,2,opt,name=node,proto3" json:"node,omitempty"`
+	Node          *StudioMin             `protobuf:"bytes,2,opt,name=node,proto3" json:"node,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -118,7 +118,7 @@ func (x *StudioEdge) GetIsMain() bool {
 	return false
 }
 
-func (x *StudioEdge) GetNode() *Studio {
+func (x *StudioEdge) GetNode() *StudioMin {
 	if x != nil {
 		return x.Node
 	}
@@ -169,20 +169,161 @@ func (x *StudioConnection) GetEdges() []*StudioEdge {
 	return nil
 }
 
+type Studio struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Favourites    *int32                 `protobuf:"varint,3,opt,name=favourites,proto3,oneof" json:"favourites,omitempty"`
+	IsFavourite   *bool                  `protobuf:"varint,4,opt,name=is_favourite,json=isFavourite,proto3,oneof" json:"is_favourite,omitempty"`
+	Media         *StudioMediaConnection `protobuf:"bytes,5,opt,name=media,proto3" json:"media,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Studio) Reset() {
+	*x = Studio{}
+	mi := &file_media_studio_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Studio) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Studio) ProtoMessage() {}
+
+func (x *Studio) ProtoReflect() protoreflect.Message {
+	mi := &file_media_studio_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Studio.ProtoReflect.Descriptor instead.
+func (*Studio) Descriptor() ([]byte, []int) {
+	return file_media_studio_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Studio) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Studio) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Studio) GetFavourites() int32 {
+	if x != nil && x.Favourites != nil {
+		return *x.Favourites
+	}
+	return 0
+}
+
+func (x *Studio) GetIsFavourite() bool {
+	if x != nil && x.IsFavourite != nil {
+		return *x.IsFavourite
+	}
+	return false
+}
+
+func (x *Studio) GetMedia() *StudioMediaConnection {
+	if x != nil {
+		return x.Media
+	}
+	return nil
+}
+
+type StudioMediaConnection struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageInfo      *PageInfo              `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Nodes         []*MediaMin            `protobuf:"bytes,2,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StudioMediaConnection) Reset() {
+	*x = StudioMediaConnection{}
+	mi := &file_media_studio_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StudioMediaConnection) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StudioMediaConnection) ProtoMessage() {}
+
+func (x *StudioMediaConnection) ProtoReflect() protoreflect.Message {
+	mi := &file_media_studio_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StudioMediaConnection.ProtoReflect.Descriptor instead.
+func (*StudioMediaConnection) Descriptor() ([]byte, []int) {
+	return file_media_studio_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *StudioMediaConnection) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *StudioMediaConnection) GetNodes() []*MediaMin {
+	if x != nil {
+		return x.Nodes
+	}
+	return nil
+}
+
 var File_media_studio_proto protoreflect.FileDescriptor
 
 const file_media_studio_proto_rawDesc = "" +
 	"\n" +
-	"\x12media_studio.proto\x12\tgoodanime\",\n" +
-	"\x06Studio\x12\x0e\n" +
+	"\x12media_studio.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\x0fmedia_min.proto\"/\n" +
+	"\tStudioMin\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"L\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"O\n" +
 	"\n" +
 	"StudioEdge\x12\x17\n" +
-	"\ais_main\x18\x01 \x01(\bR\x06isMain\x12%\n" +
-	"\x04node\x18\x02 \x01(\v2\x11.goodanime.StudioR\x04node\"?\n" +
+	"\ais_main\x18\x01 \x01(\bR\x06isMain\x12(\n" +
+	"\x04node\x18\x02 \x01(\v2\x14.goodanime.StudioMinR\x04node\"?\n" +
 	"\x10StudioConnection\x12+\n" +
-	"\x05edges\x18\x01 \x03(\v2\x15.goodanime.StudioEdgeR\x05edgesB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x05edges\x18\x01 \x03(\v2\x15.goodanime.StudioEdgeR\x05edges\"\xd1\x01\n" +
+	"\x06Studio\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12#\n" +
+	"\n" +
+	"favourites\x18\x03 \x01(\x05H\x00R\n" +
+	"favourites\x88\x01\x01\x12&\n" +
+	"\fis_favourite\x18\x04 \x01(\bH\x01R\visFavourite\x88\x01\x01\x126\n" +
+	"\x05media\x18\x05 \x01(\v2 .goodanime.StudioMediaConnectionR\x05mediaB\r\n" +
+	"\v_favouritesB\x0f\n" +
+	"\r_is_favourite\"t\n" +
+	"\x15StudioMediaConnection\x120\n" +
+	"\tpage_info\x18\x01 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12)\n" +
+	"\x05nodes\x18\x02 \x03(\v2\x13.goodanime.MediaMinR\x05nodesB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_media_studio_proto_rawDescOnce sync.Once
@@ -196,20 +337,27 @@ func file_media_studio_proto_rawDescGZIP() []byte {
 	return file_media_studio_proto_rawDescData
 }
 
-var file_media_studio_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_media_studio_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_media_studio_proto_goTypes = []any{
-	(*Studio)(nil),           // 0: goodanime.Studio
-	(*StudioEdge)(nil),       // 1: goodanime.StudioEdge
-	(*StudioConnection)(nil), // 2: goodanime.StudioConnection
+	(*StudioMin)(nil),             // 0: goodanime.StudioMin
+	(*StudioEdge)(nil),            // 1: goodanime.StudioEdge
+	(*StudioConnection)(nil),      // 2: goodanime.StudioConnection
+	(*Studio)(nil),                // 3: goodanime.Studio
+	(*StudioMediaConnection)(nil), // 4: goodanime.StudioMediaConnection
+	(*PageInfo)(nil),              // 5: goodanime.PageInfo
+	(*MediaMin)(nil),              // 6: goodanime.MediaMin
 }
 var file_media_studio_proto_depIdxs = []int32{
-	0, // 0: goodanime.StudioEdge.node:type_name -> goodanime.Studio
+	0, // 0: goodanime.StudioEdge.node:type_name -> goodanime.StudioMin
 	1, // 1: goodanime.StudioConnection.edges:type_name -> goodanime.StudioEdge
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	4, // 2: goodanime.Studio.media:type_name -> goodanime.StudioMediaConnection
+	5, // 3: goodanime.StudioMediaConnection.page_info:type_name -> goodanime.PageInfo
+	6, // 4: goodanime.StudioMediaConnection.nodes:type_name -> goodanime.MediaMin
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_media_studio_proto_init() }
@@ -217,13 +365,16 @@ func file_media_studio_proto_init() {
 	if File_media_studio_proto != nil {
 		return
 	}
+	file_common_proto_init()
+	file_media_min_proto_init()
+	file_media_studio_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_media_studio_proto_rawDesc), len(file_media_studio_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
