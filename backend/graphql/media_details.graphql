@@ -65,6 +65,7 @@ fragment MediaFields on Media {
     volumes
     status
     season
+    seasonYear
     averageScore
     meanScore
     favourites
