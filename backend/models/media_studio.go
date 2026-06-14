@@ -7,7 +7,36 @@ func (s *Studio) ToProto() *pb.Studio {
 	if s == nil {
 		return nil
 	}
+
 	return &pb.Studio{
+		Id:          s.ID,
+		Name:        s.Name,
+		IsFavourite: s.IsFavourite,
+		Favourites:  s.Favourites,
+		Media:       s.Media.ToProto(),
+	}
+}
+
+// ToProto converts StudioMediaConnection to its protobuf representation.
+func (sm *StudioMediaConnection) ToProto() *pb.StudioMediaConnection {
+	if sm == nil {
+		return nil
+	}
+	res := &pb.StudioMediaConnection{
+		PageInfo: sm.PageInfo.ToProto(),
+	}
+	for _, node := range sm.Nodes {
+		res.Nodes = append(res.Nodes, node.ToProto())
+	}
+	return res
+}
+
+// ToProto converts Studio to its protobuf representation.
+func (s *StudioMin) ToProto() *pb.StudioMin {
+	if s == nil {
+		return nil
+	}
+	return &pb.StudioMin{
 		Id:   s.ID,
 		Name: s.Name,
 	}
@@ -36,19 +65,38 @@ func (c *StudioConnection) ToProto() *pb.StudioConnection {
 	return res
 }
 
-// Studio represents a production studio
-type Studio struct {
+// StudioMin represents a minimal production studio
+type StudioMin struct {
 	ID   int32  `json:"id"`
 	Name string `json:"name"`
 }
 
 // StudioEdge represents a link between a media and a studio
 type StudioEdge struct {
-	IsMain bool   `json:"isMain"`
-	Node   Studio `json:"node"`
+	IsMain bool      `json:"isMain"`
+	Node   StudioMin `json:"node"`
 }
 
 // StudioConnection represents a list of studio edges
 type StudioConnection struct {
 	Edges []StudioEdge `json:"edges"`
+}
+
+// Studio represents a production studio
+type Studio struct {
+	ID          int32                  `json:"id"`
+	Name        string                 `json:"name"`
+	Favourites  *int32                 `json:"favourites"`
+	IsFavourite *bool                  `json:"isFavourite"`
+	Media       *StudioMediaConnection `json:"media"`
+}
+
+// StudioMediaConnection represents a list of media associated with a studio
+type StudioMediaConnection struct {
+	PageInfo PageInfo   `json:"pageInfo"`
+	Nodes    []MediaMin `json:"nodes"`
+}
+
+type StudioDTO struct {
+	Studio Studio `json:"Studio"`
 }

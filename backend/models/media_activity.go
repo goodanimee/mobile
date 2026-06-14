@@ -4,7 +4,7 @@ import pb "goodanime-backend/proto"
 
 // ListActivity represents a list activity node.
 type ListActivity struct {
-	Id        int32   `json:"id"`
+	ID        int32   `json:"id"`
 	CreatedAt int32   `json:"createdAt"`
 	IsLiked   bool    `json:"isLiked"`
 	LikeCount int32   `json:"likeCount"`
@@ -19,7 +19,7 @@ func (la *ListActivity) ToProto() *pb.ListActivity {
 		return nil
 	}
 	return &pb.ListActivity{
-		Id:        la.Id,
+		Id:        la.ID,
 		CreatedAt: la.CreatedAt,
 		IsLiked:   la.IsLiked,
 		LikeCount: la.LikeCount,

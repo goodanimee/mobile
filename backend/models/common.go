@@ -1,3 +1,4 @@
+// Package models provides models for goodanime backend.
 package models
 
 import pb "goodanime-backend/proto"

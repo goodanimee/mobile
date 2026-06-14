@@ -8,7 +8,7 @@ func (r *ReviewNode) ToProto() *pb.ReviewNode {
 		return nil
 	}
 	return &pb.ReviewNode{
-		Id:           r.Id,
+		Id:           r.ID,
 		Score:        r.Score,
 		Rating:       r.Rating,
 		RatingAmount: r.RatingAmount,
@@ -46,7 +46,7 @@ func (c *ReviewConnection) ToProto() *pb.ReviewConnection {
 
 // ReviewNode represents a review
 type ReviewNode struct {
-	Id           int32   `json:"id"`
+	ID           int32   `json:"id"`
 	Score        int32   `json:"score"`
 	Rating       int32   `json:"rating"`
 	RatingAmount int32   `json:"ratingAmount"`
