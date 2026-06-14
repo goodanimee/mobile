@@ -9,6 +9,7 @@ import '../../../components/stat_item.dart';
 import '../../../models/media.dart';
 import '../../../models/media_misc.dart';
 import '../../../theme/theme.dart';
+import '../../../utils/app_navigation.dart';
 import '../../../utils/utils.dart';
 import '../widgets/airing_countdown.dart';
 
@@ -108,7 +109,7 @@ class MediaInfoTab extends StatelessWidget {
             }).toList(),
           ),
         ],
-        _buildStudiosSection(),
+        _buildStudiosSection(context),
         _buildTitlesSection(),
         if (tags.isNotEmpty)
           AppSection(
@@ -221,7 +222,7 @@ class MediaInfoTab extends StatelessWidget {
   }
 
   /// Builds the studios and producers sections
-  Widget _buildStudiosSection() {
+  Widget _buildStudiosSection(BuildContext context) {
     final studioEdges = media.studios;
 
     if (studioEdges.isEmpty) {
@@ -243,7 +244,9 @@ class MediaInfoTab extends StatelessWidget {
     }
 
     final mainStudios = uniqueStudios.values.where((s) => s.isMain).toList();
-    final producerStudios = uniqueStudios.values.where((s) => !s.isMain).toList();
+    final producerStudios = uniqueStudios.values
+        .where((s) => !s.isMain)
+        .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,6 +265,7 @@ class MediaInfoTab extends StatelessWidget {
                       horizontal: 12,
                       vertical: 6,
                     ),
+                    onTap: () => AppNavigation.toStudio(context, studio.id),
                   );
                 }).toList(),
               ),
@@ -281,6 +285,7 @@ class MediaInfoTab extends StatelessWidget {
                       horizontal: 12,
                       vertical: 6,
                     ),
+                    onTap: () => AppNavigation.toStudio(context, studio.id),
                   );
                 }).toList(),
               ),

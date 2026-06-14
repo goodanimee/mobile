@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/media_character.dart';
 import '../pages/media_page.dart';
 import '../pages/media_page/widgets/character_sheet.dart';
+import '../pages/studio_page.dart';
 import 'utils.dart';
 
 /// Centralized manager for app transitions and navigation
@@ -28,6 +29,16 @@ class AppNavigation {
         CacheUtils.mangaListNeedsRefresh.value) {
       onRefresh?.call();
     }
+  }
+
+  /// Navigate to Studio details
+  static Future<void> toStudio(BuildContext context, int studioId) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (context) => StudioPage(studioId: studioId),
+      ),
+    );
   }
 
   /// Open character details sheet
