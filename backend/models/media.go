@@ -15,7 +15,6 @@ func (m *Media) ToProto() *pb.Media {
 		Genres:            m.Genres,
 		Popularity:        m.Popularity,
 		Season:            m.Season,
-		SeasonYear:        m.SeasonYear,
 		Trailer:           m.Trailer.ToProto(),
 		MediaListEntry:    m.MediaListEntry.ToProto(),
 		Studios:           m.Studios.ToProto(),
@@ -57,7 +56,6 @@ type Media struct {
 	Genres            []string                 `json:"genres"`
 	Popularity        int32                    `json:"popularity"`
 	Season            string                   `json:"season"`
-	SeasonYear        int32                    `json:"seasonYear"`
 	Trailer           *Trailer                 `json:"trailer"`
 	MediaListEntry    *MediaListEntry          `json:"mediaListEntry"`
 	Studios           *StudioConnection        `json:"studios"`

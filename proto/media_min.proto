@@ -31,4 +31,5 @@ message MediaMin {
   int32 chapters = 10;
   int32 volumes = 11;
   string type = 12;
+  optional int32 season_year = 13;
 }

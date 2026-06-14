@@ -21,9 +21,6 @@ class Media extends MediaMin {
   /// Airing status
   final String status;
 
-  /// Season year
-  final int seasonYear;
-
   /// Airing season
   final String season;
 
@@ -106,7 +103,7 @@ class Media extends MediaMin {
     required super.type,
     required this.bannerImage,
     required this.status,
-    required this.seasonYear,
+    super.seasonYear,
     required this.season,
     this.meanScore,
     this.favourites,
@@ -146,7 +143,7 @@ class Media extends MediaMin {
       type: pbObj.base.type,
       bannerImage: pbObj.bannerImage,
       status: pbObj.status,
-      seasonYear: pbObj.seasonYear,
+      seasonYear: pbObj.base.hasSeasonYear() ? pbObj.base.seasonYear : null,
       season: pbObj.season,
       meanScore: pbObj.hasMeanScore() ? pbObj.meanScore : null,
       favourites: pbObj.hasFavourites() ? pbObj.favourites : null,
@@ -197,7 +194,6 @@ class Media extends MediaMin {
       base: super.toProto() as pbm.MediaMin,
       bannerImage: bannerImage,
       status: status,
-      seasonYear: seasonYear,
       season: season,
       popularity: popularity,
       description: description,

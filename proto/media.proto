@@ -23,7 +23,6 @@ message Media {
   repeated string genres = 5;
   int32 popularity = 6;
   string season = 7;
-  int32 season_year = 8;
   Trailer trailer = 9;
   MediaListEntry media_list_entry = 10;
   StudioConnection studios = 11;

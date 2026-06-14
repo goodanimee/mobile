@@ -208,6 +208,7 @@ class MediaMin extends $pb.GeneratedMessage {
     $core.int? chapters,
     $core.int? volumes,
     $core.String? type,
+    $core.int? seasonYear,
   }) {
     final result = create();
     if (id != null) result.id = id;
@@ -222,6 +223,7 @@ class MediaMin extends $pb.GeneratedMessage {
     if (chapters != null) result.chapters = chapters;
     if (volumes != null) result.volumes = volumes;
     if (type != null) result.type = type;
+    if (seasonYear != null) result.seasonYear = seasonYear;
     return result;
   }
 
@@ -251,6 +253,7 @@ class MediaMin extends $pb.GeneratedMessage {
     ..aI(10, _omitFieldNames ? '' : 'chapters')
     ..aI(11, _omitFieldNames ? '' : 'volumes')
     ..aOS(12, _omitFieldNames ? '' : 'type')
+    ..aI(13, _omitFieldNames ? '' : 'seasonYear')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -382,6 +385,15 @@ class MediaMin extends $pb.GeneratedMessage {
   $core.bool hasType() => $_has(11);
   @$pb.TagNumber(12)
   void clearType() => $_clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.int get seasonYear => $_getIZ(12);
+  @$pb.TagNumber(13)
+  set seasonYear($core.int value) => $_setSignedInt32(12, value);
+  @$pb.TagNumber(13)
+  $core.bool hasSeasonYear() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearSeasonYear() => $_clearField(13);
 }
 
 const $core.bool _omitFieldNames =

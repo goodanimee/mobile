@@ -64,7 +64,6 @@ fragment MediaFields on Media {
     chapters
     volumes
     status
-    seasonYear
     season
     averageScore
     meanScore
@@ -255,6 +254,7 @@ fragment MediaMinFields on Media {
     isAdult
     isFavourite
     siteUrl
+    seasonYear
     coverImage {
         ...CoverImageFields
     }

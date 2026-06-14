@@ -125,6 +125,9 @@ class MediaMin {
   /// AniList site URL
   final String siteUrl;
 
+  /// The year the media started airing
+  final int? seasonYear;
+
   /// Creates a minimal media
   const MediaMin({
     required this.id,
@@ -139,6 +142,7 @@ class MediaMin {
     required this.isAdult,
     required this.isFavourite,
     required this.siteUrl,
+    this.seasonYear,
   });
 
   /// Creates a minimal media from a protobuf object
@@ -156,12 +160,13 @@ class MediaMin {
       isAdult: pbObj.isAdult,
       isFavourite: pbObj.isFavourite,
       siteUrl: pbObj.siteUrl,
+      seasonYear: pbObj.hasSeasonYear() ? pbObj.seasonYear : null,
     );
   }
 
   /// Converts the minimal media to a protobuf object
   GeneratedMessage toProto() {
-    return pb.MediaMin(
+    final pbObj = pb.MediaMin(
       id: id,
       type: type,
       title: title.toProto(),
@@ -175,6 +180,8 @@ class MediaMin {
       isFavourite: isFavourite,
       siteUrl: siteUrl,
     );
+    if (seasonYear != null) pbObj.seasonYear = seasonYear!;
+    return pbObj;
   }
 
   /// Creates a copy of this object with the given fields replaced
@@ -191,6 +198,7 @@ class MediaMin {
     bool? isAdult,
     bool? isFavourite,
     String? siteUrl,
+    int? seasonYear,
   }) {
     return MediaMin(
       id: id ?? this.id,
@@ -205,6 +213,7 @@ class MediaMin {
       isAdult: isAdult ?? this.isAdult,
       isFavourite: isFavourite ?? this.isFavourite,
       siteUrl: siteUrl ?? this.siteUrl,
+      seasonYear: seasonYear ?? this.seasonYear,
     );
   }
 }

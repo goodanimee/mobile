@@ -46,6 +46,7 @@ func (m *MediaMin) ToProto() *pb.MediaMin {
 		IsAdult:      m.IsAdult,
 		IsFavourite:  m.IsFavourite,
 		SiteUrl:      m.SiteURL,
+		SeasonYear:   m.SeasonYear,
 	}
 }
 
@@ -79,4 +80,5 @@ type MediaMin struct {
 	IsAdult      bool       `json:"isAdult"`
 	IsFavourite  bool       `json:"isFavourite"`
 	SiteURL      string     `json:"siteUrl"`
+	SeasonYear   *int32     `json:"seasonYear"`
 }

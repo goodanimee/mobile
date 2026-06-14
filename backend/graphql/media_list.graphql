@@ -15,6 +15,7 @@ query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
                     format
                     isAdult
                     isFavourite
+                    seasonYear
                     siteUrl
                     title {
                         english

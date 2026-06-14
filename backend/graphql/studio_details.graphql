@@ -27,6 +27,7 @@ fragment MediaMinFields on Media {
   isAdult
   isFavourite
   siteUrl
+  seasonYear
   coverImage {
     ...CoverImageFields
   }

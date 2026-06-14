@@ -171,6 +171,7 @@ type MediaMin struct {
 	Chapters      int32                  `protobuf:"varint,10,opt,name=chapters,proto3" json:"chapters,omitempty"`
 	Volumes       int32                  `protobuf:"varint,11,opt,name=volumes,proto3" json:"volumes,omitempty"`
 	Type          string                 `protobuf:"bytes,12,opt,name=type,proto3" json:"type,omitempty"`
+	SeasonYear    *int32                 `protobuf:"varint,13,opt,name=season_year,json=seasonYear,proto3,oneof" json:"season_year,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -289,6 +290,13 @@ func (x *MediaMin) GetType() string {
 	return ""
 }
 
+func (x *MediaMin) GetSeasonYear() int32 {
+	if x != nil && x.SeasonYear != nil {
+		return *x.SeasonYear
+	}
+	return 0
+}
+
 var File_media_min_proto protoreflect.FileDescriptor
 
 const file_media_min_proto_rawDesc = "" +
@@ -305,7 +313,7 @@ const file_media_min_proto_rawDesc = "" +
 	"\x05large\x18\x02 \x01(\tR\x05large\x12\x1f\n" +
 	"\vextra_large\x18\x03 \x01(\tR\n" +
 	"extraLarge\x12\x14\n" +
-	"\x05color\x18\x04 \x01(\tR\x05color\"\xf6\x02\n" +
+	"\x05color\x18\x04 \x01(\tR\x05color\"\xac\x03\n" +
 	"\bMediaMin\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12&\n" +
 	"\x05title\x18\x02 \x01(\v2\x10.goodanime.TitleR\x05title\x12#\n" +
@@ -320,7 +328,10 @@ const file_media_min_proto_rawDesc = "" +
 	"\bchapters\x18\n" +
 	" \x01(\x05R\bchapters\x12\x18\n" +
 	"\avolumes\x18\v \x01(\x05R\avolumes\x12\x12\n" +
-	"\x04type\x18\f \x01(\tR\x04typeB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x04type\x18\f \x01(\tR\x04type\x12$\n" +
+	"\vseason_year\x18\r \x01(\x05H\x00R\n" +
+	"seasonYear\x88\x01\x01B\x0e\n" +
+	"\f_season_yearB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_media_min_proto_rawDescOnce sync.Once
@@ -355,6 +366,7 @@ func file_media_min_proto_init() {
 	if File_media_min_proto != nil {
 		return
 	}
+	file_media_min_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

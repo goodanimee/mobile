@@ -30,7 +30,6 @@ type Media struct {
 	Genres            []string                  `protobuf:"bytes,5,rep,name=genres,proto3" json:"genres,omitempty"`
 	Popularity        int32                     `protobuf:"varint,6,opt,name=popularity,proto3" json:"popularity,omitempty"`
 	Season            string                    `protobuf:"bytes,7,opt,name=season,proto3" json:"season,omitempty"`
-	SeasonYear        int32                     `protobuf:"varint,8,opt,name=season_year,json=seasonYear,proto3" json:"season_year,omitempty"`
 	Trailer           *Trailer                  `protobuf:"bytes,9,opt,name=trailer,proto3" json:"trailer,omitempty"`
 	MediaListEntry    *MediaListEntry           `protobuf:"bytes,10,opt,name=media_list_entry,json=mediaListEntry,proto3" json:"media_list_entry,omitempty"`
 	Studios           *StudioConnection         `protobuf:"bytes,11,opt,name=studios,proto3" json:"studios,omitempty"`
@@ -130,13 +129,6 @@ func (x *Media) GetSeason() string {
 		return x.Season
 	}
 	return ""
-}
-
-func (x *Media) GetSeasonYear() int32 {
-	if x != nil {
-		return x.SeasonYear
-	}
-	return 0
 }
 
 func (x *Media) GetTrailer() *Trailer {
@@ -269,7 +261,7 @@ var File_media_proto protoreflect.FileDescriptor
 
 const file_media_proto_rawDesc = "" +
 	"\n" +
-	"\vmedia.proto\x12\tgoodanime\x1a\x15media_character.proto\x1a\x10media_edge.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x1amedia_recommendation.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\x11media_trend.proto\"\xf5\t\n" +
+	"\vmedia.proto\x12\tgoodanime\x1a\x15media_character.proto\x1a\x10media_edge.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x1amedia_recommendation.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\x11media_trend.proto\"\xd4\t\n" +
 	"\x05Media\x12'\n" +
 	"\x04base\x18\x01 \x01(\v2\x13.goodanime.MediaMinR\x04base\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12!\n" +
@@ -279,9 +271,7 @@ const file_media_proto_rawDesc = "" +
 	"\n" +
 	"popularity\x18\x06 \x01(\x05R\n" +
 	"popularity\x12\x16\n" +
-	"\x06season\x18\a \x01(\tR\x06season\x12\x1f\n" +
-	"\vseason_year\x18\b \x01(\x05R\n" +
-	"seasonYear\x12,\n" +
+	"\x06season\x18\a \x01(\tR\x06season\x12,\n" +
 	"\atrailer\x18\t \x01(\v2\x12.goodanime.TrailerR\atrailer\x12C\n" +
 	"\x10media_list_entry\x18\n" +
 	" \x01(\v2\x19.goodanime.MediaListEntryR\x0emediaListEntry\x125\n" +

@@ -36,7 +36,6 @@ class Media extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? genres,
     $core.int? popularity,
     $core.String? season,
-    $core.int? seasonYear,
     $1.Trailer? trailer,
     $2.MediaListEntry? mediaListEntry,
     $3.StudioConnection? studios,
@@ -64,7 +63,6 @@ class Media extends $pb.GeneratedMessage {
     if (genres != null) result.genres.addAll(genres);
     if (popularity != null) result.popularity = popularity;
     if (season != null) result.season = season;
-    if (seasonYear != null) result.seasonYear = seasonYear;
     if (trailer != null) result.trailer = trailer;
     if (mediaListEntry != null) result.mediaListEntry = mediaListEntry;
     if (studios != null) result.studios = studios;
@@ -108,7 +106,6 @@ class Media extends $pb.GeneratedMessage {
     ..pPS(5, _omitFieldNames ? '' : 'genres')
     ..aI(6, _omitFieldNames ? '' : 'popularity')
     ..aOS(7, _omitFieldNames ? '' : 'season')
-    ..aI(8, _omitFieldNames ? '' : 'seasonYear')
     ..aOM<$1.Trailer>(9, _omitFieldNames ? '' : 'trailer',
         subBuilder: $1.Trailer.create)
     ..aOM<$2.MediaListEntry>(10, _omitFieldNames ? '' : 'mediaListEntry',
@@ -222,169 +219,160 @@ class Media extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   void clearSeason() => $_clearField(7);
 
-  @$pb.TagNumber(8)
-  $core.int get seasonYear => $_getIZ(7);
-  @$pb.TagNumber(8)
-  set seasonYear($core.int value) => $_setSignedInt32(7, value);
-  @$pb.TagNumber(8)
-  $core.bool hasSeasonYear() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearSeasonYear() => $_clearField(8);
-
   @$pb.TagNumber(9)
-  $1.Trailer get trailer => $_getN(8);
+  $1.Trailer get trailer => $_getN(7);
   @$pb.TagNumber(9)
   set trailer($1.Trailer value) => $_setField(9, value);
   @$pb.TagNumber(9)
-  $core.bool hasTrailer() => $_has(8);
+  $core.bool hasTrailer() => $_has(7);
   @$pb.TagNumber(9)
   void clearTrailer() => $_clearField(9);
   @$pb.TagNumber(9)
-  $1.Trailer ensureTrailer() => $_ensure(8);
+  $1.Trailer ensureTrailer() => $_ensure(7);
 
   @$pb.TagNumber(10)
-  $2.MediaListEntry get mediaListEntry => $_getN(9);
+  $2.MediaListEntry get mediaListEntry => $_getN(8);
   @$pb.TagNumber(10)
   set mediaListEntry($2.MediaListEntry value) => $_setField(10, value);
   @$pb.TagNumber(10)
-  $core.bool hasMediaListEntry() => $_has(9);
+  $core.bool hasMediaListEntry() => $_has(8);
   @$pb.TagNumber(10)
   void clearMediaListEntry() => $_clearField(10);
   @$pb.TagNumber(10)
-  $2.MediaListEntry ensureMediaListEntry() => $_ensure(9);
+  $2.MediaListEntry ensureMediaListEntry() => $_ensure(8);
 
   @$pb.TagNumber(11)
-  $3.StudioConnection get studios => $_getN(10);
+  $3.StudioConnection get studios => $_getN(9);
   @$pb.TagNumber(11)
   set studios($3.StudioConnection value) => $_setField(11, value);
   @$pb.TagNumber(11)
-  $core.bool hasStudios() => $_has(10);
+  $core.bool hasStudios() => $_has(9);
   @$pb.TagNumber(11)
   void clearStudios() => $_clearField(11);
   @$pb.TagNumber(11)
-  $3.StudioConnection ensureStudios() => $_ensure(10);
+  $3.StudioConnection ensureStudios() => $_ensure(9);
 
   @$pb.TagNumber(12)
-  $pb.PbList<$1.MediaTag> get tags => $_getList(11);
+  $pb.PbList<$1.MediaTag> get tags => $_getList(10);
 
   @$pb.TagNumber(13)
-  $pb.PbList<$1.ExternalLink> get externalLinks => $_getList(12);
+  $pb.PbList<$1.ExternalLink> get externalLinks => $_getList(11);
 
   @$pb.TagNumber(14)
-  $pb.PbList<$1.StreamingEpisode> get streamingEpisodes => $_getList(13);
+  $pb.PbList<$1.StreamingEpisode> get streamingEpisodes => $_getList(12);
 
   @$pb.TagNumber(15)
-  $4.StaffConnection get staff => $_getN(14);
+  $4.StaffConnection get staff => $_getN(13);
   @$pb.TagNumber(15)
   set staff($4.StaffConnection value) => $_setField(15, value);
   @$pb.TagNumber(15)
-  $core.bool hasStaff() => $_has(14);
+  $core.bool hasStaff() => $_has(13);
   @$pb.TagNumber(15)
   void clearStaff() => $_clearField(15);
   @$pb.TagNumber(15)
-  $4.StaffConnection ensureStaff() => $_ensure(14);
+  $4.StaffConnection ensureStaff() => $_ensure(13);
 
   @$pb.TagNumber(16)
-  $1.AiringSchedule get nextAiringEpisode => $_getN(15);
+  $1.AiringSchedule get nextAiringEpisode => $_getN(14);
   @$pb.TagNumber(16)
   set nextAiringEpisode($1.AiringSchedule value) => $_setField(16, value);
   @$pb.TagNumber(16)
-  $core.bool hasNextAiringEpisode() => $_has(15);
+  $core.bool hasNextAiringEpisode() => $_has(14);
   @$pb.TagNumber(16)
   void clearNextAiringEpisode() => $_clearField(16);
   @$pb.TagNumber(16)
-  $1.AiringSchedule ensureNextAiringEpisode() => $_ensure(15);
+  $1.AiringSchedule ensureNextAiringEpisode() => $_ensure(14);
 
   @$pb.TagNumber(17)
-  $5.CharacterConnection get characters => $_getN(16);
+  $5.CharacterConnection get characters => $_getN(15);
   @$pb.TagNumber(17)
   set characters($5.CharacterConnection value) => $_setField(17, value);
   @$pb.TagNumber(17)
-  $core.bool hasCharacters() => $_has(16);
+  $core.bool hasCharacters() => $_has(15);
   @$pb.TagNumber(17)
   void clearCharacters() => $_clearField(17);
   @$pb.TagNumber(17)
-  $5.CharacterConnection ensureCharacters() => $_ensure(16);
+  $5.CharacterConnection ensureCharacters() => $_ensure(15);
 
   @$pb.TagNumber(18)
-  $6.MediaConnection get relations => $_getN(17);
+  $6.MediaConnection get relations => $_getN(16);
   @$pb.TagNumber(18)
   set relations($6.MediaConnection value) => $_setField(18, value);
   @$pb.TagNumber(18)
-  $core.bool hasRelations() => $_has(17);
+  $core.bool hasRelations() => $_has(16);
   @$pb.TagNumber(18)
   void clearRelations() => $_clearField(18);
   @$pb.TagNumber(18)
-  $6.MediaConnection ensureRelations() => $_ensure(17);
+  $6.MediaConnection ensureRelations() => $_ensure(16);
 
   @$pb.TagNumber(19)
-  $7.RecommendationConnection get recommendations => $_getN(18);
+  $7.RecommendationConnection get recommendations => $_getN(17);
   @$pb.TagNumber(19)
   set recommendations($7.RecommendationConnection value) =>
       $_setField(19, value);
   @$pb.TagNumber(19)
-  $core.bool hasRecommendations() => $_has(18);
+  $core.bool hasRecommendations() => $_has(17);
   @$pb.TagNumber(19)
   void clearRecommendations() => $_clearField(19);
   @$pb.TagNumber(19)
-  $7.RecommendationConnection ensureRecommendations() => $_ensure(18);
+  $7.RecommendationConnection ensureRecommendations() => $_ensure(17);
 
   @$pb.TagNumber(20)
-  $pb.PbList<$1.MediaRank> get rankings => $_getList(19);
+  $pb.PbList<$1.MediaRank> get rankings => $_getList(18);
 
   @$pb.TagNumber(21)
-  $1.MediaStats get stats => $_getN(20);
+  $1.MediaStats get stats => $_getN(19);
   @$pb.TagNumber(21)
   set stats($1.MediaStats value) => $_setField(21, value);
   @$pb.TagNumber(21)
-  $core.bool hasStats() => $_has(20);
+  $core.bool hasStats() => $_has(19);
   @$pb.TagNumber(21)
   void clearStats() => $_clearField(21);
   @$pb.TagNumber(21)
-  $1.MediaStats ensureStats() => $_ensure(20);
+  $1.MediaStats ensureStats() => $_ensure(19);
 
   @$pb.TagNumber(22)
-  $8.MediaTrendConnection get trends => $_getN(21);
+  $8.MediaTrendConnection get trends => $_getN(20);
   @$pb.TagNumber(22)
   set trends($8.MediaTrendConnection value) => $_setField(22, value);
   @$pb.TagNumber(22)
-  $core.bool hasTrends() => $_has(21);
+  $core.bool hasTrends() => $_has(20);
   @$pb.TagNumber(22)
   void clearTrends() => $_clearField(22);
   @$pb.TagNumber(22)
-  $8.MediaTrendConnection ensureTrends() => $_ensure(21);
+  $8.MediaTrendConnection ensureTrends() => $_ensure(20);
 
   @$pb.TagNumber(23)
-  $core.int get meanScore => $_getIZ(22);
+  $core.int get meanScore => $_getIZ(21);
   @$pb.TagNumber(23)
-  set meanScore($core.int value) => $_setSignedInt32(22, value);
+  set meanScore($core.int value) => $_setSignedInt32(21, value);
   @$pb.TagNumber(23)
-  $core.bool hasMeanScore() => $_has(22);
+  $core.bool hasMeanScore() => $_has(21);
   @$pb.TagNumber(23)
   void clearMeanScore() => $_clearField(23);
 
   @$pb.TagNumber(24)
-  $core.int get favourites => $_getIZ(23);
+  $core.int get favourites => $_getIZ(22);
   @$pb.TagNumber(24)
-  set favourites($core.int value) => $_setSignedInt32(23, value);
+  set favourites($core.int value) => $_setSignedInt32(22, value);
   @$pb.TagNumber(24)
-  $core.bool hasFavourites() => $_has(23);
+  $core.bool hasFavourites() => $_has(22);
   @$pb.TagNumber(24)
   void clearFavourites() => $_clearField(24);
 
   @$pb.TagNumber(25)
-  $pb.PbList<$core.String> get synonyms => $_getList(24);
+  $pb.PbList<$core.String> get synonyms => $_getList(23);
 
   @$pb.TagNumber(26)
-  $9.ReviewConnection get reviews => $_getN(25);
+  $9.ReviewConnection get reviews => $_getN(24);
   @$pb.TagNumber(26)
   set reviews($9.ReviewConnection value) => $_setField(26, value);
   @$pb.TagNumber(26)
-  $core.bool hasReviews() => $_has(25);
+  $core.bool hasReviews() => $_has(24);
   @$pb.TagNumber(26)
   void clearReviews() => $_clearField(26);
   @$pb.TagNumber(26)
-  $9.ReviewConnection ensureReviews() => $_ensure(25);
+  $9.ReviewConnection ensureReviews() => $_ensure(24);
 }
 
 const $core.bool _omitFieldNames =

@@ -107,7 +107,9 @@ class MediaPageHeader extends StatelessWidget {
                         LucideIcons.rss,
                         media.status.isNotEmpty ? media.status : 'FINISHED',
                       ),
-                      if (media.season.isNotEmpty && media.seasonYear > 0) ...[
+                      if (media.season.isNotEmpty &&
+                          media.seasonYear != null &&
+                          media.seasonYear! > 0) ...[
                         const SizedBox(height: 8),
                         _buildInfoRow(
                           LucideIcons.calendarDays,

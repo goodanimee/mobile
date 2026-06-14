@@ -79,6 +79,18 @@ const MediaMin$json = {
     {'1': 'chapters', '3': 10, '4': 1, '5': 5, '10': 'chapters'},
     {'1': 'volumes', '3': 11, '4': 1, '5': 5, '10': 'volumes'},
     {'1': 'type', '3': 12, '4': 1, '5': 9, '10': 'type'},
+    {
+      '1': 'season_year',
+      '3': 13,
+      '4': 1,
+      '5': 5,
+      '9': 0,
+      '10': 'seasonYear',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_season_year'},
   ],
 };
 
@@ -90,4 +102,5 @@ final $typed_data.Uint8List mediaMinDescriptor = $convert.base64Decode(
     'NvZGVzGAUgASgFUghlcGlzb2RlcxIWCgZmb3JtYXQYBiABKAlSBmZvcm1hdBIZCghpc19hZHVs'
     'dBgHIAEoCFIHaXNBZHVsdBIhCgxpc19mYXZvdXJpdGUYCCABKAhSC2lzRmF2b3VyaXRlEhkKCH'
     'NpdGVfdXJsGAkgASgJUgdzaXRlVXJsEhoKCGNoYXB0ZXJzGAogASgFUghjaGFwdGVycxIYCgd2'
-    'b2x1bWVzGAsgASgFUgd2b2x1bWVzEhIKBHR5cGUYDCABKAlSBHR5cGU=');
+    'b2x1bWVzGAsgASgFUgd2b2x1bWVzEhIKBHR5cGUYDCABKAlSBHR5cGUSJAoLc2Vhc29uX3llYX'
+    'IYDSABKAVIAFIKc2Vhc29uWWVhcogBAUIOCgxfc2Vhc29uX3llYXI=');
