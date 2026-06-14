@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../components/app_relation_card.dart';
 import '../components/error_view.dart';
 import '../components/loading_indicator.dart';
 import '../components/lucide_icons_helper.dart';
@@ -8,6 +9,8 @@ import '../models/media_min.dart';
 import '../models/media_studio.dart';
 import '../services/media_service.dart';
 import '../theme/theme.dart';
+import '../utils/app_navigation.dart';
+import '../utils/utils.dart';
 
 /// A page displaying details for a production studio
 class StudioPage extends StatefulWidget {
@@ -22,6 +25,11 @@ class StudioPage extends StatefulWidget {
 }
 
 class _StudioPageState extends State<StudioPage> {
+  final ScrollController _scrollController = ScrollController();
+  final List<MediaMin> _mediaNodes = [];
+  int _currentPage = 1;
+  bool _hasNextPage = false;
+  bool _isFetchingMore = false;
   bool _isLoading = true;
   Studio? _studio;
   String? _error;
@@ -29,7 +37,23 @@ class _StudioPageState extends State<StudioPage> {
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_scrollListener);
     _fetchStudioDetails();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (!_hasNextPage || _isFetchingMore || _isLoading) return;
+
+    final threshold = _scrollController.position.maxScrollExtent - 400;
+    if (_scrollController.offset >= threshold) {
+      _loadMore();
+    }
   }
 
   Future<void> _fetchStudioDetails() async {
@@ -38,6 +62,10 @@ class _StudioPageState extends State<StudioPage> {
       if (mounted) {
         setState(() {
           _studio = data;
+          _mediaNodes.clear();
+          _mediaNodes.addAll(data.media?.nodes ?? []);
+          _hasNextPage = data.media?.pageInfo.hasNextPage ?? false;
+          _currentPage = 1;
           _isLoading = false;
         });
       }
@@ -46,6 +74,36 @@ class _StudioPageState extends State<StudioPage> {
         setState(() {
           _error = 'Failed to load studio: $e';
           _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _loadMore() async {
+    if (_isFetchingMore || !_hasNextPage) return;
+
+    setState(() {
+      _isFetchingMore = true;
+    });
+
+    try {
+      final data = await MediaService.getStudio(
+        widget.studioId,
+        _currentPage + 1,
+      );
+      if (mounted) {
+        setState(() {
+          final newNodes = data.media?.nodes ?? [];
+          _mediaNodes.addAll(newNodes);
+          _currentPage++;
+          _hasNextPage = data.media?.pageInfo.hasNextPage ?? false;
+          _isFetchingMore = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _isFetchingMore = false;
         });
       }
     }
@@ -70,10 +128,7 @@ class _StudioPageState extends State<StudioPage> {
         },
       );
     } else {
-      final studio = _studio!;
-      final mediaNodes = studio.media?.nodes ?? [];
-
-      if (mediaNodes.isEmpty) {
+      if (_mediaNodes.isEmpty) {
         body = Center(
           child: Text(
             'No media found for this studio',
@@ -82,7 +137,7 @@ class _StudioPageState extends State<StudioPage> {
         );
       } else {
         final grouped = <String, List<MediaMin>>{};
-        for (final media in mediaNodes) {
+        for (final media in _mediaNodes) {
           final year = media.seasonYear?.toString() ?? 'TBA';
           grouped.putIfAbsent(year, () => []).add(media);
         }
@@ -93,10 +148,29 @@ class _StudioPageState extends State<StudioPage> {
           flatList.addAll(items);
         });
 
+        int itemCount = flatList.length;
+        if (_isFetchingMore) {
+          itemCount += 1;
+        } else if (!_hasNextPage) {
+          itemCount += 1;
+        }
+
         body = ListView.builder(
+          controller: _scrollController,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          itemCount: flatList.length,
+          itemCount: itemCount,
           itemBuilder: (context, index) {
+            if (index == flatList.length) {
+              if (_isFetchingMore) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: Center(child: AppLoadingIndicator(topPadding: 0)),
+                );
+              } else {
+                return const SizedBox(height: 80);
+              }
+            }
+
             final element = flatList[index];
 
             if (element is String) {
@@ -122,25 +196,35 @@ class _StudioPageState extends State<StudioPage> {
                 ? media.title.english
                 : 'Unknown';
 
+            final format = media.format.replaceAll('_', ' ');
+            String subtitle = format;
+            if (media.type == 'ANIME') {
+              if (media.episodes > 0) {
+                subtitle += ' \u00B7 ${media.episodes} Episodes';
+              }
+            } else if (media.type == 'MANGA') {
+              if (media.chapters > 0) {
+                subtitle += ' \u00B7 ${media.chapters} Chapters';
+              }
+            }
+
+            final colorHex = media.coverImage.color;
+            final color = ColorUtils.fromHex(
+              colorHex,
+              fallback: Colors.transparent,
+            );
+
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 6),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
-                decoration: BoxDecoration(
-                  color: hoverBgColor,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: cardBorderColor),
-                ),
-                child: Text(
-                  titleText,
-                  style: TextStyle(
-                    color: textPrimary,
-                    fontSize: fontBody(context),
-                    fontWeight: FontWeight.w500,
-                  ),
+              child: SizedBox(
+                height: 110,
+                child: AppRelationCard(
+                  imageUrl: media.coverImage.large,
+                  title: titleText,
+                  nativeTitle: media.title.native,
+                  subtitle: subtitle,
+                  color: color != Colors.transparent ? color : null,
+                  onTap: () => AppNavigation.toMedia(context, media.id),
                 ),
               ),
             );
