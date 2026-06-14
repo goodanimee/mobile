@@ -21,6 +21,9 @@ import (
 //go:embed graphql/studio_details.graphql
 var studioDetailsQuery string
 
+// FetchStudioDetails fetches details of a studio by its ID.
+//
+//export FetchStudioDetails
 func FetchStudioDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchStudioDetailsResponse{}
