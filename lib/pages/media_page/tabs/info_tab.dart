@@ -220,7 +220,7 @@ class MediaInfoTab extends StatelessWidget {
     );
   }
 
-  /// Builds the studios section
+  /// Builds the studios and producers sections
   Widget _buildStudiosSection() {
     final studioEdges = media.studios;
 
@@ -228,43 +228,64 @@ class MediaInfoTab extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return AppSection(
-      title: 'Studios',
+    final uniqueStudios = <int, ({int id, String name, bool isMain})>{};
+    for (final edge in studioEdges) {
+      final isMain = edge.isMain;
+      final node = edge.node;
+      final studioId = node.id;
+      if (!uniqueStudios.containsKey(studioId) || isMain) {
+        uniqueStudios[studioId] = (
+          id: studioId,
+          name: node.name,
+          isMain: isMain,
+        );
+      }
+    }
+
+    final mainStudios = uniqueStudios.values.where((s) => s.isMain).toList();
+    final producerStudios = uniqueStudios.values.where((s) => !s.isMain).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
-          children: (() {
-            final uniqueStudios = <int, ({int id, String name, bool isMain})>{};
-            for (final edge in studioEdges) {
-              final isMain = edge.isMain;
-              final node = edge.node;
-              final studioId = node.id;
-              if (!uniqueStudios.containsKey(studioId) || isMain) {
-                uniqueStudios[studioId] = (
-                  id: studioId,
-                  name: node.name,
-                  isMain: isMain,
-                );
-              }
-            }
-            final sortedStudios = uniqueStudios.values.toList()
-              ..sort((a, b) {
-                final aMain = a.isMain ? 1 : 0;
-                final bMain = b.isMain ? 1 : 0;
-                return bMain.compareTo(aMain);
-              });
-            return sortedStudios.map((studio) {
-              return AppPill(
-                label: studio.name,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-              );
-            }).toList();
-          })(),
-        ),
+        if (mainStudios.isNotEmpty)
+          AppSection(
+            title: 'Studios',
+            children: [
+              Wrap(
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: mainStudios.map((studio) {
+                  return AppPill(
+                    label: studio.name,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+        if (producerStudios.isNotEmpty)
+          AppSection(
+            title: 'Producers',
+            children: [
+              Wrap(
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: producerStudios.map((studio) {
+                  return AppPill(
+                    label: studio.name,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
       ],
     );
   }
