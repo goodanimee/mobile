@@ -9,6 +9,7 @@ import '../models/media_character.dart';
 import '../models/media_recommendation.dart';
 import '../models/media_review.dart';
 import '../models/media_staff.dart';
+import '../models/media_studio.dart';
 import '../proto/api.pb.dart';
 import '../proto/media.pb.dart' as pb_media;
 import '../proto/media_review.pb.dart' as pb_review;
@@ -188,6 +189,13 @@ class MediaService {
       perPage: 25,
     );
     return MediaApi.fetchMediaActivities(req, token);
+  }
+
+  /// Fetches details of a studio by its ID.
+  static Future<Studio> getStudio(int studioId, int page) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = FetchStudioDetailsRequest(studioId: studioId, page: page);
+    return MediaApi.fetchStudioDetails(req, token);
   }
 
   static Future<void> _saveToDiskCache(

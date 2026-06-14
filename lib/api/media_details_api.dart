@@ -10,6 +10,7 @@ import '../models/media_character.dart';
 import '../models/media_recommendation.dart';
 import '../models/media_review.dart';
 import '../models/media_staff.dart';
+import '../models/media_studio.dart';
 import '../proto/api.pb.dart';
 import 'ffi_core.dart';
 
@@ -193,6 +194,24 @@ typedef _FetchMediaActivitiesDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for fetching studio details
+typedef _FetchStudioDetailsC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for fetching studio details
+typedef _FetchStudioDetailsDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// API class for media-related operations
 class MediaApi {
   static late _FetchMediaDetailsDart _fetchMediaDetails;
@@ -205,6 +224,7 @@ class MediaApi {
   static late _ToggleActivityLikeDart _toggleActivityLike;
   static late _RateReviewDart _rateReview;
   static late _FetchMediaActivitiesDart _fetchMediaActivities;
+  static late _FetchStudioDetailsDart _fetchStudioDetails;
   static bool _initialized = false;
 
   static void _init() {
@@ -250,6 +270,10 @@ class MediaApi {
     _fetchMediaActivities = FfiCore.lib
         .lookupFunction<_FetchMediaActivitiesC, _FetchMediaActivitiesDart>(
           'FetchMediaActivities',
+        );
+    _fetchStudioDetails = FfiCore.lib
+        .lookupFunction<_FetchStudioDetailsC, _FetchStudioDetailsDart>(
+          'FetchStudioDetails',
         );
     _initialized = true;
   }
@@ -552,6 +576,34 @@ class MediaApi {
           pageInfo: PageInfo.fromProto(response.pageInfo),
           nodes: response.activities.map(ListActivity.fromProto).toList(),
         );
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
+  /// Fetches details of a studio by its ID.
+  static Future<Studio> fetchStudioDetails(
+    FetchStudioDetailsRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      _init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = FfiCore.executeNativeCall(
+          (outLenPtr) =>
+              _fetchStudioDetails(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
+        );
+        final response = FetchStudioDetailsResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return Studio.fromProto(response.studio);
       } finally {
         calloc.free(reqPtr);
         calloc.free(tokenPtr);
