@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../components/error_view.dart';
 import '../components/loading_indicator.dart';
 import '../components/lucide_icons_helper.dart';
+import '../models/media_min.dart';
 import '../models/media_studio.dart';
 import '../services/media_service.dart';
 import '../theme/theme.dart';
@@ -80,12 +81,39 @@ class _StudioPageState extends State<StudioPage> {
           ),
         );
       } else {
-        body = ListView.separated(
+        final grouped = <String, List<MediaMin>>{};
+        for (final media in mediaNodes) {
+          final year = media.seasonYear?.toString() ?? 'TBA';
+          grouped.putIfAbsent(year, () => []).add(media);
+        }
+
+        final flatList = <dynamic>[];
+        grouped.forEach((year, items) {
+          flatList.add(year);
+          flatList.addAll(items);
+        });
+
+        body = ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          itemCount: mediaNodes.length,
-          separatorBuilder: (context, index) => const SizedBox(height: 12),
+          itemCount: flatList.length,
           itemBuilder: (context, index) {
-            final media = mediaNodes[index];
+            final element = flatList[index];
+
+            if (element is String) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 8),
+                child: Text(
+                  element,
+                  style: TextStyle(
+                    color: textSecondary,
+                    fontSize: fontLarge(context),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );
+            }
+
+            final media = element as MediaMin;
             final titleText = media.title.userPreferred.isNotEmpty
                 ? media.title.userPreferred
                 : media.title.romaji.isNotEmpty
@@ -94,19 +122,25 @@ class _StudioPageState extends State<StudioPage> {
                 ? media.title.english
                 : 'Unknown';
 
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              decoration: BoxDecoration(
-                color: hoverBgColor,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: cardBorderColor),
-              ),
-              child: Text(
-                titleText,
-                style: TextStyle(
-                  color: textPrimary,
-                  fontSize: fontBody(context),
-                  fontWeight: FontWeight.w500,
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
+                decoration: BoxDecoration(
+                  color: hoverBgColor,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: cardBorderColor),
+                ),
+                child: Text(
+                  titleText,
+                  style: TextStyle(
+                    color: textPrimary,
+                    fontSize: fontBody(context),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             );
