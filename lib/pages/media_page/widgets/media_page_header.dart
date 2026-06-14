@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../components/app_network_image.dart';
 import '../../../models/media.dart';
 import '../../../theme/theme.dart';
+import '../../../utils/utils.dart';
 
 /// Header component for the media details page
 class MediaPageHeader extends StatelessWidget {
@@ -100,7 +101,9 @@ class MediaPageHeader extends StatelessWidget {
                     if (media.type == 'ANIME') ...[
                       _buildInfoRow(
                         LucideIcons.timer,
-                        '${media.episodes > 0 ? media.episodes.toString() : '?'} Episodes',
+                        media.episodes > 0
+                            ? '${media.episodes} ${StringUtils.pluralize(media.episodes, 'Episode', 'Episodes')}'
+                            : '? Episodes',
                       ),
                       const SizedBox(height: 8),
                       _buildInfoRow(
@@ -119,13 +122,15 @@ class MediaPageHeader extends StatelessWidget {
                     ] else ...[
                       _buildInfoRow(
                         LucideIcons.bookOpen,
-                        '${media.chapters > 0 ? media.chapters.toString() : '?'} Chapters',
+                        media.chapters > 0
+                            ? '${media.chapters} ${StringUtils.pluralize(media.chapters, 'Chapter', 'Chapters')}'
+                            : '? Chapters',
                       ),
                       if (media.volumes > 0) ...[
                         const SizedBox(height: 8),
                         _buildInfoRow(
                           LucideIcons.bookCopy,
-                          '${media.volumes} Volumes',
+                          '${media.volumes} ${StringUtils.pluralize(media.volumes, 'Volume', 'Volumes')}',
                         ),
                       ],
                       const SizedBox(height: 8),

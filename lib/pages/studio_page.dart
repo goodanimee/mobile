@@ -235,11 +235,13 @@ class _StudioPageState extends State<StudioPage> {
             String subtitle = format;
             if (media.type == 'ANIME') {
               if (media.episodes > 0) {
-                subtitle += ' \u00B7 ${media.episodes} Episodes';
+                subtitle +=
+                    ' \u00B7 ${media.episodes} ${StringUtils.pluralize(media.episodes, 'Episode', 'Episodes')}';
               }
             } else if (media.type == 'MANGA') {
               if (media.chapters > 0) {
-                subtitle += ' \u00B7 ${media.chapters} Chapters';
+                subtitle +=
+                    ' \u00B7 ${media.chapters} ${StringUtils.pluralize(media.chapters, 'Chapter', 'Chapters')}';
               }
             }
 

@@ -7,6 +7,7 @@ import '../services/media_list_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
 import '../utils/media_list_mutations.dart';
+import '../utils/utils.dart';
 import 'app_badges.dart';
 import 'app_network_image.dart';
 import 'lucide_icons_helper.dart';
@@ -65,7 +66,9 @@ Widget _buildProgressBadge(
           const Icon(LucideIcons.timer, size: 14, color: Colors.white70),
           const SizedBox(width: 4),
           Text(
-            type == 'ANIME' ? '$maximum eps' : '$maximum chs',
+            type == 'ANIME'
+                ? '$maximum ${maximum is int ? StringUtils.pluralize(maximum, 'ep', 'eps') : 'eps'}'
+                : '$maximum ${maximum is int ? StringUtils.pluralize(maximum, 'ch', 'chs') : 'chs'}',
             style: labelStyle,
           ),
         ],

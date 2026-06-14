@@ -57,9 +57,9 @@ class StringUtils {
   static String formatAiringDuration(int remainingSeconds) {
     final duration = Duration(seconds: remainingSeconds);
     if (duration.inDays >= 1) {
-      return '${duration.inDays} ${duration.inDays == 1 ? "day" : "days"}';
+      return '${duration.inDays} ${pluralize(duration.inDays, "day", "days")}';
     } else if (duration.inHours >= 1) {
-      return '${duration.inHours} ${duration.inHours == 1 ? "hour" : "hours"}';
+      return '${duration.inHours} ${pluralize(duration.inHours, "hour", "hours")}';
     } else {
       return 'an hour';
     }
@@ -68,6 +68,11 @@ class StringUtils {
   /// Format numbers compactly (e.g. 4312 -> 4.3k, 1104299 -> 1.1m)
   static String formatCompactNumber(int number) {
     return NumberFormat.compact().format(number).toLowerCase();
+  }
+
+  /// Returns the correct singular or plural form of a word based on the [count].
+  static String pluralize(int count, String singular, String plural) {
+    return Intl.plural(count, one: singular, other: plural);
   }
 }
 
