@@ -24,6 +24,9 @@ class Media extends MediaMin {
   /// Airing season
   final String season;
 
+  /// The year the media started airing
+  final int? seasonYear;
+
   /// Mean user score
   final int? meanScore;
 
@@ -103,7 +106,8 @@ class Media extends MediaMin {
     required super.type,
     required this.bannerImage,
     required this.status,
-    super.seasonYear,
+    this.seasonYear,
+    super.startYear,
     required this.season,
     this.meanScore,
     this.favourites,
@@ -143,7 +147,8 @@ class Media extends MediaMin {
       type: pbObj.base.type,
       bannerImage: pbObj.bannerImage,
       status: pbObj.status,
-      seasonYear: pbObj.base.hasSeasonYear() ? pbObj.base.seasonYear : null,
+      seasonYear: pbObj.hasSeasonYear() ? pbObj.seasonYear : null,
+      startYear: pbObj.base.hasStartYear() ? pbObj.base.startYear : null,
       season: pbObj.season,
       meanScore: pbObj.hasMeanScore() ? pbObj.meanScore : null,
       favourites: pbObj.hasFavourites() ? pbObj.favourites : null,
@@ -206,6 +211,7 @@ class Media extends MediaMin {
       rankings: rankings.map((r) => r.toProto()),
     );
 
+    if (seasonYear != null) pbObj.seasonYear = seasonYear!;
     if (meanScore != null) pbObj.meanScore = meanScore!;
     if (favourites != null) pbObj.favourites = favourites!;
     if (trailer != null) pbObj.trailer = trailer!.toProto();
@@ -245,6 +251,7 @@ class Media extends MediaMin {
     String? bannerImage,
     String? status,
     int? seasonYear,
+    int? startYear,
     String? season,
     int? meanScore,
     int? favourites,
@@ -284,6 +291,7 @@ class Media extends MediaMin {
       bannerImage: bannerImage ?? this.bannerImage,
       status: status ?? this.status,
       seasonYear: seasonYear ?? this.seasonYear,
+      startYear: startYear ?? this.startYear,
       season: season ?? this.season,
       meanScore: meanScore ?? this.meanScore,
       favourites: favourites ?? this.favourites,

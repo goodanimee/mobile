@@ -126,7 +126,7 @@ class MediaMin {
   final String siteUrl;
 
   /// The year the media started airing
-  final int? seasonYear;
+  final int? startYear;
 
   /// Creates a minimal media
   const MediaMin({
@@ -142,7 +142,7 @@ class MediaMin {
     required this.isAdult,
     required this.isFavourite,
     required this.siteUrl,
-    this.seasonYear,
+    this.startYear,
   });
 
   /// Creates a minimal media from a protobuf object
@@ -160,7 +160,7 @@ class MediaMin {
       isAdult: pbObj.isAdult,
       isFavourite: pbObj.isFavourite,
       siteUrl: pbObj.siteUrl,
-      seasonYear: pbObj.hasSeasonYear() ? pbObj.seasonYear : null,
+      startYear: pbObj.hasStartYear() ? pbObj.startYear : null,
     );
   }
 
@@ -180,7 +180,7 @@ class MediaMin {
       isFavourite: isFavourite,
       siteUrl: siteUrl,
     );
-    if (seasonYear != null) pbObj.seasonYear = seasonYear!;
+    if (startYear != null) pbObj.startYear = startYear!;
     return pbObj;
   }
 
@@ -198,7 +198,7 @@ class MediaMin {
     bool? isAdult,
     bool? isFavourite,
     String? siteUrl,
-    int? seasonYear,
+    int? startYear,
   }) {
     return MediaMin(
       id: id ?? this.id,
@@ -213,7 +213,7 @@ class MediaMin {
       isAdult: isAdult ?? this.isAdult,
       isFavourite: isFavourite ?? this.isFavourite,
       siteUrl: siteUrl ?? this.siteUrl,
-      seasonYear: seasonYear ?? this.seasonYear,
+      startYear: startYear ?? this.startYear,
     );
   }
 }
