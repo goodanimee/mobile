@@ -764,7 +764,7 @@ class _StaffMediaTab extends StatelessWidget {
     final grouped = <String, List<StaffMediaEdge>>{};
     for (final edge in edges) {
       if (edge.node == null) continue;
-      final year = edge.node!.seasonYear?.toString() ?? 'TBA';
+      final year = edge.node!.startYear?.toString() ?? 'TBA';
       grouped.putIfAbsent(year, () => []).add(edge);
     }
 
@@ -868,7 +868,7 @@ class _StaffCharactersTab extends StatelessWidget {
     final grouped = <String, List<_CharacterPlayItem>>{};
     for (final edge in edges) {
       if (edge.node == null) continue;
-      final year = edge.node!.seasonYear?.toString() ?? 'TBA';
+      final year = edge.node!.startYear?.toString() ?? 'TBA';
       for (final char in edge.characters) {
         grouped
             .putIfAbsent(year, () => [])

@@ -173,7 +173,7 @@ class _StudioPageState extends State<StudioPage> {
       } else {
         final grouped = <String, List<MediaMin>>{};
         for (final media in _mediaNodes) {
-          final year = media.seasonYear?.toString() ?? 'TBA';
+          final year = media.startYear?.toString() ?? 'TBA';
           grouped.putIfAbsent(year, () => []).add(media);
         }
 
