@@ -29,6 +29,7 @@ func (m *Media) ToProto() *pb.Media {
 		Favourites:        m.Favourites,
 		Synonyms:          m.Synonyms,
 		Reviews:           m.Reviews.ToProto(),
+		SeasonYear:        m.SeasonYear,
 	}
 
 	for _, tag := range m.Tags {
@@ -74,6 +75,7 @@ type Media struct {
 	MeanScore         *int32                   `json:"meanScore"`
 	Favourites        *int32                   `json:"favourites"`
 	Synonyms          []string                 `json:"synonyms"`
+	SeasonYear        *int32                   `json:"seasonYear"`
 }
 
 // MediaDTO represents the DTO for a media query

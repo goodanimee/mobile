@@ -20,7 +20,9 @@ query Media($mediaId: Int, $page: Int, $perPage: Int) {
                         isAdult
                         isFavourite
                         siteUrl
-                        seasonYear
+                        startDate {
+                            year
+                        }
                         title {
                             english
                             native

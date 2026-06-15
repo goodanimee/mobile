@@ -33,6 +33,10 @@ func (m *MediaMin) ToProto() *pb.MediaMin {
 	if m == nil {
 		return nil
 	}
+	var startYear *int32
+	if m.StartDate != nil {
+		startYear = m.StartDate.Year
+	}
 	return &pb.MediaMin{
 		Id:           m.ID,
 		Type:         m.Type,
@@ -46,7 +50,7 @@ func (m *MediaMin) ToProto() *pb.MediaMin {
 		IsAdult:      m.IsAdult,
 		IsFavourite:  m.IsFavourite,
 		SiteUrl:      m.SiteURL,
-		SeasonYear:   m.SeasonYear,
+		StartYear:    startYear,
 	}
 }
 
@@ -80,5 +84,5 @@ type MediaMin struct {
 	IsAdult      bool       `json:"isAdult"`
 	IsFavourite  bool       `json:"isFavourite"`
 	SiteURL      string     `json:"siteUrl"`
-	SeasonYear   *int32     `json:"seasonYear"`
+	StartDate    *FuzzyDate `json:"startDate"`
 }
