@@ -172,10 +172,20 @@ const Media$json = {
       '6': '.goodanime.ReviewConnection',
       '10': 'reviews'
     },
+    {
+      '1': 'season_year',
+      '3': 27,
+      '4': 1,
+      '5': 5,
+      '9': 2,
+      '10': 'seasonYear',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_mean_score'},
     {'1': '_favourites'},
+    {'1': '_season_year'},
   ],
 };
 
@@ -202,5 +212,6 @@ final $typed_data.Uint8List mediaDescriptor = $convert.base64Decode(
     'ZW5kcxgWIAEoCzIfLmdvb2RhbmltZS5NZWRpYVRyZW5kQ29ubmVjdGlvblIGdHJlbmRzEiIKCm'
     '1lYW5fc2NvcmUYFyABKAVIAFIJbWVhblNjb3JliAEBEiMKCmZhdm91cml0ZXMYGCABKAVIAVIK'
     'ZmF2b3VyaXRlc4gBARIaCghzeW5vbnltcxgZIAMoCVIIc3lub255bXMSNQoHcmV2aWV3cxgaIA'
-    'EoCzIbLmdvb2RhbmltZS5SZXZpZXdDb25uZWN0aW9uUgdyZXZpZXdzQg0KC19tZWFuX3Njb3Jl'
-    'Qg0KC19mYXZvdXJpdGVz');
+    'EoCzIbLmdvb2RhbmltZS5SZXZpZXdDb25uZWN0aW9uUgdyZXZpZXdzEiQKC3NlYXNvbl95ZWFy'
+    'GBsgASgFSAJSCnNlYXNvblllYXKIAQFCDQoLX21lYW5fc2NvcmVCDQoLX2Zhdm91cml0ZXNCDg'
+    'oMX3NlYXNvbl95ZWFy');

@@ -54,6 +54,7 @@ class Media extends $pb.GeneratedMessage {
     $core.int? favourites,
     $core.Iterable<$core.String>? synonyms,
     $9.ReviewConnection? reviews,
+    $core.int? seasonYear,
   }) {
     final result = create();
     if (base != null) result.base = base;
@@ -82,6 +83,7 @@ class Media extends $pb.GeneratedMessage {
     if (favourites != null) result.favourites = favourites;
     if (synonyms != null) result.synonyms.addAll(synonyms);
     if (reviews != null) result.reviews = reviews;
+    if (seasonYear != null) result.seasonYear = seasonYear;
     return result;
   }
 
@@ -140,6 +142,7 @@ class Media extends $pb.GeneratedMessage {
     ..pPS(25, _omitFieldNames ? '' : 'synonyms')
     ..aOM<$9.ReviewConnection>(26, _omitFieldNames ? '' : 'reviews',
         subBuilder: $9.ReviewConnection.create)
+    ..aI(27, _omitFieldNames ? '' : 'seasonYear')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -373,6 +376,15 @@ class Media extends $pb.GeneratedMessage {
   void clearReviews() => $_clearField(26);
   @$pb.TagNumber(26)
   $9.ReviewConnection ensureReviews() => $_ensure(24);
+
+  @$pb.TagNumber(27)
+  $core.int get seasonYear => $_getIZ(25);
+  @$pb.TagNumber(27)
+  set seasonYear($core.int value) => $_setSignedInt32(25, value);
+  @$pb.TagNumber(27)
+  $core.bool hasSeasonYear() => $_has(25);
+  @$pb.TagNumber(27)
+  void clearSeasonYear() => $_clearField(27);
 }
 
 const $core.bool _omitFieldNames =
