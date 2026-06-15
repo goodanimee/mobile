@@ -230,6 +230,42 @@ typedef _FetchStudioDetailsDart =
       ffi.Pointer<ffi.Int32> outLen,
     );
 
+/// Native function signature for fetching staff details
+typedef _FetchStaffDetailsC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for fetching staff details
+typedef _FetchStaffDetailsDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Native function signature for toggling favourite staff
+typedef _ToggleFavouriteStaffC =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      ffi.Int32 reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
+/// Dart function signature for toggling favourite staff
+typedef _ToggleFavouriteStaffDart =
+    ffi.Pointer<ffi.Uint8> Function(
+      ffi.Pointer<ffi.Uint8> reqPtr,
+      int reqLen,
+      ffi.Pointer<Utf8> token,
+      ffi.Pointer<ffi.Int32> outLen,
+    );
+
 /// API class for media-related operations
 class MediaApi {
   static late _FetchMediaDetailsDart _fetchMediaDetails;
@@ -244,6 +280,8 @@ class MediaApi {
   static late _FetchMediaActivitiesDart _fetchMediaActivities;
   static late _FetchStudioDetailsDart _fetchStudioDetails;
   static late _ToggleFavouriteStudioDart _toggleFavouriteStudio;
+  static late _FetchStaffDetailsDart _fetchStaffDetails;
+  static late _ToggleFavouriteStaffDart _toggleFavouriteStaff;
   static bool _initialized = false;
 
   static void _init() {
@@ -297,6 +335,14 @@ class MediaApi {
     _toggleFavouriteStudio = FfiCore.lib
         .lookupFunction<_ToggleFavouriteStudioC, _ToggleFavouriteStudioDart>(
           'ToggleFavouriteStudio',
+        );
+    _fetchStaffDetails = FfiCore.lib
+        .lookupFunction<_FetchStaffDetailsC, _FetchStaffDetailsDart>(
+          'FetchStaffDetails',
+        );
+    _toggleFavouriteStaff = FfiCore.lib
+        .lookupFunction<_ToggleFavouriteStaffC, _ToggleFavouriteStaffDart>(
+          'ToggleFavouriteStaff',
         );
     _initialized = true;
   }
@@ -657,6 +703,66 @@ class MediaApi {
           ),
         );
         final response = ToggleFavouriteStudioResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return response;
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
+  /// Fetches details of a staff member by its ID.
+  static Future<Staff> fetchStaffDetails(
+    FetchStaffDetailsRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      _init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = FfiCore.executeNativeCall(
+          (outLenPtr) =>
+              _fetchStaffDetails(reqPtr, reqBytes.length, tokenPtr, outLenPtr),
+        );
+        final response = FetchStaffDetailsResponse.fromBuffer(bytes);
+        if (response.error.isNotEmpty) throw Exception(response.error);
+        return Staff.fromProto(response.staff);
+      } finally {
+        calloc.free(reqPtr);
+        calloc.free(tokenPtr);
+      }
+    });
+  }
+
+  /// Toggles the favourite status of a staff member.
+  static Future<ToggleFavouriteStaffResponse> toggleFavouriteStaff(
+    ToggleFavouriteStaffRequest request,
+    String token,
+  ) async {
+    final reqBytes = request.writeToBuffer();
+    return Isolate.run(() {
+      _init();
+      final reqPtr = calloc<ffi.Uint8>(reqBytes.length);
+      final tokenPtr = token.toNativeUtf8();
+      try {
+        for (var i = 0; i < reqBytes.length; i++) {
+          reqPtr[i] = reqBytes[i];
+        }
+        final bytes = FfiCore.executeNativeCall(
+          (outLenPtr) => _toggleFavouriteStaff(
+            reqPtr,
+            reqBytes.length,
+            tokenPtr,
+            outLenPtr,
+          ),
+        );
+        final response = ToggleFavouriteStaffResponse.fromBuffer(bytes);
         if (response.error.isNotEmpty) throw Exception(response.error);
         return response;
       } finally {

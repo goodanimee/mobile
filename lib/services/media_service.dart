@@ -205,6 +205,28 @@ class MediaService {
     await MediaApi.toggleFavouriteStudio(req, token);
   }
 
+  /// Fetches details of a staff member by its ID.
+  static Future<Staff> getStaffDetails(
+    int staffId,
+    int characterPage,
+    int staffPage,
+  ) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = FetchStaffDetailsRequest(
+      staffId: staffId,
+      characterMediaPage: characterPage,
+      staffMediaPage: staffPage,
+    );
+    return MediaApi.fetchStaffDetails(req, token);
+  }
+
+  /// Toggles the favorite status of a staff member.
+  static Future<void> toggleFavouriteStaff(int staffId) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = ToggleFavouriteStaffRequest()..staffId = staffId;
+    await MediaApi.toggleFavouriteStaff(req, token);
+  }
+
   static Future<void> _saveToDiskCache(
     SharedPreferences prefs,
     int mediaId,
