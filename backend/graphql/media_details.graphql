@@ -146,6 +146,7 @@ fragment StaffFields on StaffConnection {
     edges {
         role
         node {
+            id
             image {
                 ...StaffImageFields
             }
@@ -165,6 +166,7 @@ fragment CharacterFields on CharacterConnection {
         role
         name
         voiceActors(sort: [RELEVANCE]) {
+            id
             image {
                 ...StaffImageFields
             }

@@ -61,13 +61,14 @@ final $typed_data.Uint8List staffImageDescriptor = $convert.base64Decode(
     'CgpTdGFmZkltYWdlEhkKBWxhcmdlGAEgASgJSABSBWxhcmdliAEBEhsKBm1lZGl1bRgCIAEoCU'
     'gBUgZtZWRpdW2IAQFCCAoGX2xhcmdlQgkKB19tZWRpdW0=');
 
-@$core.Deprecated('Use staffDescriptor instead')
-const Staff$json = {
-  '1': 'Staff',
+@$core.Deprecated('Use staffMinDescriptor instead')
+const StaffMin$json = {
+  '1': 'StaffMin',
   '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
     {
       '1': 'name',
-      '3': 1,
+      '3': 2,
       '4': 1,
       '5': 11,
       '6': '.goodanime.StaffName',
@@ -75,7 +76,7 @@ const Staff$json = {
     },
     {
       '1': 'image',
-      '3': 2,
+      '3': 3,
       '4': 1,
       '5': 11,
       '6': '.goodanime.StaffImage',
@@ -83,7 +84,7 @@ const Staff$json = {
     },
     {
       '1': 'language_v2',
-      '3': 3,
+      '3': 4,
       '4': 1,
       '5': 9,
       '9': 0,
@@ -96,11 +97,12 @@ const Staff$json = {
   ],
 };
 
-/// Descriptor for `Staff`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List staffDescriptor = $convert.base64Decode(
-    'CgVTdGFmZhIoCgRuYW1lGAEgASgLMhQuZ29vZGFuaW1lLlN0YWZmTmFtZVIEbmFtZRIrCgVpbW'
-    'FnZRgCIAEoCzIVLmdvb2RhbmltZS5TdGFmZkltYWdlUgVpbWFnZRIkCgtsYW5ndWFnZV92MhgD'
-    'IAEoCUgAUgpsYW5ndWFnZVYyiAEBQg4KDF9sYW5ndWFnZV92Mg==');
+/// Descriptor for `StaffMin`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List staffMinDescriptor = $convert.base64Decode(
+    'CghTdGFmZk1pbhIOCgJpZBgBIAEoBVICaWQSKAoEbmFtZRgCIAEoCzIULmdvb2RhbmltZS5TdG'
+    'FmZk5hbWVSBG5hbWUSKwoFaW1hZ2UYAyABKAsyFS5nb29kYW5pbWUuU3RhZmZJbWFnZVIFaW1h'
+    'Z2USJAoLbGFuZ3VhZ2VfdjIYBCABKAlIAFIKbGFuZ3VhZ2VWMogBAUIOCgxfbGFuZ3VhZ2Vfdj'
+    'I=');
 
 @$core.Deprecated('Use staffEdgeDescriptor instead')
 const StaffEdge$json = {
@@ -112,7 +114,7 @@ const StaffEdge$json = {
       '3': 2,
       '4': 1,
       '5': 11,
-      '6': '.goodanime.Staff',
+      '6': '.goodanime.StaffMin',
       '10': 'node'
     },
   ],
@@ -120,8 +122,8 @@ const StaffEdge$json = {
 
 /// Descriptor for `StaffEdge`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List staffEdgeDescriptor = $convert.base64Decode(
-    'CglTdGFmZkVkZ2USEgoEcm9sZRgBIAEoCVIEcm9sZRIkCgRub2RlGAIgASgLMhAuZ29vZGFuaW'
-    '1lLlN0YWZmUgRub2Rl');
+    'CglTdGFmZkVkZ2USEgoEcm9sZRgBIAEoCVIEcm9sZRInCgRub2RlGAIgASgLMhMuZ29vZGFuaW'
+    '1lLlN0YWZmTWluUgRub2Rl');
 
 @$core.Deprecated('Use staffConnectionDescriptor instead')
 const StaffConnection$json = {

@@ -152,7 +152,7 @@ class CharacterEdge {
   final Character? node;
 
   /// The voice actors of the character
-  final List<Staff> voiceActors;
+  final List<StaffMin> voiceActors;
 
   /// Creates a character edge
   const CharacterEdge({
@@ -170,7 +170,7 @@ class CharacterEdge {
       role: pbObj.role,
       name: pbObj.name,
       node: pbObj.hasNode() ? Character.fromProto(pbObj.node) : null,
-      voiceActors: pbObj.voiceActors.map(Staff.fromProto).toList(),
+      voiceActors: pbObj.voiceActors.map(StaffMin.fromProto).toList(),
     );
   }
 

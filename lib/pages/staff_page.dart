@@ -13,7 +13,7 @@ import '../utils/utils.dart';
 /// A page displaying details for a staff member
 class StaffPage extends StatefulWidget {
   /// The staff data
-  final Staff staff;
+  final StaffMin staff;
 
   /// Creates a staff page
   const StaffPage({super.key, required this.staff});
@@ -70,7 +70,8 @@ class _StaffPageState extends State<StaffPage> {
 
   @override
   Widget build(BuildContext context) {
-    final staffName = widget.staff.name?.userPreferred ??
+    final staffName =
+        widget.staff.name?.userPreferred ??
         widget.staff.name?.full ??
         'Staff Member';
 
@@ -125,14 +126,12 @@ class _StaffPageState extends State<StaffPage> {
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(
-                child: SizedBox(height: MediaQuery.of(context).padding.top + 56 + 16),
+                child: SizedBox(
+                  height: MediaQuery.of(context).padding.top + 56 + 16,
+                ),
               ),
-              SliverToBoxAdapter(
-                child: _buildActiveTab(),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 128),
-              ),
+              SliverToBoxAdapter(child: _buildActiveTab()),
+              const SliverToBoxAdapter(child: SizedBox(height: 128)),
             ],
           ),
           Positioned(
@@ -186,9 +185,7 @@ class _StaffStickyHeader extends StatelessWidget {
       padding: EdgeInsets.only(top: topPadding),
       decoration: const BoxDecoration(
         color: bgColor,
-        border: Border(
-          bottom: BorderSide(color: cardBorderColor),
-        ),
+        border: Border(bottom: BorderSide(color: cardBorderColor)),
       ),
       child: Stack(
         children: [
@@ -198,10 +195,7 @@ class _StaffStickyHeader extends StatelessWidget {
             bottom: 0,
             child: Center(
               child: IconButton(
-                icon: const Icon(
-                  LucideIcons.arrowLeft,
-                  color: textPrimary,
-                ),
+                icon: const Icon(LucideIcons.arrowLeft, color: textPrimary),
                 onPressed: onBack,
               ),
             ),
@@ -260,10 +254,8 @@ class _StaffStickyHeader extends StatelessWidget {
   }
 }
 
-
-
 class _StaffInfoTab extends StatelessWidget {
-  final Staff? staff;
+  final StaffMin? staff;
 
   const _StaffInfoTab({required this.staff});
 
@@ -294,15 +286,12 @@ class _StaffInfoTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = staff?.name?.userPreferred ?? staff?.name?.full ?? 'Lorem Ipsum';
+    final name =
+        staff?.name?.userPreferred ?? staff?.name?.full ?? 'Lorem Ipsum';
     final nativeName = staff?.name?.native ?? 'Dolor Sit';
     final imageUrl = staff?.image?.large ?? '';
 
-    final alternativeNames = const [
-      'Lorem',
-      'Ipsum',
-      'Dolor',
-    ];
+    final alternativeNames = const ['Lorem', 'Ipsum', 'Dolor'];
     final birthday = 'Lorem Ipsum';
     final yearsActive = 'Sit Amet';
     final age = 'Consectetur';
@@ -310,7 +299,8 @@ class _StaffInfoTab extends StatelessWidget {
     final bloodType = 'Elit';
     final hometown = 'Pellentesque';
     final occupations = 'Vestibulum, Lacinia';
-    final descriptionHtml = '<b>Lorem Ipsum</b> dolor sit amet, consectetur adipiscing elit. Proin elementum justo ac leo consequat, eget commodo ex vestibulum. Etiam id tempor arcu, sit amet cursus nulla. Praesent accumsan tincidunt libero eu interdum.<br><br>Duis ultrices egestas turpis, a sodales mi facilisis vel. Vivamus ac risus sed tellus pellentesque aliquam. Curabitur sed luctus diam. Cras nec efficitur turpis. In a elit ac augue tincidunt luctus vitae a justo.';
+    final descriptionHtml =
+        '<b>Lorem Ipsum</b> dolor sit amet, consectetur adipiscing elit. Proin elementum justo ac leo consequat, eget commodo ex vestibulum. Etiam id tempor arcu, sit amet cursus nulla. Praesent accumsan tincidunt libero eu interdum.<br><br>Duis ultrices egestas turpis, a sodales mi facilisis vel. Vivamus ac risus sed tellus pellentesque aliquam. Curabitur sed luctus diam. Cras nec efficitur turpis. In a elit ac augue tincidunt luctus vitae a justo.';
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -336,7 +326,11 @@ class _StaffInfoTab extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: cardBorderColor),
                   ),
-                  child: const Icon(LucideIcons.user, color: textMuted, size: 36),
+                  child: const Icon(
+                    LucideIcons.user,
+                    color: textMuted,
+                    size: 36,
+                  ),
                 ),
               const SizedBox(width: 16),
               Expanded(
@@ -355,10 +349,7 @@ class _StaffInfoTab extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         nativeName,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: textMuted,
-                        ),
+                        style: const TextStyle(fontSize: 14, color: textMuted),
                       ),
                     ],
                     if (alternativeNames.isNotEmpty) ...[

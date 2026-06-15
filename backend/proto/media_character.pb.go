@@ -239,7 +239,7 @@ type CharacterEdge struct {
 	Role          string                 `protobuf:"bytes,2,opt,name=role,proto3" json:"role,omitempty"`
 	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	Node          *Character             `protobuf:"bytes,4,opt,name=node,proto3" json:"node,omitempty"`
-	VoiceActors   []*Staff               `protobuf:"bytes,5,rep,name=voice_actors,json=voiceActors,proto3" json:"voice_actors,omitempty"`
+	VoiceActors   []*StaffMin            `protobuf:"bytes,5,rep,name=voice_actors,json=voiceActors,proto3" json:"voice_actors,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -302,7 +302,7 @@ func (x *CharacterEdge) GetNode() *Character {
 	return nil
 }
 
-func (x *CharacterEdge) GetVoiceActors() []*Staff {
+func (x *CharacterEdge) GetVoiceActors() []*StaffMin {
 	if x != nil {
 		return x.VoiceActors
 	}
@@ -388,13 +388,13 @@ const file_media_character_proto_rawDesc = "" +
 	"\vdescription\x18\x06 \x01(\tH\x02R\vdescription\x88\x01\x01B\t\n" +
 	"\a_genderB\x06\n" +
 	"\x04_ageB\x0e\n" +
-	"\f_description\"\xa6\x01\n" +
+	"\f_description\"\xa9\x01\n" +
 	"\rCharacterEdge\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04role\x18\x02 \x01(\tR\x04role\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12(\n" +
-	"\x04node\x18\x04 \x01(\v2\x14.goodanime.CharacterR\x04node\x123\n" +
-	"\fvoice_actors\x18\x05 \x03(\v2\x10.goodanime.StaffR\vvoiceActors\"w\n" +
+	"\x04node\x18\x04 \x01(\v2\x14.goodanime.CharacterR\x04node\x126\n" +
+	"\fvoice_actors\x18\x05 \x03(\v2\x13.goodanime.StaffMinR\vvoiceActors\"w\n" +
 	"\x13CharacterConnection\x12.\n" +
 	"\x05edges\x18\x01 \x03(\v2\x18.goodanime.CharacterEdgeR\x05edges\x120\n" +
 	"\tpage_info\x18\x02 \x01(\v2\x13.goodanime.PageInfoR\bpageInfoB\x19Z\x17goodanime/backend/protob\x06proto3"
@@ -419,7 +419,7 @@ var file_media_character_proto_goTypes = []any{
 	(*CharacterEdge)(nil),       // 3: goodanime.CharacterEdge
 	(*CharacterConnection)(nil), // 4: goodanime.CharacterConnection
 	(*FuzzyDate)(nil),           // 5: goodanime.FuzzyDate
-	(*Staff)(nil),               // 6: goodanime.Staff
+	(*StaffMin)(nil),            // 6: goodanime.StaffMin
 	(*PageInfo)(nil),            // 7: goodanime.PageInfo
 }
 var file_media_character_proto_depIdxs = []int32{
@@ -427,7 +427,7 @@ var file_media_character_proto_depIdxs = []int32{
 	1, // 1: goodanime.Character.image:type_name -> goodanime.CharacterImage
 	5, // 2: goodanime.Character.date_of_birth:type_name -> goodanime.FuzzyDate
 	2, // 3: goodanime.CharacterEdge.node:type_name -> goodanime.Character
-	6, // 4: goodanime.CharacterEdge.voice_actors:type_name -> goodanime.Staff
+	6, // 4: goodanime.CharacterEdge.voice_actors:type_name -> goodanime.StaffMin
 	3, // 5: goodanime.CharacterConnection.edges:type_name -> goodanime.CharacterEdge
 	7, // 6: goodanime.CharacterConnection.page_info:type_name -> goodanime.PageInfo
 	7, // [7:7] is the sub-list for method output_type

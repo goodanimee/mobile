@@ -160,93 +160,105 @@ class StaffImage extends $pb.GeneratedMessage {
   void clearMedium() => $_clearField(2);
 }
 
-class Staff extends $pb.GeneratedMessage {
-  factory Staff({
+class StaffMin extends $pb.GeneratedMessage {
+  factory StaffMin({
+    $core.int? id,
     StaffName? name,
     StaffImage? image,
     $core.String? languageV2,
   }) {
     final result = create();
+    if (id != null) result.id = id;
     if (name != null) result.name = name;
     if (image != null) result.image = image;
     if (languageV2 != null) result.languageV2 = languageV2;
     return result;
   }
 
-  Staff._();
+  StaffMin._();
 
-  factory Staff.fromBuffer($core.List<$core.int> data,
+  factory StaffMin.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(data, registry);
-  factory Staff.fromJson($core.String json,
+  factory StaffMin.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'Staff',
+      _omitMessageNames ? '' : 'StaffMin',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
       createEmptyInstance: create)
-    ..aOM<StaffName>(1, _omitFieldNames ? '' : 'name',
+    ..aI(1, _omitFieldNames ? '' : 'id')
+    ..aOM<StaffName>(2, _omitFieldNames ? '' : 'name',
         subBuilder: StaffName.create)
-    ..aOM<StaffImage>(2, _omitFieldNames ? '' : 'image',
+    ..aOM<StaffImage>(3, _omitFieldNames ? '' : 'image',
         subBuilder: StaffImage.create)
-    ..aOS(3, _omitFieldNames ? '' : 'languageV2')
+    ..aOS(4, _omitFieldNames ? '' : 'languageV2')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Staff clone() => deepCopy();
+  StaffMin clone() => deepCopy();
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Staff copyWith(void Function(Staff) updates) =>
-      super.copyWith((message) => updates(message as Staff)) as Staff;
+  StaffMin copyWith(void Function(StaffMin) updates) =>
+      super.copyWith((message) => updates(message as StaffMin)) as StaffMin;
 
   @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static Staff create() => Staff._();
+  static StaffMin create() => StaffMin._();
   @$core.override
-  Staff createEmptyInstance() => create();
+  StaffMin createEmptyInstance() => create();
   @$core.pragma('dart2js:noInline')
-  static Staff getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Staff>(create);
-  static Staff? _defaultInstance;
+  static StaffMin getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StaffMin>(create);
+  static StaffMin? _defaultInstance;
 
   @$pb.TagNumber(1)
-  StaffName get name => $_getN(0);
+  $core.int get id => $_getIZ(0);
   @$pb.TagNumber(1)
-  set name(StaffName value) => $_setField(1, value);
+  set id($core.int value) => $_setSignedInt32(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasName() => $_has(0);
+  $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearName() => $_clearField(1);
-  @$pb.TagNumber(1)
-  StaffName ensureName() => $_ensure(0);
+  void clearId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  StaffImage get image => $_getN(1);
+  StaffName get name => $_getN(1);
   @$pb.TagNumber(2)
-  set image(StaffImage value) => $_setField(2, value);
+  set name(StaffName value) => $_setField(2, value);
   @$pb.TagNumber(2)
-  $core.bool hasImage() => $_has(1);
+  $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
-  void clearImage() => $_clearField(2);
+  void clearName() => $_clearField(2);
   @$pb.TagNumber(2)
-  StaffImage ensureImage() => $_ensure(1);
+  StaffName ensureName() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $core.String get languageV2 => $_getSZ(2);
+  StaffImage get image => $_getN(2);
   @$pb.TagNumber(3)
-  set languageV2($core.String value) => $_setString(2, value);
+  set image(StaffImage value) => $_setField(3, value);
   @$pb.TagNumber(3)
-  $core.bool hasLanguageV2() => $_has(2);
+  $core.bool hasImage() => $_has(2);
   @$pb.TagNumber(3)
-  void clearLanguageV2() => $_clearField(3);
+  void clearImage() => $_clearField(3);
+  @$pb.TagNumber(3)
+  StaffImage ensureImage() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  $core.String get languageV2 => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set languageV2($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasLanguageV2() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLanguageV2() => $_clearField(4);
 }
 
 class StaffEdge extends $pb.GeneratedMessage {
   factory StaffEdge({
     $core.String? role,
-    Staff? node,
+    StaffMin? node,
   }) {
     final result = create();
     if (role != null) result.role = role;
@@ -268,7 +280,8 @@ class StaffEdge extends $pb.GeneratedMessage {
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
       createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'role')
-    ..aOM<Staff>(2, _omitFieldNames ? '' : 'node', subBuilder: Staff.create)
+    ..aOM<StaffMin>(2, _omitFieldNames ? '' : 'node',
+        subBuilder: StaffMin.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -299,15 +312,15 @@ class StaffEdge extends $pb.GeneratedMessage {
   void clearRole() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  Staff get node => $_getN(1);
+  StaffMin get node => $_getN(1);
   @$pb.TagNumber(2)
-  set node(Staff value) => $_setField(2, value);
+  set node(StaffMin value) => $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasNode() => $_has(1);
   @$pb.TagNumber(2)
   void clearNode() => $_clearField(2);
   @$pb.TagNumber(2)
-  Staff ensureNode() => $_ensure(1);
+  StaffMin ensureNode() => $_ensure(1);
 }
 
 class StaffConnection extends $pb.GeneratedMessage {

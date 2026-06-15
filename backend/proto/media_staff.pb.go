@@ -133,29 +133,30 @@ func (x *StaffImage) GetMedium() string {
 	return ""
 }
 
-type Staff struct {
+type StaffMin struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          *StaffName             `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Image         *StaffImage            `protobuf:"bytes,2,opt,name=image,proto3" json:"image,omitempty"`
-	LanguageV2    *string                `protobuf:"bytes,3,opt,name=language_v2,json=languageV2,proto3,oneof" json:"language_v2,omitempty"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          *StaffName             `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Image         *StaffImage            `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`
+	LanguageV2    *string                `protobuf:"bytes,4,opt,name=language_v2,json=languageV2,proto3,oneof" json:"language_v2,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Staff) Reset() {
-	*x = Staff{}
+func (x *StaffMin) Reset() {
+	*x = StaffMin{}
 	mi := &file_media_staff_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Staff) String() string {
+func (x *StaffMin) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Staff) ProtoMessage() {}
+func (*StaffMin) ProtoMessage() {}
 
-func (x *Staff) ProtoReflect() protoreflect.Message {
+func (x *StaffMin) ProtoReflect() protoreflect.Message {
 	mi := &file_media_staff_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -167,26 +168,33 @@ func (x *Staff) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Staff.ProtoReflect.Descriptor instead.
-func (*Staff) Descriptor() ([]byte, []int) {
+// Deprecated: Use StaffMin.ProtoReflect.Descriptor instead.
+func (*StaffMin) Descriptor() ([]byte, []int) {
 	return file_media_staff_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *Staff) GetName() *StaffName {
+func (x *StaffMin) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *StaffMin) GetName() *StaffName {
 	if x != nil {
 		return x.Name
 	}
 	return nil
 }
 
-func (x *Staff) GetImage() *StaffImage {
+func (x *StaffMin) GetImage() *StaffImage {
 	if x != nil {
 		return x.Image
 	}
 	return nil
 }
 
-func (x *Staff) GetLanguageV2() string {
+func (x *StaffMin) GetLanguageV2() string {
 	if x != nil && x.LanguageV2 != nil {
 		return *x.LanguageV2
 	}
@@ -196,7 +204,7 @@ func (x *Staff) GetLanguageV2() string {
 type StaffEdge struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Role          string                 `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"`
-	Node          *Staff                 `protobuf:"bytes,2,opt,name=node,proto3" json:"node,omitempty"`
+	Node          *StaffMin              `protobuf:"bytes,2,opt,name=node,proto3" json:"node,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -238,7 +246,7 @@ func (x *StaffEdge) GetRole() string {
 	return ""
 }
 
-func (x *StaffEdge) GetNode() *Staff {
+func (x *StaffEdge) GetNode() *StaffMin {
 	if x != nil {
 		return x.Node
 	}
@@ -313,16 +321,17 @@ const file_media_staff_proto_rawDesc = "" +
 	"\x05large\x18\x01 \x01(\tH\x00R\x05large\x88\x01\x01\x12\x1b\n" +
 	"\x06medium\x18\x02 \x01(\tH\x01R\x06medium\x88\x01\x01B\b\n" +
 	"\x06_largeB\t\n" +
-	"\a_medium\"\x94\x01\n" +
-	"\x05Staff\x12(\n" +
-	"\x04name\x18\x01 \x01(\v2\x14.goodanime.StaffNameR\x04name\x12+\n" +
-	"\x05image\x18\x02 \x01(\v2\x15.goodanime.StaffImageR\x05image\x12$\n" +
-	"\vlanguage_v2\x18\x03 \x01(\tH\x00R\n" +
+	"\a_medium\"\xa7\x01\n" +
+	"\bStaffMin\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12(\n" +
+	"\x04name\x18\x02 \x01(\v2\x14.goodanime.StaffNameR\x04name\x12+\n" +
+	"\x05image\x18\x03 \x01(\v2\x15.goodanime.StaffImageR\x05image\x12$\n" +
+	"\vlanguage_v2\x18\x04 \x01(\tH\x00R\n" +
 	"languageV2\x88\x01\x01B\x0e\n" +
-	"\f_language_v2\"E\n" +
+	"\f_language_v2\"H\n" +
 	"\tStaffEdge\x12\x12\n" +
-	"\x04role\x18\x01 \x01(\tR\x04role\x12$\n" +
-	"\x04node\x18\x02 \x01(\v2\x10.goodanime.StaffR\x04node\"o\n" +
+	"\x04role\x18\x01 \x01(\tR\x04role\x12'\n" +
+	"\x04node\x18\x02 \x01(\v2\x13.goodanime.StaffMinR\x04node\"o\n" +
 	"\x0fStaffConnection\x12*\n" +
 	"\x05edges\x18\x01 \x03(\v2\x14.goodanime.StaffEdgeR\x05edges\x120\n" +
 	"\tpage_info\x18\x02 \x01(\v2\x13.goodanime.PageInfoR\bpageInfoB\x19Z\x17goodanime/backend/protob\x06proto3"
@@ -343,15 +352,15 @@ var file_media_staff_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_media_staff_proto_goTypes = []any{
 	(*StaffName)(nil),       // 0: goodanime.StaffName
 	(*StaffImage)(nil),      // 1: goodanime.StaffImage
-	(*Staff)(nil),           // 2: goodanime.Staff
+	(*StaffMin)(nil),        // 2: goodanime.StaffMin
 	(*StaffEdge)(nil),       // 3: goodanime.StaffEdge
 	(*StaffConnection)(nil), // 4: goodanime.StaffConnection
 	(*PageInfo)(nil),        // 5: goodanime.PageInfo
 }
 var file_media_staff_proto_depIdxs = []int32{
-	0, // 0: goodanime.Staff.name:type_name -> goodanime.StaffName
-	1, // 1: goodanime.Staff.image:type_name -> goodanime.StaffImage
-	2, // 2: goodanime.StaffEdge.node:type_name -> goodanime.Staff
+	0, // 0: goodanime.StaffMin.name:type_name -> goodanime.StaffName
+	1, // 1: goodanime.StaffMin.image:type_name -> goodanime.StaffImage
+	2, // 2: goodanime.StaffEdge.node:type_name -> goodanime.StaffMin
 	3, // 3: goodanime.StaffConnection.edges:type_name -> goodanime.StaffEdge
 	5, // 4: goodanime.StaffConnection.page_info:type_name -> goodanime.PageInfo
 	5, // [5:5] is the sub-list for method output_type

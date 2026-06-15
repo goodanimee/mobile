@@ -104,7 +104,7 @@ type CharacterEdge struct {
 	Role        string     `json:"role"`
 	Name        string     `json:"name"`
 	Node        *Character `json:"node"`
-	VoiceActors []Staff    `json:"voiceActors"`
+	VoiceActors []StaffMin `json:"voiceActors"`
 }
 
 // CharacterConnection represents a paginated list of characters

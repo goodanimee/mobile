@@ -304,7 +304,7 @@ class CharacterEdge extends $pb.GeneratedMessage {
     $core.String? role,
     $core.String? name,
     Character? node,
-    $core.Iterable<$1.Staff>? voiceActors,
+    $core.Iterable<$1.StaffMin>? voiceActors,
   }) {
     final result = create();
     if (id != null) result.id = id;
@@ -333,8 +333,8 @@ class CharacterEdge extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'name')
     ..aOM<Character>(4, _omitFieldNames ? '' : 'node',
         subBuilder: Character.create)
-    ..pPM<$1.Staff>(5, _omitFieldNames ? '' : 'voiceActors',
-        subBuilder: $1.Staff.create)
+    ..pPM<$1.StaffMin>(5, _omitFieldNames ? '' : 'voiceActors',
+        subBuilder: $1.StaffMin.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -395,7 +395,7 @@ class CharacterEdge extends $pb.GeneratedMessage {
   Character ensureNode() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $pb.PbList<$1.Staff> get voiceActors => $_getList(4);
+  $pb.PbList<$1.StaffMin> get voiceActors => $_getList(4);
 }
 
 class CharacterConnection extends $pb.GeneratedMessage {

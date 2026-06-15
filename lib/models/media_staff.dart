@@ -62,7 +62,10 @@ class StaffImage {
 }
 
 /// Represents a staff member
-class Staff {
+class StaffMin {
+  /// Staff ID
+  final int id;
+
   /// Staff name
   final StaffName? name;
 
@@ -73,11 +76,12 @@ class Staff {
   final String? languageV2;
 
   /// Creates a staff member
-  const Staff({this.name, this.image, this.languageV2});
+  const StaffMin({required this.id, this.name, this.image, this.languageV2});
 
   /// Creates a staff member from a protobuf object
-  factory Staff.fromProto(pb.Staff pbObj) {
-    return Staff(
+  factory StaffMin.fromProto(pb.StaffMin pbObj) {
+    return StaffMin(
+      id: pbObj.id,
       name: pbObj.hasName() ? StaffName.fromProto(pbObj.name) : null,
       image: pbObj.hasImage() ? StaffImage.fromProto(pbObj.image) : null,
       languageV2: pbObj.hasLanguageV2() ? pbObj.languageV2 : null,
@@ -85,8 +89,8 @@ class Staff {
   }
 
   /// Converts the staff member to a protobuf object
-  pb.Staff toProto() {
-    final pbObj = pb.Staff();
+  pb.StaffMin toProto() {
+    final pbObj = pb.StaffMin(id: id);
     if (name != null) pbObj.name = name!.toProto();
     if (image != null) pbObj.image = image!.toProto();
     if (languageV2 != null) pbObj.languageV2 = languageV2!;
@@ -100,7 +104,7 @@ class StaffEdge {
   final String role;
 
   /// The staff member
-  final Staff? node;
+  final StaffMin? node;
 
   /// Creates a staff edge
   const StaffEdge({required this.role, this.node});
@@ -109,7 +113,7 @@ class StaffEdge {
   factory StaffEdge.fromProto(pb.StaffEdge pbObj) {
     return StaffEdge(
       role: pbObj.role,
-      node: pbObj.hasNode() ? Staff.fromProto(pbObj.node) : null,
+      node: pbObj.hasNode() ? StaffMin.fromProto(pbObj.node) : null,
     );
   }
 

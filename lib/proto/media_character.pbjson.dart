@@ -146,7 +146,7 @@ const CharacterEdge$json = {
       '3': 5,
       '4': 3,
       '5': 11,
-      '6': '.goodanime.Staff',
+      '6': '.goodanime.StaffMin',
       '10': 'voiceActors'
     },
   ],
@@ -156,8 +156,8 @@ const CharacterEdge$json = {
 final $typed_data.Uint8List characterEdgeDescriptor = $convert.base64Decode(
     'Cg1DaGFyYWN0ZXJFZGdlEg4KAmlkGAEgASgFUgJpZBISCgRyb2xlGAIgASgJUgRyb2xlEhIKBG'
     '5hbWUYAyABKAlSBG5hbWUSKAoEbm9kZRgEIAEoCzIULmdvb2RhbmltZS5DaGFyYWN0ZXJSBG5v'
-    'ZGUSMwoMdm9pY2VfYWN0b3JzGAUgAygLMhAuZ29vZGFuaW1lLlN0YWZmUgt2b2ljZUFjdG9ycw'
-    '==');
+    'ZGUSNgoMdm9pY2VfYWN0b3JzGAUgAygLMhMuZ29vZGFuaW1lLlN0YWZmTWluUgt2b2ljZUFjdG'
+    '9ycw==');
 
 @$core.Deprecated('Use characterConnectionDescriptor instead')
 const CharacterConnection$json = {

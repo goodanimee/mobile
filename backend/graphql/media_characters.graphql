@@ -11,6 +11,7 @@ query Media($mediaId: Int, $page: Int, $perPage: Int) {
                 role
                 name
                 voiceActors(sort: [RELEVANCE]) {
+                    id
                     image {
                         large
                         medium

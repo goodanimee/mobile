@@ -25,12 +25,13 @@ func (i *StaffImage) ToProto() *pb.StaffImage {
 	}
 }
 
-// ToProto converts Staff to its protobuf representation.
-func (s *Staff) ToProto() *pb.Staff {
+// ToProto converts StaffMin to its protobuf representation.
+func (s *StaffMin) ToProto() *pb.StaffMin {
 	if s == nil {
 		return nil
 	}
-	return &pb.Staff{
+	return &pb.StaffMin{
+		Id:         s.ID,
 		Name:       s.Name.ToProto(),
 		Image:      s.Image.ToProto(),
 		LanguageV2: s.LanguageV2,
@@ -75,8 +76,9 @@ type StaffImage struct {
 	Medium *string `json:"medium"`
 }
 
-// Staff represents a staff member
-type Staff struct {
+// StaffMin represents a minimal staff member
+type StaffMin struct {
+	ID         int32       `json:"id"`
 	Name       *StaffName  `json:"name"`
 	Image      *StaffImage `json:"image"`
 	LanguageV2 *string     `json:"languageV2"`
@@ -84,8 +86,8 @@ type Staff struct {
 
 // StaffEdge represents a link between a media and a staff member
 type StaffEdge struct {
-	Role string `json:"role"`
-	Node *Staff `json:"node"`
+	Role string    `json:"role"`
+	Node *StaffMin `json:"node"`
 }
 
 // StaffConnection represents a paginated list of staff

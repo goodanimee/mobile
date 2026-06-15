@@ -17,15 +17,16 @@ message StaffImage {
   optional string medium = 2;
 }
 
-message Staff {
-  StaffName name = 1;
-  StaffImage image = 2;
-  optional string language_v2 = 3;
+message StaffMin {
+  int32 id = 1;
+  StaffName name = 2;
+  StaffImage image = 3;
+  optional string language_v2 = 4;
 }
 
 message StaffEdge {
   string role = 1;
-  Staff node = 2;
+  StaffMin node = 2;
 }
 
 message StaffConnection {

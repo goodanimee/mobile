@@ -44,12 +44,10 @@ class AppNavigation {
   }
 
   /// Navigate to Staff details
-  static Future<void> toStaff(BuildContext context, Staff staff) async {
+  static Future<void> toStaff(BuildContext context, StaffMin staff) async {
     await Navigator.push(
       context,
-      MaterialPageRoute<dynamic>(
-        builder: (context) => StaffPage(staff: staff),
-      ),
+      MaterialPageRoute<dynamic>(builder: (context) => StaffPage(staff: staff)),
     );
   }
 

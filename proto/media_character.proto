@@ -34,7 +34,7 @@ message CharacterEdge {
   string role = 2;
   string name = 3;
   Character node = 4;
-  repeated Staff voice_actors = 5;
+  repeated StaffMin voice_actors = 5;
 }
 
 message CharacterConnection {

@@ -9,6 +9,7 @@ query Media($mediaId: Int, $page: Int, $perPage: Int) {
             edges {
                 role
                 node {
+                    id
                     name {
                         userPreferred
                         full
