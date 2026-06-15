@@ -7,6 +7,7 @@ import '../../../components/section_title.dart';
 import '../../../models/common.dart';
 import '../../../models/media_character.dart';
 import '../../../theme/theme.dart';
+import '../../../utils/app_navigation.dart';
 
 /// A bottom sheet displaying detailed information about a character
 class CharacterSheet extends StatefulWidget {
@@ -269,46 +270,58 @@ class _CharacterSheetState extends State<CharacterSheet> {
                             final vaLang = va.languageV2 ?? '';
                             final vaImageUrl = va.image?.large ?? '';
 
-                            return Row(
-                              children: [
-                                AppNetworkImage(
-                                  imageUrl: vaImageUrl,
-                                  width: 50,
-                                  height: 50,
-                                  borderRadius: BorderRadius.circular(8),
-                                  fallbackIcon: LucideIcons.user,
-                                  checkDefault: true,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        vaName,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        vaLang,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          color: Colors.white54,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
+                            return GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                AppNavigation.toStaff(context, va);
+                              },
+                              child: Row(
+                                children: [
+                                  AppNetworkImage(
+                                    imageUrl: vaImageUrl,
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: BorderRadius.circular(8),
+                                    fallbackIcon: LucideIcons.user,
+                                    checkDefault: true,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          vaName,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          vaLang,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            color: Colors.white54,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Icon(
+                                    LucideIcons.chevronRight,
+                                    size: 16,
+                                    color: Colors.white.withValues(alpha: 0.3),
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),

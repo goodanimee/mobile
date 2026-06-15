@@ -315,6 +315,9 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
                       name: fullName,
                       nativeName: nativeName,
                       subtitle: role,
+                      onTap: node != null
+                          ? () => AppNavigation.toStaff(context, node)
+                          : null,
                     );
                   },
                 ),

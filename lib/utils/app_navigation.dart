@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../models/media_character.dart';
+import '../models/media_staff.dart';
 import '../pages/media_page.dart';
 import '../pages/media_page/widgets/character_sheet.dart';
+import '../pages/staff_page.dart';
 import '../pages/studio_page.dart';
 import 'utils.dart';
 
@@ -37,6 +39,16 @@ class AppNavigation {
       context,
       MaterialPageRoute<dynamic>(
         builder: (context) => StudioPage(studioId: studioId),
+      ),
+    );
+  }
+
+  /// Navigate to Staff details
+  static Future<void> toStaff(BuildContext context, Staff staff) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (context) => StaffPage(staff: staff),
       ),
     );
   }
