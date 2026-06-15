@@ -26,6 +26,7 @@ type StaffName struct {
 	Full          string                 `protobuf:"bytes,1,opt,name=full,proto3" json:"full,omitempty"`
 	Native        *string                `protobuf:"bytes,2,opt,name=native,proto3,oneof" json:"native,omitempty"`
 	UserPreferred *string                `protobuf:"bytes,3,opt,name=user_preferred,json=userPreferred,proto3,oneof" json:"user_preferred,omitempty"`
+	Alternative   []string               `protobuf:"bytes,4,rep,name=alternative,proto3" json:"alternative,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -79,6 +80,13 @@ func (x *StaffName) GetUserPreferred() string {
 		return *x.UserPreferred
 	}
 	return ""
+}
+
+func (x *StaffName) GetAlternative() []string {
+	if x != nil {
+		return x.Alternative
+	}
+	return nil
 }
 
 type StaffImage struct {
@@ -853,11 +861,12 @@ var File_media_staff_proto protoreflect.FileDescriptor
 
 const file_media_staff_proto_rawDesc = "" +
 	"\n" +
-	"\x11media_staff.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\x0fmedia_min.proto\"\x86\x01\n" +
+	"\x11media_staff.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\x0fmedia_min.proto\"\xa8\x01\n" +
 	"\tStaffName\x12\x12\n" +
 	"\x04full\x18\x01 \x01(\tR\x04full\x12\x1b\n" +
 	"\x06native\x18\x02 \x01(\tH\x00R\x06native\x88\x01\x01\x12*\n" +
-	"\x0euser_preferred\x18\x03 \x01(\tH\x01R\ruserPreferred\x88\x01\x01B\t\n" +
+	"\x0euser_preferred\x18\x03 \x01(\tH\x01R\ruserPreferred\x88\x01\x01\x12 \n" +
+	"\valternative\x18\x04 \x03(\tR\valternativeB\t\n" +
 	"\a_nativeB\x11\n" +
 	"\x0f_user_preferred\"Y\n" +
 	"\n" +

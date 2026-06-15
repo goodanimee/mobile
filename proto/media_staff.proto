@@ -11,6 +11,7 @@ message StaffName {
   string full = 1;
   optional string native = 2;
   optional string user_preferred = 3;
+  repeated string alternative = 4;
 }
 
 message StaffImage {

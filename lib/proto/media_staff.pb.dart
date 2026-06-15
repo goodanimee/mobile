@@ -24,11 +24,13 @@ class StaffName extends $pb.GeneratedMessage {
     $core.String? full,
     $core.String? native,
     $core.String? userPreferred,
+    $core.Iterable<$core.String>? alternative,
   }) {
     final result = create();
     if (full != null) result.full = full;
     if (native != null) result.native = native;
     if (userPreferred != null) result.userPreferred = userPreferred;
+    if (alternative != null) result.alternative.addAll(alternative);
     return result;
   }
 
@@ -48,6 +50,7 @@ class StaffName extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'full')
     ..aOS(2, _omitFieldNames ? '' : 'native')
     ..aOS(3, _omitFieldNames ? '' : 'userPreferred')
+    ..pPS(4, _omitFieldNames ? '' : 'alternative')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -94,6 +97,9 @@ class StaffName extends $pb.GeneratedMessage {
   $core.bool hasUserPreferred() => $_has(2);
   @$pb.TagNumber(3)
   void clearUserPreferred() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<$core.String> get alternative => $_getList(3);
 }
 
 class StaffImage extends $pb.GeneratedMessage {

@@ -30,6 +30,7 @@ const StaffName$json = {
       '10': 'userPreferred',
       '17': true
     },
+    {'1': 'alternative', '3': 4, '4': 3, '5': 9, '10': 'alternative'},
   ],
   '8': [
     {'1': '_native'},
@@ -40,8 +41,9 @@ const StaffName$json = {
 /// Descriptor for `StaffName`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List staffNameDescriptor = $convert.base64Decode(
     'CglTdGFmZk5hbWUSEgoEZnVsbBgBIAEoCVIEZnVsbBIbCgZuYXRpdmUYAiABKAlIAFIGbmF0aX'
-    'ZliAEBEioKDnVzZXJfcHJlZmVycmVkGAMgASgJSAFSDXVzZXJQcmVmZXJyZWSIAQFCCQoHX25h'
-    'dGl2ZUIRCg9fdXNlcl9wcmVmZXJyZWQ=');
+    'ZliAEBEioKDnVzZXJfcHJlZmVycmVkGAMgASgJSAFSDXVzZXJQcmVmZXJyZWSIAQESIAoLYWx0'
+    'ZXJuYXRpdmUYBCADKAlSC2FsdGVybmF0aXZlQgkKB19uYXRpdmVCEQoPX3VzZXJfcHJlZmVycm'
+    'Vk');
 
 @$core.Deprecated('Use staffImageDescriptor instead')
 const StaffImage$json = {

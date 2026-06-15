@@ -11,6 +11,7 @@ func (n *StaffName) ToProto() *pb.StaffName {
 		Full:          n.Full,
 		Native:        n.Native,
 		UserPreferred: n.UserPreferred,
+		Alternative:   n.Alternative,
 	}
 }
 
@@ -65,9 +66,10 @@ func (c *StaffConnection) ToProto() *pb.StaffConnection {
 
 // StaffName represents the names of a staff member
 type StaffName struct {
-	Full          string  `json:"full"`
-	Native        *string `json:"native"`
-	UserPreferred *string `json:"userPreferred"`
+	Full          string   `json:"full"`
+	Native        *string  `json:"native"`
+	UserPreferred *string  `json:"userPreferred"`
+	Alternative   []string `json:"alternative"`
 }
 
 // StaffImage represents the images of a staff member

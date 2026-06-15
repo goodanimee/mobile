@@ -20,6 +20,15 @@ class AppRelationCard extends StatelessWidget {
   /// Optional icon next to subtitle
   final Widget? subtitleIcon;
 
+  /// Optional format string (renders as Line 3)
+  final String? format;
+
+  /// Optional image URL to render on the right side
+  final String? rightImageUrl;
+
+  /// Whether the subtitle should be right-aligned
+  final bool rightAlignSubtitle;
+
   /// The accent color for theme
   final Color? color;
 
@@ -36,6 +45,9 @@ class AppRelationCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     this.nativeTitle,
+    this.format,
+    this.rightImageUrl,
+    this.rightAlignSubtitle = false,
     this.subtitleIcon,
     this.color,
     this.trailing,
@@ -100,7 +112,7 @@ class AppRelationCard extends StatelessWidget {
                           children: [
                             Text(
                               title,
-                              maxLines: 2,
+                              maxLines: format != null ? 1 : 2,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Colors.white,
@@ -124,16 +136,36 @@ class AppRelationCard extends StatelessWidget {
                                 ),
                               ),
                             ],
+                            if (format != null && format!.isNotEmpty) ...[
+                              const SizedBox(height: 2),
+                              Text(
+                                format!,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.7),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.2,
+                                ),
+                              ),
+                            ],
                           ],
                         ),
                         const Spacer(),
                         Row(
+                          mainAxisAlignment: rightAlignSubtitle
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
                           children: [
                             Flexible(
                               child: Text(
                                 subtitle,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
+                                textAlign: rightAlignSubtitle
+                                    ? TextAlign.end
+                                    : TextAlign.start,
                                 style: TextStyle(
                                   color: Colors.white.withValues(alpha: 0.7),
                                   fontSize: 12,
@@ -152,6 +184,20 @@ class AppRelationCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (rightImageUrl != null && rightImageUrl!.isNotEmpty) ...[
+                  const SizedBox(width: 12),
+                  AppNetworkImage(
+                    imageUrl: rightImageUrl!,
+                    width: 85,
+                    height: double.infinity,
+                    fallbackIcon: LucideIcons.clapperboard,
+                    checkDefault: true,
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(11),
+                      bottomRight: Radius.circular(11),
+                    ),
+                  ),
+                ],
               ],
             ),
             if (trailing != null)

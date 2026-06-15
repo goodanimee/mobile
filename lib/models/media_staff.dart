@@ -14,8 +14,16 @@ class StaffName {
   /// User preferred name
   final String? userPreferred;
 
+  /// Alternative names
+  final List<String> alternative;
+
   /// Creates a staff name
-  const StaffName({required this.full, this.native, this.userPreferred});
+  const StaffName({
+    required this.full,
+    this.native,
+    this.userPreferred,
+    this.alternative = const [],
+  });
 
   /// Creates a staff name from a protobuf object
   factory StaffName.fromProto(pb.StaffName pbObj) {
@@ -23,6 +31,7 @@ class StaffName {
       full: pbObj.full,
       native: pbObj.hasNative() ? pbObj.native : null,
       userPreferred: pbObj.hasUserPreferred() ? pbObj.userPreferred : null,
+      alternative: List<String>.from(pbObj.alternative),
     );
   }
 
@@ -31,6 +40,7 @@ class StaffName {
     final pbObj = pb.StaffName(full: full);
     if (native != null) pbObj.native = native!;
     if (userPreferred != null) pbObj.userPreferred = userPreferred!;
+    pbObj.alternative.addAll(alternative);
     return pbObj;
   }
 }
@@ -494,7 +504,12 @@ class Staff {
   }
 
   /// Creates a copy of the staff details with updated properties
-  Staff copyWith({bool? isFavourite, int? favourites}) {
+  Staff copyWith({
+    bool? isFavourite,
+    int? favourites,
+    StaffCharacterMediaConnection? characterMedia,
+    StaffMediaConnection? staffMedia,
+  }) {
     return Staff(
       id: id,
       name: name,
@@ -511,8 +526,8 @@ class Staff {
       dateOfBirth: dateOfBirth,
       dateOfDeath: dateOfDeath,
       language: language,
-      characterMedia: characterMedia,
-      staffMedia: staffMedia,
+      characterMedia: characterMedia ?? this.characterMedia,
+      staffMedia: staffMedia ?? this.staffMedia,
     );
   }
 }
