@@ -20,6 +20,7 @@ import 'media_activity.pb.dart' as $6;
 import 'media_list.pb.dart' as $0;
 import 'media_list_entry.pb.dart' as $2;
 import 'media_review.pb.dart' as $4;
+import 'media_staff.pb.dart' as $8;
 import 'media_studio.pb.dart' as $7;
 import 'viewer.pb.dart' as $1;
 
@@ -2356,6 +2357,282 @@ class ToggleFavouriteStudioResponse extends $pb.GeneratedMessage {
   $core.bool hasStudioId() => $_has(0);
   @$pb.TagNumber(1)
   void clearStudioId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class FetchStaffDetailsRequest extends $pb.GeneratedMessage {
+  factory FetchStaffDetailsRequest({
+    $core.int? staffId,
+    $core.int? characterMediaPage,
+    $core.int? staffMediaPage,
+  }) {
+    final result = create();
+    if (staffId != null) result.staffId = staffId;
+    if (characterMediaPage != null)
+      result.characterMediaPage = characterMediaPage;
+    if (staffMediaPage != null) result.staffMediaPage = staffMediaPage;
+    return result;
+  }
+
+  FetchStaffDetailsRequest._();
+
+  factory FetchStaffDetailsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchStaffDetailsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchStaffDetailsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'staffId')
+    ..aI(2, _omitFieldNames ? '' : 'characterMediaPage')
+    ..aI(3, _omitFieldNames ? '' : 'staffMediaPage')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStaffDetailsRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStaffDetailsRequest copyWith(
+          void Function(FetchStaffDetailsRequest) updates) =>
+      super.copyWith((message) => updates(message as FetchStaffDetailsRequest))
+          as FetchStaffDetailsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchStaffDetailsRequest create() => FetchStaffDetailsRequest._();
+  @$core.override
+  FetchStaffDetailsRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchStaffDetailsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchStaffDetailsRequest>(create);
+  static FetchStaffDetailsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get staffId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set staffId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStaffId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStaffId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get characterMediaPage => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set characterMediaPage($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasCharacterMediaPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCharacterMediaPage() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get staffMediaPage => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set staffMediaPage($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasStaffMediaPage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearStaffMediaPage() => $_clearField(3);
+}
+
+class FetchStaffDetailsResponse extends $pb.GeneratedMessage {
+  factory FetchStaffDetailsResponse({
+    $8.Staff? staff,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (staff != null) result.staff = staff;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchStaffDetailsResponse._();
+
+  factory FetchStaffDetailsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchStaffDetailsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchStaffDetailsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOM<$8.Staff>(1, _omitFieldNames ? '' : 'staff',
+        subBuilder: $8.Staff.create)
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStaffDetailsResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStaffDetailsResponse copyWith(
+          void Function(FetchStaffDetailsResponse) updates) =>
+      super.copyWith((message) => updates(message as FetchStaffDetailsResponse))
+          as FetchStaffDetailsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchStaffDetailsResponse create() => FetchStaffDetailsResponse._();
+  @$core.override
+  FetchStaffDetailsResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchStaffDetailsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchStaffDetailsResponse>(create);
+  static FetchStaffDetailsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $8.Staff get staff => $_getN(0);
+  @$pb.TagNumber(1)
+  set staff($8.Staff value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStaff() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStaff() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $8.Staff ensureStaff() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class ToggleFavouriteStaffRequest extends $pb.GeneratedMessage {
+  factory ToggleFavouriteStaffRequest({
+    $core.int? staffId,
+  }) {
+    final result = create();
+    if (staffId != null) result.staffId = staffId;
+    return result;
+  }
+
+  ToggleFavouriteStaffRequest._();
+
+  factory ToggleFavouriteStaffRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ToggleFavouriteStaffRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ToggleFavouriteStaffRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'staffId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteStaffRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteStaffRequest copyWith(
+          void Function(ToggleFavouriteStaffRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as ToggleFavouriteStaffRequest))
+          as ToggleFavouriteStaffRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteStaffRequest create() =>
+      ToggleFavouriteStaffRequest._();
+  @$core.override
+  ToggleFavouriteStaffRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteStaffRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStaffRequest>(create);
+  static ToggleFavouriteStaffRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get staffId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set staffId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStaffId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStaffId() => $_clearField(1);
+}
+
+class ToggleFavouriteStaffResponse extends $pb.GeneratedMessage {
+  factory ToggleFavouriteStaffResponse({
+    $core.int? staffId,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (staffId != null) result.staffId = staffId;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  ToggleFavouriteStaffResponse._();
+
+  factory ToggleFavouriteStaffResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ToggleFavouriteStaffResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ToggleFavouriteStaffResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'staffId')
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteStaffResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteStaffResponse copyWith(
+          void Function(ToggleFavouriteStaffResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as ToggleFavouriteStaffResponse))
+          as ToggleFavouriteStaffResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteStaffResponse create() =>
+      ToggleFavouriteStaffResponse._();
+  @$core.override
+  ToggleFavouriteStaffResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteStaffResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStaffResponse>(create);
+  static ToggleFavouriteStaffResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get staffId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set staffId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStaffId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStaffId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get error => $_getSZ(1);

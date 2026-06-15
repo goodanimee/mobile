@@ -1,0 +1,124 @@
+query Staff($id: Int, $characterMediaPage: Int, $staffMediaPage: Int) {
+    Staff(id: $id) {
+        id
+        name {
+            ...StaffNameFields
+        }
+        image {
+            ...StaffImageFields
+        }
+        description(asHtml: true)
+        favourites
+        isFavourite
+        age
+        gender
+        yearsActive
+        homeTown
+        bloodType
+        primaryOccupations
+        dateOfBirth {
+            ...FuzzyDateFields
+        }
+        dateOfDeath {
+            ...FuzzyDateFields
+        }
+        language: languageV2
+        characterMedia(
+            page: $characterMediaPage
+            sort: [START_DATE_DESC]
+            perPage: 25
+        ) {
+            pageInfo {
+                ...PageInfoFields
+            }
+            edges {
+                characterRole
+                node {
+                    ...MediaMinFields
+                }
+                characters {
+                    id
+                    name {
+                        userPreferred
+                    }
+                    image {
+                        large
+                        medium
+                    }
+                }
+            }
+        }
+        staffMedia(
+            page: $staffMediaPage
+            sort: [START_DATE_DESC]
+            perPage: 25
+        ) {
+            pageInfo {
+                ...PageInfoFields
+            }
+            edges {
+                staffRole
+                node {
+                    ...MediaMinFields
+                }
+            }
+        }
+    }
+}
+
+fragment StaffNameFields on StaffName {
+    full
+    native
+    userPreferred
+    alternative
+}
+
+fragment StaffImageFields on StaffImage {
+    large
+    medium
+}
+
+fragment FuzzyDateFields on FuzzyDate {
+    day
+    month
+    year
+}
+
+fragment PageInfoFields on PageInfo {
+    hasNextPage
+    currentPage
+}
+
+fragment MediaMinFields on Media {
+    id
+    type
+    averageScore
+    episodes
+    chapters
+    volumes
+    format
+    isAdult
+    isFavourite
+    siteUrl
+    seasonYear
+    coverImage {
+        ...CoverImageFields
+    }
+    title {
+        ...TitleFields
+    }
+}
+
+fragment CoverImageFields on MediaCoverImage {
+    medium
+    color
+    large
+    extraLarge
+}
+
+fragment TitleFields on MediaTitle {
+    english
+    native
+    romaji
+    userPreferred
+}

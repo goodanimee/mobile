@@ -1781,11 +1781,219 @@ func (x *ToggleFavouriteStudioResponse) GetError() string {
 	return ""
 }
 
+type FetchStaffDetailsRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	StaffId            int32                  `protobuf:"varint,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
+	CharacterMediaPage int32                  `protobuf:"varint,2,opt,name=character_media_page,json=characterMediaPage,proto3" json:"character_media_page,omitempty"`
+	StaffMediaPage     int32                  `protobuf:"varint,3,opt,name=staff_media_page,json=staffMediaPage,proto3" json:"staff_media_page,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *FetchStaffDetailsRequest) Reset() {
+	*x = FetchStaffDetailsRequest{}
+	mi := &file_api_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchStaffDetailsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchStaffDetailsRequest) ProtoMessage() {}
+
+func (x *FetchStaffDetailsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchStaffDetailsRequest.ProtoReflect.Descriptor instead.
+func (*FetchStaffDetailsRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *FetchStaffDetailsRequest) GetStaffId() int32 {
+	if x != nil {
+		return x.StaffId
+	}
+	return 0
+}
+
+func (x *FetchStaffDetailsRequest) GetCharacterMediaPage() int32 {
+	if x != nil {
+		return x.CharacterMediaPage
+	}
+	return 0
+}
+
+func (x *FetchStaffDetailsRequest) GetStaffMediaPage() int32 {
+	if x != nil {
+		return x.StaffMediaPage
+	}
+	return 0
+}
+
+type FetchStaffDetailsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Staff         *Staff                 `protobuf:"bytes,1,opt,name=staff,proto3" json:"staff,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchStaffDetailsResponse) Reset() {
+	*x = FetchStaffDetailsResponse{}
+	mi := &file_api_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchStaffDetailsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchStaffDetailsResponse) ProtoMessage() {}
+
+func (x *FetchStaffDetailsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchStaffDetailsResponse.ProtoReflect.Descriptor instead.
+func (*FetchStaffDetailsResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *FetchStaffDetailsResponse) GetStaff() *Staff {
+	if x != nil {
+		return x.Staff
+	}
+	return nil
+}
+
+func (x *FetchStaffDetailsResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type ToggleFavouriteStaffRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StaffId       int32                  `protobuf:"varint,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleFavouriteStaffRequest) Reset() {
+	*x = ToggleFavouriteStaffRequest{}
+	mi := &file_api_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleFavouriteStaffRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleFavouriteStaffRequest) ProtoMessage() {}
+
+func (x *ToggleFavouriteStaffRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleFavouriteStaffRequest.ProtoReflect.Descriptor instead.
+func (*ToggleFavouriteStaffRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *ToggleFavouriteStaffRequest) GetStaffId() int32 {
+	if x != nil {
+		return x.StaffId
+	}
+	return 0
+}
+
+type ToggleFavouriteStaffResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	StaffId       int32                  `protobuf:"varint,1,opt,name=staff_id,json=staffId,proto3" json:"staff_id,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleFavouriteStaffResponse) Reset() {
+	*x = ToggleFavouriteStaffResponse{}
+	mi := &file_api_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleFavouriteStaffResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleFavouriteStaffResponse) ProtoMessage() {}
+
+func (x *ToggleFavouriteStaffResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleFavouriteStaffResponse.ProtoReflect.Descriptor instead.
+func (*ToggleFavouriteStaffResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *ToggleFavouriteStaffResponse) GetStaffId() int32 {
+	if x != nil {
+		return x.StaffId
+	}
+	return 0
+}
+
+func (x *ToggleFavouriteStaffResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
 	"\n" +
-	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x14media_activity.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x12media_review.proto\x1a\x12media_studio.proto\x1a\fviewer.proto\"X\n" +
+	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x14media_activity.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\fviewer.proto\"X\n" +
 	"\x15FetchMediaListRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x12\n" +
@@ -1910,6 +2118,18 @@ const file_api_proto_rawDesc = "" +
 	"\tstudio_id\x18\x01 \x01(\x05R\bstudioId\"R\n" +
 	"\x1dToggleFavouriteStudioResponse\x12\x1b\n" +
 	"\tstudio_id\x18\x01 \x01(\x05R\bstudioId\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"\x91\x01\n" +
+	"\x18FetchStaffDetailsRequest\x12\x19\n" +
+	"\bstaff_id\x18\x01 \x01(\x05R\astaffId\x120\n" +
+	"\x14character_media_page\x18\x02 \x01(\x05R\x12characterMediaPage\x12(\n" +
+	"\x10staff_media_page\x18\x03 \x01(\x05R\x0estaffMediaPage\"Y\n" +
+	"\x19FetchStaffDetailsResponse\x12&\n" +
+	"\x05staff\x18\x01 \x01(\v2\x10.goodanime.StaffR\x05staff\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"8\n" +
+	"\x1bToggleFavouriteStaffRequest\x12\x19\n" +
+	"\bstaff_id\x18\x01 \x01(\x05R\astaffId\"O\n" +
+	"\x1cToggleFavouriteStaffResponse\x12\x19\n" +
+	"\bstaff_id\x18\x01 \x01(\x05R\astaffId\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
@@ -1924,7 +2144,7 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 36)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
@@ -1958,37 +2178,43 @@ var file_api_proto_goTypes = []any{
 	(*FetchStudioDetailsResponse)(nil),        // 29: goodanime.FetchStudioDetailsResponse
 	(*ToggleFavouriteStudioRequest)(nil),      // 30: goodanime.ToggleFavouriteStudioRequest
 	(*ToggleFavouriteStudioResponse)(nil),     // 31: goodanime.ToggleFavouriteStudioResponse
-	(*MediaListCollection)(nil),               // 32: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 33: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 34: goodanime.MediaListEntry
-	(*Media)(nil),                             // 35: goodanime.Media
-	(ReviewUserRating)(0),                     // 36: goodanime.ReviewUserRating
-	(*ReviewNode)(nil),                        // 37: goodanime.ReviewNode
-	(*PageInfo)(nil),                          // 38: goodanime.PageInfo
-	(*ListActivity)(nil),                      // 39: goodanime.ListActivity
-	(*Studio)(nil),                            // 40: goodanime.Studio
+	(*FetchStaffDetailsRequest)(nil),          // 32: goodanime.FetchStaffDetailsRequest
+	(*FetchStaffDetailsResponse)(nil),         // 33: goodanime.FetchStaffDetailsResponse
+	(*ToggleFavouriteStaffRequest)(nil),       // 34: goodanime.ToggleFavouriteStaffRequest
+	(*ToggleFavouriteStaffResponse)(nil),      // 35: goodanime.ToggleFavouriteStaffResponse
+	(*MediaListCollection)(nil),               // 36: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 37: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 38: goodanime.MediaListEntry
+	(*Media)(nil),                             // 39: goodanime.Media
+	(ReviewUserRating)(0),                     // 40: goodanime.ReviewUserRating
+	(*ReviewNode)(nil),                        // 41: goodanime.ReviewNode
+	(*PageInfo)(nil),                          // 42: goodanime.PageInfo
+	(*ListActivity)(nil),                      // 43: goodanime.ListActivity
+	(*Studio)(nil),                            // 44: goodanime.Studio
+	(*Staff)(nil),                             // 45: goodanime.Staff
 }
 var file_api_proto_depIdxs = []int32{
-	32, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	33, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	36, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	37, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	34, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	35, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	35, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	35, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	35, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	35, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
-	36, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
-	37, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
-	38, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
-	39, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
-	40, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	38, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	39, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	39, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	39, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	39, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	39, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	40, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
+	41, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
+	42, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	43, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
+	44, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
+	45, // 15: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -2002,6 +2228,7 @@ func file_api_proto_init() {
 	file_media_list_proto_init()
 	file_media_list_entry_proto_init()
 	file_media_review_proto_init()
+	file_media_staff_proto_init()
 	file_media_studio_proto_init()
 	file_viewer_proto_init()
 	file_api_proto_msgTypes[3].OneofWrappers = []any{}
@@ -2012,7 +2239,7 @@ func file_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   32,
+			NumMessages:   36,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -649,3 +649,76 @@ final $typed_data.Uint8List toggleFavouriteStudioResponseDescriptor =
     $convert.base64Decode(
         'Ch1Ub2dnbGVGYXZvdXJpdGVTdHVkaW9SZXNwb25zZRIbCglzdHVkaW9faWQYASABKAVSCHN0dW'
         'Rpb0lkEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use fetchStaffDetailsRequestDescriptor instead')
+const FetchStaffDetailsRequest$json = {
+  '1': 'FetchStaffDetailsRequest',
+  '2': [
+    {'1': 'staff_id', '3': 1, '4': 1, '5': 5, '10': 'staffId'},
+    {
+      '1': 'character_media_page',
+      '3': 2,
+      '4': 1,
+      '5': 5,
+      '10': 'characterMediaPage'
+    },
+    {'1': 'staff_media_page', '3': 3, '4': 1, '5': 5, '10': 'staffMediaPage'},
+  ],
+};
+
+/// Descriptor for `FetchStaffDetailsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchStaffDetailsRequestDescriptor = $convert.base64Decode(
+    'ChhGZXRjaFN0YWZmRGV0YWlsc1JlcXVlc3QSGQoIc3RhZmZfaWQYASABKAVSB3N0YWZmSWQSMA'
+    'oUY2hhcmFjdGVyX21lZGlhX3BhZ2UYAiABKAVSEmNoYXJhY3Rlck1lZGlhUGFnZRIoChBzdGFm'
+    'Zl9tZWRpYV9wYWdlGAMgASgFUg5zdGFmZk1lZGlhUGFnZQ==');
+
+@$core.Deprecated('Use fetchStaffDetailsResponseDescriptor instead')
+const FetchStaffDetailsResponse$json = {
+  '1': 'FetchStaffDetailsResponse',
+  '2': [
+    {
+      '1': 'staff',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.Staff',
+      '10': 'staff'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchStaffDetailsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchStaffDetailsResponseDescriptor =
+    $convert.base64Decode(
+        'ChlGZXRjaFN0YWZmRGV0YWlsc1Jlc3BvbnNlEiYKBXN0YWZmGAEgASgLMhAuZ29vZGFuaW1lLl'
+        'N0YWZmUgVzdGFmZhIUCgVlcnJvchgCIAEoCVIFZXJyb3I=');
+
+@$core.Deprecated('Use toggleFavouriteStaffRequestDescriptor instead')
+const ToggleFavouriteStaffRequest$json = {
+  '1': 'ToggleFavouriteStaffRequest',
+  '2': [
+    {'1': 'staff_id', '3': 1, '4': 1, '5': 5, '10': 'staffId'},
+  ],
+};
+
+/// Descriptor for `ToggleFavouriteStaffRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFavouriteStaffRequestDescriptor =
+    $convert.base64Decode(
+        'ChtUb2dnbGVGYXZvdXJpdGVTdGFmZlJlcXVlc3QSGQoIc3RhZmZfaWQYASABKAVSB3N0YWZmSW'
+        'Q=');
+
+@$core.Deprecated('Use toggleFavouriteStaffResponseDescriptor instead')
+const ToggleFavouriteStaffResponse$json = {
+  '1': 'ToggleFavouriteStaffResponse',
+  '2': [
+    {'1': 'staff_id', '3': 1, '4': 1, '5': 5, '10': 'staffId'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `ToggleFavouriteStaffResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFavouriteStaffResponseDescriptor =
+    $convert.base64Decode(
+        'ChxUb2dnbGVGYXZvdXJpdGVTdGFmZlJlc3BvbnNlEhkKCHN0YWZmX2lkGAEgASgFUgdzdGFmZk'
+        'lkEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');

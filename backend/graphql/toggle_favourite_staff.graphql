@@ -1,0 +1,9 @@
+mutation ToggleFavouriteStaff($id: Int) {
+    ToggleFavourite(staffId: $id) {
+        staff {
+            nodes {
+                id
+            }
+        }
+    }
+}
