@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../components/error_view.dart';
 import '../../../components/media_list_card.dart';
-import '../../../components/section_title.dart';
 import '../../../models/media_list.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../utils/app_options.dart';
@@ -52,10 +51,6 @@ class MediaListView extends StatelessWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.only(top: 16, bottom: 100),
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: SectionTitle(title: activeName, bottomPadding: 0),
-          ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.6,
             child: AppErrorView(
@@ -70,17 +65,10 @@ class MediaListView extends StatelessWidget {
     return ListView.builder(
       controller: scrollController,
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.only(top: 16, bottom: 100),
-      itemCount: entries.length + 1,
+      padding: const EdgeInsets.only(top: 8, bottom: 100),
+      itemCount: entries.length,
       itemBuilder: (context, index) {
-        if (index == 0) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: SectionTitle(title: activeName, bottomPadding: 0),
-          );
-        }
-
-        final entry = entries[index - 1];
+        final entry = entries[index];
 
         return MediaListCard(
           entry: entry,

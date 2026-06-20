@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../components/app_badges.dart';
 import '../../../components/app_media_card.dart';
 import '../../../components/error_view.dart';
-import '../../../components/section_title.dart';
 import '../../../models/media_list.dart';
 import '../../../utils/app_navigation.dart';
 
@@ -46,12 +45,6 @@ class MediaListGridView extends StatelessWidget {
       controller: scrollController,
       physics: const AlwaysScrollableScrollPhysics(),
       slivers: [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
-            child: SectionTitle(title: activeName),
-          ),
-        ),
         if (entries.isEmpty)
           SliverFillRemaining(
             hasScrollBody: false,
@@ -62,7 +55,12 @@ class MediaListGridView extends StatelessWidget {
           )
         else
           SliverPadding(
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 100),
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 12,
+              bottom: 100,
+            ),
             sliver: SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,

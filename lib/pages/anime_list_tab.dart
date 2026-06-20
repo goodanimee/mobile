@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/error_view.dart';
@@ -12,6 +13,7 @@ import '../utils/app_options.dart';
 import '../utils/utils.dart';
 import 'media_list_tab/widgets/grid_view.dart';
 import 'media_list_tab/widgets/list_view.dart';
+import 'media_list_tab/widgets/sort_menu.dart';
 
 /// Display user's anime lists
 class AnimeListTab extends StatefulWidget {
@@ -42,7 +44,8 @@ class AnimeListTab extends StatefulWidget {
 }
 
 /// State for AnimeListTab
-class _AnimeListTabState extends State<AnimeListTab> {
+class _AnimeListTabState extends State<AnimeListTab>
+    with SingleTickerProviderStateMixin {
   bool _isLoading = true;
   List<MediaList> _lists = [];
   String? _error;
@@ -50,11 +53,41 @@ class _AnimeListTabState extends State<AnimeListTab> {
   MediaListStatus? _activeStatus;
 
   bool _hasFetchedThisSession = false;
+  bool _showSortMenu = false;
+  String _sortType = 'score';
+  final Map<String, bool> _sortDirections = {
+    'score': false,
+    'title': true,
+    'progress': false,
+    'release_date': false,
+    'started_date': false,
+    'completed_date': false,
+  };
+
+  late final AnimationController _sortMenuController;
+  late final Animation<double> _sortMenuAnimation;
+  late final Animation<double> _iconsFade;
 
   @override
   void initState() {
     super.initState();
-    _fetchLists();
+    _sortMenuController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _sortMenuAnimation = CurvedAnimation(
+      parent: _sortMenuController,
+      curve: Curves.easeInOut,
+    );
+    _iconsFade = CurvedAnimation(
+      parent: _sortMenuController,
+      curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
+    );
+    _loadSortSettings().then((_) {
+      if (mounted) {
+        _fetchLists();
+      }
+    });
     CacheUtils.animeListNeedsRefresh.addListener(_onCacheInvalidated);
   }
 
@@ -69,8 +102,26 @@ class _AnimeListTabState extends State<AnimeListTab> {
   /// Disposes the scroll controller and removes cache listener
   void dispose() {
     _scrollController.dispose();
+    _sortMenuController.dispose();
     CacheUtils.animeListNeedsRefresh.removeListener(_onCacheInvalidated);
     super.dispose();
+  }
+
+  void _toggleSortMenu() {
+    if (_showSortMenu) {
+      _sortMenuController.reverse().then((_) {
+        if (mounted) {
+          setState(() {
+            _showSortMenu = false;
+          });
+        }
+      });
+    } else {
+      setState(() {
+        _showSortMenu = true;
+      });
+      _sortMenuController.forward();
+    }
   }
 
   /// Notifies parent of the available list sections
@@ -213,27 +264,212 @@ class _AnimeListTabState extends State<AnimeListTab> {
     );
     final activeName = activeList.name;
     final activeEntries = activeList.entries;
+    final sortedEntries = List<MediaListEntryWithMedia>.from(activeEntries);
+    _sortEntries(sortedEntries);
 
-    return RefreshIndicator(
-      color: borderColor,
-      backgroundColor: hoverBgColor,
-      onRefresh: () => _fetchLists(forceRefresh: true),
-      child: widget.isGridMode
-          ? MediaListGridView(
-              activeName: activeName,
-              entries: activeEntries,
-              scrollController: _scrollController,
-              onRefresh: () => _fetchLists(forceRefresh: true),
-              onLongPress: _showItemOptions,
-            )
-          : MediaListView(
-              activeName: activeName,
-              entries: activeEntries,
-              scrollController: _scrollController,
-              onRefresh: () => _fetchLists(forceRefresh: true),
-              onEntryUpdated: _handleEntryUpdated,
-              onLongPress: _showItemOptions,
+    return Stack(
+      children: [
+        Column(
+          children: [
+            Container(
+              height: 56,
+              decoration: const BoxDecoration(
+                color: bgColor,
+                border: Border(bottom: BorderSide(color: cardBorderColor)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Text(
+                      activeName,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: textPrimary,
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(
+                        LucideIcons.sortDesc,
+                        color: textPrimary,
+                      ),
+                      onPressed: _toggleSortMenu,
+                    ),
+                  ],
+                ),
+              ),
             ),
+            Expanded(
+              child: RefreshIndicator(
+                color: borderColor,
+                backgroundColor: hoverBgColor,
+                onRefresh: () => _fetchLists(forceRefresh: true),
+                child: widget.isGridMode
+                    ? MediaListGridView(
+                        activeName: activeName,
+                        entries: sortedEntries,
+                        scrollController: _scrollController,
+                        onRefresh: () => _fetchLists(forceRefresh: true),
+                        onLongPress: _showItemOptions,
+                      )
+                    : MediaListView(
+                        activeName: activeName,
+                        entries: sortedEntries,
+                        scrollController: _scrollController,
+                        onRefresh: () => _fetchLists(forceRefresh: true),
+                        onEntryUpdated: _handleEntryUpdated,
+                        onLongPress: _showItemOptions,
+                      ),
+              ),
+            ),
+          ],
+        ),
+        SortMenuOverlay(
+          visible: _showSortMenu,
+          activeSortType: _sortType,
+          sortDirections: _sortDirections,
+          animationController: _sortMenuController,
+          sizeAnimation: _sortMenuAnimation,
+          fadeAnimation: _iconsFade,
+          onDismiss: _toggleSortMenu,
+          onSelected: (type) {
+            setState(() {
+              if (_sortType == type) {
+                _sortDirections[type] = !(_sortDirections[type] ?? false);
+              } else {
+                _sortType = type;
+              }
+            });
+            _saveSortSettings();
+          },
+        ),
+      ],
     );
+  }
+
+  Future<void> _loadSortSettings() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final type = prefs.getString('anime_sort_type');
+      if (type != null) {
+        setState(() {
+          _sortType = type;
+        });
+      }
+      for (final key in _sortDirections.keys) {
+        final val = prefs.getBool('anime_sort_dir_$key');
+        if (val != null) {
+          setState(() {
+            _sortDirections[key] = val;
+          });
+        }
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _saveSortSettings() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('anime_sort_type', _sortType);
+      for (final entry in _sortDirections.entries) {
+        await prefs.setBool('anime_sort_dir_${entry.key}', entry.value);
+      }
+    } catch (_) {}
+  }
+
+  void _sortEntries(List<MediaListEntryWithMedia> entries) {
+    final isAscending = _sortDirections[_sortType] ?? false;
+    switch (_sortType) {
+      case 'title':
+        entries.sort((a, b) {
+          final tA = a.media.title.userPreferred.trim().toLowerCase();
+          final tB = b.media.title.userPreferred.trim().toLowerCase();
+          if (tA.isEmpty && tB.isEmpty) return 0;
+          if (tA.isEmpty) return -1;
+          if (tB.isEmpty) return 1;
+          return isAscending ? tA.compareTo(tB) : tB.compareTo(tA);
+        });
+        break;
+      case 'score':
+        entries.sort((a, b) {
+          final scoreA = a.score;
+          final scoreB = b.score;
+          final hasScoreA = scoreA > 0;
+          final hasScoreB = scoreB > 0;
+
+          if (hasScoreA && hasScoreB) {
+            return isAscending
+                ? scoreA.compareTo(scoreB)
+                : scoreB.compareTo(scoreA);
+          }
+          if (hasScoreA) return -1;
+          if (hasScoreB) return 1;
+
+          final commA = a.media.averageScore;
+          final commB = b.media.averageScore;
+          return isAscending ? commA.compareTo(commB) : commB.compareTo(commA);
+        });
+        break;
+      case 'progress':
+        entries.sort((a, b) {
+          return isAscending
+              ? a.progress.compareTo(b.progress)
+              : b.progress.compareTo(a.progress);
+        });
+        break;
+      case 'release_date':
+        entries.sort((a, b) {
+          final yA = (a.media.startYear == 0) ? null : a.media.startYear;
+          final yB = (b.media.startYear == 0) ? null : b.media.startYear;
+          if (yA == null && yB == null) return 0;
+          if (yA == null) return 1;
+          if (yB == null) return -1;
+          return isAscending ? yA.compareTo(yB) : yB.compareTo(yA);
+        });
+        break;
+      case 'started_date':
+        entries.sort((a, b) {
+          return _compareFuzzyDates(a.startedAt, b.startedAt, isAscending);
+        });
+        break;
+      case 'completed_date':
+        entries.sort((a, b) {
+          return _compareFuzzyDates(a.completedAt, b.completedAt, isAscending);
+        });
+        break;
+    }
+  }
+
+  int _compareFuzzyDates(FuzzyDate? a, FuzzyDate? b, bool ascending) {
+    if (a == null && b == null) return 0;
+    if (a == null) return 1;
+    if (b == null) return -1;
+
+    final yA = (a.year == 0) ? null : a.year;
+    final yB = (b.year == 0) ? null : b.year;
+    if (yA == null && yB == null) return 0;
+    if (yA == null) return 1;
+    if (yB == null) return -1;
+    if (yA != yB) {
+      return ascending ? yA.compareTo(yB) : yB.compareTo(yA);
+    }
+
+    final mA = (a.month == 0) ? null : a.month;
+    final mB = (b.month == 0) ? null : b.month;
+    if (mA == null && mB == null) return 0;
+    if (mA == null) return 1;
+    if (mB == null) return -1;
+    if (mA != mB) {
+      return ascending ? mA.compareTo(mB) : mB.compareTo(mA);
+    }
+
+    final dA = (a.day == 0) ? null : a.day;
+    final dB = (b.day == 0) ? null : b.day;
+    if (dA == null && dB == null) return 0;
+    if (dA == null) return 1;
+    if (dB == null) return -1;
+    return ascending ? dA.compareTo(dB) : dB.compareTo(dA);
   }
 }
