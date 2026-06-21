@@ -34,12 +34,7 @@ class SeasonFilterPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> seasonKeys = [
-      'WINTER',
-      'SPRING',
-      'SUMMER',
-      'FALL',
-    ];
+    final List<String> seasonKeys = ['WINTER', 'SPRING', 'SUMMER', 'FALL'];
 
     return Container(
       width: double.infinity,
@@ -61,7 +56,7 @@ class SeasonFilterPanel extends StatelessWidget {
                 thickness: 1.0,
               ),
             _buildOption(context, seasonKeys[i]),
-          ]
+          ],
         ],
       ),
     );
@@ -109,8 +104,9 @@ class SeasonFilterPanel extends StatelessWidget {
                   style: TextStyle(
                     color: isSelected ? textPrimary : textMuted,
                     fontSize: fontBody(context),
-                    fontWeight:
-                        isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                   ),
                 ),
               ),

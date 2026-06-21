@@ -253,10 +253,7 @@ class _YearFilterPanelState extends State<YearFilterPanel> {
             controller: controller,
             focusNode: focusNode,
             keyboardType: TextInputType.number,
-            style: TextStyle(
-              color: textPrimary,
-              fontSize: fontBody(context),
-            ),
+            style: TextStyle(color: textPrimary, fontSize: fontBody(context)),
             decoration: const InputDecoration(
               border: InputBorder.none,
               isDense: true,

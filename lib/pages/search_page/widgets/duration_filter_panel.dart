@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 import 'custom_range_slider_thumb_shape.dart';
 
-/// The selection dropdown panel for advanced episode or chapter count filters.
-class CountFilterPanel extends StatefulWidget {
-  /// Current selected minimum count.
+/// The selection dropdown panel for advanced duration or volume range filters.
+class DurationFilterPanel extends StatefulWidget {
+  /// Current selected minimum value.
   final int? selectedMin;
 
-  /// Current selected maximum count.
+  /// Current selected maximum value.
   final int? selectedMax;
 
   /// Active media type (ANIME or MANGA).
   final String mediaType;
 
-  /// Callback when the count range changes.
+  /// Callback when the range changes.
   final void Function(int? min, int? max) onChanged;
 
-  /// Creates a count filter panel.
-  const CountFilterPanel({
+  /// Creates a duration filter panel.
+  const DurationFilterPanel({
     super.key,
     required this.selectedMin,
     required this.selectedMax,
@@ -26,12 +26,12 @@ class CountFilterPanel extends StatefulWidget {
   });
 
   @override
-  State<CountFilterPanel> createState() => _CountFilterPanelState();
+  State<DurationFilterPanel> createState() => _DurationFilterPanelState();
 }
 
-class _CountFilterPanelState extends State<CountFilterPanel> {
+class _DurationFilterPanelState extends State<DurationFilterPanel> {
   static const int minLimit = 0;
-  static const int maxLimit = 500;
+  static const int maxLimit = 200;
 
   late int _currentMin;
   late int _currentMax;
@@ -62,7 +62,7 @@ class _CountFilterPanelState extends State<CountFilterPanel> {
   }
 
   @override
-  void didUpdateWidget(CountFilterPanel oldWidget) {
+  void didUpdateWidget(DurationFilterPanel oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.selectedMin != oldWidget.selectedMin ||
         widget.selectedMax != oldWidget.selectedMax) {
@@ -128,9 +128,9 @@ class _CountFilterPanelState extends State<CountFilterPanel> {
   @override
   Widget build(BuildContext context) {
     final bool isAnime = widget.mediaType == 'ANIME';
-    final String title = isAnime ? 'Episode Range' : 'Chapter Range';
-    final String minLabel = isAnime ? 'Min Episodes' : 'Min Chapters';
-    final String maxLabel = isAnime ? 'Max Episodes' : 'Max Chapters';
+    final String title = isAnime ? 'Duration Range' : 'Volume Range';
+    final String minLabel = isAnime ? 'Min Duration (mins)' : 'Min Volumes';
+    final String maxLabel = isAnime ? 'Max Duration (mins)' : 'Max Volumes';
 
     return Container(
       width: double.infinity,
@@ -205,7 +205,7 @@ class _CountFilterPanelState extends State<CountFilterPanel> {
           Row(
             children: [
               Expanded(
-                child: _buildCountInput(
+                child: _buildDurationInput(
                   context,
                   label: minLabel,
                   controller: _minController,
@@ -214,7 +214,7 @@ class _CountFilterPanelState extends State<CountFilterPanel> {
               ),
               SizedBox(width: getResponsiveSize(context, 16.0)),
               Expanded(
-                child: _buildCountInput(
+                child: _buildDurationInput(
                   context,
                   label: maxLabel,
                   controller: _maxController,
@@ -228,7 +228,7 @@ class _CountFilterPanelState extends State<CountFilterPanel> {
     );
   }
 
-  Widget _buildCountInput(
+  Widget _buildDurationInput(
     BuildContext context, {
     required String label,
     required TextEditingController controller,

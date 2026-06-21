@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../theme/theme.dart';
 import 'search_page/widgets/count_filter_panel.dart';
+import 'search_page/widgets/duration_filter_panel.dart';
 import 'search_page/widgets/filter_dropdown.dart';
 import 'search_page/widgets/format_filter_panel.dart';
 import 'search_page/widgets/media_type_selector.dart';
@@ -42,18 +43,22 @@ class _SearchPageState extends State<SearchPage> {
   bool _isSeasonOpen = false;
   bool _isYearOpen = false;
   bool _isCountOpen = false;
+  bool _isDurationOpen = false;
   String? _status;
   String? _season;
   int? _startYearMin;
   int? _startYearMax;
   int? _countMin;
   int? _countMax;
+  int? _durationMin;
+  int? _durationMax;
 
   final LayerLink _formatLayerLink = LayerLink();
   final LayerLink _statusLayerLink = LayerLink();
   final LayerLink _seasonLayerLink = LayerLink();
   final LayerLink _yearLayerLink = LayerLink();
   final LayerLink _countLayerLink = LayerLink();
+  final LayerLink _durationLayerLink = LayerLink();
 
   @override
   void initState() {
@@ -99,6 +104,8 @@ class _SearchPageState extends State<SearchPage> {
           _toggleYear();
         } else if (_isCountOpen) {
           _toggleCount();
+        } else if (_isDurationOpen) {
+          _toggleDuration();
         }
       },
       behavior: HitTestBehavior.translucent,
@@ -156,6 +163,8 @@ class _SearchPageState extends State<SearchPage> {
                 _mediaType = value;
                 _countMin = null;
                 _countMax = null;
+                _durationMin = null;
+                _durationMax = null;
               });
             },
           ),
@@ -233,6 +242,7 @@ class _SearchPageState extends State<SearchPage> {
       _isSeasonOpen = false;
       _isYearOpen = false;
       _isCountOpen = false;
+      _isDurationOpen = false;
     });
   }
 
@@ -243,6 +253,7 @@ class _SearchPageState extends State<SearchPage> {
       _isSeasonOpen = false;
       _isYearOpen = false;
       _isCountOpen = false;
+      _isDurationOpen = false;
     });
   }
 
@@ -253,6 +264,7 @@ class _SearchPageState extends State<SearchPage> {
       _isStatusOpen = false;
       _isYearOpen = false;
       _isCountOpen = false;
+      _isDurationOpen = false;
     });
   }
 
@@ -263,6 +275,7 @@ class _SearchPageState extends State<SearchPage> {
       _isStatusOpen = false;
       _isSeasonOpen = false;
       _isCountOpen = false;
+      _isDurationOpen = false;
     });
   }
 
@@ -273,6 +286,18 @@ class _SearchPageState extends State<SearchPage> {
       _isStatusOpen = false;
       _isSeasonOpen = false;
       _isYearOpen = false;
+      _isDurationOpen = false;
+    });
+  }
+
+  void _toggleDuration() {
+    setState(() {
+      _isDurationOpen = !_isDurationOpen;
+      _isFormatOpen = false;
+      _isStatusOpen = false;
+      _isSeasonOpen = false;
+      _isYearOpen = false;
+      _isCountOpen = false;
     });
   }
 
@@ -645,7 +670,9 @@ class _SearchPageState extends State<SearchPage> {
     final Color countBgColor;
     final Color countTextColor;
 
-    final String countDefaultLabel = _mediaType == 'ANIME' ? 'Episodes' : 'Chapters';
+    final String countDefaultLabel = _mediaType == 'ANIME'
+        ? 'Episodes'
+        : 'Chapters';
 
     if (_countMin == null && _countMax == null) {
       countLabel = countDefaultLabel;
@@ -663,54 +690,102 @@ class _SearchPageState extends State<SearchPage> {
       countTextColor = textPrimary;
     }
 
-    final String durationDefaultLabel = _mediaType == 'ANIME' ? 'Duration' : 'Volumes';
+    final String durationDefaultLabel = _mediaType == 'ANIME'
+        ? 'Duration'
+        : 'Volumes';
+    final String durationLabel;
+    final Color durationBorderColor;
+    final Color durationBgColor;
+    final Color durationTextColor;
+
+    if (_durationMin == null && _durationMax == null) {
+      durationLabel = durationDefaultLabel;
+      durationBorderColor = _isDurationOpen ? borderColor : cardBorderColor;
+      durationBgColor = Colors.transparent;
+      durationTextColor = textPrimary;
+    } else {
+      if (_durationMin == _durationMax) {
+        durationLabel = '$_durationMin';
+      } else {
+        durationLabel = '$_durationMin - $_durationMax';
+      }
+      durationBgColor = borderColor.withValues(alpha: 0.15);
+      durationBorderColor = borderColor;
+      durationTextColor = textPrimary;
+    }
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: padding),
       child: CompositedTransformTarget(
         link: _countLayerLink,
-        child: SizedBox(
-          width: double.infinity,
-          child: Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
-            children: [
-              FilterDropdown(
-                layerLink: _countLayerLink,
-                useAnchorAsTarget: false,
-                isOpen: _isCountOpen,
-                onTapOutside: _toggleCount,
-                anchor: SearchFilterButton(
-                  label: countLabel,
-                  onTap: _toggleCount,
-                  backgroundColor: countBgColor,
-                  borderColor: countBorderColor,
-                  textColor: countTextColor,
+        child: CompositedTransformTarget(
+          link: _durationLayerLink,
+          child: SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: [
+                FilterDropdown(
+                  layerLink: _countLayerLink,
+                  useAnchorAsTarget: false,
+                  isOpen: _isCountOpen,
+                  onTapOutside: _toggleCount,
+                  anchor: SearchFilterButton(
+                    label: countLabel,
+                    onTap: _toggleCount,
+                    backgroundColor: countBgColor,
+                    borderColor: countBorderColor,
+                    textColor: countTextColor,
+                  ),
+                  menu: CountFilterPanel(
+                    selectedMin: _countMin,
+                    selectedMax: _countMax,
+                    mediaType: _mediaType,
+                    onChanged: (min, max) {
+                      setState(() {
+                        if (min == 0 && max == 500) {
+                          _countMin = null;
+                          _countMax = null;
+                        } else {
+                          _countMin = min;
+                          _countMax = max;
+                        }
+                      });
+                    },
+                  ),
                 ),
-                menu: CountFilterPanel(
-                  selectedMin: _countMin,
-                  selectedMax: _countMax,
-                  mediaType: _mediaType,
-                  onChanged: (min, max) {
-                    setState(() {
-                      if (min == 0 && max == 500) {
-                        _countMin = null;
-                        _countMax = null;
-                      } else {
-                        _countMin = min;
-                        _countMax = max;
-                      }
-                    });
-                  },
+                FilterDropdown(
+                  layerLink: _durationLayerLink,
+                  useAnchorAsTarget: false,
+                  isOpen: _isDurationOpen,
+                  onTapOutside: _toggleDuration,
+                  anchor: SearchFilterButton(
+                    label: durationLabel,
+                    onTap: _toggleDuration,
+                    backgroundColor: durationBgColor,
+                    borderColor: durationBorderColor,
+                    textColor: durationTextColor,
+                  ),
+                  menu: DurationFilterPanel(
+                    selectedMin: _durationMin,
+                    selectedMax: _durationMax,
+                    mediaType: _mediaType,
+                    onChanged: (min, max) {
+                      setState(() {
+                        if (min == 0 && max == 200) {
+                          _durationMin = null;
+                          _durationMax = null;
+                        } else {
+                          _durationMin = min;
+                          _durationMax = max;
+                        }
+                      });
+                    },
+                  ),
                 ),
-              ),
-              SearchFilterButton(
-                label: durationDefaultLabel,
-                onTap: () {},
-                borderColor: cardBorderColor,
-                textColor: textPrimary,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -41,11 +41,7 @@ class CustomRangeSliderThumbShape extends RangeSliderThumbShape {
     final Canvas canvas = context.canvas;
 
     final RRect rect = RRect.fromRectAndRadius(
-      Rect.fromCenter(
-        center: center,
-        width: thumbWidth,
-        height: thumbHeight,
-      ),
+      Rect.fromCenter(center: center, width: thumbWidth, height: thumbHeight),
       Radius.circular(borderRadius),
     );
 
