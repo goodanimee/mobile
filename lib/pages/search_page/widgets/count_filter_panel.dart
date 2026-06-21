@@ -2,32 +2,36 @@ import 'package:flutter/material.dart';
 import '../../../theme/theme.dart';
 import 'custom_range_slider_thumb_shape.dart';
 
-/// The selection dropdown panel for advanced start year range filters.
-class YearFilterPanel extends StatefulWidget {
-  /// Current selected minimum year.
+/// The selection dropdown panel for advanced episode or chapter count filters.
+class CountFilterPanel extends StatefulWidget {
+  /// Current selected minimum count.
   final int? selectedMin;
 
-  /// Current selected maximum year.
+  /// Current selected maximum count.
   final int? selectedMax;
 
-  /// Callback when the year range changes.
+  /// Active media type (ANIME or MANGA).
+  final String mediaType;
+
+  /// Callback when the count range changes.
   final void Function(int? min, int? max) onChanged;
 
-  /// Creates a year filter panel.
-  const YearFilterPanel({
+  /// Creates a count filter panel.
+  const CountFilterPanel({
     super.key,
     required this.selectedMin,
     required this.selectedMax,
+    required this.mediaType,
     required this.onChanged,
   });
 
   @override
-  State<YearFilterPanel> createState() => _YearFilterPanelState();
+  State<CountFilterPanel> createState() => _CountFilterPanelState();
 }
 
-class _YearFilterPanelState extends State<YearFilterPanel> {
-  static const int minYear = 1917;
-  late final int maxYear;
+class _CountFilterPanelState extends State<CountFilterPanel> {
+  static const int minLimit = 0;
+  static const int maxLimit = 500;
 
   late int _currentMin;
   late int _currentMax;
@@ -41,9 +45,8 @@ class _YearFilterPanelState extends State<YearFilterPanel> {
   @override
   void initState() {
     super.initState();
-    maxYear = DateTime.now().year + 1;
-    _currentMin = widget.selectedMin ?? minYear;
-    _currentMax = widget.selectedMax ?? maxYear;
+    _currentMin = widget.selectedMin ?? minLimit;
+    _currentMax = widget.selectedMax ?? maxLimit;
 
     _minController = TextEditingController(text: _currentMin.toString());
     _maxController = TextEditingController(text: _currentMax.toString());
@@ -59,13 +62,13 @@ class _YearFilterPanelState extends State<YearFilterPanel> {
   }
 
   @override
-  void didUpdateWidget(YearFilterPanel oldWidget) {
+  void didUpdateWidget(CountFilterPanel oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.selectedMin != oldWidget.selectedMin ||
         widget.selectedMax != oldWidget.selectedMax) {
       setState(() {
-        _currentMin = widget.selectedMin ?? minYear;
-        _currentMax = widget.selectedMax ?? maxYear;
+        _currentMin = widget.selectedMin ?? minLimit;
+        _currentMax = widget.selectedMax ?? maxLimit;
 
         if (!_minFocus.hasFocus) {
           _minController.text = _currentMin.toString();
@@ -103,7 +106,7 @@ class _YearFilterPanelState extends State<YearFilterPanel> {
   void _onMinTextChanged() {
     if (!_minFocus.hasFocus) return;
     final val = int.tryParse(_minController.text);
-    if (val != null && val >= minYear && val <= _currentMax) {
+    if (val != null && val >= minLimit && val <= _currentMax) {
       setState(() {
         _currentMin = val;
       });
@@ -114,7 +117,7 @@ class _YearFilterPanelState extends State<YearFilterPanel> {
   void _onMaxTextChanged() {
     if (!_maxFocus.hasFocus) return;
     final val = int.tryParse(_maxController.text);
-    if (val != null && val >= _currentMin && val <= maxYear) {
+    if (val != null && val >= _currentMin && val <= maxLimit) {
       setState(() {
         _currentMax = val;
       });
@@ -124,6 +127,11 @@ class _YearFilterPanelState extends State<YearFilterPanel> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isAnime = widget.mediaType == 'ANIME';
+    final String title = isAnime ? 'Episode Range' : 'Chapter Range';
+    final String minLabel = isAnime ? 'Min Episodes' : 'Min Chapters';
+    final String maxLabel = isAnime ? 'Max Episodes' : 'Max Chapters';
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -140,7 +148,7 @@ class _YearFilterPanelState extends State<YearFilterPanel> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Year Range',
+                title,
                 style: TextStyle(
                   color: textMuted,
                   fontSize: fontSmall(context),
@@ -179,9 +187,9 @@ class _YearFilterPanelState extends State<YearFilterPanel> {
                 _currentMin.toDouble(),
                 _currentMax.toDouble(),
               ),
-              min: minYear.toDouble(),
-              max: maxYear.toDouble(),
-              divisions: maxYear - minYear,
+              min: minLimit.toDouble(),
+              max: maxLimit.toDouble(),
+              divisions: maxLimit - minLimit,
               onChanged: (values) {
                 setState(() {
                   _currentMin = values.start.round();
@@ -197,18 +205,18 @@ class _YearFilterPanelState extends State<YearFilterPanel> {
           Row(
             children: [
               Expanded(
-                child: _buildYearInput(
+                child: _buildCountInput(
                   context,
-                  label: 'Min Year',
+                  label: minLabel,
                   controller: _minController,
                   focusNode: _minFocus,
                 ),
               ),
               SizedBox(width: getResponsiveSize(context, 16.0)),
               Expanded(
-                child: _buildYearInput(
+                child: _buildCountInput(
                   context,
-                  label: 'Max Year',
+                  label: maxLabel,
                   controller: _maxController,
                   focusNode: _maxFocus,
                 ),
@@ -220,7 +228,7 @@ class _YearFilterPanelState extends State<YearFilterPanel> {
     );
   }
 
-  Widget _buildYearInput(
+  Widget _buildCountInput(
     BuildContext context, {
     required String label,
     required TextEditingController controller,

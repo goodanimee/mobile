@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../theme/theme.dart';
+import 'search_page/widgets/count_filter_panel.dart';
 import 'search_page/widgets/filter_dropdown.dart';
 import 'search_page/widgets/format_filter_panel.dart';
 import 'search_page/widgets/media_type_selector.dart';
@@ -40,15 +41,19 @@ class _SearchPageState extends State<SearchPage> {
   bool _isStatusOpen = false;
   bool _isSeasonOpen = false;
   bool _isYearOpen = false;
+  bool _isCountOpen = false;
   String? _status;
   String? _season;
   int? _startYearMin;
   int? _startYearMax;
+  int? _countMin;
+  int? _countMax;
 
   final LayerLink _formatLayerLink = LayerLink();
   final LayerLink _statusLayerLink = LayerLink();
   final LayerLink _seasonLayerLink = LayerLink();
   final LayerLink _yearLayerLink = LayerLink();
+  final LayerLink _countLayerLink = LayerLink();
 
   @override
   void initState() {
@@ -92,6 +97,8 @@ class _SearchPageState extends State<SearchPage> {
           _toggleSeason();
         } else if (_isYearOpen) {
           _toggleYear();
+        } else if (_isCountOpen) {
+          _toggleCount();
         }
       },
       behavior: HitTestBehavior.translucent,
@@ -147,6 +154,8 @@ class _SearchPageState extends State<SearchPage> {
             onChanged: (value) {
               setState(() {
                 _mediaType = value;
+                _countMin = null;
+                _countMax = null;
               });
             },
           ),
@@ -155,6 +164,8 @@ class _SearchPageState extends State<SearchPage> {
         _buildFormatAndStatusRow(paddingVal),
         SizedBox(height: getResponsiveSize(context, 16.0)),
         _buildSeasonAndYearRow(paddingVal),
+        SizedBox(height: getResponsiveSize(context, 16.0)),
+        _buildCountAndDurationRow(paddingVal),
       ],
     );
   }
@@ -221,6 +232,7 @@ class _SearchPageState extends State<SearchPage> {
       _isStatusOpen = false;
       _isSeasonOpen = false;
       _isYearOpen = false;
+      _isCountOpen = false;
     });
   }
 
@@ -230,6 +242,7 @@ class _SearchPageState extends State<SearchPage> {
       _isFormatOpen = false;
       _isSeasonOpen = false;
       _isYearOpen = false;
+      _isCountOpen = false;
     });
   }
 
@@ -239,6 +252,7 @@ class _SearchPageState extends State<SearchPage> {
       _isFormatOpen = false;
       _isStatusOpen = false;
       _isYearOpen = false;
+      _isCountOpen = false;
     });
   }
 
@@ -248,6 +262,17 @@ class _SearchPageState extends State<SearchPage> {
       _isFormatOpen = false;
       _isStatusOpen = false;
       _isSeasonOpen = false;
+      _isCountOpen = false;
+    });
+  }
+
+  void _toggleCount() {
+    setState(() {
+      _isCountOpen = !_isCountOpen;
+      _isFormatOpen = false;
+      _isStatusOpen = false;
+      _isSeasonOpen = false;
+      _isYearOpen = false;
     });
   }
 
@@ -420,11 +445,11 @@ class _SearchPageState extends State<SearchPage> {
       statusIconColor = Colors.transparent;
     } else {
       statusLabel = _status!.replaceAll('_', ' ');
-      statusBgColor = paletteGreen.withValues(alpha: 0.15);
-      statusBorderColor = paletteGreen;
+      statusBgColor = borderColor.withValues(alpha: 0.15);
+      statusBorderColor = borderColor;
       statusTextColor = textPrimary;
       statusIcon = _getStatusIcon(_status!);
-      statusIconColor = paletteGreen;
+      statusIconColor = borderColor;
     }
 
     return Padding(
@@ -514,11 +539,11 @@ class _SearchPageState extends State<SearchPage> {
       seasonIconColor = Colors.transparent;
     } else {
       seasonLabel = _season!;
-      seasonBgColor = paletteGreen.withValues(alpha: 0.15);
-      seasonBorderColor = paletteGreen;
+      seasonBgColor = borderColor.withValues(alpha: 0.15);
+      seasonBorderColor = borderColor;
       seasonTextColor = textPrimary;
       seasonIcon = _getSeasonIcon(_season!);
-      seasonIconColor = paletteGreen;
+      seasonIconColor = borderColor;
     }
 
     final String yearLabel;
@@ -537,8 +562,8 @@ class _SearchPageState extends State<SearchPage> {
       } else {
         yearLabel = '$_startYearMin - $_startYearMax';
       }
-      yearBgColor = paletteGreen.withValues(alpha: 0.15);
-      yearBorderColor = paletteGreen;
+      yearBgColor = borderColor.withValues(alpha: 0.15);
+      yearBorderColor = borderColor;
       yearTextColor = textPrimary;
     }
 
@@ -608,6 +633,84 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCountAndDurationRow(double padding) {
+    final String countLabel;
+    final Color countBorderColor;
+    final Color countBgColor;
+    final Color countTextColor;
+
+    final String countDefaultLabel = _mediaType == 'ANIME' ? 'Episodes' : 'Chapters';
+
+    if (_countMin == null && _countMax == null) {
+      countLabel = countDefaultLabel;
+      countBorderColor = _isCountOpen ? borderColor : cardBorderColor;
+      countBgColor = Colors.transparent;
+      countTextColor = textPrimary;
+    } else {
+      if (_countMin == _countMax) {
+        countLabel = '$_countMin';
+      } else {
+        countLabel = '$_countMin - $_countMax';
+      }
+      countBgColor = borderColor.withValues(alpha: 0.15);
+      countBorderColor = borderColor;
+      countTextColor = textPrimary;
+    }
+
+    final String durationDefaultLabel = _mediaType == 'ANIME' ? 'Duration' : 'Volumes';
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: padding),
+      child: CompositedTransformTarget(
+        link: _countLayerLink,
+        child: SizedBox(
+          width: double.infinity,
+          child: Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            children: [
+              FilterDropdown(
+                layerLink: _countLayerLink,
+                useAnchorAsTarget: false,
+                isOpen: _isCountOpen,
+                onTapOutside: _toggleCount,
+                anchor: SearchFilterButton(
+                  label: countLabel,
+                  onTap: _toggleCount,
+                  backgroundColor: countBgColor,
+                  borderColor: countBorderColor,
+                  textColor: countTextColor,
+                ),
+                menu: CountFilterPanel(
+                  selectedMin: _countMin,
+                  selectedMax: _countMax,
+                  mediaType: _mediaType,
+                  onChanged: (min, max) {
+                    setState(() {
+                      if (min == 0 && max == 500) {
+                        _countMin = null;
+                        _countMax = null;
+                      } else {
+                        _countMin = min;
+                        _countMax = max;
+                      }
+                    });
+                  },
+                ),
+              ),
+              SearchFilterButton(
+                label: durationDefaultLabel,
+                onTap: () {},
+                borderColor: cardBorderColor,
+                textColor: textPrimary,
+              ),
+            ],
           ),
         ),
       ),

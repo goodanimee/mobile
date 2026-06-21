@@ -86,12 +86,12 @@ class SeasonFilterPanel extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: isSelected
-                ? paletteGreen.withValues(alpha: 0.1)
+                ? borderColor.withValues(alpha: 0.1)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(6.0),
             border: Border.all(
               color: isSelected
-                  ? paletteGreen.withValues(alpha: 0.3)
+                  ? borderColor.withValues(alpha: 0.3)
                   : Colors.transparent,
             ),
           ),
@@ -99,7 +99,7 @@ class SeasonFilterPanel extends StatelessWidget {
             children: [
               Icon(
                 _getIcon(key),
-                color: isSelected ? paletteGreen : textMuted,
+                color: isSelected ? borderColor : textMuted,
                 size: getResponsiveSize(context, 18.0),
               ),
               const SizedBox(width: 10.0),
@@ -117,7 +117,7 @@ class SeasonFilterPanel extends StatelessWidget {
               if (isSelected)
                 Icon(
                   LucideIcons.check,
-                  color: paletteGreen,
+                  color: borderColor,
                   size: getResponsiveSize(context, 18.0),
                 ),
             ],
