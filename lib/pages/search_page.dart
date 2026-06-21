@@ -6,6 +6,7 @@ import 'search_page/widgets/format_filter_panel.dart';
 import 'search_page/widgets/media_type_selector.dart';
 import 'search_page/widgets/search_filter_button.dart';
 import 'search_page/widgets/search_top_bar.dart';
+import 'search_page/widgets/status_filter_panel.dart';
 
 /// A page that allows users to search for media and filter results.
 class SearchPage extends StatefulWidget {
@@ -35,8 +36,10 @@ class _SearchPageState extends State<SearchPage> {
   };
   bool _isFormatOpen = false;
   bool _isStatusOpen = false;
+  String? _status;
 
   final LayerLink _formatLayerLink = LayerLink();
+  final LayerLink _statusLayerLink = LayerLink();
 
   @override
   void initState() {
@@ -74,6 +77,8 @@ class _SearchPageState extends State<SearchPage> {
       onTap: () {
         if (_isFormatOpen) {
           _toggleFormat();
+        } else if (_isStatusOpen) {
+          _toggleStatus();
         }
       },
       behavior: HitTestBehavior.translucent,
@@ -132,11 +137,6 @@ class _SearchPageState extends State<SearchPage> {
               });
             },
           ),
-        ),
-        SizedBox(height: getResponsiveSize(context, 16.0)),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: paddingVal),
-          child: _buildOnListButton(),
         ),
         SizedBox(height: getResponsiveSize(context, 16.0)),
         _buildFormatAndStatusRow(paddingVal),
@@ -302,45 +302,83 @@ class _SearchPageState extends State<SearchPage> {
       );
     }
 
+    final String statusLabel;
+    final Color statusBorderColor;
+    final Color statusBgColor;
+    final Color statusTextColor;
+
+    if (_status == null) {
+      statusLabel = 'Status';
+      statusBorderColor = _isStatusOpen ? borderColor : cardBorderColor;
+      statusBgColor = Colors.transparent;
+      statusTextColor = textPrimary;
+    } else {
+      statusLabel = _status!.replaceAll('_', ' ');
+      statusBgColor = paletteGreen.withValues(alpha: 0.15);
+      statusBorderColor = paletteGreen;
+      statusTextColor = textPrimary;
+    }
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: padding),
       child: CompositedTransformTarget(
         link: _formatLayerLink,
-        child: SizedBox(
-          width: double.infinity,
-          child: Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
-            children: [
-              FilterDropdown(
-                layerLink: _formatLayerLink,
-                useAnchorAsTarget: false,
-                isOpen: _isFormatOpen,
-                onTapOutside: _toggleFormat,
-                anchor: SearchFilterButton(
-                  label: formatLabel,
-                  onTap: _toggleFormat,
-                  backgroundColor: formatBgColor,
-                  borderColor: _isFormatOpen ? borderColor : formatBorderColor,
-                  textColor: textPrimary,
-                  badge: formatBadge,
+        child: CompositedTransformTarget(
+          link: _statusLayerLink,
+          child: SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: [
+                FilterDropdown(
+                  layerLink: _formatLayerLink,
+                  useAnchorAsTarget: false,
+                  isOpen: _isFormatOpen,
+                  onTapOutside: _toggleFormat,
+                  anchor: SearchFilterButton(
+                    label: formatLabel,
+                    onTap: _toggleFormat,
+                    backgroundColor: formatBgColor,
+                    borderColor: _isFormatOpen
+                        ? borderColor
+                        : formatBorderColor,
+                    textColor: textPrimary,
+                    badge: formatBadge,
+                  ),
+                  menu: FormatFilterPanel(
+                    formats: _formats,
+                    onChanged: (key, state) {
+                      setState(() {
+                        _formats[key] = state;
+                      });
+                    },
+                  ),
                 ),
-                menu: FormatFilterPanel(
-                  formats: _formats,
-                  onChanged: (key, state) {
-                    setState(() {
-                      _formats[key] = state;
-                    });
-                  },
+                FilterDropdown(
+                  layerLink: _statusLayerLink,
+                  useAnchorAsTarget: false,
+                  isOpen: _isStatusOpen,
+                  onTapOutside: _toggleStatus,
+                  anchor: SearchFilterButton(
+                    label: statusLabel,
+                    onTap: _toggleStatus,
+                    backgroundColor: statusBgColor,
+                    borderColor: statusBorderColor,
+                    textColor: statusTextColor,
+                  ),
+                  menu: StatusFilterPanel(
+                    selectedStatus: _status,
+                    onChanged: (status) {
+                      setState(() {
+                        _status = status;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              SearchFilterButton(
-                label: 'Status',
-                onTap: _toggleStatus,
-                borderColor: _isStatusOpen ? borderColor : cardBorderColor,
-                textColor: textMuted,
-              ),
-            ],
+                _buildOnListButton(),
+              ],
+            ),
           ),
         ),
       ),
