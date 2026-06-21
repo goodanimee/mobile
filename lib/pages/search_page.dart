@@ -575,6 +575,10 @@ class _SearchPageState extends State<SearchPage> {
     final Color yearBorderColor;
     final Color yearBgColor;
     final Color yearTextColor;
+    final IconData yearIcon = LucideIcons.calendarDays;
+    final Color yearIconColor = (_startYearMin == null && _startYearMax == null)
+        ? textSecondary
+        : borderColor;
 
     if (_startYearMin == null && _startYearMax == null) {
       yearLabel = 'Year';
@@ -635,6 +639,8 @@ class _SearchPageState extends State<SearchPage> {
                   anchor: SearchFilterButton(
                     label: yearLabel,
                     onTap: _toggleYear,
+                    icon: yearIcon,
+                    iconColor: yearIconColor,
                     backgroundColor: yearBgColor,
                     borderColor: yearBorderColor,
                     textColor: yearTextColor,
@@ -669,6 +675,12 @@ class _SearchPageState extends State<SearchPage> {
     final Color countBorderColor;
     final Color countBgColor;
     final Color countTextColor;
+    final IconData countIcon = _mediaType == 'ANIME'
+        ? LucideIcons.tvMinimalPlay
+        : LucideIcons.bookOpen;
+    final Color countIconColor = (_countMin == null && _countMax == null)
+        ? textSecondary
+        : borderColor;
 
     final String countDefaultLabel = _mediaType == 'ANIME'
         ? 'Episodes'
@@ -697,6 +709,13 @@ class _SearchPageState extends State<SearchPage> {
     final Color durationBorderColor;
     final Color durationBgColor;
     final Color durationTextColor;
+    final IconData durationIcon = _mediaType == 'ANIME'
+        ? LucideIcons.clock
+        : LucideIcons.bookCopy;
+    final Color durationIconColor =
+        (_durationMin == null && _durationMax == null)
+        ? textSecondary
+        : borderColor;
 
     if (_durationMin == null && _durationMax == null) {
       durationLabel = durationDefaultLabel;
@@ -734,6 +753,8 @@ class _SearchPageState extends State<SearchPage> {
                   anchor: SearchFilterButton(
                     label: countLabel,
                     onTap: _toggleCount,
+                    icon: countIcon,
+                    iconColor: countIconColor,
                     backgroundColor: countBgColor,
                     borderColor: countBorderColor,
                     textColor: countTextColor,
@@ -763,6 +784,8 @@ class _SearchPageState extends State<SearchPage> {
                   anchor: SearchFilterButton(
                     label: durationLabel,
                     onTap: _toggleDuration,
+                    icon: durationIcon,
+                    iconColor: durationIconColor,
                     backgroundColor: durationBgColor,
                     borderColor: durationBorderColor,
                     textColor: durationTextColor,
