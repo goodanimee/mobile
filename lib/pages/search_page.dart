@@ -6,6 +6,7 @@ import 'search_page/widgets/duration_filter_panel.dart';
 import 'search_page/widgets/filter_dropdown.dart';
 import 'search_page/widgets/format_filter_panel.dart';
 import 'search_page/widgets/media_type_selector.dart';
+import 'search_page/widgets/score_filter_panel.dart';
 import 'search_page/widgets/search_filter_button.dart';
 import 'search_page/widgets/search_top_bar.dart';
 import 'search_page/widgets/season_filter_panel.dart';
@@ -44,6 +45,7 @@ class _SearchPageState extends State<SearchPage> {
   bool _isYearOpen = false;
   bool _isCountOpen = false;
   bool _isDurationOpen = false;
+  bool _isScoreOpen = false;
   String? _status;
   String? _season;
   int? _startYearMin;
@@ -52,6 +54,9 @@ class _SearchPageState extends State<SearchPage> {
   int? _countMax;
   int? _durationMin;
   int? _durationMax;
+  double? _scoreMin;
+  double? _scoreMax;
+  bool? _isAdult;
 
   final LayerLink _formatLayerLink = LayerLink();
   final LayerLink _statusLayerLink = LayerLink();
@@ -59,6 +64,7 @@ class _SearchPageState extends State<SearchPage> {
   final LayerLink _yearLayerLink = LayerLink();
   final LayerLink _countLayerLink = LayerLink();
   final LayerLink _durationLayerLink = LayerLink();
+  final LayerLink _scoreLayerLink = LayerLink();
 
   @override
   void initState() {
@@ -106,6 +112,8 @@ class _SearchPageState extends State<SearchPage> {
           _toggleCount();
         } else if (_isDurationOpen) {
           _toggleDuration();
+        } else if (_isScoreOpen) {
+          _toggleScore();
         }
       },
       behavior: HitTestBehavior.translucent,
@@ -175,6 +183,8 @@ class _SearchPageState extends State<SearchPage> {
         _buildSeasonAndYearRow(paddingVal),
         SizedBox(height: getResponsiveSize(context, 16.0)),
         _buildCountAndDurationRow(paddingVal),
+        SizedBox(height: getResponsiveSize(context, 16.0)),
+        _buildAdultRow(paddingVal),
       ],
     );
   }
@@ -243,6 +253,7 @@ class _SearchPageState extends State<SearchPage> {
       _isYearOpen = false;
       _isCountOpen = false;
       _isDurationOpen = false;
+      _isScoreOpen = false;
     });
   }
 
@@ -254,6 +265,7 @@ class _SearchPageState extends State<SearchPage> {
       _isYearOpen = false;
       _isCountOpen = false;
       _isDurationOpen = false;
+      _isScoreOpen = false;
     });
   }
 
@@ -265,6 +277,7 @@ class _SearchPageState extends State<SearchPage> {
       _isYearOpen = false;
       _isCountOpen = false;
       _isDurationOpen = false;
+      _isScoreOpen = false;
     });
   }
 
@@ -276,6 +289,7 @@ class _SearchPageState extends State<SearchPage> {
       _isSeasonOpen = false;
       _isCountOpen = false;
       _isDurationOpen = false;
+      _isScoreOpen = false;
     });
   }
 
@@ -287,6 +301,7 @@ class _SearchPageState extends State<SearchPage> {
       _isSeasonOpen = false;
       _isYearOpen = false;
       _isDurationOpen = false;
+      _isScoreOpen = false;
     });
   }
 
@@ -298,6 +313,19 @@ class _SearchPageState extends State<SearchPage> {
       _isSeasonOpen = false;
       _isYearOpen = false;
       _isCountOpen = false;
+      _isScoreOpen = false;
+    });
+  }
+
+  void _toggleScore() {
+    setState(() {
+      _isScoreOpen = !_isScoreOpen;
+      _isFormatOpen = false;
+      _isStatusOpen = false;
+      _isSeasonOpen = false;
+      _isYearOpen = false;
+      _isCountOpen = false;
+      _isDurationOpen = false;
     });
   }
 
@@ -477,69 +505,129 @@ class _SearchPageState extends State<SearchPage> {
       statusIconColor = borderColor;
     }
 
+    final String scoreLabel;
+    final Color scoreBorderColor;
+    final Color scoreBgColor;
+    final Color scoreTextColor;
+    final IconData scoreIcon = LucideIcons.star;
+    final Color scoreIconColor = (_scoreMin == null && _scoreMax == null)
+        ? textSecondary
+        : borderColor;
+
+    if (_scoreMin == null && _scoreMax == null) {
+      scoreLabel = 'Score';
+      scoreBorderColor = _isScoreOpen ? borderColor : cardBorderColor;
+      scoreBgColor = Colors.transparent;
+      scoreTextColor = textPrimary;
+    } else {
+      final String minStr = _scoreMin!.toStringAsFixed(1);
+      final String maxStr = _scoreMax!.toStringAsFixed(1);
+      if (_scoreMin == _scoreMax) {
+        scoreLabel = minStr;
+      } else {
+        scoreLabel = '$minStr - $maxStr';
+      }
+      scoreBgColor = borderColor.withValues(alpha: 0.15);
+      scoreBorderColor = borderColor;
+      scoreTextColor = textPrimary;
+    }
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: padding),
       child: CompositedTransformTarget(
         link: _formatLayerLink,
         child: CompositedTransformTarget(
           link: _statusLayerLink,
-          child: SizedBox(
-            width: double.infinity,
-            child: Wrap(
-              spacing: 8.0,
-              runSpacing: 8.0,
-              children: [
-                FilterDropdown(
-                  layerLink: _formatLayerLink,
-                  useAnchorAsTarget: false,
-                  isOpen: _isFormatOpen,
-                  onTapOutside: _toggleFormat,
-                  anchor: SearchFilterButton(
-                    label: formatLabel,
-                    onTap: _toggleFormat,
-                    icon: formatIcon,
-                    iconColor: formatIconColor,
-                    backgroundColor: formatBgColor,
-                    borderColor: _isFormatOpen
-                        ? borderColor
-                        : formatBorderColor,
-                    textColor: textPrimary,
-                    badge: formatBadge,
+          child: CompositedTransformTarget(
+            link: _scoreLayerLink,
+            child: SizedBox(
+              width: double.infinity,
+              child: Wrap(
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: [
+                  FilterDropdown(
+                    layerLink: _formatLayerLink,
+                    useAnchorAsTarget: false,
+                    isOpen: _isFormatOpen,
+                    onTapOutside: _toggleFormat,
+                    anchor: SearchFilterButton(
+                      label: formatLabel,
+                      onTap: _toggleFormat,
+                      icon: formatIcon,
+                      iconColor: formatIconColor,
+                      backgroundColor: formatBgColor,
+                      borderColor: _isFormatOpen
+                          ? borderColor
+                          : formatBorderColor,
+                      textColor: textPrimary,
+                      badge: formatBadge,
+                    ),
+                    menu: FormatFilterPanel(
+                      formats: _formats,
+                      onChanged: (key, state) {
+                        setState(() {
+                          _formats[key] = state;
+                        });
+                      },
+                    ),
                   ),
-                  menu: FormatFilterPanel(
-                    formats: _formats,
-                    onChanged: (key, state) {
-                      setState(() {
-                        _formats[key] = state;
-                      });
-                    },
+                  FilterDropdown(
+                    layerLink: _statusLayerLink,
+                    useAnchorAsTarget: false,
+                    isOpen: _isStatusOpen,
+                    onTapOutside: _toggleStatus,
+                    anchor: SearchFilterButton(
+                      label: statusLabel,
+                      onTap: _toggleStatus,
+                      icon: statusIcon,
+                      iconColor: statusIconColor,
+                      backgroundColor: statusBgColor,
+                      borderColor: statusBorderColor,
+                      textColor: statusTextColor,
+                    ),
+                    menu: StatusFilterPanel(
+                      selectedStatus: _status,
+                      onChanged: (status) {
+                        setState(() {
+                          _status = status;
+                        });
+                      },
+                    ),
                   ),
-                ),
-                FilterDropdown(
-                  layerLink: _statusLayerLink,
-                  useAnchorAsTarget: false,
-                  isOpen: _isStatusOpen,
-                  onTapOutside: _toggleStatus,
-                  anchor: SearchFilterButton(
-                    label: statusLabel,
-                    onTap: _toggleStatus,
-                    icon: statusIcon,
-                    iconColor: statusIconColor,
-                    backgroundColor: statusBgColor,
-                    borderColor: statusBorderColor,
-                    textColor: statusTextColor,
+                  _buildOnListButton(),
+                  FilterDropdown(
+                    layerLink: _scoreLayerLink,
+                    useAnchorAsTarget: false,
+                    isOpen: _isScoreOpen,
+                    onTapOutside: _toggleScore,
+                    anchor: SearchFilterButton(
+                      label: scoreLabel,
+                      onTap: _toggleScore,
+                      icon: scoreIcon,
+                      iconColor: scoreIconColor,
+                      backgroundColor: scoreBgColor,
+                      borderColor: scoreBorderColor,
+                      textColor: scoreTextColor,
+                    ),
+                    menu: ScoreFilterPanel(
+                      selectedMin: _scoreMin,
+                      selectedMax: _scoreMax,
+                      onChanged: (min, max) {
+                        setState(() {
+                          if (min == 0.0 && max == 10.0) {
+                            _scoreMin = null;
+                            _scoreMax = null;
+                          } else {
+                            _scoreMin = min;
+                            _scoreMax = max;
+                          }
+                        });
+                      },
+                    ),
                   ),
-                  menu: StatusFilterPanel(
-                    selectedStatus: _status,
-                    onChanged: (status) {
-                      setState(() {
-                        _status = status;
-                      });
-                    },
-                  ),
-                ),
-                _buildOnListButton(),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -810,6 +898,63 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAdultRow(double padding) {
+    final Color adultBg;
+    final Color adultBorder;
+    final String adultLabel;
+    final IconData adultIcon = LucideIcons.shieldAlert;
+    final Color adultIconColor;
+
+    if (_isAdult == null) {
+      adultBg = Colors.transparent;
+      adultBorder = cardBorderColor;
+      adultIconColor = textSecondary;
+      adultLabel = 'Adult';
+    } else if (_isAdult == true) {
+      adultBg = paletteGreen.withValues(alpha: 0.15);
+      adultBorder = paletteGreen;
+      adultIconColor = paletteGreen;
+      adultLabel = 'Adult';
+    } else {
+      adultBg = paletteRed.withValues(alpha: 0.15);
+      adultBorder = paletteRed;
+      adultIconColor = paletteRed;
+      adultLabel = 'Adult';
+    }
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: padding),
+      child: SizedBox(
+        width: double.infinity,
+        child: Wrap(
+          spacing: 8.0,
+          runSpacing: 8.0,
+          children: [
+            SearchFilterButton(
+              label: adultLabel,
+              onTap: () {
+                setState(() {
+                  if (_isAdult == null) {
+                    _isAdult = true;
+                  } else if (_isAdult == true) {
+                    _isAdult = false;
+                  } else {
+                    _isAdult = null;
+                  }
+                });
+              },
+              icon: adultIcon,
+              iconColor: adultIconColor,
+              backgroundColor: adultBg,
+              borderColor: adultBorder,
+              textColor: textPrimary,
+            ),
+          ],
         ),
       ),
     );
