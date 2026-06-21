@@ -12,6 +12,7 @@ import 'anime_list_tab.dart';
 import 'login_page.dart';
 import 'manga_list_tab.dart';
 import 'profile_page.dart';
+import 'search_page.dart';
 
 /// The main container page for the application
 class HomePage extends StatefulWidget {
@@ -132,6 +133,8 @@ class _HomePageState extends State<HomePage> {
           onSignOut: _handleSignOut,
           onSectionsChanged: _handleSectionsChanged,
         );
+      case 3:
+        return const SearchPage();
       case 4:
         return ProfilePage(onSignOut: _handleSignOut);
       default:
