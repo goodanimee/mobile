@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../theme/theme.dart';
-import 'filter_dropdown.dart';
-import 'search_filter_button.dart';
-import 'season_filter_panel.dart';
-import 'year_filter_panel.dart';
+import '../../../../theme/theme.dart';
+import '../common/filter_dropdown.dart';
+import '../common/search_filter_button.dart';
+import '../panels/option_filter_panels.dart';
+import '../panels/range_filter_panel.dart';
 
 /// A row widget containing the Season and Year filters.
 class SeasonYearRow extends StatelessWidget {
@@ -111,6 +111,8 @@ class SeasonYearRow extends StatelessWidget {
       yearTextColor = textPrimary;
     }
 
+    final int currentYearLimit = DateTime.now().year + 1;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: padding),
       child: CompositedTransformTarget(
@@ -156,10 +158,19 @@ class SeasonYearRow extends StatelessWidget {
                     borderColor: yearBorderColor,
                     textColor: yearTextColor,
                   ),
-                  menu: YearFilterPanel(
-                    selectedMin: startYearMin,
-                    selectedMax: startYearMax,
-                    onChanged: onYearChanged,
+                  menu: RangeFilterPanel(
+                    title: 'Year Range',
+                    minLabel: 'Min Year',
+                    maxLabel: 'Max Year',
+                    minLimit: 1917.0,
+                    maxLimit: currentYearLimit.toDouble(),
+                    selectedMin: startYearMin?.toDouble(),
+                    selectedMax: startYearMax?.toDouble(),
+                    divisions: currentYearLimit - 1917,
+                    isDecimal: false,
+                    onChanged: (min, max) {
+                      onYearChanged(min?.round(), max?.round());
+                    },
                   ),
                 ),
               ],

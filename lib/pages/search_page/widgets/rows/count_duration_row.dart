@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../theme/theme.dart';
-import 'count_filter_panel.dart';
-import 'duration_filter_panel.dart';
-import 'filter_dropdown.dart';
-import 'search_filter_button.dart';
+import '../../../../theme/theme.dart';
+import '../common/filter_dropdown.dart';
+import '../common/search_filter_button.dart';
+import '../panels/range_filter_panel.dart';
 
 /// A row widget containing the Episode/Chapter Count and Duration/Volume filters.
 class CountDurationRow extends StatelessWidget {
@@ -158,15 +157,29 @@ class CountDurationRow extends StatelessWidget {
                     borderColor: countBorderColor,
                     textColor: countTextColor,
                   ),
-                  menu: CountFilterPanel(
-                    selectedMin: countMin,
-                    selectedMax: countMax,
-                    mediaType: mediaType,
+                  menu: RangeFilterPanel(
+                    title: mediaType == 'ANIME'
+                        ? 'Episode Range'
+                        : 'Chapter Range',
+                    minLabel: mediaType == 'ANIME'
+                        ? 'Min Episodes'
+                        : 'Min Chapters',
+                    maxLabel: mediaType == 'ANIME'
+                        ? 'Max Episodes'
+                        : 'Max Chapters',
+                    minLimit: 0,
+                    maxLimit: 500,
+                    selectedMin: countMin?.toDouble(),
+                    selectedMax: countMax?.toDouble(),
+                    divisions: 500,
+                    isDecimal: false,
                     onChanged: (min, max) {
-                      if (min == 0 && max == 500) {
+                      final intMin = min?.round();
+                      final intMax = max?.round();
+                      if (intMin == 0 && intMax == 500) {
                         onCountChanged(null, null);
                       } else {
-                        onCountChanged(min, max);
+                        onCountChanged(intMin, intMax);
                       }
                     },
                   ),
@@ -185,15 +198,29 @@ class CountDurationRow extends StatelessWidget {
                     borderColor: durationBorderColor,
                     textColor: durationTextColor,
                   ),
-                  menu: DurationFilterPanel(
-                    selectedMin: durationMin,
-                    selectedMax: durationMax,
-                    mediaType: mediaType,
+                  menu: RangeFilterPanel(
+                    title: mediaType == 'ANIME'
+                        ? 'Duration Range'
+                        : 'Volume Range',
+                    minLabel: mediaType == 'ANIME'
+                        ? 'Min Duration (mins)'
+                        : 'Min Volumes',
+                    maxLabel: mediaType == 'ANIME'
+                        ? 'Max Duration (mins)'
+                        : 'Max Volumes',
+                    minLimit: 0,
+                    maxLimit: 200,
+                    selectedMin: durationMin?.toDouble(),
+                    selectedMax: durationMax?.toDouble(),
+                    divisions: 200,
+                    isDecimal: false,
                     onChanged: (min, max) {
-                      if (min == 0 && max == 200) {
+                      final intMin = min?.round();
+                      final intMax = max?.round();
+                      if (intMin == 0 && intMax == 200) {
                         onDurationChanged(null, null);
                       } else {
-                        onDurationChanged(min, max);
+                        onDurationChanged(intMin, intMax);
                       }
                     },
                   ),

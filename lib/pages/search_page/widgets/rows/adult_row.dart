@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../theme/theme.dart';
-import 'search_filter_button.dart';
+import '../../../../theme/theme.dart';
+import '../common/search_filter_button.dart';
 
 /// A row widget containing the isAdult filter toggle button.
 class AdultRow extends StatelessWidget {

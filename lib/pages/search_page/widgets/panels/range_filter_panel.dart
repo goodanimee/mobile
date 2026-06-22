@@ -1,40 +1,61 @@
 import 'package:flutter/material.dart';
-import '../../../theme/theme.dart';
-import 'custom_range_slider_thumb_shape.dart';
+import '../../../../theme/theme.dart';
+import '../common/custom_range_slider_thumb_shape.dart';
 
-/// The selection dropdown panel for advanced duration or volume range filters.
-class DurationFilterPanel extends StatefulWidget {
-  /// Current selected minimum value.
-  final int? selectedMin;
+/// A generic selection dropdown panel for range filters.
+class RangeFilterPanel extends StatefulWidget {
+  /// The title of the range panel.
+  final String title;
 
-  /// Current selected maximum value.
-  final int? selectedMax;
+  /// Label for the minimum value field.
+  final String minLabel;
 
-  /// Active media type (ANIME or MANGA).
-  final String mediaType;
+  /// Label for the maximum value field.
+  final String maxLabel;
+
+  /// The minimum limit of the range.
+  final double minLimit;
+
+  /// The maximum limit of the range.
+  final double maxLimit;
+
+  /// Currently selected minimum value.
+  final double? selectedMin;
+
+  /// Currently selected maximum value.
+  final double? selectedMax;
+
+  /// Total number of divisions on the slider track.
+  final int? divisions;
+
+  /// Whether the values are decimal/floating point.
+  final bool isDecimal;
 
   /// Callback when the range changes.
-  final void Function(int? min, int? max) onChanged;
+  final void Function(double? min, double? max) onChanged;
 
-  /// Creates a duration filter panel.
-  const DurationFilterPanel({
+  /// Creates a range filter panel.
+  const RangeFilterPanel({
     super.key,
+    required this.title,
+    required this.minLabel,
+    required this.maxLabel,
+    required this.minLimit,
+    required this.maxLimit,
     required this.selectedMin,
     required this.selectedMax,
-    required this.mediaType,
+    this.divisions,
+    required this.isDecimal,
     required this.onChanged,
   });
 
   @override
-  State<DurationFilterPanel> createState() => _DurationFilterPanelState();
+  State<RangeFilterPanel> createState() => _RangeFilterPanelState();
 }
 
-class _DurationFilterPanelState extends State<DurationFilterPanel> {
-  static const int minLimit = 0;
-  static const int maxLimit = 200;
-
-  late int _currentMin;
-  late int _currentMax;
+class _RangeFilterPanelState extends State<RangeFilterPanel> {
+  late double _currentMin;
+  late double _currentMax;
 
   late final TextEditingController _minController;
   late final TextEditingController _maxController;
@@ -45,11 +66,11 @@ class _DurationFilterPanelState extends State<DurationFilterPanel> {
   @override
   void initState() {
     super.initState();
-    _currentMin = widget.selectedMin ?? minLimit;
-    _currentMax = widget.selectedMax ?? maxLimit;
+    _currentMin = widget.selectedMin ?? widget.minLimit;
+    _currentMax = widget.selectedMax ?? widget.maxLimit;
 
-    _minController = TextEditingController(text: _currentMin.toString());
-    _maxController = TextEditingController(text: _currentMax.toString());
+    _minController = TextEditingController(text: _formatValue(_currentMin));
+    _maxController = TextEditingController(text: _formatValue(_currentMax));
 
     _minFocus = FocusNode();
     _maxFocus = FocusNode();
@@ -62,19 +83,19 @@ class _DurationFilterPanelState extends State<DurationFilterPanel> {
   }
 
   @override
-  void didUpdateWidget(DurationFilterPanel oldWidget) {
+  void didUpdateWidget(RangeFilterPanel oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.selectedMin != oldWidget.selectedMin ||
         widget.selectedMax != oldWidget.selectedMax) {
       setState(() {
-        _currentMin = widget.selectedMin ?? minLimit;
-        _currentMax = widget.selectedMax ?? maxLimit;
+        _currentMin = widget.selectedMin ?? widget.minLimit;
+        _currentMax = widget.selectedMax ?? widget.maxLimit;
 
         if (!_minFocus.hasFocus) {
-          _minController.text = _currentMin.toString();
+          _minController.text = _formatValue(_currentMin);
         }
         if (!_maxFocus.hasFocus) {
-          _maxController.text = _currentMax.toString();
+          _maxController.text = _formatValue(_currentMax);
         }
       });
     }
@@ -93,20 +114,26 @@ class _DurationFilterPanelState extends State<DurationFilterPanel> {
     super.dispose();
   }
 
+  String _formatValue(double value) {
+    return widget.isDecimal
+        ? value.toStringAsFixed(1)
+        : value.round().toString();
+  }
+
   void _onFocusChanged() {
     setState(() {});
     if (!_minFocus.hasFocus) {
-      _minController.text = _currentMin.toString();
+      _minController.text = _formatValue(_currentMin);
     }
     if (!_maxFocus.hasFocus) {
-      _maxController.text = _currentMax.toString();
+      _maxController.text = _formatValue(_currentMax);
     }
   }
 
   void _onMinTextChanged() {
     if (!_minFocus.hasFocus) return;
-    final val = int.tryParse(_minController.text);
-    if (val != null && val >= minLimit && val <= _currentMax) {
+    final val = double.tryParse(_minController.text);
+    if (val != null && val >= widget.minLimit && val <= _currentMax) {
       setState(() {
         _currentMin = val;
       });
@@ -116,8 +143,8 @@ class _DurationFilterPanelState extends State<DurationFilterPanel> {
 
   void _onMaxTextChanged() {
     if (!_maxFocus.hasFocus) return;
-    final val = int.tryParse(_maxController.text);
-    if (val != null && val >= _currentMin && val <= maxLimit) {
+    final val = double.tryParse(_maxController.text);
+    if (val != null && val >= _currentMin && val <= widget.maxLimit) {
       setState(() {
         _currentMax = val;
       });
@@ -127,11 +154,6 @@ class _DurationFilterPanelState extends State<DurationFilterPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isAnime = widget.mediaType == 'ANIME';
-    final String title = isAnime ? 'Duration Range' : 'Volume Range';
-    final String minLabel = isAnime ? 'Min Duration (mins)' : 'Min Volumes';
-    final String maxLabel = isAnime ? 'Max Duration (mins)' : 'Max Volumes';
-
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -148,7 +170,7 @@ class _DurationFilterPanelState extends State<DurationFilterPanel> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                title,
+                widget.title,
                 style: TextStyle(
                   color: textMuted,
                   fontSize: fontSmall(context),
@@ -183,19 +205,21 @@ class _DurationFilterPanelState extends State<DurationFilterPanel> {
               rangeTrackShape: const RoundedRectRangeSliderTrackShape(),
             ),
             child: RangeSlider(
-              values: RangeValues(
-                _currentMin.toDouble(),
-                _currentMax.toDouble(),
-              ),
-              min: minLimit.toDouble(),
-              max: maxLimit.toDouble(),
-              divisions: maxLimit - minLimit,
+              values: RangeValues(_currentMin, _currentMax),
+              min: widget.minLimit,
+              max: widget.maxLimit,
+              divisions: widget.divisions,
               onChanged: (values) {
                 setState(() {
-                  _currentMin = values.start.round();
-                  _currentMax = values.end.round();
-                  _minController.text = _currentMin.toString();
-                  _maxController.text = _currentMax.toString();
+                  if (widget.isDecimal) {
+                    _currentMin = (values.start * 10).round() / 10;
+                    _currentMax = (values.end * 10).round() / 10;
+                  } else {
+                    _currentMin = values.start.roundToDouble();
+                    _currentMax = values.end.roundToDouble();
+                  }
+                  _minController.text = _formatValue(_currentMin);
+                  _maxController.text = _formatValue(_currentMax);
                 });
                 widget.onChanged(_currentMin, _currentMax);
               },
@@ -205,18 +229,18 @@ class _DurationFilterPanelState extends State<DurationFilterPanel> {
           Row(
             children: [
               Expanded(
-                child: _buildDurationInput(
+                child: _buildInput(
                   context,
-                  label: minLabel,
+                  label: widget.minLabel,
                   controller: _minController,
                   focusNode: _minFocus,
                 ),
               ),
               SizedBox(width: getResponsiveSize(context, 16.0)),
               Expanded(
-                child: _buildDurationInput(
+                child: _buildInput(
                   context,
-                  label: maxLabel,
+                  label: widget.maxLabel,
                   controller: _maxController,
                   focusNode: _maxFocus,
                 ),
@@ -228,7 +252,7 @@ class _DurationFilterPanelState extends State<DurationFilterPanel> {
     );
   }
 
-  Widget _buildDurationInput(
+  Widget _buildInput(
     BuildContext context, {
     required String label,
     required TextEditingController controller,
@@ -260,7 +284,9 @@ class _DurationFilterPanelState extends State<DurationFilterPanel> {
           child: TextField(
             controller: controller,
             focusNode: focusNode,
-            keyboardType: TextInputType.number,
+            keyboardType: widget.isDecimal
+                ? const TextInputType.numberWithOptions(decimal: true)
+                : TextInputType.number,
             style: TextStyle(color: textPrimary, fontSize: fontBody(context)),
             decoration: const InputDecoration(
               border: InputBorder.none,

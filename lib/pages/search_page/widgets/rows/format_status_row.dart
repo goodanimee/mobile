@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../theme/theme.dart';
-import 'filter_dropdown.dart';
-import 'format_filter_panel.dart';
-import 'score_filter_panel.dart';
-import 'search_filter_button.dart';
-import 'status_filter_panel.dart';
+import '../../../../theme/theme.dart';
+import '../common/filter_dropdown.dart';
+import '../common/search_filter_button.dart';
+import '../panels/option_filter_panels.dart';
+import '../panels/range_filter_panel.dart';
 
 /// A row widget containing the Format, Status, onList, and Score filters.
 class FormatStatusRow extends StatelessWidget {
@@ -306,9 +305,16 @@ class FormatStatusRow extends StatelessWidget {
                       borderColor: scoreBorderColor,
                       textColor: scoreTextColor,
                     ),
-                    menu: ScoreFilterPanel(
+                    menu: RangeFilterPanel(
+                      title: 'Score Range',
+                      minLabel: 'Min Score',
+                      maxLabel: 'Max Score',
+                      minLimit: 0.0,
+                      maxLimit: 10.0,
                       selectedMin: scoreMin,
                       selectedMax: scoreMax,
+                      divisions: 100,
+                      isDecimal: true,
                       onChanged: onScoreChanged,
                     ),
                   ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../theme/theme.dart';
+import '../../../../theme/theme.dart';
 
 /// A custom vertical bar thumb shape for a modern, sleek range slider.
 class CustomRangeSliderThumbShape extends RangeSliderThumbShape {

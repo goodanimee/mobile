@@ -1,39 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../theme/theme.dart';
+import '../../../../models/media_misc.dart';
+import '../../../../theme/theme.dart';
 
-/// A bottom sheet for selecting and filtering genres with three-state selection.
-class GenreFilterSheet extends StatefulWidget {
-  /// The initial selected genres.
-  final Map<String, bool?> initialGenres;
+/// A custom vertical bar thumb shape for a modern, sleek slider.
+class CustomSliderThumbShape extends SliderComponentShape {
+  /// Width of the vertical bar thumb.
+  final double thumbWidth;
 
-  /// The list of all available genres.
-  final List<String> allGenres;
+  /// Height of the vertical bar thumb.
+  final double thumbHeight;
+
+  /// Corner radius of the vertical bar thumb.
+  final double borderRadius;
+
+  /// Creates a custom slider thumb shape.
+  const CustomSliderThumbShape({
+    this.thumbWidth = 6.0,
+    this.thumbHeight = 16.0,
+    this.borderRadius = 3.0,
+  });
+
+  @override
+  Size getPreferredSize(bool isEnabled, bool isDiscrete) {
+    return Size(thumbWidth, thumbHeight);
+  }
+
+  @override
+  void paint(
+    PaintingContext context,
+    Offset center, {
+    required Animation<double> activationAnimation,
+    required Animation<double> enableAnimation,
+    required bool isDiscrete,
+    required TextPainter labelPainter,
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required TextDirection textDirection,
+    required double value,
+    required double textScaleFactor,
+    required Size sizeWithOverflow,
+  }) {
+    final Canvas canvas = context.canvas;
+
+    final RRect rect = RRect.fromRectAndRadius(
+      Rect.fromCenter(center: center, width: thumbWidth, height: thumbHeight),
+      Radius.circular(borderRadius),
+    );
+
+    final Paint fillPaint = Paint()
+      ..color = const Color(0xFF161616)
+      ..style = PaintingStyle.fill;
+    canvas.drawRRect(rect, fillPaint);
+
+    final Paint strokePaint = Paint()
+      ..color = sliderTheme.thumbColor ?? borderColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+    canvas.drawRRect(rect, strokePaint);
+  }
+}
+
+/// A bottom sheet for selecting and filtering tags with three-state selection and a min percentage slider.
+class TagFilterSheet extends StatefulWidget {
+  /// The initial selected tags by ID.
+  final Map<int, bool?> initialTags;
+
+  /// The initial minimum tag percentage.
+  final int initialMinPercentage;
+
+  /// The list of all available media tags.
+  final List<MediaTag> allTags;
 
   /// Optional scroll controller for the sheet.
   final ScrollController? scrollController;
 
-  /// Creates a genre filter sheet.
-  const GenreFilterSheet({
+  /// Creates a tag filter sheet.
+  const TagFilterSheet({
     super.key,
-    required this.initialGenres,
-    required this.allGenres,
+    required this.initialTags,
+    required this.initialMinPercentage,
+    required this.allTags,
     this.scrollController,
   });
 
   @override
-  State<GenreFilterSheet> createState() => _GenreFilterSheetState();
+  State<TagFilterSheet> createState() => _TagFilterSheetState();
 }
 
-class _GenreFilterSheetState extends State<GenreFilterSheet> {
-  late final Map<String, bool?> _localGenres;
+class _TagFilterSheetState extends State<TagFilterSheet> {
+  late final Map<int, bool?> _localTags;
+  late int _localMinPercentage;
   String _searchQuery = '';
   late final TextEditingController _searchController;
 
   @override
   void initState() {
     super.initState();
-    _localGenres = Map<String, bool?>.from(widget.initialGenres);
+    _localTags = Map<int, bool?>.from(widget.initialTags);
+    _localMinPercentage = widget.initialMinPercentage;
     _searchController = TextEditingController();
     _searchController.addListener(_onSearchChanged);
   }
@@ -54,8 +119,8 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
   @override
   Widget build(BuildContext context) {
     final double paddingVal = getResponsiveSize(context, 16.0);
-    final List<String> filteredGenres = widget.allGenres
-        .where((g) => g.toLowerCase().contains(_searchQuery.toLowerCase()))
+    final List<MediaTag> filteredTags = widget.allTags
+        .where((t) => t.name.toLowerCase().contains(_searchQuery.toLowerCase()))
         .toList();
 
     return Padding(
@@ -91,7 +156,7 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Filter by Genres',
+                    'Filter by Tags',
                     style: TextStyle(
                       color: textPrimary,
                       fontSize: fontMedium(context),
@@ -129,7 +194,7 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
                           fontSize: fontBody(context),
                         ),
                         decoration: const InputDecoration(
-                          hintText: 'Search genres...',
+                          hintText: 'Search tags...',
                           hintStyle: TextStyle(color: textMuted),
                           border: InputBorder.none,
                           isDense: true,
@@ -152,21 +217,73 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
                 ),
               ),
             ),
+            const SizedBox(height: 20.0),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: paddingVal),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Minimum Tag Percentage',
+                        style: TextStyle(
+                          color: textMuted,
+                          fontSize: fontSmall(context),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '$_localMinPercentage%',
+                        style: TextStyle(
+                          color: borderColor,
+                          fontSize: fontSmall(context),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8.0),
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      activeTrackColor: borderColor,
+                      inactiveTrackColor: cardBorderColor,
+                      trackHeight: 2.0,
+                      thumbColor: borderColor,
+                      overlayColor: Colors.transparent,
+                      overlayShape: SliderComponentShape.noOverlay,
+                      thumbShape: const CustomSliderThumbShape(),
+                    ),
+                    child: Slider(
+                      value: _localMinPercentage.toDouble(),
+                      max: 100.0,
+                      divisions: 100,
+                      onChanged: (value) {
+                        setState(() {
+                          _localMinPercentage = value.round();
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 16.0),
             Flexible(
               child: ListView.separated(
                 controller: widget.scrollController,
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(horizontal: paddingVal),
-                itemCount: filteredGenres.length,
+                itemCount: filteredTags.length,
                 separatorBuilder: (context, index) => const Divider(
                   color: cardBorderColor,
                   height: 1.0,
                   thickness: 1.0,
                 ),
                 itemBuilder: (context, index) {
-                  final genre = filteredGenres[index];
-                  return _buildGenreOption(context, genre);
+                  final tag = filteredTags[index];
+                  return _buildTagOption(context, tag);
                 },
               ),
             ),
@@ -178,9 +295,10 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        for (final g in widget.allGenres) {
-                          _localGenres[g] = null;
+                        for (final t in widget.allTags) {
+                          _localTags[t.id] = null;
                         }
+                        _localMinPercentage = 18;
                       });
                     },
                     child: Text(
@@ -209,7 +327,10 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
                   const SizedBox(width: 12.0),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pop(_localGenres);
+                      Navigator.of(context).pop({
+                        'tags': _localTags,
+                        'minPercentage': _localMinPercentage,
+                      });
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -239,8 +360,8 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
     );
   }
 
-  Widget _buildGenreOption(BuildContext context, String genre) {
-    final state = _localGenres[genre];
+  Widget _buildTagOption(BuildContext context, MediaTag tag) {
+    final state = _localTags[tag.id];
     final double paddingVal = getResponsiveSize(context, 12.0);
 
     final Color bg;
@@ -286,7 +407,7 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
             } else {
               nextState = null;
             }
-            _localGenres[genre] = nextState;
+            _localTags[tag.id] = nextState;
           });
         },
         borderRadius: BorderRadius.circular(6.0),
@@ -304,7 +425,7 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
             children: [
               Expanded(
                 child: Text(
-                  genre,
+                  tag.name,
                   style: TextStyle(
                     color: textColor,
                     fontSize: fontBody(context),
