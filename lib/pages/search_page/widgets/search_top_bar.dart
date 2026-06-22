@@ -16,6 +16,9 @@ class SearchTopBar extends StatelessWidget {
   /// Callback to clear the search query.
   final VoidCallback onClear;
 
+  /// Widget to display as the sort button/dropdown.
+  final Widget sortButton;
+
   /// Creates a search top bar.
   const SearchTopBar({
     super.key,
@@ -23,6 +26,7 @@ class SearchTopBar extends StatelessWidget {
     required this.focusNode,
     required this.hasSearchText,
     required this.onClear,
+    required this.sortButton,
   });
 
   @override
@@ -40,12 +44,8 @@ class SearchTopBar extends StatelessWidget {
           Expanded(
             child: Container(
               height: getResponsiveSize(context, 44.0),
-              decoration: BoxDecoration(
-                color: surfaceBackground,
-                borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(color: cardBorderColor),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              decoration: const BoxDecoration(color: Colors.transparent),
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: Row(
                 children: [
                   Icon(
@@ -87,7 +87,8 @@ class SearchTopBar extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: getResponsiveSize(context, 44.0)),
+          const SizedBox(width: 8.0),
+          sortButton,
         ],
       ),
     );

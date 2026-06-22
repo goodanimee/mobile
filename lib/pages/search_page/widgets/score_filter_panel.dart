@@ -44,8 +44,12 @@ class _ScoreFilterPanelState extends State<ScoreFilterPanel> {
     _currentMin = widget.selectedMin ?? minLimit;
     _currentMax = widget.selectedMax ?? maxLimit;
 
-    _minController = TextEditingController(text: _currentMin.toStringAsFixed(1));
-    _maxController = TextEditingController(text: _currentMax.toStringAsFixed(1));
+    _minController = TextEditingController(
+      text: _currentMin.toStringAsFixed(1),
+    );
+    _maxController = TextEditingController(
+      text: _currentMax.toStringAsFixed(1),
+    );
 
     _minFocus = FocusNode();
     _maxFocus = FocusNode();
@@ -174,10 +178,7 @@ class _ScoreFilterPanelState extends State<ScoreFilterPanel> {
               rangeTrackShape: const RoundedRectRangeSliderTrackShape(),
             ),
             child: RangeSlider(
-              values: RangeValues(
-                _currentMin,
-                _currentMax,
-              ),
+              values: RangeValues(_currentMin, _currentMax),
               max: maxLimit,
               divisions: 100,
               onChanged: (values) {
@@ -251,10 +252,7 @@ class _ScoreFilterPanelState extends State<ScoreFilterPanel> {
             controller: controller,
             focusNode: focusNode,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            style: TextStyle(
-              color: textPrimary,
-              fontSize: fontBody(context),
-            ),
+            style: TextStyle(color: textPrimary, fontSize: fontBody(context)),
             decoration: const InputDecoration(
               border: InputBorder.none,
               isDense: true,

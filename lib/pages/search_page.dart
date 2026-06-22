@@ -5,12 +5,14 @@ import 'search_page/widgets/count_filter_panel.dart';
 import 'search_page/widgets/duration_filter_panel.dart';
 import 'search_page/widgets/filter_dropdown.dart';
 import 'search_page/widgets/format_filter_panel.dart';
+import 'search_page/widgets/genre_filter_sheet.dart';
 import 'search_page/widgets/media_type_selector.dart';
 import 'search_page/widgets/score_filter_panel.dart';
 import 'search_page/widgets/search_filter_button.dart';
 import 'search_page/widgets/search_top_bar.dart';
 import 'search_page/widgets/season_filter_panel.dart';
 import 'search_page/widgets/status_filter_panel.dart';
+import 'search_page/widgets/tag_filter_sheet.dart';
 import 'search_page/widgets/year_filter_panel.dart';
 
 /// A page that allows users to search for media and filter results.
@@ -22,7 +24,7 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   bool _hasSearchText = false;
@@ -39,6 +41,54 @@ class _SearchPageState extends State<SearchPage> {
     'NOVEL': null,
     'ONE_SHOT': null,
   };
+  final Map<String, bool?> _genres = {
+    'Action': null,
+    'Adventure': null,
+    'Comedy': null,
+    'Drama': null,
+    'Ecchi': null,
+    'Fantasy': null,
+    'Hentai': null,
+    'Horror': null,
+    'Mahou Shoujo': null,
+    'Mecha': null,
+    'Music': null,
+    'Mystery': null,
+    'Psychological': null,
+    'Romance': null,
+    'Sci-Fi': null,
+    'Slice of Life': null,
+    'Sports': null,
+    'Supernatural': null,
+    'Thriller': null,
+  };
+  final Map<int, bool?> _tags = {
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
+    8: null,
+    9: null,
+    10: null,
+  };
+  int _minTagPercentage = 18;
+
+  static const List<MediaTag> _allTags = [
+    MediaTag(id: 1, name: 'CGI'),
+    MediaTag(id: 2, name: 'Magic'),
+    MediaTag(id: 3, name: 'Mecha'),
+    MediaTag(id: 4, name: 'School'),
+    MediaTag(id: 5, name: 'Seinen'),
+    MediaTag(id: 6, name: 'Shounen'),
+    MediaTag(id: 7, name: 'Super Power'),
+    MediaTag(id: 8, name: 'Time Travel'),
+    MediaTag(id: 9, name: 'Post-Apocalyptic'),
+    MediaTag(id: 10, name: 'Space'),
+  ];
+
   bool _isFormatOpen = false;
   bool _isStatusOpen = false;
   bool _isSeasonOpen = false;
@@ -46,6 +96,9 @@ class _SearchPageState extends State<SearchPage> {
   bool _isCountOpen = false;
   bool _isDurationOpen = false;
   bool _isScoreOpen = false;
+  bool _isSortOpen = false;
+  bool _showAllFilters = true;
+  String _sortBy = 'search_match';
   String? _status;
   String? _season;
   int? _startYearMin;
@@ -65,11 +118,37 @@ class _SearchPageState extends State<SearchPage> {
   final LayerLink _countLayerLink = LayerLink();
   final LayerLink _durationLayerLink = LayerLink();
   final LayerLink _scoreLayerLink = LayerLink();
+  late final AnimationController _sortMenuController;
+  late final Animation<double> _sortMenuAnimation;
+  late final Animation<double> _iconsFade;
+  late final AnimationController _filtersController;
+  late final Animation<double> _filtersAnimation;
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    _sortMenuController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _sortMenuAnimation = CurvedAnimation(
+      parent: _sortMenuController,
+      curve: Curves.easeInOut,
+    );
+    _iconsFade = CurvedAnimation(
+      parent: _sortMenuController,
+      curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
+    );
+    _filtersController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _filtersAnimation = CurvedAnimation(
+      parent: _filtersController,
+      curve: Curves.easeInOut,
+    );
+    _filtersController.value = 1.0;
   }
 
   @override
@@ -77,6 +156,8 @@ class _SearchPageState extends State<SearchPage> {
     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     _searchFocusNode.dispose();
+    _sortMenuController.dispose();
+    _filtersController.dispose();
     super.dispose();
   }
 
@@ -114,47 +195,102 @@ class _SearchPageState extends State<SearchPage> {
           _toggleDuration();
         } else if (_isScoreOpen) {
           _toggleScore();
+        } else if (_isSortOpen) {
+          _toggleSort();
         }
       },
       behavior: HitTestBehavior.translucent,
       child: Scaffold(
         backgroundColor: bgColor,
         body: SafeArea(
-          child: Column(
+          child: Stack(
             children: [
-              SearchTopBar(
-                controller: _searchController,
-                focusNode: _searchFocusNode,
-                hasSearchText: _hasSearchText,
-                onClear: _clearSearch,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: getResponsiveSize(context, 16.0)),
-                      _buildFiltersSection(),
-                      SizedBox(height: getResponsiveSize(context, 16.0)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: paddingVal),
-                        child: const Divider(
-                          color: cardBorderColor,
-                          height: 1.0,
-                          thickness: 1.0,
-                        ),
-                      ),
-                      SizedBox(height: getResponsiveSize(context, 16.0)),
-                      _buildResultsArea(),
-                    ],
+              Column(
+                children: [
+                  SearchTopBar(
+                    controller: _searchController,
+                    focusNode: _searchFocusNode,
+                    hasSearchText: _hasSearchText,
+                    onClear: _clearSearch,
+                    sortButton: _buildSortButton(),
                   ),
-                ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: getResponsiveSize(context, 16.0)),
+                          _buildFiltersSection(),
+                          SizedBox(height: getResponsiveSize(context, 16.0)),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: paddingVal,
+                            ),
+                            child: const Divider(
+                              color: cardBorderColor,
+                              height: 1.0,
+                              thickness: 1.0,
+                            ),
+                          ),
+                          SizedBox(height: getResponsiveSize(context, 16.0)),
+                          _buildResultsArea(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              _buildSortMenuOverlay(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  bool _hasActiveFilters() {
+    if (_onList != null) return true;
+    if (_formats.values.any((val) => val != null)) return true;
+    if (_status != null) return true;
+    if (_season != null) return true;
+    if (_startYearMin != null || _startYearMax != null) return true;
+    if (_countMin != null || _countMax != null) return true;
+    if (_durationMin != null || _durationMax != null) return true;
+    if (_scoreMin != null || _scoreMax != null) return true;
+    if (_isAdult != null) return true;
+    if (_genres.values.any((val) => val != null)) return true;
+    if (_tags.values.any((val) => val != null)) return true;
+    if (_minTagPercentage != 18) return true;
+    return false;
+  }
+
+  void _resetAllFilters() {
+    setState(() {
+      _onList = null;
+      _formats.updateAll((key, val) => null);
+      _status = null;
+      _season = null;
+      _startYearMin = null;
+      _startYearMax = null;
+      _countMin = null;
+      _countMax = null;
+      _durationMin = null;
+      _durationMax = null;
+      _scoreMin = null;
+      _scoreMax = null;
+      _isAdult = null;
+      _genres.updateAll((key, val) => null);
+      _tags.updateAll((key, val) => null);
+      _minTagPercentage = 18;
+
+      _isFormatOpen = false;
+      _isStatusOpen = false;
+      _isSeasonOpen = false;
+      _isYearOpen = false;
+      _isCountOpen = false;
+      _isDurationOpen = false;
+      _isScoreOpen = false;
+    });
   }
 
   Widget _buildFiltersSection() {
@@ -177,14 +313,96 @@ class _SearchPageState extends State<SearchPage> {
             },
           ),
         ),
-        SizedBox(height: getResponsiveSize(context, 16.0)),
-        _buildFormatAndStatusRow(paddingVal),
-        SizedBox(height: getResponsiveSize(context, 16.0)),
-        _buildSeasonAndYearRow(paddingVal),
-        SizedBox(height: getResponsiveSize(context, 16.0)),
-        _buildCountAndDurationRow(paddingVal),
-        SizedBox(height: getResponsiveSize(context, 16.0)),
-        _buildAdultRow(paddingVal),
+        ClipRect(
+          child: SizeTransition(
+            sizeFactor: _filtersAnimation,
+            alignment: Alignment.topCenter,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: getResponsiveSize(context, 16.0)),
+                _buildFormatAndStatusRow(paddingVal),
+                SizedBox(height: getResponsiveSize(context, 16.0)),
+                _buildSeasonAndYearRow(paddingVal),
+                SizedBox(height: getResponsiveSize(context, 16.0)),
+                _buildCountAndDurationRow(paddingVal),
+                SizedBox(height: getResponsiveSize(context, 16.0)),
+                _buildAdultRow(paddingVal),
+                SizedBox(height: getResponsiveSize(context, 16.0)),
+                _buildGenresAndTagsRow(paddingVal),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: getResponsiveSize(context, 8.0)),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: paddingVal),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    if (_showAllFilters) {
+                      _filtersController.reverse();
+                      setState(() {
+                        _showAllFilters = false;
+                        _isFormatOpen = false;
+                        _isStatusOpen = false;
+                        _isSeasonOpen = false;
+                        _isYearOpen = false;
+                        _isCountOpen = false;
+                        _isDurationOpen = false;
+                        _isScoreOpen = false;
+                      });
+                    } else {
+                      setState(() {
+                        _showAllFilters = true;
+                      });
+                      _filtersController.forward();
+                    }
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        _showAllFilters ? 'Hide Filters' : 'Show Filters',
+                        style: TextStyle(
+                          color: textPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontSmall(context),
+                        ),
+                      ),
+                      const SizedBox(width: 4.0),
+                      Icon(
+                        _showAllFilters
+                            ? LucideIcons.chevronUp
+                            : LucideIcons.chevronDown,
+                        color: textPrimary,
+                        size: getResponsiveSize(context, 16.0),
+                      ),
+                    ],
+                  ),
+                ),
+                if (_hasActiveFilters()) ...[
+                  const SizedBox(width: 8.0),
+                  TextButton(
+                    onPressed: _resetAllFilters,
+                    child: Text(
+                      'Reset',
+                      style: TextStyle(
+                        color: paletteRed,
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSmall(context),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -254,6 +472,7 @@ class _SearchPageState extends State<SearchPage> {
       _isCountOpen = false;
       _isDurationOpen = false;
       _isScoreOpen = false;
+      _isSortOpen = false;
     });
   }
 
@@ -266,6 +485,7 @@ class _SearchPageState extends State<SearchPage> {
       _isCountOpen = false;
       _isDurationOpen = false;
       _isScoreOpen = false;
+      _isSortOpen = false;
     });
   }
 
@@ -278,6 +498,7 @@ class _SearchPageState extends State<SearchPage> {
       _isCountOpen = false;
       _isDurationOpen = false;
       _isScoreOpen = false;
+      _isSortOpen = false;
     });
   }
 
@@ -290,6 +511,7 @@ class _SearchPageState extends State<SearchPage> {
       _isCountOpen = false;
       _isDurationOpen = false;
       _isScoreOpen = false;
+      _isSortOpen = false;
     });
   }
 
@@ -302,6 +524,7 @@ class _SearchPageState extends State<SearchPage> {
       _isYearOpen = false;
       _isDurationOpen = false;
       _isScoreOpen = false;
+      _isSortOpen = false;
     });
   }
 
@@ -314,6 +537,7 @@ class _SearchPageState extends State<SearchPage> {
       _isYearOpen = false;
       _isCountOpen = false;
       _isScoreOpen = false;
+      _isSortOpen = false;
     });
   }
 
@@ -326,7 +550,32 @@ class _SearchPageState extends State<SearchPage> {
       _isYearOpen = false;
       _isCountOpen = false;
       _isDurationOpen = false;
+      _isSortOpen = false;
     });
+  }
+
+  void _toggleSort() {
+    if (_isSortOpen) {
+      _sortMenuController.reverse().then((_) {
+        if (mounted) {
+          setState(() {
+            _isSortOpen = false;
+          });
+        }
+      });
+    } else {
+      setState(() {
+        _isSortOpen = true;
+        _isFormatOpen = false;
+        _isStatusOpen = false;
+        _isSeasonOpen = false;
+        _isYearOpen = false;
+        _isCountOpen = false;
+        _isDurationOpen = false;
+        _isScoreOpen = false;
+      });
+      _sortMenuController.forward();
+    }
   }
 
   IconData _getFormatIcon(String format) {
@@ -957,6 +1206,453 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _showGenreBottomSheet() async {
+    setState(() {
+      _isFormatOpen = false;
+      _isStatusOpen = false;
+      _isSeasonOpen = false;
+      _isYearOpen = false;
+      _isCountOpen = false;
+      _isDurationOpen = false;
+      _isScoreOpen = false;
+    });
+
+    final Map<String, bool?>? result =
+        await showModalBottomSheet<Map<String, bool?>>(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (BuildContext context) {
+            return DraggableScrollableSheet(
+              initialChildSize: 0.65,
+              minChildSize: 0.3,
+              maxChildSize: 0.85,
+              expand: false,
+              builder: (context, scrollController) {
+                return GenreFilterSheet(
+                  initialGenres: _genres,
+                  scrollController: scrollController,
+                );
+              },
+            );
+          },
+        );
+
+    if (result != null) {
+      setState(() {
+        _genres.clear();
+        _genres.addAll(result);
+      });
+    }
+  }
+
+  Future<void> _showTagBottomSheet() async {
+    setState(() {
+      _isFormatOpen = false;
+      _isStatusOpen = false;
+      _isSeasonOpen = false;
+      _isYearOpen = false;
+      _isCountOpen = false;
+      _isDurationOpen = false;
+      _isScoreOpen = false;
+    });
+
+    final Map<String, dynamic>? result =
+        await showModalBottomSheet<Map<String, dynamic>>(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (BuildContext context) {
+            return DraggableScrollableSheet(
+              initialChildSize: 0.65,
+              minChildSize: 0.3,
+              maxChildSize: 0.85,
+              expand: false,
+              builder: (context, scrollController) {
+                return TagFilterSheet(
+                  initialTags: _tags,
+                  initialMinPercentage: _minTagPercentage,
+                  scrollController: scrollController,
+                );
+              },
+            );
+          },
+        );
+
+    if (result != null) {
+      setState(() {
+        _tags.clear();
+        _tags.addAll(result['tags'] as Map<int, bool?>);
+        _minTagPercentage = result['minPercentage'] as int;
+      });
+    }
+  }
+
+  Widget _buildGenresAndTagsRow(double padding) {
+    int trueCount = 0;
+    int falseCount = 0;
+    String? singleSelectedKey;
+    bool? singleSelectedState;
+
+    _genres.forEach((key, value) {
+      if (value != null) {
+        if (value == true) {
+          trueCount++;
+        } else {
+          falseCount++;
+        }
+        singleSelectedKey = key;
+        singleSelectedState = value;
+      }
+    });
+
+    final String genreLabel;
+    final Color genreBorderColor;
+    final Color genreBgColor;
+    final IconData? genreIcon;
+    final Color? genreIconColor;
+    Widget? genreBadge;
+
+    if (trueCount + falseCount == 0) {
+      genreLabel = 'Genres';
+      genreBorderColor = cardBorderColor;
+      genreBgColor = Colors.transparent;
+      genreIcon = null;
+      genreIconColor = Colors.transparent;
+      genreBadge = Icon(
+        LucideIcons.plus,
+        color: textSecondary,
+        size: getResponsiveSize(context, 14.0),
+      );
+    } else if (trueCount + falseCount == 1) {
+      genreLabel = singleSelectedKey!;
+      if (singleSelectedState == true) {
+        genreBgColor = paletteGreen.withValues(alpha: 0.15);
+        genreBorderColor = paletteGreen;
+        genreIcon = LucideIcons.circleCheck;
+        genreIconColor = paletteGreen;
+      } else {
+        genreBgColor = paletteRed.withValues(alpha: 0.15);
+        genreBorderColor = paletteRed;
+        genreIcon = LucideIcons.circleX;
+        genreIconColor = paletteRed;
+      }
+    } else {
+      genreLabel = 'Genres';
+      genreBorderColor = borderColor;
+      genreBgColor = Colors.transparent;
+      genreIcon = null;
+      genreIconColor = Colors.transparent;
+      genreBadge = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (trueCount > 0)
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5.0,
+                vertical: 1.0,
+              ),
+              decoration: BoxDecoration(
+                color: paletteGreen,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                '$trueCount',
+                style: const TextStyle(
+                  color: textPrimary,
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          if (trueCount > 0 && falseCount > 0) const SizedBox(width: 4.0),
+          if (falseCount > 0)
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5.0,
+                vertical: 1.0,
+              ),
+              decoration: BoxDecoration(
+                color: paletteRed,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                '$falseCount',
+                style: const TextStyle(
+                  color: textPrimary,
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+        ],
+      );
+    }
+
+    int tagTrueCount = 0;
+    int tagFalseCount = 0;
+    int? singleSelectedTagId;
+    bool? singleSelectedTagState;
+
+    _tags.forEach((key, value) {
+      if (value != null) {
+        if (value == true) {
+          tagTrueCount++;
+        } else {
+          tagFalseCount++;
+        }
+        singleSelectedTagId = key;
+        singleSelectedTagState = value;
+      }
+    });
+
+    final String tagLabel;
+    final Color tagBorderColor;
+    final Color tagBgColor;
+    final IconData? tagIcon;
+    final Color? tagIconColor;
+    Widget? tagBadge;
+
+    if (tagTrueCount + tagFalseCount == 0) {
+      tagLabel = 'Tags';
+      tagBorderColor = cardBorderColor;
+      tagBgColor = Colors.transparent;
+      tagIcon = null;
+      tagIconColor = Colors.transparent;
+      tagBadge = Icon(
+        LucideIcons.plus,
+        color: textSecondary,
+        size: getResponsiveSize(context, 14.0),
+      );
+    } else if (tagTrueCount + tagFalseCount == 1) {
+      final tagObj = _allTags.firstWhere((t) => t.id == singleSelectedTagId);
+      tagLabel = tagObj.name;
+      if (singleSelectedTagState == true) {
+        tagBgColor = paletteGreen.withValues(alpha: 0.15);
+        tagBorderColor = paletteGreen;
+        tagIcon = LucideIcons.circleCheck;
+        tagIconColor = paletteGreen;
+      } else {
+        tagBgColor = paletteRed.withValues(alpha: 0.15);
+        tagBorderColor = paletteRed;
+        tagIcon = LucideIcons.circleX;
+        tagIconColor = paletteRed;
+      }
+    } else {
+      tagLabel = 'Tags';
+      tagBorderColor = borderColor;
+      tagBgColor = Colors.transparent;
+      tagIcon = null;
+      tagIconColor = Colors.transparent;
+      tagBadge = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (tagTrueCount > 0)
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5.0,
+                vertical: 1.0,
+              ),
+              decoration: BoxDecoration(
+                color: paletteGreen,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                '$tagTrueCount',
+                style: const TextStyle(
+                  color: textPrimary,
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          if (tagTrueCount > 0 && tagFalseCount > 0) const SizedBox(width: 4.0),
+          if (tagFalseCount > 0)
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5.0,
+                vertical: 1.0,
+              ),
+              decoration: BoxDecoration(
+                color: paletteRed,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                '$tagFalseCount',
+                style: const TextStyle(
+                  color: textPrimary,
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+        ],
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: padding),
+      child: SizedBox(
+        width: double.infinity,
+        child: Wrap(
+          spacing: 8.0,
+          runSpacing: 8.0,
+          children: [
+            SearchFilterButton(
+              label: genreLabel,
+              onTap: _showGenreBottomSheet,
+              icon: genreIcon,
+              iconColor: genreIconColor,
+              backgroundColor: genreBgColor,
+              borderColor: genreBorderColor,
+              textColor: textPrimary,
+              badge: genreBadge,
+            ),
+            SearchFilterButton(
+              label: tagLabel,
+              onTap: _showTagBottomSheet,
+              icon: tagIcon,
+              iconColor: tagIconColor,
+              backgroundColor: tagBgColor,
+              borderColor: tagBorderColor,
+              textColor: textPrimary,
+              badge: tagBadge,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSortButton() {
+    return IconButton(
+      icon: Icon(
+        LucideIcons.sortDesc,
+        color: _isSortOpen || _sortBy != 'search_match'
+            ? borderColor
+            : textPrimary,
+        size: getResponsiveSize(context, 24.0),
+      ),
+      onPressed: _toggleSort,
+    );
+  }
+
+  Widget _buildSortMenuOverlay() {
+    if (!_isSortOpen) return const SizedBox.shrink();
+
+    final itemHeight = getResponsiveSize(context, 48.0);
+    final List<({String type, String label})> options = [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'score_desc', label: 'Highest Score'),
+      if (_mediaType == 'ANIME')
+        (type: 'episodes_desc', label: 'Most Episodes')
+      else
+        (type: 'chapters_desc', label: 'Most Chapters'),
+      (type: 'popularity_desc', label: 'Most Popular'),
+      (type: 'trending_desc', label: 'Trending'),
+    ];
+    final totalHeight = options.length * itemHeight;
+    final menuWidth = getResponsiveSize(context, 160.0);
+
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: _toggleSort,
+          behavior: HitTestBehavior.opaque,
+          child: const SizedBox.expand(),
+        ),
+        Positioned(
+          top: getResponsiveSize(context, 56.0),
+          right: getResponsiveSize(context, 16.0),
+          child: AnimatedBuilder(
+            animation: _sortMenuController,
+            builder: (context, _) {
+              return Container(
+                width: menuWidth,
+                height: totalHeight * _sortMenuAnimation.value,
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: cardBorderColor),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.5),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Opacity(
+                    opacity: _iconsFade.value,
+                    child: OverflowBox(
+                      minWidth: menuWidth,
+                      maxWidth: menuWidth,
+                      minHeight: totalHeight,
+                      maxHeight: totalHeight,
+                      alignment: Alignment.topCenter,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: options.map((opt) {
+                          final isActive = _sortBy == opt.type;
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _sortBy = opt.type;
+                              });
+                              _toggleSort();
+                            },
+                            behavior: HitTestBehavior.opaque,
+                            child: Container(
+                              width: double.infinity,
+                              height: itemHeight,
+                              color: isActive
+                                  ? hoverBgColor
+                                  : Colors.transparent,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      opt.label,
+                                      style: TextStyle(
+                                        color: isActive
+                                            ? borderColor
+                                            : textPrimary,
+                                        fontSize: fontBody(context),
+                                        fontWeight: isActive
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                  if (isActive)
+                                    Icon(
+                                      LucideIcons.check,
+                                      size: getResponsiveSize(context, 16.0),
+                                      color: borderColor,
+                                    ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
