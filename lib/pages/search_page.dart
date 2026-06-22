@@ -1,8 +1,17 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../components/app_relation_card.dart';
+import '../components/error_view.dart';
+import '../components/loading_indicator.dart';
+import '../models/media_min.dart';
 import '../models/media_misc.dart';
+import '../proto/api.pb.dart';
 import '../services/genre_service.dart';
+import '../services/search_service.dart';
 import '../theme/theme.dart';
+import '../utils/app_navigation.dart';
+import '../utils/utils.dart';
 import 'search_page/widgets/adult_row.dart';
 import 'search_page/widgets/count_duration_row.dart';
 import 'search_page/widgets/format_status_row.dart';
@@ -81,9 +90,19 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   late final AnimationController _filtersController;
   late final Animation<double> _filtersAnimation;
 
+  Timer? _debounceTimer;
+  final ScrollController _scrollController = ScrollController();
+  final List<MediaMin> _mediaResults = [];
+  bool _isSearching = false;
+  bool _isSearchingMore = false;
+  bool _hasNextPage = false;
+  int _currentPage = 1;
+  String? _searchError;
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_scrollListener);
     _loadGenresAndTags();
     _searchController.addListener(_onSearchChanged);
     _sortMenuController = AnimationController(
@@ -111,12 +130,22 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     _searchFocusNode.dispose();
     _sortMenuController.dispose();
     _filtersController.dispose();
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  void _scrollListener() {
+    if (!_hasNextPage || _isSearchingMore || _isSearching) return;
+    final threshold = _scrollController.position.maxScrollExtent - 400;
+    if (_scrollController.offset >= threshold) {
+      _loadMore();
+    }
   }
 
   Future<void> _loadGenresAndTags() async {
@@ -136,6 +165,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         });
       }
     } catch (_) {}
+    await _performSearch();
   }
 
   void _onSearchChanged() {
@@ -145,11 +175,236 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         _hasSearchText = hasText;
       });
     }
+    _onSearchInputChanged();
+  }
+
+  void _onSearchInputChanged() {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 500), _performSearch);
   }
 
   void _clearSearch() {
     _searchController.clear();
     _searchFocusNode.requestFocus();
+  }
+
+  String? _mapSortOption(String sortBy) {
+    switch (sortBy) {
+      case 'score_desc':
+        return 'SCORE_DESC';
+      case 'episodes_desc':
+        return 'EPISODES_DESC';
+      case 'chapters_desc':
+        return 'CHAPTERS_DESC';
+      case 'popularity_desc':
+        return 'POPULARITY_DESC';
+      case 'trending_desc':
+        return 'TRENDING_DESC';
+      case 'search_match':
+      default:
+        return null;
+    }
+  }
+
+  FetchMediaSearchRequest _buildSearchRequest({required int page}) {
+    final req = FetchMediaSearchRequest(page: page);
+    if (_searchController.text.isNotEmpty) {
+      req.query = _searchController.text;
+    }
+    req.type = _mediaType;
+
+    final mappedSort = _mapSortOption(_sortBy);
+    if (mappedSort != null) {
+      req.sort.add(mappedSort);
+    }
+
+    final includedFormats = _formats.entries
+        .where((e) => e.value == true)
+        .map((e) => e.key)
+        .toList();
+    final excludedFormats = _formats.entries
+        .where((e) => e.value == false)
+        .map((e) => e.key)
+        .toList();
+
+    if (includedFormats.length == 1) {
+      req.format = includedFormats.first;
+    } else if (includedFormats.length > 1) {
+      req.formatIn.addAll(includedFormats);
+    }
+
+    if (excludedFormats.length == 1) {
+      req.formatNot = excludedFormats.first;
+    } else if (excludedFormats.length > 1) {
+      req.formatNotIn.addAll(excludedFormats);
+    }
+
+    if (_status != null) {
+      req.status = _status!;
+    }
+    if (_onList != null) {
+      req.onList = _onList!;
+    }
+
+    if (_scoreMin != null) {
+      req.minAverageScore = _scoreMin!.round();
+    }
+    if (_scoreMax != null) {
+      req.maxAverageScore = _scoreMax!.round();
+    }
+
+    if (_season != null) {
+      req.season = _season!;
+    }
+
+    if (_startYearMin != null) {
+      req.minStartDate = _startYearMin!;
+    }
+    if (_startYearMax != null) {
+      req.maxStartDate = _startYearMax!;
+    }
+
+    if (_mediaType == 'ANIME') {
+      if (_countMin != null) {
+        req.minEpisodes = _countMin!;
+      }
+      if (_countMax != null) {
+        req.maxEpisodes = _countMax!;
+      }
+      if (_durationMin != null) {
+        req.minDuration = _durationMin!;
+      }
+      if (_durationMax != null) {
+        req.maxDuration = _durationMax!;
+      }
+    } else if (_mediaType == 'MANGA') {
+      if (_countMin != null) {
+        req.minChapters = _countMin!;
+      }
+      if (_countMax != null) {
+        req.maxChapters = _countMax!;
+      }
+      if (_durationMin != null) {
+        req.minVolumes = _durationMin!;
+      }
+      if (_durationMax != null) {
+        req.maxVolumes = _durationMax!;
+      }
+    }
+
+    if (_isAdult != null) {
+      req.isAdult = _isAdult!;
+    }
+
+    final includedGenres = _genres.entries
+        .where((e) => e.value == true)
+        .map((e) => e.key)
+        .toList();
+    final excludedGenres = _genres.entries
+        .where((e) => e.value == false)
+        .map((e) => e.key)
+        .toList();
+
+    if (includedGenres.isNotEmpty) {
+      req.genreIn.addAll(includedGenres);
+    }
+    if (excludedGenres.isNotEmpty) {
+      req.genreNotIn.addAll(excludedGenres);
+    }
+
+    final tagInNames = <String>[];
+    final tagNotInNames = <String>[];
+    _tags.forEach((tagId, value) {
+      if (value != null) {
+        final tag = _allTags.firstWhere(
+          (t) => t.id == tagId,
+          orElse: () => const MediaTag(
+            id: 0,
+            name: '',
+            isGeneralSpoiler: false,
+            isMediaSpoiler: false,
+            rank: 0,
+          ),
+        );
+        if (tag.name.isNotEmpty) {
+          if (value == true) {
+            tagInNames.add(tag.name);
+          } else {
+            tagNotInNames.add(tag.name);
+          }
+        }
+      }
+    });
+
+    if (tagInNames.isNotEmpty) {
+      req.tagIn.addAll(tagInNames);
+    }
+    if (tagNotInNames.isNotEmpty) {
+      req.tagNotIn.addAll(tagNotInNames);
+    }
+
+    if (tagInNames.isNotEmpty || tagNotInNames.isNotEmpty) {
+      req.minimumTagRank = _minTagPercentage;
+    }
+
+    return req;
+  }
+
+  Future<void> _performSearch() async {
+    if (mounted) {
+      setState(() {
+        _isSearching = true;
+        _searchError = null;
+      });
+    }
+    try {
+      final req = _buildSearchRequest(page: 1);
+      final result = await SearchService.searchMedia(req);
+      if (mounted) {
+        setState(() {
+          _mediaResults.clear();
+          _mediaResults.addAll(result.media);
+          _currentPage = 1;
+          _hasNextPage = result.pageInfo.hasNextPage;
+          _isSearching = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _searchError = e.toString();
+          _mediaResults.clear();
+          _hasNextPage = false;
+          _currentPage = 1;
+          _isSearching = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _loadMore() async {
+    if (_isSearchingMore || !_hasNextPage) return;
+    setState(() {
+      _isSearchingMore = true;
+    });
+    try {
+      final req = _buildSearchRequest(page: _currentPage + 1);
+      final result = await SearchService.searchMedia(req);
+      if (mounted) {
+        setState(() {
+          _mediaResults.addAll(result.media);
+          _currentPage++;
+          _hasNextPage = result.pageInfo.hasNextPage;
+          _isSearchingMore = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _isSearchingMore = false;
+        });
+      }
+    }
   }
 
   @override
@@ -193,6 +448,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   ),
                   Expanded(
                     child: SingleChildScrollView(
+                      controller: _scrollController,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -436,70 +692,89 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         SizedBox(height: getResponsiveSize(context, 8.0)),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: paddingVal),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    if (_showAllFilters) {
-                      _filtersController.reverse();
-                      setState(() {
-                        _showAllFilters = false;
-                        _isFormatOpen = false;
-                        _isStatusOpen = false;
-                        _isSeasonOpen = false;
-                        _isYearOpen = false;
-                        _isCountOpen = false;
-                        _isDurationOpen = false;
-                        _isScoreOpen = false;
-                      });
-                    } else {
-                      setState(() {
-                        _showAllFilters = true;
-                      });
-                      _filtersController.forward();
-                    }
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        _showAllFilters ? 'Hide Filters' : 'Show Filters',
-                        style: TextStyle(
-                          color: textPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontSmall(context),
-                        ),
-                      ),
-                      const SizedBox(width: 4.0),
-                      Icon(
-                        _showAllFilters
-                            ? LucideIcons.chevronUp
-                            : LucideIcons.chevronDown,
-                        color: textPrimary,
-                        size: getResponsiveSize(context, 16.0),
-                      ),
-                    ],
-                  ),
-                ),
-                if (_hasActiveFilters()) ...[
-                  const SizedBox(width: 8.0),
-                  TextButton(
-                    onPressed: _resetAllFilters,
-                    child: Text(
-                      'Reset',
+          child: Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  if (_showAllFilters) {
+                    _filtersController.reverse();
+                    setState(() {
+                      _showAllFilters = false;
+                      _isFormatOpen = false;
+                      _isStatusOpen = false;
+                      _isSeasonOpen = false;
+                      _isYearOpen = false;
+                      _isCountOpen = false;
+                      _isDurationOpen = false;
+                      _isScoreOpen = false;
+                    });
+                  } else {
+                    setState(() {
+                      _showAllFilters = true;
+                    });
+                    _filtersController.forward();
+                  }
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _showAllFilters ? 'Hide Filters' : 'Show Filters',
                       style: TextStyle(
-                        color: paletteRed,
+                        color: textPrimary,
                         fontWeight: FontWeight.bold,
                         fontSize: fontSmall(context),
                       ),
                     ),
+                    const SizedBox(width: 4.0),
+                    Icon(
+                      _showAllFilters
+                          ? LucideIcons.chevronUp
+                          : LucideIcons.chevronDown,
+                      color: textPrimary,
+                      size: getResponsiveSize(context, 16.0),
+                    ),
+                  ],
+                ),
+              ),
+              if (_hasActiveFilters()) ...[
+                const SizedBox(width: 8.0),
+                TextButton(
+                  onPressed: _resetAllFilters,
+                  child: Text(
+                    'Reset',
+                    style: TextStyle(
+                      color: paletteRed,
+                      fontWeight: FontWeight.bold,
+                      fontSize: fontSmall(context),
+                    ),
                   ),
-                ],
+                ),
               ],
-            ),
+              const Spacer(),
+              InkWell(
+                onTap: _performSearch,
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: borderColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    'Apply',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -508,11 +783,113 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   Widget _buildResultsArea() {
     final double paddingVal = getResponsiveSize(context, 16.0);
+    if (_isSearching) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 40.0),
+          child: AppLoadingIndicator(),
+        ),
+      );
+    }
+    if (_searchError != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40.0),
+          child: AppErrorView(message: _searchError!, onRetry: _performSearch),
+        ),
+      );
+    }
+    if (_mediaResults.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40.0),
+          child: Text(
+            'No results found',
+            style: TextStyle(color: textMuted, fontSize: fontBody(context)),
+          ),
+        ),
+      );
+    }
+
+    final List<Widget> cards = [];
+    for (final media in _mediaResults) {
+      final titleText = media.title.userPreferred.isNotEmpty
+          ? media.title.userPreferred
+          : media.title.romaji.isNotEmpty
+          ? media.title.romaji
+          : media.title.english.isNotEmpty
+          ? media.title.english
+          : 'Unknown';
+
+      var subtitle = media.format.replaceAll('_', ' ');
+      if (media.type == 'ANIME') {
+        if (media.episodes > 0) {
+          subtitle +=
+              ' \u00B7 ${media.episodes} ${StringUtils.pluralize(media.episodes, "Episode", "Episodes")}';
+        }
+      } else if (media.type == 'MANGA') {
+        if (media.chapters > 0) {
+          subtitle +=
+              ' \u00B7 ${media.chapters} ${StringUtils.pluralize(media.chapters, "Chapter", "Chapters")}';
+        }
+      }
+
+      final colorHex = media.coverImage.color;
+      final color = ColorUtils.fromHex(colorHex, fallback: Colors.transparent);
+
+      cards.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          child: SizedBox(
+            height: 110,
+            child: AppRelationCard(
+              imageUrl: media.coverImage.large,
+              title: titleText,
+              nativeTitle: media.title.native,
+              subtitle: subtitle,
+              color: color != Colors.transparent ? color : null,
+              trailing: media.averageScore > 0
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          LucideIcons.star,
+                          color: Colors.amber,
+                          size: 14,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          (media.averageScore / 10).toStringAsFixed(1),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    )
+                  : null,
+              onTap: () => AppNavigation.toMedia(context, media.id),
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (_isSearchingMore) {
+      cards.add(
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 16.0),
+          child: AppLoadingIndicator(),
+        ),
+      );
+    }
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: paddingVal),
-      child: Text(
-        'Results will appear here',
-        style: TextStyle(color: textMuted, fontSize: fontBody(context)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: cards,
       ),
     );
   }

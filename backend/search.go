@@ -76,15 +76,15 @@ func FetchMediaSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.
 	}
 	if req.MinAverageScore != nil && req.MaxAverageScore != nil {
 		if *req.MinAverageScore < *req.MaxAverageScore {
-			variables["minAverageScore"] = (*req.MinAverageScore) * 10
-			variables["maxAverageScore"] = (*req.MaxAverageScore) * 10
+			variables["minAverageScore"] = (*req.MinAverageScore)*10 - 1
+			variables["maxAverageScore"] = (*req.MaxAverageScore)*10 + 1
 		} else {
 			variables["averageScore"] = (*req.MinAverageScore) * 10
 		}
 	} else if req.MinAverageScore != nil {
-		variables["minAverageScore"] = (*req.MinAverageScore) * 10
+		variables["minAverageScore"] = (*req.MinAverageScore)*10 - 1
 	} else if req.MaxAverageScore != nil {
-		variables["maxAverageScore"] = (*req.MaxAverageScore) * 10
+		variables["maxAverageScore"] = (*req.MaxAverageScore)*10 + 1
 	} else if req.AverageScore != nil {
 		variables["averageScore"] = (*req.AverageScore) * 10
 	}
@@ -93,71 +93,71 @@ func FetchMediaSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.
 	}
 	if req.MinStartDate != nil && req.MaxStartDate != nil {
 		if *req.MinStartDate < *req.MaxStartDate {
-			variables["minStartDate"] = toFuzzyDateInt(*req.MinStartDate)
-			variables["maxStartDate"] = toFuzzyDateInt(*req.MaxStartDate)
+			variables["minStartDate"] = toFuzzyDateInt(*req.MinStartDate) - 1
+			variables["maxStartDate"] = toFuzzyDateInt(*req.MaxStartDate) + 1
 		} else {
 			variables["startDate"] = toFuzzyDateInt(*req.MinStartDate)
 		}
 	} else if req.MinStartDate != nil {
-		variables["minStartDate"] = toFuzzyDateInt(*req.MinStartDate)
+		variables["minStartDate"] = toFuzzyDateInt(*req.MinStartDate) - 1
 	} else if req.MaxStartDate != nil {
-		variables["maxStartDate"] = toFuzzyDateInt(*req.MaxStartDate)
+		variables["maxStartDate"] = toFuzzyDateInt(*req.MaxStartDate) + 1
 	} else if req.StartDate != nil {
 		variables["startDate"] = toFuzzyDateInt(*req.StartDate)
 	}
 	if req.MinEpisodes != nil && req.MaxEpisodes != nil {
 		if *req.MinEpisodes < *req.MaxEpisodes {
-			variables["minEpisodes"] = *req.MinEpisodes
-			variables["maxEpisodes"] = *req.MaxEpisodes
+			variables["minEpisodes"] = *req.MinEpisodes - 1
+			variables["maxEpisodes"] = *req.MaxEpisodes + 1
 		} else {
 			variables["episodes"] = *req.MinEpisodes
 		}
 	} else if req.MinEpisodes != nil {
-		variables["minEpisodes"] = *req.MinEpisodes
+		variables["minEpisodes"] = *req.MinEpisodes - 1
 	} else if req.MaxEpisodes != nil {
-		variables["maxEpisodes"] = *req.MaxEpisodes
+		variables["maxEpisodes"] = *req.MaxEpisodes + 1
 	} else if req.Episodes != nil {
 		variables["episodes"] = *req.Episodes
 	}
 	if req.MinDuration != nil && req.MaxDuration != nil {
 		if *req.MinDuration < *req.MaxDuration {
-			variables["minDuration"] = *req.MinDuration
-			variables["maxDuration"] = *req.MaxDuration
+			variables["minDuration"] = *req.MinDuration - 1
+			variables["maxDuration"] = *req.MaxDuration + 1
 		} else {
 			variables["duration"] = *req.MinDuration
 		}
 	} else if req.MinDuration != nil {
-		variables["minDuration"] = *req.MinDuration
+		variables["minDuration"] = *req.MinDuration - 1
 	} else if req.MaxDuration != nil {
-		variables["maxDuration"] = *req.MaxDuration
+		variables["maxDuration"] = *req.MaxDuration + 1
 	} else if req.Duration != nil {
 		variables["duration"] = *req.Duration
 	}
 	if req.MinChapters != nil && req.MaxChapters != nil {
 		if *req.MinChapters < *req.MaxChapters {
-			variables["minChapters"] = *req.MinChapters
-			variables["maxChapters"] = *req.MaxChapters
+			variables["minChapters"] = *req.MinChapters - 1
+			variables["maxChapters"] = *req.MaxChapters + 1
 		} else {
 			variables["chapters"] = *req.MinChapters
 		}
 	} else if req.MinChapters != nil {
-		variables["minChapters"] = *req.MinChapters
+		variables["minChapters"] = *req.MinChapters - 1
 	} else if req.MaxChapters != nil {
-		variables["maxChapters"] = *req.MaxChapters
+		variables["maxChapters"] = *req.MaxChapters + 1
 	} else if req.Chapters != nil {
 		variables["chapters"] = *req.Chapters
 	}
 	if req.MinVolumes != nil && req.MaxVolumes != nil {
 		if *req.MinVolumes < *req.MaxVolumes {
-			variables["minVolumes"] = *req.MinVolumes
-			variables["maxVolumes"] = *req.MaxVolumes
+			variables["minVolumes"] = *req.MinVolumes - 1
+			variables["maxVolumes"] = *req.MaxVolumes + 1
 		} else {
 			variables["volumes"] = *req.MinVolumes
 		}
 	} else if req.MinVolumes != nil {
-		variables["minVolumes"] = *req.MinVolumes
+		variables["minVolumes"] = *req.MinVolumes - 1
 	} else if req.MaxVolumes != nil {
-		variables["maxVolumes"] = *req.MaxVolumes
+		variables["maxVolumes"] = *req.MaxVolumes + 1
 	} else if req.Volumes != nil {
 		variables["volumes"] = *req.Volumes
 	}
