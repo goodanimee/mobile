@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../models/media_misc.dart';
 import '../../../theme/theme.dart';
 import 'search_filter_button.dart';
-import 'tag_filter_sheet.dart';
 
 /// A row widget containing the Genres and Tags filters.
 class GenresTagsRow extends StatelessWidget {
@@ -15,24 +15,14 @@ class GenresTagsRow extends StatelessWidget {
   /// Active tags selection map.
   final Map<int, bool?> tags;
 
+  /// All available media tags.
+  final List<MediaTag> allTags;
+
   /// Callback to trigger the Genre bottom sheet.
   final VoidCallback showGenreBottomSheet;
 
   /// Callback to trigger the Tag bottom sheet.
   final VoidCallback showTagBottomSheet;
-
-  static const List<MediaTag> _allTags = [
-    MediaTag(id: 1, name: 'CGI'),
-    MediaTag(id: 2, name: 'Magic'),
-    MediaTag(id: 3, name: 'Mecha'),
-    MediaTag(id: 4, name: 'School'),
-    MediaTag(id: 5, name: 'Seinen'),
-    MediaTag(id: 6, name: 'Shounen'),
-    MediaTag(id: 7, name: 'Super Power'),
-    MediaTag(id: 8, name: 'Time Travel'),
-    MediaTag(id: 9, name: 'Post-Apocalyptic'),
-    MediaTag(id: 10, name: 'Space'),
-  ];
 
   /// Creates a genres and tags filter row.
   const GenresTagsRow({
@@ -40,6 +30,7 @@ class GenresTagsRow extends StatelessWidget {
     required this.padding,
     required this.genres,
     required this.tags,
+    required this.allTags,
     required this.showGenreBottomSheet,
     required this.showTagBottomSheet,
   });
@@ -182,7 +173,7 @@ class GenresTagsRow extends StatelessWidget {
         size: getResponsiveSize(context, 14.0),
       );
     } else if (tagTrueCount + tagFalseCount == 1) {
-      final tagObj = _allTags.firstWhere((t) => t.id == singleSelectedTagId);
+      final tagObj = allTags.firstWhere((t) => t.id == singleSelectedTagId);
       tagLabel = tagObj.name;
       if (singleSelectedTagState == true) {
         tagBgColor = paletteGreen.withValues(alpha: 0.15);

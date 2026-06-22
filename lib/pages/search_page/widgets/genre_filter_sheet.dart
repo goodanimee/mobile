@@ -7,6 +7,9 @@ class GenreFilterSheet extends StatefulWidget {
   /// The initial selected genres.
   final Map<String, bool?> initialGenres;
 
+  /// The list of all available genres.
+  final List<String> allGenres;
+
   /// Optional scroll controller for the sheet.
   final ScrollController? scrollController;
 
@@ -14,6 +17,7 @@ class GenreFilterSheet extends StatefulWidget {
   const GenreFilterSheet({
     super.key,
     required this.initialGenres,
+    required this.allGenres,
     this.scrollController,
   });
 
@@ -25,28 +29,6 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
   late final Map<String, bool?> _localGenres;
   String _searchQuery = '';
   late final TextEditingController _searchController;
-
-  final List<String> _allGenres = [
-    'Action',
-    'Adventure',
-    'Comedy',
-    'Drama',
-    'Ecchi',
-    'Fantasy',
-    'Hentai',
-    'Horror',
-    'Mahou Shoujo',
-    'Mecha',
-    'Music',
-    'Mystery',
-    'Psychological',
-    'Romance',
-    'Sci-Fi',
-    'Slice of Life',
-    'Sports',
-    'Supernatural',
-    'Thriller',
-  ];
 
   @override
   void initState() {
@@ -72,7 +54,7 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
   @override
   Widget build(BuildContext context) {
     final double paddingVal = getResponsiveSize(context, 16.0);
-    final List<String> filteredGenres = _allGenres
+    final List<String> filteredGenres = widget.allGenres
         .where((g) => g.toLowerCase().contains(_searchQuery.toLowerCase()))
         .toList();
 
@@ -196,7 +178,7 @@ class _GenreFilterSheetState extends State<GenreFilterSheet> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        for (final g in _allGenres) {
+                        for (final g in widget.allGenres) {
                           _localGenres[g] = null;
                         }
                       });

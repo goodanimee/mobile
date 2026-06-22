@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../models/media_misc.dart';
+import '../services/genre_service.dart';
 import '../theme/theme.dart';
 import 'search_page/widgets/adult_row.dart';
 import 'search_page/widgets/count_duration_row.dart';
@@ -38,39 +40,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     'NOVEL': null,
     'ONE_SHOT': null,
   };
-  final Map<String, bool?> _genres = {
-    'Action': null,
-    'Adventure': null,
-    'Comedy': null,
-    'Drama': null,
-    'Ecchi': null,
-    'Fantasy': null,
-    'Hentai': null,
-    'Horror': null,
-    'Mahou Shoujo': null,
-    'Mecha': null,
-    'Music': null,
-    'Mystery': null,
-    'Psychological': null,
-    'Romance': null,
-    'Sci-Fi': null,
-    'Slice of Life': null,
-    'Sports': null,
-    'Supernatural': null,
-    'Thriller': null,
-  };
-  final Map<int, bool?> _tags = {
-    1: null,
-    2: null,
-    3: null,
-    4: null,
-    5: null,
-    6: null,
-    7: null,
-    8: null,
-    9: null,
-    10: null,
-  };
+  final List<String> _allGenres = [];
+  final List<MediaTag> _allTags = [];
+  final Map<String, bool?> _genres = {};
+  final Map<int, bool?> _tags = {};
   int _minTagPercentage = 18;
 
   bool _isFormatOpen = false;
@@ -111,6 +84,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _loadGenresAndTags();
     _searchController.addListener(_onSearchChanged);
     _sortMenuController = AnimationController(
       vsync: this,
@@ -143,6 +117,25 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     _sortMenuController.dispose();
     _filtersController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadGenresAndTags() async {
+    try {
+      final genresList = await GenreService.getGenres();
+      final tagsList = await GenreService.getTags();
+      if (mounted) {
+        setState(() {
+          _allGenres.addAll(genresList);
+          _allTags.addAll(tagsList);
+          for (final genre in genresList) {
+            _genres[genre] = null;
+          }
+          for (final tag in tagsList) {
+            _tags[tag.id] = null;
+          }
+        });
+      }
+    } catch (_) {}
   }
 
   void _onSearchChanged() {
@@ -432,6 +425,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   padding: paddingVal,
                   genres: _genres,
                   tags: _tags,
+                  allTags: _allTags,
                   showGenreBottomSheet: _showGenreBottomSheet,
                   showTagBottomSheet: _showTagBottomSheet,
                 ),
@@ -663,6 +657,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               builder: (context, scrollController) {
                 return GenreFilterSheet(
                   initialGenres: _genres,
+                  allGenres: _allGenres,
                   scrollController: scrollController,
                 );
               },
@@ -704,6 +699,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 return TagFilterSheet(
                   initialTags: _tags,
                   initialMinPercentage: _minTagPercentage,
+                  allTags: _allTags,
                   scrollController: scrollController,
                 );
               },

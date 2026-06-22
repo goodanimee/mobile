@@ -1,18 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../models/media_misc.dart';
 import '../../../theme/theme.dart';
-
-/// Represents a media tag with an ID and a name.
-class MediaTag {
-  /// The unique identifier.
-  final int id;
-
-  /// The name of the tag.
-  final String name;
-
-  /// Creates a media tag.
-  const MediaTag({required this.id, required this.name});
-}
 
 /// A custom vertical bar thumb shape for a modern, sleek slider.
 class CustomSliderThumbShape extends SliderComponentShape {
@@ -80,6 +69,9 @@ class TagFilterSheet extends StatefulWidget {
   /// The initial minimum tag percentage.
   final int initialMinPercentage;
 
+  /// The list of all available media tags.
+  final List<MediaTag> allTags;
+
   /// Optional scroll controller for the sheet.
   final ScrollController? scrollController;
 
@@ -88,6 +80,7 @@ class TagFilterSheet extends StatefulWidget {
     super.key,
     required this.initialTags,
     required this.initialMinPercentage,
+    required this.allTags,
     this.scrollController,
   });
 
@@ -100,19 +93,6 @@ class _TagFilterSheetState extends State<TagFilterSheet> {
   late int _localMinPercentage;
   String _searchQuery = '';
   late final TextEditingController _searchController;
-
-  final List<MediaTag> _allTags = const [
-    MediaTag(id: 1, name: 'CGI'),
-    MediaTag(id: 2, name: 'Magic'),
-    MediaTag(id: 3, name: 'Mecha'),
-    MediaTag(id: 4, name: 'School'),
-    MediaTag(id: 5, name: 'Seinen'),
-    MediaTag(id: 6, name: 'Shounen'),
-    MediaTag(id: 7, name: 'Super Power'),
-    MediaTag(id: 8, name: 'Time Travel'),
-    MediaTag(id: 9, name: 'Post-Apocalyptic'),
-    MediaTag(id: 10, name: 'Space'),
-  ];
 
   @override
   void initState() {
@@ -139,7 +119,7 @@ class _TagFilterSheetState extends State<TagFilterSheet> {
   @override
   Widget build(BuildContext context) {
     final double paddingVal = getResponsiveSize(context, 16.0);
-    final List<MediaTag> filteredTags = _allTags
+    final List<MediaTag> filteredTags = widget.allTags
         .where((t) => t.name.toLowerCase().contains(_searchQuery.toLowerCase()))
         .toList();
 
@@ -315,7 +295,7 @@ class _TagFilterSheetState extends State<TagFilterSheet> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        for (final t in _allTags) {
+                        for (final t in widget.allTags) {
                           _localTags[t.id] = null;
                         }
                         _localMinPercentage = 18;
