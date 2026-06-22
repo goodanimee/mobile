@@ -2093,11 +2093,387 @@ func (x *FetchTagsResponse) GetError() string {
 	return ""
 }
 
+type FetchMediaSearchRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Page            int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	Query           *string                `protobuf:"bytes,2,opt,name=query,proto3,oneof" json:"query,omitempty"`
+	Sort            []string               `protobuf:"bytes,3,rep,name=sort,proto3" json:"sort,omitempty"`
+	Type            *string                `protobuf:"bytes,4,opt,name=type,proto3,oneof" json:"type,omitempty"`
+	Format          *string                `protobuf:"bytes,5,opt,name=format,proto3,oneof" json:"format,omitempty"`
+	FormatNot       *string                `protobuf:"bytes,6,opt,name=format_not,json=formatNot,proto3,oneof" json:"format_not,omitempty"`
+	FormatIn        []string               `protobuf:"bytes,7,rep,name=format_in,json=formatIn,proto3" json:"format_in,omitempty"`
+	FormatNotIn     []string               `protobuf:"bytes,8,rep,name=format_not_in,json=formatNotIn,proto3" json:"format_not_in,omitempty"`
+	Status          *string                `protobuf:"bytes,9,opt,name=status,proto3,oneof" json:"status,omitempty"`
+	OnList          *bool                  `protobuf:"varint,10,opt,name=on_list,json=onList,proto3,oneof" json:"on_list,omitempty"`
+	MinAverageScore *int32                 `protobuf:"varint,11,opt,name=min_average_score,json=minAverageScore,proto3,oneof" json:"min_average_score,omitempty"`
+	MaxAverageScore *int32                 `protobuf:"varint,12,opt,name=max_average_score,json=maxAverageScore,proto3,oneof" json:"max_average_score,omitempty"`
+	AverageScore    *int32                 `protobuf:"varint,13,opt,name=average_score,json=averageScore,proto3,oneof" json:"average_score,omitempty"`
+	Season          *string                `protobuf:"bytes,14,opt,name=season,proto3,oneof" json:"season,omitempty"`
+	StartDate       *int32                 `protobuf:"varint,15,opt,name=start_date,json=startDate,proto3,oneof" json:"start_date,omitempty"`
+	MinStartDate    *int32                 `protobuf:"varint,16,opt,name=min_start_date,json=minStartDate,proto3,oneof" json:"min_start_date,omitempty"`
+	MaxStartDate    *int32                 `protobuf:"varint,17,opt,name=max_start_date,json=maxStartDate,proto3,oneof" json:"max_start_date,omitempty"`
+	Episodes        *int32                 `protobuf:"varint,18,opt,name=episodes,proto3,oneof" json:"episodes,omitempty"`
+	MinEpisodes     *int32                 `protobuf:"varint,19,opt,name=min_episodes,json=minEpisodes,proto3,oneof" json:"min_episodes,omitempty"`
+	MaxEpisodes     *int32                 `protobuf:"varint,20,opt,name=max_episodes,json=maxEpisodes,proto3,oneof" json:"max_episodes,omitempty"`
+	Duration        *int32                 `protobuf:"varint,21,opt,name=duration,proto3,oneof" json:"duration,omitempty"`
+	MinDuration     *int32                 `protobuf:"varint,22,opt,name=min_duration,json=minDuration,proto3,oneof" json:"min_duration,omitempty"`
+	MaxDuration     *int32                 `protobuf:"varint,23,opt,name=max_duration,json=maxDuration,proto3,oneof" json:"max_duration,omitempty"`
+	Chapters        *int32                 `protobuf:"varint,24,opt,name=chapters,proto3,oneof" json:"chapters,omitempty"`
+	MinChapters     *int32                 `protobuf:"varint,25,opt,name=min_chapters,json=minChapters,proto3,oneof" json:"min_chapters,omitempty"`
+	MaxChapters     *int32                 `protobuf:"varint,26,opt,name=max_chapters,json=maxChapters,proto3,oneof" json:"max_chapters,omitempty"`
+	Volumes         *int32                 `protobuf:"varint,27,opt,name=volumes,proto3,oneof" json:"volumes,omitempty"`
+	MinVolumes      *int32                 `protobuf:"varint,28,opt,name=min_volumes,json=minVolumes,proto3,oneof" json:"min_volumes,omitempty"`
+	MaxVolumes      *int32                 `protobuf:"varint,29,opt,name=max_volumes,json=maxVolumes,proto3,oneof" json:"max_volumes,omitempty"`
+	IsAdult         *bool                  `protobuf:"varint,30,opt,name=is_adult,json=isAdult,proto3,oneof" json:"is_adult,omitempty"`
+	GenreIn         []string               `protobuf:"bytes,31,rep,name=genre_in,json=genreIn,proto3" json:"genre_in,omitempty"`
+	GenreNotIn      []string               `protobuf:"bytes,32,rep,name=genre_not_in,json=genreNotIn,proto3" json:"genre_not_in,omitempty"`
+	TagIn           []string               `protobuf:"bytes,33,rep,name=tag_in,json=tagIn,proto3" json:"tag_in,omitempty"`
+	TagNotIn        []string               `protobuf:"bytes,34,rep,name=tag_not_in,json=tagNotIn,proto3" json:"tag_not_in,omitempty"`
+	MinimumTagRank  *int32                 `protobuf:"varint,35,opt,name=minimum_tag_rank,json=minimumTagRank,proto3,oneof" json:"minimum_tag_rank,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *FetchMediaSearchRequest) Reset() {
+	*x = FetchMediaSearchRequest{}
+	mi := &file_api_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaSearchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaSearchRequest) ProtoMessage() {}
+
+func (x *FetchMediaSearchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaSearchRequest.ProtoReflect.Descriptor instead.
+func (*FetchMediaSearchRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *FetchMediaSearchRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetQuery() string {
+	if x != nil && x.Query != nil {
+		return *x.Query
+	}
+	return ""
+}
+
+func (x *FetchMediaSearchRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+func (x *FetchMediaSearchRequest) GetType() string {
+	if x != nil && x.Type != nil {
+		return *x.Type
+	}
+	return ""
+}
+
+func (x *FetchMediaSearchRequest) GetFormat() string {
+	if x != nil && x.Format != nil {
+		return *x.Format
+	}
+	return ""
+}
+
+func (x *FetchMediaSearchRequest) GetFormatNot() string {
+	if x != nil && x.FormatNot != nil {
+		return *x.FormatNot
+	}
+	return ""
+}
+
+func (x *FetchMediaSearchRequest) GetFormatIn() []string {
+	if x != nil {
+		return x.FormatIn
+	}
+	return nil
+}
+
+func (x *FetchMediaSearchRequest) GetFormatNotIn() []string {
+	if x != nil {
+		return x.FormatNotIn
+	}
+	return nil
+}
+
+func (x *FetchMediaSearchRequest) GetStatus() string {
+	if x != nil && x.Status != nil {
+		return *x.Status
+	}
+	return ""
+}
+
+func (x *FetchMediaSearchRequest) GetOnList() bool {
+	if x != nil && x.OnList != nil {
+		return *x.OnList
+	}
+	return false
+}
+
+func (x *FetchMediaSearchRequest) GetMinAverageScore() int32 {
+	if x != nil && x.MinAverageScore != nil {
+		return *x.MinAverageScore
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMaxAverageScore() int32 {
+	if x != nil && x.MaxAverageScore != nil {
+		return *x.MaxAverageScore
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetAverageScore() int32 {
+	if x != nil && x.AverageScore != nil {
+		return *x.AverageScore
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetSeason() string {
+	if x != nil && x.Season != nil {
+		return *x.Season
+	}
+	return ""
+}
+
+func (x *FetchMediaSearchRequest) GetStartDate() int32 {
+	if x != nil && x.StartDate != nil {
+		return *x.StartDate
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMinStartDate() int32 {
+	if x != nil && x.MinStartDate != nil {
+		return *x.MinStartDate
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMaxStartDate() int32 {
+	if x != nil && x.MaxStartDate != nil {
+		return *x.MaxStartDate
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetEpisodes() int32 {
+	if x != nil && x.Episodes != nil {
+		return *x.Episodes
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMinEpisodes() int32 {
+	if x != nil && x.MinEpisodes != nil {
+		return *x.MinEpisodes
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMaxEpisodes() int32 {
+	if x != nil && x.MaxEpisodes != nil {
+		return *x.MaxEpisodes
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetDuration() int32 {
+	if x != nil && x.Duration != nil {
+		return *x.Duration
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMinDuration() int32 {
+	if x != nil && x.MinDuration != nil {
+		return *x.MinDuration
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMaxDuration() int32 {
+	if x != nil && x.MaxDuration != nil {
+		return *x.MaxDuration
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetChapters() int32 {
+	if x != nil && x.Chapters != nil {
+		return *x.Chapters
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMinChapters() int32 {
+	if x != nil && x.MinChapters != nil {
+		return *x.MinChapters
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMaxChapters() int32 {
+	if x != nil && x.MaxChapters != nil {
+		return *x.MaxChapters
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetVolumes() int32 {
+	if x != nil && x.Volumes != nil {
+		return *x.Volumes
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMinVolumes() int32 {
+	if x != nil && x.MinVolumes != nil {
+		return *x.MinVolumes
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetMaxVolumes() int32 {
+	if x != nil && x.MaxVolumes != nil {
+		return *x.MaxVolumes
+	}
+	return 0
+}
+
+func (x *FetchMediaSearchRequest) GetIsAdult() bool {
+	if x != nil && x.IsAdult != nil {
+		return *x.IsAdult
+	}
+	return false
+}
+
+func (x *FetchMediaSearchRequest) GetGenreIn() []string {
+	if x != nil {
+		return x.GenreIn
+	}
+	return nil
+}
+
+func (x *FetchMediaSearchRequest) GetGenreNotIn() []string {
+	if x != nil {
+		return x.GenreNotIn
+	}
+	return nil
+}
+
+func (x *FetchMediaSearchRequest) GetTagIn() []string {
+	if x != nil {
+		return x.TagIn
+	}
+	return nil
+}
+
+func (x *FetchMediaSearchRequest) GetTagNotIn() []string {
+	if x != nil {
+		return x.TagNotIn
+	}
+	return nil
+}
+
+func (x *FetchMediaSearchRequest) GetMinimumTagRank() int32 {
+	if x != nil && x.MinimumTagRank != nil {
+		return *x.MinimumTagRank
+	}
+	return 0
+}
+
+type FetchMediaSearchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Media         []*MediaMin            `protobuf:"bytes,1,rep,name=media,proto3" json:"media,omitempty"`
+	PageInfo      *PageInfo              `protobuf:"bytes,2,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Error         string                 `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchMediaSearchResponse) Reset() {
+	*x = FetchMediaSearchResponse{}
+	mi := &file_api_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchMediaSearchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchMediaSearchResponse) ProtoMessage() {}
+
+func (x *FetchMediaSearchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchMediaSearchResponse.ProtoReflect.Descriptor instead.
+func (*FetchMediaSearchResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *FetchMediaSearchResponse) GetMedia() []*MediaMin {
+	if x != nil {
+		return x.Media
+	}
+	return nil
+}
+
+func (x *FetchMediaSearchResponse) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *FetchMediaSearchResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
 	"\n" +
-	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x14media_activity.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\x10media_misc.proto\x1a\fviewer.proto\"X\n" +
+	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x14media_activity.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\fviewer.proto\"X\n" +
 	"\x15FetchMediaListRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x12\n" +
@@ -2240,7 +2616,84 @@ const file_api_proto_rawDesc = "" +
 	"\x05error\x18\x02 \x01(\tR\x05error\"R\n" +
 	"\x11FetchTagsResponse\x12'\n" +
 	"\x04tags\x18\x01 \x03(\v2\x13.goodanime.MediaTagR\x04tags\x12\x14\n" +
-	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x05error\x18\x02 \x01(\tR\x05error\"\xf1\f\n" +
+	"\x17FetchMediaSearchRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x19\n" +
+	"\x05query\x18\x02 \x01(\tH\x00R\x05query\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x03 \x03(\tR\x04sort\x12\x17\n" +
+	"\x04type\x18\x04 \x01(\tH\x01R\x04type\x88\x01\x01\x12\x1b\n" +
+	"\x06format\x18\x05 \x01(\tH\x02R\x06format\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"format_not\x18\x06 \x01(\tH\x03R\tformatNot\x88\x01\x01\x12\x1b\n" +
+	"\tformat_in\x18\a \x03(\tR\bformatIn\x12\"\n" +
+	"\rformat_not_in\x18\b \x03(\tR\vformatNotIn\x12\x1b\n" +
+	"\x06status\x18\t \x01(\tH\x04R\x06status\x88\x01\x01\x12\x1c\n" +
+	"\aon_list\x18\n" +
+	" \x01(\bH\x05R\x06onList\x88\x01\x01\x12/\n" +
+	"\x11min_average_score\x18\v \x01(\x05H\x06R\x0fminAverageScore\x88\x01\x01\x12/\n" +
+	"\x11max_average_score\x18\f \x01(\x05H\aR\x0fmaxAverageScore\x88\x01\x01\x12(\n" +
+	"\raverage_score\x18\r \x01(\x05H\bR\faverageScore\x88\x01\x01\x12\x1b\n" +
+	"\x06season\x18\x0e \x01(\tH\tR\x06season\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"start_date\x18\x0f \x01(\x05H\n" +
+	"R\tstartDate\x88\x01\x01\x12)\n" +
+	"\x0emin_start_date\x18\x10 \x01(\x05H\vR\fminStartDate\x88\x01\x01\x12)\n" +
+	"\x0emax_start_date\x18\x11 \x01(\x05H\fR\fmaxStartDate\x88\x01\x01\x12\x1f\n" +
+	"\bepisodes\x18\x12 \x01(\x05H\rR\bepisodes\x88\x01\x01\x12&\n" +
+	"\fmin_episodes\x18\x13 \x01(\x05H\x0eR\vminEpisodes\x88\x01\x01\x12&\n" +
+	"\fmax_episodes\x18\x14 \x01(\x05H\x0fR\vmaxEpisodes\x88\x01\x01\x12\x1f\n" +
+	"\bduration\x18\x15 \x01(\x05H\x10R\bduration\x88\x01\x01\x12&\n" +
+	"\fmin_duration\x18\x16 \x01(\x05H\x11R\vminDuration\x88\x01\x01\x12&\n" +
+	"\fmax_duration\x18\x17 \x01(\x05H\x12R\vmaxDuration\x88\x01\x01\x12\x1f\n" +
+	"\bchapters\x18\x18 \x01(\x05H\x13R\bchapters\x88\x01\x01\x12&\n" +
+	"\fmin_chapters\x18\x19 \x01(\x05H\x14R\vminChapters\x88\x01\x01\x12&\n" +
+	"\fmax_chapters\x18\x1a \x01(\x05H\x15R\vmaxChapters\x88\x01\x01\x12\x1d\n" +
+	"\avolumes\x18\x1b \x01(\x05H\x16R\avolumes\x88\x01\x01\x12$\n" +
+	"\vmin_volumes\x18\x1c \x01(\x05H\x17R\n" +
+	"minVolumes\x88\x01\x01\x12$\n" +
+	"\vmax_volumes\x18\x1d \x01(\x05H\x18R\n" +
+	"maxVolumes\x88\x01\x01\x12\x1e\n" +
+	"\bis_adult\x18\x1e \x01(\bH\x19R\aisAdult\x88\x01\x01\x12\x19\n" +
+	"\bgenre_in\x18\x1f \x03(\tR\agenreIn\x12 \n" +
+	"\fgenre_not_in\x18  \x03(\tR\n" +
+	"genreNotIn\x12\x15\n" +
+	"\x06tag_in\x18! \x03(\tR\x05tagIn\x12\x1c\n" +
+	"\n" +
+	"tag_not_in\x18\" \x03(\tR\btagNotIn\x12-\n" +
+	"\x10minimum_tag_rank\x18# \x01(\x05H\x1aR\x0eminimumTagRank\x88\x01\x01B\b\n" +
+	"\x06_queryB\a\n" +
+	"\x05_typeB\t\n" +
+	"\a_formatB\r\n" +
+	"\v_format_notB\t\n" +
+	"\a_statusB\n" +
+	"\n" +
+	"\b_on_listB\x14\n" +
+	"\x12_min_average_scoreB\x14\n" +
+	"\x12_max_average_scoreB\x10\n" +
+	"\x0e_average_scoreB\t\n" +
+	"\a_seasonB\r\n" +
+	"\v_start_dateB\x11\n" +
+	"\x0f_min_start_dateB\x11\n" +
+	"\x0f_max_start_dateB\v\n" +
+	"\t_episodesB\x0f\n" +
+	"\r_min_episodesB\x0f\n" +
+	"\r_max_episodesB\v\n" +
+	"\t_durationB\x0f\n" +
+	"\r_min_durationB\x0f\n" +
+	"\r_max_durationB\v\n" +
+	"\t_chaptersB\x0f\n" +
+	"\r_min_chaptersB\x0f\n" +
+	"\r_max_chaptersB\n" +
+	"\n" +
+	"\b_volumesB\x0e\n" +
+	"\f_min_volumesB\x0e\n" +
+	"\f_max_volumesB\v\n" +
+	"\t_is_adultB\x13\n" +
+	"\x11_minimum_tag_rank\"\x8d\x01\n" +
+	"\x18FetchMediaSearchResponse\x12)\n" +
+	"\x05media\x18\x01 \x03(\v2\x13.goodanime.MediaMinR\x05media\x120\n" +
+	"\tpage_info\x18\x02 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
+	"\x05error\x18\x03 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_api_proto_rawDescOnce sync.Once
@@ -2254,7 +2707,7 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 40)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
@@ -2294,41 +2747,46 @@ var file_api_proto_goTypes = []any{
 	(*ToggleFavouriteStaffResponse)(nil),      // 35: goodanime.ToggleFavouriteStaffResponse
 	(*FetchGenresResponse)(nil),               // 36: goodanime.FetchGenresResponse
 	(*FetchTagsResponse)(nil),                 // 37: goodanime.FetchTagsResponse
-	(*MediaListCollection)(nil),               // 38: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 39: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 40: goodanime.MediaListEntry
-	(*Media)(nil),                             // 41: goodanime.Media
-	(ReviewUserRating)(0),                     // 42: goodanime.ReviewUserRating
-	(*ReviewNode)(nil),                        // 43: goodanime.ReviewNode
-	(*PageInfo)(nil),                          // 44: goodanime.PageInfo
-	(*ListActivity)(nil),                      // 45: goodanime.ListActivity
-	(*Studio)(nil),                            // 46: goodanime.Studio
-	(*Staff)(nil),                             // 47: goodanime.Staff
-	(*MediaTag)(nil),                          // 48: goodanime.MediaTag
+	(*FetchMediaSearchRequest)(nil),           // 38: goodanime.FetchMediaSearchRequest
+	(*FetchMediaSearchResponse)(nil),          // 39: goodanime.FetchMediaSearchResponse
+	(*MediaListCollection)(nil),               // 40: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 41: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 42: goodanime.MediaListEntry
+	(*Media)(nil),                             // 43: goodanime.Media
+	(ReviewUserRating)(0),                     // 44: goodanime.ReviewUserRating
+	(*ReviewNode)(nil),                        // 45: goodanime.ReviewNode
+	(*PageInfo)(nil),                          // 46: goodanime.PageInfo
+	(*ListActivity)(nil),                      // 47: goodanime.ListActivity
+	(*Studio)(nil),                            // 48: goodanime.Studio
+	(*Staff)(nil),                             // 49: goodanime.Staff
+	(*MediaTag)(nil),                          // 50: goodanime.MediaTag
+	(*MediaMin)(nil),                          // 51: goodanime.MediaMin
 }
 var file_api_proto_depIdxs = []int32{
-	38, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	39, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	40, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	41, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	40, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	41, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	41, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	41, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	41, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	41, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
-	42, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
-	43, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
-	44, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
-	45, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
-	46, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
-	47, // 15: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
-	48, // 16: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
-	17, // [17:17] is the sub-list for method output_type
-	17, // [17:17] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	42, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	43, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	43, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	43, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	43, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	43, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	44, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
+	45, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
+	46, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	47, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
+	48, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
+	49, // 15: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
+	50, // 16: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
+	51, // 17: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
+	46, // 18: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
+	19, // [19:19] is the sub-list for method output_type
+	19, // [19:19] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -2341,20 +2799,22 @@ func file_api_proto_init() {
 	file_media_activity_proto_init()
 	file_media_list_proto_init()
 	file_media_list_entry_proto_init()
+	file_media_min_proto_init()
+	file_media_misc_proto_init()
 	file_media_review_proto_init()
 	file_media_staff_proto_init()
 	file_media_studio_proto_init()
-	file_media_misc_proto_init()
 	file_viewer_proto_init()
 	file_api_proto_msgTypes[3].OneofWrappers = []any{}
 	file_api_proto_msgTypes[4].OneofWrappers = []any{}
+	file_api_proto_msgTypes[38].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   38,
+			NumMessages:   40,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
