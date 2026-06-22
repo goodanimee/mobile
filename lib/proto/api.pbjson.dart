@@ -722,3 +722,356 @@ final $typed_data.Uint8List toggleFavouriteStaffResponseDescriptor =
     $convert.base64Decode(
         'ChxUb2dnbGVGYXZvdXJpdGVTdGFmZlJlc3BvbnNlEhkKCHN0YWZmX2lkGAEgASgFUgdzdGFmZk'
         'lkEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use fetchGenresResponseDescriptor instead')
+const FetchGenresResponse$json = {
+  '1': 'FetchGenresResponse',
+  '2': [
+    {'1': 'genres', '3': 1, '4': 3, '5': 9, '10': 'genres'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchGenresResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchGenresResponseDescriptor = $convert.base64Decode(
+    'ChNGZXRjaEdlbnJlc1Jlc3BvbnNlEhYKBmdlbnJlcxgBIAMoCVIGZ2VucmVzEhQKBWVycm9yGA'
+    'IgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use fetchTagsResponseDescriptor instead')
+const FetchTagsResponse$json = {
+  '1': 'FetchTagsResponse',
+  '2': [
+    {
+      '1': 'tags',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.MediaTag',
+      '10': 'tags'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchTagsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchTagsResponseDescriptor = $convert.base64Decode(
+    'ChFGZXRjaFRhZ3NSZXNwb25zZRInCgR0YWdzGAEgAygLMhMuZ29vZGFuaW1lLk1lZGlhVGFnUg'
+    'R0YWdzEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use fetchMediaSearchRequestDescriptor instead')
+const FetchMediaSearchRequest$json = {
+  '1': 'FetchMediaSearchRequest',
+  '2': [
+    {'1': 'page', '3': 1, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'query', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'query', '17': true},
+    {'1': 'sort', '3': 3, '4': 3, '5': 9, '10': 'sort'},
+    {'1': 'type', '3': 4, '4': 1, '5': 9, '9': 1, '10': 'type', '17': true},
+    {'1': 'format', '3': 5, '4': 1, '5': 9, '9': 2, '10': 'format', '17': true},
+    {
+      '1': 'format_not',
+      '3': 6,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'formatNot',
+      '17': true
+    },
+    {'1': 'format_in', '3': 7, '4': 3, '5': 9, '10': 'formatIn'},
+    {'1': 'format_not_in', '3': 8, '4': 3, '5': 9, '10': 'formatNotIn'},
+    {'1': 'status', '3': 9, '4': 1, '5': 9, '9': 4, '10': 'status', '17': true},
+    {
+      '1': 'on_list',
+      '3': 10,
+      '4': 1,
+      '5': 8,
+      '9': 5,
+      '10': 'onList',
+      '17': true
+    },
+    {
+      '1': 'min_average_score',
+      '3': 11,
+      '4': 1,
+      '5': 5,
+      '9': 6,
+      '10': 'minAverageScore',
+      '17': true
+    },
+    {
+      '1': 'max_average_score',
+      '3': 12,
+      '4': 1,
+      '5': 5,
+      '9': 7,
+      '10': 'maxAverageScore',
+      '17': true
+    },
+    {
+      '1': 'average_score',
+      '3': 13,
+      '4': 1,
+      '5': 5,
+      '9': 8,
+      '10': 'averageScore',
+      '17': true
+    },
+    {
+      '1': 'season',
+      '3': 14,
+      '4': 1,
+      '5': 9,
+      '9': 9,
+      '10': 'season',
+      '17': true
+    },
+    {
+      '1': 'start_date',
+      '3': 15,
+      '4': 1,
+      '5': 5,
+      '9': 10,
+      '10': 'startDate',
+      '17': true
+    },
+    {
+      '1': 'min_start_date',
+      '3': 16,
+      '4': 1,
+      '5': 5,
+      '9': 11,
+      '10': 'minStartDate',
+      '17': true
+    },
+    {
+      '1': 'max_start_date',
+      '3': 17,
+      '4': 1,
+      '5': 5,
+      '9': 12,
+      '10': 'maxStartDate',
+      '17': true
+    },
+    {
+      '1': 'episodes',
+      '3': 18,
+      '4': 1,
+      '5': 5,
+      '9': 13,
+      '10': 'episodes',
+      '17': true
+    },
+    {
+      '1': 'min_episodes',
+      '3': 19,
+      '4': 1,
+      '5': 5,
+      '9': 14,
+      '10': 'minEpisodes',
+      '17': true
+    },
+    {
+      '1': 'max_episodes',
+      '3': 20,
+      '4': 1,
+      '5': 5,
+      '9': 15,
+      '10': 'maxEpisodes',
+      '17': true
+    },
+    {
+      '1': 'duration',
+      '3': 21,
+      '4': 1,
+      '5': 5,
+      '9': 16,
+      '10': 'duration',
+      '17': true
+    },
+    {
+      '1': 'min_duration',
+      '3': 22,
+      '4': 1,
+      '5': 5,
+      '9': 17,
+      '10': 'minDuration',
+      '17': true
+    },
+    {
+      '1': 'max_duration',
+      '3': 23,
+      '4': 1,
+      '5': 5,
+      '9': 18,
+      '10': 'maxDuration',
+      '17': true
+    },
+    {
+      '1': 'chapters',
+      '3': 24,
+      '4': 1,
+      '5': 5,
+      '9': 19,
+      '10': 'chapters',
+      '17': true
+    },
+    {
+      '1': 'min_chapters',
+      '3': 25,
+      '4': 1,
+      '5': 5,
+      '9': 20,
+      '10': 'minChapters',
+      '17': true
+    },
+    {
+      '1': 'max_chapters',
+      '3': 26,
+      '4': 1,
+      '5': 5,
+      '9': 21,
+      '10': 'maxChapters',
+      '17': true
+    },
+    {
+      '1': 'volumes',
+      '3': 27,
+      '4': 1,
+      '5': 5,
+      '9': 22,
+      '10': 'volumes',
+      '17': true
+    },
+    {
+      '1': 'min_volumes',
+      '3': 28,
+      '4': 1,
+      '5': 5,
+      '9': 23,
+      '10': 'minVolumes',
+      '17': true
+    },
+    {
+      '1': 'max_volumes',
+      '3': 29,
+      '4': 1,
+      '5': 5,
+      '9': 24,
+      '10': 'maxVolumes',
+      '17': true
+    },
+    {
+      '1': 'is_adult',
+      '3': 30,
+      '4': 1,
+      '5': 8,
+      '9': 25,
+      '10': 'isAdult',
+      '17': true
+    },
+    {'1': 'genre_in', '3': 31, '4': 3, '5': 9, '10': 'genreIn'},
+    {'1': 'genre_not_in', '3': 32, '4': 3, '5': 9, '10': 'genreNotIn'},
+    {'1': 'tag_in', '3': 33, '4': 3, '5': 9, '10': 'tagIn'},
+    {'1': 'tag_not_in', '3': 34, '4': 3, '5': 9, '10': 'tagNotIn'},
+    {
+      '1': 'minimum_tag_rank',
+      '3': 35,
+      '4': 1,
+      '5': 5,
+      '9': 26,
+      '10': 'minimumTagRank',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_query'},
+    {'1': '_type'},
+    {'1': '_format'},
+    {'1': '_format_not'},
+    {'1': '_status'},
+    {'1': '_on_list'},
+    {'1': '_min_average_score'},
+    {'1': '_max_average_score'},
+    {'1': '_average_score'},
+    {'1': '_season'},
+    {'1': '_start_date'},
+    {'1': '_min_start_date'},
+    {'1': '_max_start_date'},
+    {'1': '_episodes'},
+    {'1': '_min_episodes'},
+    {'1': '_max_episodes'},
+    {'1': '_duration'},
+    {'1': '_min_duration'},
+    {'1': '_max_duration'},
+    {'1': '_chapters'},
+    {'1': '_min_chapters'},
+    {'1': '_max_chapters'},
+    {'1': '_volumes'},
+    {'1': '_min_volumes'},
+    {'1': '_max_volumes'},
+    {'1': '_is_adult'},
+    {'1': '_minimum_tag_rank'},
+  ],
+};
+
+/// Descriptor for `FetchMediaSearchRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaSearchRequestDescriptor = $convert.base64Decode(
+    'ChdGZXRjaE1lZGlhU2VhcmNoUmVxdWVzdBISCgRwYWdlGAEgASgFUgRwYWdlEhkKBXF1ZXJ5GA'
+    'IgASgJSABSBXF1ZXJ5iAEBEhIKBHNvcnQYAyADKAlSBHNvcnQSFwoEdHlwZRgEIAEoCUgBUgR0'
+    'eXBliAEBEhsKBmZvcm1hdBgFIAEoCUgCUgZmb3JtYXSIAQESIgoKZm9ybWF0X25vdBgGIAEoCU'
+    'gDUglmb3JtYXROb3SIAQESGwoJZm9ybWF0X2luGAcgAygJUghmb3JtYXRJbhIiCg1mb3JtYXRf'
+    'bm90X2luGAggAygJUgtmb3JtYXROb3RJbhIbCgZzdGF0dXMYCSABKAlIBFIGc3RhdHVziAEBEh'
+    'wKB29uX2xpc3QYCiABKAhIBVIGb25MaXN0iAEBEi8KEW1pbl9hdmVyYWdlX3Njb3JlGAsgASgF'
+    'SAZSD21pbkF2ZXJhZ2VTY29yZYgBARIvChFtYXhfYXZlcmFnZV9zY29yZRgMIAEoBUgHUg9tYX'
+    'hBdmVyYWdlU2NvcmWIAQESKAoNYXZlcmFnZV9zY29yZRgNIAEoBUgIUgxhdmVyYWdlU2NvcmWI'
+    'AQESGwoGc2Vhc29uGA4gASgJSAlSBnNlYXNvbogBARIiCgpzdGFydF9kYXRlGA8gASgFSApSCX'
+    'N0YXJ0RGF0ZYgBARIpCg5taW5fc3RhcnRfZGF0ZRgQIAEoBUgLUgxtaW5TdGFydERhdGWIAQES'
+    'KQoObWF4X3N0YXJ0X2RhdGUYESABKAVIDFIMbWF4U3RhcnREYXRliAEBEh8KCGVwaXNvZGVzGB'
+    'IgASgFSA1SCGVwaXNvZGVziAEBEiYKDG1pbl9lcGlzb2RlcxgTIAEoBUgOUgttaW5FcGlzb2Rl'
+    'c4gBARImCgxtYXhfZXBpc29kZXMYFCABKAVID1ILbWF4RXBpc29kZXOIAQESHwoIZHVyYXRpb2'
+    '4YFSABKAVIEFIIZHVyYXRpb26IAQESJgoMbWluX2R1cmF0aW9uGBYgASgFSBFSC21pbkR1cmF0'
+    'aW9uiAEBEiYKDG1heF9kdXJhdGlvbhgXIAEoBUgSUgttYXhEdXJhdGlvbogBARIfCghjaGFwdG'
+    'VycxgYIAEoBUgTUghjaGFwdGVyc4gBARImCgxtaW5fY2hhcHRlcnMYGSABKAVIFFILbWluQ2hh'
+    'cHRlcnOIAQESJgoMbWF4X2NoYXB0ZXJzGBogASgFSBVSC21heENoYXB0ZXJziAEBEh0KB3ZvbH'
+    'VtZXMYGyABKAVIFlIHdm9sdW1lc4gBARIkCgttaW5fdm9sdW1lcxgcIAEoBUgXUgptaW5Wb2x1'
+    'bWVziAEBEiQKC21heF92b2x1bWVzGB0gASgFSBhSCm1heFZvbHVtZXOIAQESHgoIaXNfYWR1bH'
+    'QYHiABKAhIGVIHaXNBZHVsdIgBARIZCghnZW5yZV9pbhgfIAMoCVIHZ2VucmVJbhIgCgxnZW5y'
+    'ZV9ub3RfaW4YICADKAlSCmdlbnJlTm90SW4SFQoGdGFnX2luGCEgAygJUgV0YWdJbhIcCgp0YW'
+    'dfbm90X2luGCIgAygJUgh0YWdOb3RJbhItChBtaW5pbXVtX3RhZ19yYW5rGCMgASgFSBpSDm1p'
+    'bmltdW1UYWdSYW5riAEBQggKBl9xdWVyeUIHCgVfdHlwZUIJCgdfZm9ybWF0Qg0KC19mb3JtYX'
+    'Rfbm90QgkKB19zdGF0dXNCCgoIX29uX2xpc3RCFAoSX21pbl9hdmVyYWdlX3Njb3JlQhQKEl9t'
+    'YXhfYXZlcmFnZV9zY29yZUIQCg5fYXZlcmFnZV9zY29yZUIJCgdfc2Vhc29uQg0KC19zdGFydF'
+    '9kYXRlQhEKD19taW5fc3RhcnRfZGF0ZUIRCg9fbWF4X3N0YXJ0X2RhdGVCCwoJX2VwaXNvZGVz'
+    'Qg8KDV9taW5fZXBpc29kZXNCDwoNX21heF9lcGlzb2Rlc0ILCglfZHVyYXRpb25CDwoNX21pbl'
+    '9kdXJhdGlvbkIPCg1fbWF4X2R1cmF0aW9uQgsKCV9jaGFwdGVyc0IPCg1fbWluX2NoYXB0ZXJz'
+    'Qg8KDV9tYXhfY2hhcHRlcnNCCgoIX3ZvbHVtZXNCDgoMX21pbl92b2x1bWVzQg4KDF9tYXhfdm'
+    '9sdW1lc0ILCglfaXNfYWR1bHRCEwoRX21pbmltdW1fdGFnX3Jhbms=');
+
+@$core.Deprecated('Use fetchMediaSearchResponseDescriptor instead')
+const FetchMediaSearchResponse$json = {
+  '1': 'FetchMediaSearchResponse',
+  '2': [
+    {
+      '1': 'media',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.MediaMin',
+      '10': 'media'
+    },
+    {
+      '1': 'page_info',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchMediaSearchResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchMediaSearchResponseDescriptor = $convert.base64Decode(
+    'ChhGZXRjaE1lZGlhU2VhcmNoUmVzcG9uc2USKQoFbWVkaWEYASADKAsyEy5nb29kYW5pbWUuTW'
+    'VkaWFNaW5SBW1lZGlhEjAKCXBhZ2VfaW5mbxgCIAEoCzITLmdvb2RhbmltZS5QYWdlSW5mb1II'
+    'cGFnZUluZm8SFAoFZXJyb3IYAyABKAlSBWVycm9y');

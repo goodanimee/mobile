@@ -1,0 +1,122 @@
+query MediaSearch(
+    $page: Int
+    $query: String
+    $type: MediaType
+    $format: MediaFormat
+    $formatNot: MediaFormat
+    $formatIn: [MediaFormat]
+    $formatNotIn: [MediaFormat]
+    $status: MediaStatus
+    $onList: Boolean
+    $minAverageScore: Int
+    $maxAverageScore: Int
+    $averageScore: Int
+    $season: MediaSeason
+    $startDate: FuzzyDateInt
+    $minStartDate: FuzzyDateInt
+    $maxStartDate: FuzzyDateInt
+    $episodes: Int
+    $minEpisodes: Int
+    $maxEpisodes: Int
+    $chapters: Int
+    $minChapters: Int
+    $maxChapters: Int
+    $duration: Int
+    $minDuration: Int
+    $maxDuration: Int
+    $volumes: Int
+    $minVolumes: Int
+    $maxVolumes: Int
+    $isAdult: Boolean
+    $genreIn: [String]
+    $genreNotIn: [String]
+    $tagIn: [String]
+    $tagNotIn: [String]
+    $minimumTagRank: Int
+    $sort: [MediaSort]
+) {
+    Page(page: $page, perPage: 20) {
+        media(
+            search: $query
+            type: $type
+            format: $format
+            format_not: $formatNot
+            format_in: $formatIn
+            format_not_in: $formatNotIn
+            status: $status
+            onList: $onList
+            averageScore: $averageScore
+            averageScore_greater: $minAverageScore
+            averageScore_lesser: $maxAverageScore
+            season: $season
+            startDate: $startDate
+            startDate_greater: $minStartDate
+            startDate_lesser: $maxStartDate
+            episodes: $episodes
+            episodes_greater: $minEpisodes
+            episodes_lesser: $maxEpisodes
+            chapters: $chapters
+            chapters_greater: $minChapters
+            chapters_lesser: $maxChapters
+            duration: $duration
+            duration_greater: $minDuration
+            duration_lesser: $maxDuration
+            volumes: $volumes
+            volumes_greater: $minVolumes
+            volumes_lesser: $maxVolumes
+            isAdult: $isAdult
+            genre_in: $genreIn
+            genre_not_in: $genreNotIn
+            tag_in: $tagIn
+            tag_not_in: $tagNotIn
+            minimumTagRank: $minimumTagRank
+            sort: $sort
+        ) {
+            ...MediaMinFields
+        }
+        pageInfo {
+            ...PageInfoFields
+        }
+    }
+}
+
+fragment PageInfoFields on PageInfo {
+    hasNextPage
+    currentPage
+}
+
+fragment MediaMinFields on Media {
+    id
+    type
+    averageScore
+    episodes
+    chapters
+    volumes
+    format
+    isAdult
+    isFavourite
+    siteUrl
+    startDate {
+        year
+    }
+    coverImage {
+        ...CoverImageFields
+    }
+    title {
+        ...TitleFields
+    }
+}
+
+fragment CoverImageFields on MediaCoverImage {
+    color
+    medium
+    large
+    extraLarge
+}
+
+fragment TitleFields on MediaTitle {
+    english
+    native
+    romaji
+    userPreferred
+}

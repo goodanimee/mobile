@@ -7,6 +7,8 @@ import "media.proto";
 import "media_activity.proto";
 import "media_list.proto";
 import "media_list_entry.proto";
+import "media_min.proto";
+import "media_misc.proto";
 import "media_review.proto";
 import "media_staff.proto";
 import "media_studio.proto";
@@ -204,4 +206,58 @@ message ToggleFavouriteStaffRequest {
 message ToggleFavouriteStaffResponse {
   int32 staff_id = 1;
   string error = 2;
+}
+
+message FetchGenresResponse {
+  repeated string genres = 1;
+  string error = 2;
+}
+
+message FetchTagsResponse {
+  repeated MediaTag tags = 1;
+  string error = 2;
+}
+
+message FetchMediaSearchRequest {
+  int32 page = 1;
+  optional string query = 2;
+  repeated string sort = 3;
+  optional string type = 4;
+  optional string format = 5;
+  optional string format_not = 6;
+  repeated string format_in = 7;
+  repeated string format_not_in = 8;
+  optional string status = 9;
+  optional bool on_list = 10;
+  optional int32 min_average_score = 11;
+  optional int32 max_average_score = 12;
+  optional int32 average_score = 13;
+  optional string season = 14;
+  optional int32 start_date = 15;
+  optional int32 min_start_date = 16;
+  optional int32 max_start_date = 17;
+  optional int32 episodes = 18;
+  optional int32 min_episodes = 19;
+  optional int32 max_episodes = 20;
+  optional int32 duration = 21;
+  optional int32 min_duration = 22;
+  optional int32 max_duration = 23;
+  optional int32 chapters = 24;
+  optional int32 min_chapters = 25;
+  optional int32 max_chapters = 26;
+  optional int32 volumes = 27;
+  optional int32 min_volumes = 28;
+  optional int32 max_volumes = 29;
+  optional bool is_adult = 30;
+  repeated string genre_in = 31;
+  repeated string genre_not_in = 32;
+  repeated string tag_in = 33;
+  repeated string tag_not_in = 34;
+  optional int32 minimum_tag_rank = 35;
+}
+
+message FetchMediaSearchResponse {
+  repeated MediaMin media = 1;
+  PageInfo page_info = 2;
+  string error = 3;
 }

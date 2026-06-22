@@ -19,6 +19,8 @@ import 'media.pb.dart' as $3;
 import 'media_activity.pb.dart' as $6;
 import 'media_list.pb.dart' as $0;
 import 'media_list_entry.pb.dart' as $2;
+import 'media_min.pb.dart' as $10;
+import 'media_misc.pb.dart' as $9;
 import 'media_review.pb.dart' as $4;
 import 'media_staff.pb.dart' as $8;
 import 'media_studio.pb.dart' as $7;
@@ -2642,6 +2644,625 @@ class ToggleFavouriteStaffResponse extends $pb.GeneratedMessage {
   $core.bool hasError() => $_has(1);
   @$pb.TagNumber(2)
   void clearError() => $_clearField(2);
+}
+
+class FetchGenresResponse extends $pb.GeneratedMessage {
+  factory FetchGenresResponse({
+    $core.Iterable<$core.String>? genres,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (genres != null) result.genres.addAll(genres);
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchGenresResponse._();
+
+  factory FetchGenresResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchGenresResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchGenresResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..pPS(1, _omitFieldNames ? '' : 'genres')
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchGenresResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchGenresResponse copyWith(void Function(FetchGenresResponse) updates) =>
+      super.copyWith((message) => updates(message as FetchGenresResponse))
+          as FetchGenresResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchGenresResponse create() => FetchGenresResponse._();
+  @$core.override
+  FetchGenresResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchGenresResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchGenresResponse>(create);
+  static FetchGenresResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$core.String> get genres => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class FetchTagsResponse extends $pb.GeneratedMessage {
+  factory FetchTagsResponse({
+    $core.Iterable<$9.MediaTag>? tags,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (tags != null) result.tags.addAll(tags);
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchTagsResponse._();
+
+  factory FetchTagsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchTagsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchTagsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..pPM<$9.MediaTag>(1, _omitFieldNames ? '' : 'tags',
+        subBuilder: $9.MediaTag.create)
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchTagsResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchTagsResponse copyWith(void Function(FetchTagsResponse) updates) =>
+      super.copyWith((message) => updates(message as FetchTagsResponse))
+          as FetchTagsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchTagsResponse create() => FetchTagsResponse._();
+  @$core.override
+  FetchTagsResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchTagsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchTagsResponse>(create);
+  static FetchTagsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$9.MediaTag> get tags => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class FetchMediaSearchRequest extends $pb.GeneratedMessage {
+  factory FetchMediaSearchRequest({
+    $core.int? page,
+    $core.String? query,
+    $core.Iterable<$core.String>? sort,
+    $core.String? type,
+    $core.String? format,
+    $core.String? formatNot,
+    $core.Iterable<$core.String>? formatIn,
+    $core.Iterable<$core.String>? formatNotIn,
+    $core.String? status,
+    $core.bool? onList,
+    $core.int? minAverageScore,
+    $core.int? maxAverageScore,
+    $core.int? averageScore,
+    $core.String? season,
+    $core.int? startDate,
+    $core.int? minStartDate,
+    $core.int? maxStartDate,
+    $core.int? episodes,
+    $core.int? minEpisodes,
+    $core.int? maxEpisodes,
+    $core.int? duration,
+    $core.int? minDuration,
+    $core.int? maxDuration,
+    $core.int? chapters,
+    $core.int? minChapters,
+    $core.int? maxChapters,
+    $core.int? volumes,
+    $core.int? minVolumes,
+    $core.int? maxVolumes,
+    $core.bool? isAdult,
+    $core.Iterable<$core.String>? genreIn,
+    $core.Iterable<$core.String>? genreNotIn,
+    $core.Iterable<$core.String>? tagIn,
+    $core.Iterable<$core.String>? tagNotIn,
+    $core.int? minimumTagRank,
+  }) {
+    final result = create();
+    if (page != null) result.page = page;
+    if (query != null) result.query = query;
+    if (sort != null) result.sort.addAll(sort);
+    if (type != null) result.type = type;
+    if (format != null) result.format = format;
+    if (formatNot != null) result.formatNot = formatNot;
+    if (formatIn != null) result.formatIn.addAll(formatIn);
+    if (formatNotIn != null) result.formatNotIn.addAll(formatNotIn);
+    if (status != null) result.status = status;
+    if (onList != null) result.onList = onList;
+    if (minAverageScore != null) result.minAverageScore = minAverageScore;
+    if (maxAverageScore != null) result.maxAverageScore = maxAverageScore;
+    if (averageScore != null) result.averageScore = averageScore;
+    if (season != null) result.season = season;
+    if (startDate != null) result.startDate = startDate;
+    if (minStartDate != null) result.minStartDate = minStartDate;
+    if (maxStartDate != null) result.maxStartDate = maxStartDate;
+    if (episodes != null) result.episodes = episodes;
+    if (minEpisodes != null) result.minEpisodes = minEpisodes;
+    if (maxEpisodes != null) result.maxEpisodes = maxEpisodes;
+    if (duration != null) result.duration = duration;
+    if (minDuration != null) result.minDuration = minDuration;
+    if (maxDuration != null) result.maxDuration = maxDuration;
+    if (chapters != null) result.chapters = chapters;
+    if (minChapters != null) result.minChapters = minChapters;
+    if (maxChapters != null) result.maxChapters = maxChapters;
+    if (volumes != null) result.volumes = volumes;
+    if (minVolumes != null) result.minVolumes = minVolumes;
+    if (maxVolumes != null) result.maxVolumes = maxVolumes;
+    if (isAdult != null) result.isAdult = isAdult;
+    if (genreIn != null) result.genreIn.addAll(genreIn);
+    if (genreNotIn != null) result.genreNotIn.addAll(genreNotIn);
+    if (tagIn != null) result.tagIn.addAll(tagIn);
+    if (tagNotIn != null) result.tagNotIn.addAll(tagNotIn);
+    if (minimumTagRank != null) result.minimumTagRank = minimumTagRank;
+    return result;
+  }
+
+  FetchMediaSearchRequest._();
+
+  factory FetchMediaSearchRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchMediaSearchRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchMediaSearchRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'page')
+    ..aOS(2, _omitFieldNames ? '' : 'query')
+    ..pPS(3, _omitFieldNames ? '' : 'sort')
+    ..aOS(4, _omitFieldNames ? '' : 'type')
+    ..aOS(5, _omitFieldNames ? '' : 'format')
+    ..aOS(6, _omitFieldNames ? '' : 'formatNot')
+    ..pPS(7, _omitFieldNames ? '' : 'formatIn')
+    ..pPS(8, _omitFieldNames ? '' : 'formatNotIn')
+    ..aOS(9, _omitFieldNames ? '' : 'status')
+    ..aOB(10, _omitFieldNames ? '' : 'onList')
+    ..aI(11, _omitFieldNames ? '' : 'minAverageScore')
+    ..aI(12, _omitFieldNames ? '' : 'maxAverageScore')
+    ..aI(13, _omitFieldNames ? '' : 'averageScore')
+    ..aOS(14, _omitFieldNames ? '' : 'season')
+    ..aI(15, _omitFieldNames ? '' : 'startDate')
+    ..aI(16, _omitFieldNames ? '' : 'minStartDate')
+    ..aI(17, _omitFieldNames ? '' : 'maxStartDate')
+    ..aI(18, _omitFieldNames ? '' : 'episodes')
+    ..aI(19, _omitFieldNames ? '' : 'minEpisodes')
+    ..aI(20, _omitFieldNames ? '' : 'maxEpisodes')
+    ..aI(21, _omitFieldNames ? '' : 'duration')
+    ..aI(22, _omitFieldNames ? '' : 'minDuration')
+    ..aI(23, _omitFieldNames ? '' : 'maxDuration')
+    ..aI(24, _omitFieldNames ? '' : 'chapters')
+    ..aI(25, _omitFieldNames ? '' : 'minChapters')
+    ..aI(26, _omitFieldNames ? '' : 'maxChapters')
+    ..aI(27, _omitFieldNames ? '' : 'volumes')
+    ..aI(28, _omitFieldNames ? '' : 'minVolumes')
+    ..aI(29, _omitFieldNames ? '' : 'maxVolumes')
+    ..aOB(30, _omitFieldNames ? '' : 'isAdult')
+    ..pPS(31, _omitFieldNames ? '' : 'genreIn')
+    ..pPS(32, _omitFieldNames ? '' : 'genreNotIn')
+    ..pPS(33, _omitFieldNames ? '' : 'tagIn')
+    ..pPS(34, _omitFieldNames ? '' : 'tagNotIn')
+    ..aI(35, _omitFieldNames ? '' : 'minimumTagRank')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaSearchRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaSearchRequest copyWith(
+          void Function(FetchMediaSearchRequest) updates) =>
+      super.copyWith((message) => updates(message as FetchMediaSearchRequest))
+          as FetchMediaSearchRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaSearchRequest create() => FetchMediaSearchRequest._();
+  @$core.override
+  FetchMediaSearchRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaSearchRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaSearchRequest>(create);
+  static FetchMediaSearchRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get page => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set page($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPage() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get query => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set query($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasQuery() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearQuery() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$core.String> get sort => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $core.String get type => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set type($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasType() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearType() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get format => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set format($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasFormat() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearFormat() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get formatNot => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set formatNot($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasFormatNot() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearFormatNot() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $pb.PbList<$core.String> get formatIn => $_getList(6);
+
+  @$pb.TagNumber(8)
+  $pb.PbList<$core.String> get formatNotIn => $_getList(7);
+
+  @$pb.TagNumber(9)
+  $core.String get status => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set status($core.String value) => $_setString(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasStatus() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearStatus() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.bool get onList => $_getBF(9);
+  @$pb.TagNumber(10)
+  set onList($core.bool value) => $_setBool(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasOnList() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearOnList() => $_clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.int get minAverageScore => $_getIZ(10);
+  @$pb.TagNumber(11)
+  set minAverageScore($core.int value) => $_setSignedInt32(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasMinAverageScore() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearMinAverageScore() => $_clearField(11);
+
+  @$pb.TagNumber(12)
+  $core.int get maxAverageScore => $_getIZ(11);
+  @$pb.TagNumber(12)
+  set maxAverageScore($core.int value) => $_setSignedInt32(11, value);
+  @$pb.TagNumber(12)
+  $core.bool hasMaxAverageScore() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearMaxAverageScore() => $_clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.int get averageScore => $_getIZ(12);
+  @$pb.TagNumber(13)
+  set averageScore($core.int value) => $_setSignedInt32(12, value);
+  @$pb.TagNumber(13)
+  $core.bool hasAverageScore() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearAverageScore() => $_clearField(13);
+
+  @$pb.TagNumber(14)
+  $core.String get season => $_getSZ(13);
+  @$pb.TagNumber(14)
+  set season($core.String value) => $_setString(13, value);
+  @$pb.TagNumber(14)
+  $core.bool hasSeason() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearSeason() => $_clearField(14);
+
+  @$pb.TagNumber(15)
+  $core.int get startDate => $_getIZ(14);
+  @$pb.TagNumber(15)
+  set startDate($core.int value) => $_setSignedInt32(14, value);
+  @$pb.TagNumber(15)
+  $core.bool hasStartDate() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearStartDate() => $_clearField(15);
+
+  @$pb.TagNumber(16)
+  $core.int get minStartDate => $_getIZ(15);
+  @$pb.TagNumber(16)
+  set minStartDate($core.int value) => $_setSignedInt32(15, value);
+  @$pb.TagNumber(16)
+  $core.bool hasMinStartDate() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearMinStartDate() => $_clearField(16);
+
+  @$pb.TagNumber(17)
+  $core.int get maxStartDate => $_getIZ(16);
+  @$pb.TagNumber(17)
+  set maxStartDate($core.int value) => $_setSignedInt32(16, value);
+  @$pb.TagNumber(17)
+  $core.bool hasMaxStartDate() => $_has(16);
+  @$pb.TagNumber(17)
+  void clearMaxStartDate() => $_clearField(17);
+
+  @$pb.TagNumber(18)
+  $core.int get episodes => $_getIZ(17);
+  @$pb.TagNumber(18)
+  set episodes($core.int value) => $_setSignedInt32(17, value);
+  @$pb.TagNumber(18)
+  $core.bool hasEpisodes() => $_has(17);
+  @$pb.TagNumber(18)
+  void clearEpisodes() => $_clearField(18);
+
+  @$pb.TagNumber(19)
+  $core.int get minEpisodes => $_getIZ(18);
+  @$pb.TagNumber(19)
+  set minEpisodes($core.int value) => $_setSignedInt32(18, value);
+  @$pb.TagNumber(19)
+  $core.bool hasMinEpisodes() => $_has(18);
+  @$pb.TagNumber(19)
+  void clearMinEpisodes() => $_clearField(19);
+
+  @$pb.TagNumber(20)
+  $core.int get maxEpisodes => $_getIZ(19);
+  @$pb.TagNumber(20)
+  set maxEpisodes($core.int value) => $_setSignedInt32(19, value);
+  @$pb.TagNumber(20)
+  $core.bool hasMaxEpisodes() => $_has(19);
+  @$pb.TagNumber(20)
+  void clearMaxEpisodes() => $_clearField(20);
+
+  @$pb.TagNumber(21)
+  $core.int get duration => $_getIZ(20);
+  @$pb.TagNumber(21)
+  set duration($core.int value) => $_setSignedInt32(20, value);
+  @$pb.TagNumber(21)
+  $core.bool hasDuration() => $_has(20);
+  @$pb.TagNumber(21)
+  void clearDuration() => $_clearField(21);
+
+  @$pb.TagNumber(22)
+  $core.int get minDuration => $_getIZ(21);
+  @$pb.TagNumber(22)
+  set minDuration($core.int value) => $_setSignedInt32(21, value);
+  @$pb.TagNumber(22)
+  $core.bool hasMinDuration() => $_has(21);
+  @$pb.TagNumber(22)
+  void clearMinDuration() => $_clearField(22);
+
+  @$pb.TagNumber(23)
+  $core.int get maxDuration => $_getIZ(22);
+  @$pb.TagNumber(23)
+  set maxDuration($core.int value) => $_setSignedInt32(22, value);
+  @$pb.TagNumber(23)
+  $core.bool hasMaxDuration() => $_has(22);
+  @$pb.TagNumber(23)
+  void clearMaxDuration() => $_clearField(23);
+
+  @$pb.TagNumber(24)
+  $core.int get chapters => $_getIZ(23);
+  @$pb.TagNumber(24)
+  set chapters($core.int value) => $_setSignedInt32(23, value);
+  @$pb.TagNumber(24)
+  $core.bool hasChapters() => $_has(23);
+  @$pb.TagNumber(24)
+  void clearChapters() => $_clearField(24);
+
+  @$pb.TagNumber(25)
+  $core.int get minChapters => $_getIZ(24);
+  @$pb.TagNumber(25)
+  set minChapters($core.int value) => $_setSignedInt32(24, value);
+  @$pb.TagNumber(25)
+  $core.bool hasMinChapters() => $_has(24);
+  @$pb.TagNumber(25)
+  void clearMinChapters() => $_clearField(25);
+
+  @$pb.TagNumber(26)
+  $core.int get maxChapters => $_getIZ(25);
+  @$pb.TagNumber(26)
+  set maxChapters($core.int value) => $_setSignedInt32(25, value);
+  @$pb.TagNumber(26)
+  $core.bool hasMaxChapters() => $_has(25);
+  @$pb.TagNumber(26)
+  void clearMaxChapters() => $_clearField(26);
+
+  @$pb.TagNumber(27)
+  $core.int get volumes => $_getIZ(26);
+  @$pb.TagNumber(27)
+  set volumes($core.int value) => $_setSignedInt32(26, value);
+  @$pb.TagNumber(27)
+  $core.bool hasVolumes() => $_has(26);
+  @$pb.TagNumber(27)
+  void clearVolumes() => $_clearField(27);
+
+  @$pb.TagNumber(28)
+  $core.int get minVolumes => $_getIZ(27);
+  @$pb.TagNumber(28)
+  set minVolumes($core.int value) => $_setSignedInt32(27, value);
+  @$pb.TagNumber(28)
+  $core.bool hasMinVolumes() => $_has(27);
+  @$pb.TagNumber(28)
+  void clearMinVolumes() => $_clearField(28);
+
+  @$pb.TagNumber(29)
+  $core.int get maxVolumes => $_getIZ(28);
+  @$pb.TagNumber(29)
+  set maxVolumes($core.int value) => $_setSignedInt32(28, value);
+  @$pb.TagNumber(29)
+  $core.bool hasMaxVolumes() => $_has(28);
+  @$pb.TagNumber(29)
+  void clearMaxVolumes() => $_clearField(29);
+
+  @$pb.TagNumber(30)
+  $core.bool get isAdult => $_getBF(29);
+  @$pb.TagNumber(30)
+  set isAdult($core.bool value) => $_setBool(29, value);
+  @$pb.TagNumber(30)
+  $core.bool hasIsAdult() => $_has(29);
+  @$pb.TagNumber(30)
+  void clearIsAdult() => $_clearField(30);
+
+  @$pb.TagNumber(31)
+  $pb.PbList<$core.String> get genreIn => $_getList(30);
+
+  @$pb.TagNumber(32)
+  $pb.PbList<$core.String> get genreNotIn => $_getList(31);
+
+  @$pb.TagNumber(33)
+  $pb.PbList<$core.String> get tagIn => $_getList(32);
+
+  @$pb.TagNumber(34)
+  $pb.PbList<$core.String> get tagNotIn => $_getList(33);
+
+  @$pb.TagNumber(35)
+  $core.int get minimumTagRank => $_getIZ(34);
+  @$pb.TagNumber(35)
+  set minimumTagRank($core.int value) => $_setSignedInt32(34, value);
+  @$pb.TagNumber(35)
+  $core.bool hasMinimumTagRank() => $_has(34);
+  @$pb.TagNumber(35)
+  void clearMinimumTagRank() => $_clearField(35);
+}
+
+class FetchMediaSearchResponse extends $pb.GeneratedMessage {
+  factory FetchMediaSearchResponse({
+    $core.Iterable<$10.MediaMin>? media,
+    $5.PageInfo? pageInfo,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (media != null) result.media.addAll(media);
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchMediaSearchResponse._();
+
+  factory FetchMediaSearchResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchMediaSearchResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchMediaSearchResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..pPM<$10.MediaMin>(1, _omitFieldNames ? '' : 'media',
+        subBuilder: $10.MediaMin.create)
+    ..aOM<$5.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $5.PageInfo.create)
+    ..aOS(3, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaSearchResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchMediaSearchResponse copyWith(
+          void Function(FetchMediaSearchResponse) updates) =>
+      super.copyWith((message) => updates(message as FetchMediaSearchResponse))
+          as FetchMediaSearchResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaSearchResponse create() => FetchMediaSearchResponse._();
+  @$core.override
+  FetchMediaSearchResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchMediaSearchResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaSearchResponse>(create);
+  static FetchMediaSearchResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$10.MediaMin> get media => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $5.PageInfo get pageInfo => $_getN(1);
+  @$pb.TagNumber(2)
+  set pageInfo($5.PageInfo value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPageInfo() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPageInfo() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $5.PageInfo ensurePageInfo() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.String get error => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set error($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasError() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearError() => $_clearField(3);
 }
 
 const $core.bool _omitFieldNames =

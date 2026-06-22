@@ -1,0 +1,9 @@
+query {
+  MediaTagCollection {
+    id
+    name
+    isGeneralSpoiler
+    isMediaSpoiler
+    rank
+  }
+}
