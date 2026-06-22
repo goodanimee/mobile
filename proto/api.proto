@@ -10,6 +10,7 @@ import "media_list_entry.proto";
 import "media_review.proto";
 import "media_staff.proto";
 import "media_studio.proto";
+import "media_misc.proto";
 import "viewer.proto";
 
 option go_package = "goodanime/backend/proto";
@@ -203,5 +204,15 @@ message ToggleFavouriteStaffRequest {
 
 message ToggleFavouriteStaffResponse {
   int32 staff_id = 1;
+  string error = 2;
+}
+
+message FetchGenresResponse {
+  repeated string genres = 1;
+  string error = 2;
+}
+
+message FetchTagsResponse {
+  repeated MediaTag tags = 1;
   string error = 2;
 }

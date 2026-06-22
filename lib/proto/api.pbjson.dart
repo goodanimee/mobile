@@ -722,3 +722,38 @@ final $typed_data.Uint8List toggleFavouriteStaffResponseDescriptor =
     $convert.base64Decode(
         'ChxUb2dnbGVGYXZvdXJpdGVTdGFmZlJlc3BvbnNlEhkKCHN0YWZmX2lkGAEgASgFUgdzdGFmZk'
         'lkEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use fetchGenresResponseDescriptor instead')
+const FetchGenresResponse$json = {
+  '1': 'FetchGenresResponse',
+  '2': [
+    {'1': 'genres', '3': 1, '4': 3, '5': 9, '10': 'genres'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchGenresResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchGenresResponseDescriptor = $convert.base64Decode(
+    'ChNGZXRjaEdlbnJlc1Jlc3BvbnNlEhYKBmdlbnJlcxgBIAMoCVIGZ2VucmVzEhQKBWVycm9yGA'
+    'IgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use fetchTagsResponseDescriptor instead')
+const FetchTagsResponse$json = {
+  '1': 'FetchTagsResponse',
+  '2': [
+    {
+      '1': 'tags',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.MediaTag',
+      '10': 'tags'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchTagsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchTagsResponseDescriptor = $convert.base64Decode(
+    'ChFGZXRjaFRhZ3NSZXNwb25zZRInCgR0YWdzGAEgAygLMhMuZ29vZGFuaW1lLk1lZGlhVGFnUg'
+    'R0YWdzEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');

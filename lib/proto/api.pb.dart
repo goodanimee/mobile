@@ -19,6 +19,7 @@ import 'media.pb.dart' as $3;
 import 'media_activity.pb.dart' as $6;
 import 'media_list.pb.dart' as $0;
 import 'media_list_entry.pb.dart' as $2;
+import 'media_misc.pb.dart' as $9;
 import 'media_review.pb.dart' as $4;
 import 'media_staff.pb.dart' as $8;
 import 'media_studio.pb.dart' as $7;
@@ -2633,6 +2634,127 @@ class ToggleFavouriteStaffResponse extends $pb.GeneratedMessage {
   $core.bool hasStaffId() => $_has(0);
   @$pb.TagNumber(1)
   void clearStaffId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class FetchGenresResponse extends $pb.GeneratedMessage {
+  factory FetchGenresResponse({
+    $core.Iterable<$core.String>? genres,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (genres != null) result.genres.addAll(genres);
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchGenresResponse._();
+
+  factory FetchGenresResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchGenresResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchGenresResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..pPS(1, _omitFieldNames ? '' : 'genres')
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchGenresResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchGenresResponse copyWith(void Function(FetchGenresResponse) updates) =>
+      super.copyWith((message) => updates(message as FetchGenresResponse))
+          as FetchGenresResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchGenresResponse create() => FetchGenresResponse._();
+  @$core.override
+  FetchGenresResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchGenresResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchGenresResponse>(create);
+  static FetchGenresResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$core.String> get genres => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class FetchTagsResponse extends $pb.GeneratedMessage {
+  factory FetchTagsResponse({
+    $core.Iterable<$9.MediaTag>? tags,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (tags != null) result.tags.addAll(tags);
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchTagsResponse._();
+
+  factory FetchTagsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchTagsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchTagsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..pPM<$9.MediaTag>(1, _omitFieldNames ? '' : 'tags',
+        subBuilder: $9.MediaTag.create)
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchTagsResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchTagsResponse copyWith(void Function(FetchTagsResponse) updates) =>
+      super.copyWith((message) => updates(message as FetchTagsResponse))
+          as FetchTagsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchTagsResponse create() => FetchTagsResponse._();
+  @$core.override
+  FetchTagsResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchTagsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchTagsResponse>(create);
+  static FetchTagsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$9.MediaTag> get tags => $_getList(0);
 
   @$pb.TagNumber(2)
   $core.String get error => $_getSZ(1);
