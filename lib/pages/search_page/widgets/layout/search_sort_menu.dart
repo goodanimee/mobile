@@ -45,6 +45,13 @@ class SearchSortMenu extends StatelessWidget {
       (type: 'popularity_desc', label: 'Most Popular'),
       (type: 'trending_desc', label: 'Trending'),
     ],
+    'STUDIO': [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'name', label: 'Name (Asc)'),
+      (type: 'name_desc', label: 'Name (Desc)'),
+      (type: 'favourites', label: 'Favourites (Asc)'),
+      (type: 'favourites_desc', label: 'Favourites (Desc)'),
+    ],
   };
 
   /// Creates a search sort menu.

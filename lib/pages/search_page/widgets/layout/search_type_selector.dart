@@ -23,6 +23,8 @@ class SearchTypeSelector extends StatelessWidget {
         _buildTypeChip(context, 'Anime', 'ANIME'),
         const SizedBox(width: 8.0),
         _buildTypeChip(context, 'Manga', 'MANGA'),
+        const SizedBox(width: 8.0),
+        _buildTypeChip(context, 'Studio', 'STUDIO'),
       ],
     );
   }

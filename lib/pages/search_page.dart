@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../models/media_min.dart';
 import '../models/media_misc.dart';
+import '../models/media_studio.dart';
+import '../proto/api.pb.dart';
 import '../services/genre_service.dart';
 import '../services/search_service.dart';
 import '../theme/theme.dart';
@@ -13,6 +15,7 @@ import 'search_page/widgets/layout/search_filters_panel.dart';
 import 'search_page/widgets/layout/search_results_list.dart';
 import 'search_page/widgets/layout/search_sort_menu.dart';
 import 'search_page/widgets/layout/search_top_bar.dart';
+import 'search_page/widgets/layout/studio_results_list.dart';
 import 'search_page/widgets/panels/genre_filter_sheet.dart';
 import 'search_page/widgets/panels/tag_filter_sheet.dart';
 
@@ -79,6 +82,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   Timer? _debounceTimer;
   final ScrollController _scrollController = ScrollController();
   final List<MediaMin> _mediaResults = [];
+  final List<Studio> _studioResults = [];
   bool _isSearching = false;
   bool _isSearchingMore = false;
   bool _hasNextPage = false;
@@ -187,6 +191,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         _activeDropdown = null;
         _searchController.clear();
         _hasSearchText = false;
+        _studioResults.clear();
 
         _searchType = AppNavigation.pendingSearchType ?? 'ANIME';
 
@@ -250,44 +255,66 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       });
     }
     try {
-      final req = buildSearchRequest(
-        page: 1,
-        query: _searchController.text,
-        mediaType: _searchType,
-        sortBy: _sortBy,
-        formats: _formats,
-        status: _status,
-        onList: _onList,
-        scoreMin: _scoreMin,
-        scoreMax: _scoreMax,
-        season: _season,
-        startYearMin: _startYearMin,
-        startYearMax: _startYearMax,
-        countMin: _countMin,
-        countMax: _countMax,
-        durationMin: _durationMin,
-        durationMax: _durationMax,
-        isAdult: _isAdult,
-        genres: _genres,
-        tags: _tags,
-        allTags: _allTags,
-        minTagPercentage: _minTagPercentage,
-      );
-      final result = await SearchService.searchMedia(req);
-      if (mounted) {
-        setState(() {
-          _mediaResults.clear();
-          _mediaResults.addAll(result.media);
-          _currentPage = 1;
-          _hasNextPage = result.pageInfo.hasNextPage;
-          _isSearching = false;
-        });
+      if (_searchType == 'STUDIO') {
+        final req = FetchStudioSearchRequest(page: 1);
+        if (_searchController.text.isNotEmpty) {
+          req.query = _searchController.text;
+        }
+        final mappedSort = _mapStudioSortOption(_sortBy);
+        if (mappedSort != null) {
+          req.sort.add(mappedSort);
+        }
+        final result = await SearchService.searchStudios(req);
+        if (mounted) {
+          setState(() {
+            _studioResults.clear();
+            _studioResults.addAll(result.studios);
+            _currentPage = 1;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearching = false;
+          });
+        }
+      } else {
+        final req = buildSearchRequest(
+          page: 1,
+          query: _searchController.text,
+          mediaType: _searchType,
+          sortBy: _sortBy,
+          formats: _formats,
+          status: _status,
+          onList: _onList,
+          scoreMin: _scoreMin,
+          scoreMax: _scoreMax,
+          season: _season,
+          startYearMin: _startYearMin,
+          startYearMax: _startYearMax,
+          countMin: _countMin,
+          countMax: _countMax,
+          durationMin: _durationMin,
+          durationMax: _durationMax,
+          isAdult: _isAdult,
+          genres: _genres,
+          tags: _tags,
+          allTags: _allTags,
+          minTagPercentage: _minTagPercentage,
+        );
+        final result = await SearchService.searchMedia(req);
+        if (mounted) {
+          setState(() {
+            _mediaResults.clear();
+            _mediaResults.addAll(result.media);
+            _currentPage = 1;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearching = false;
+          });
+        }
       }
     } catch (e) {
       if (mounted) {
         setState(() {
           _searchError = e.toString();
           _mediaResults.clear();
+          _studioResults.clear();
           _hasNextPage = false;
           _currentPage = 1;
           _isSearching = false;
@@ -302,37 +329,57 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       _isSearchingMore = true;
     });
     try {
-      final req = buildSearchRequest(
-        page: _currentPage + 1,
-        query: _searchController.text,
-        mediaType: _searchType,
-        sortBy: _sortBy,
-        formats: _formats,
-        status: _status,
-        onList: _onList,
-        scoreMin: _scoreMin,
-        scoreMax: _scoreMax,
-        season: _season,
-        startYearMin: _startYearMin,
-        startYearMax: _startYearMax,
-        countMin: _countMin,
-        countMax: _countMax,
-        durationMin: _durationMin,
-        durationMax: _durationMax,
-        isAdult: _isAdult,
-        genres: _genres,
-        tags: _tags,
-        allTags: _allTags,
-        minTagPercentage: _minTagPercentage,
-      );
-      final result = await SearchService.searchMedia(req);
-      if (mounted) {
-        setState(() {
-          _mediaResults.addAll(result.media);
-          _currentPage++;
-          _hasNextPage = result.pageInfo.hasNextPage;
-          _isSearchingMore = false;
-        });
+      if (_searchType == 'STUDIO') {
+        final req = FetchStudioSearchRequest(page: _currentPage + 1);
+        if (_searchController.text.isNotEmpty) {
+          req.query = _searchController.text;
+        }
+        final mappedSort = _mapStudioSortOption(_sortBy);
+        if (mappedSort != null) {
+          req.sort.add(mappedSort);
+        }
+        final result = await SearchService.searchStudios(req);
+        if (mounted) {
+          setState(() {
+            _studioResults.addAll(result.studios);
+            _currentPage++;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearchingMore = false;
+          });
+        }
+      } else {
+        final req = buildSearchRequest(
+          page: _currentPage + 1,
+          query: _searchController.text,
+          mediaType: _searchType,
+          sortBy: _sortBy,
+          formats: _formats,
+          status: _status,
+          onList: _onList,
+          scoreMin: _scoreMin,
+          scoreMax: _scoreMax,
+          season: _season,
+          startYearMin: _startYearMin,
+          startYearMax: _startYearMax,
+          countMin: _countMin,
+          countMax: _countMax,
+          durationMin: _durationMin,
+          durationMax: _durationMax,
+          isAdult: _isAdult,
+          genres: _genres,
+          tags: _tags,
+          allTags: _allTags,
+          minTagPercentage: _minTagPercentage,
+        );
+        final result = await SearchService.searchMedia(req);
+        if (mounted) {
+          setState(() {
+            _mediaResults.addAll(result.media);
+            _currentPage++;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearchingMore = false;
+          });
+        }
       }
     } catch (_) {
       if (mounted) {
@@ -340,6 +387,22 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           _isSearchingMore = false;
         });
       }
+    }
+  }
+
+  String? _mapStudioSortOption(String sortBy) {
+    switch (sortBy) {
+      case 'name':
+        return 'NAME';
+      case 'name_desc':
+        return 'NAME_DESC';
+      case 'favourites':
+        return 'FAVOURITES';
+      case 'favourites_desc':
+        return 'FAVOURITES_DESC';
+      case 'search_match':
+      default:
+        return null;
     }
   }
 
@@ -409,6 +472,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       _tags.updateAll((key, val) => null);
       _minTagPercentage = 18;
       _activeDropdown = null;
+      _studioResults.clear();
     });
   }
 
@@ -542,6 +606,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 _durationMax = null;
                                 _formats.updateAll((key, val) => null);
                                 _sortBy = 'search_match';
+                                _studioResults.clear();
                               });
                               _performSearch();
                             },
@@ -664,13 +729,22 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                             ),
                           ),
                           const SizedBox(height: 16.0),
-                          SearchResultsList(
-                            mediaResults: _mediaResults,
-                            isSearching: _isSearching,
-                            isSearchingMore: _isSearchingMore,
-                            searchError: _searchError,
-                            onRetry: _performSearch,
-                          ),
+                          if (_searchType == 'STUDIO')
+                            StudioResultsList(
+                              studioResults: _studioResults,
+                              isSearching: _isSearching,
+                              isSearchingMore: _isSearchingMore,
+                              searchError: _searchError,
+                              onRetry: _performSearch,
+                            )
+                          else
+                            SearchResultsList(
+                              mediaResults: _mediaResults,
+                              isSearching: _isSearching,
+                              isSearchingMore: _isSearchingMore,
+                              searchError: _searchError,
+                              onRetry: _performSearch,
+                            ),
                         ],
                       ),
                     ),

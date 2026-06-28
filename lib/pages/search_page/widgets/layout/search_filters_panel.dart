@@ -195,6 +195,8 @@ class SearchFiltersPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isStudio = searchType == 'STUDIO';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -205,22 +207,24 @@ class SearchFiltersPanel extends StatelessWidget {
             onChanged: onSearchTypeChanged,
           ),
         ),
-        ClipRect(
-          child: SizeTransition(
-            sizeFactor: filtersAnimation,
-            alignment: Alignment.topCenter,
-            child: _buildTypeSpecificFilters(),
+        if (!isStudio) ...[
+          ClipRect(
+            child: SizeTransition(
+              sizeFactor: filtersAnimation,
+              alignment: Alignment.topCenter,
+              child: _buildTypeSpecificFilters(),
+            ),
           ),
-        ),
-        const SizedBox(height: 8.0),
-        FilterActionsRow(
-          padding: paddingVal,
-          showAllFilters: showAllFilters,
-          hasActiveFilters: hasActiveFilters,
-          onToggleFilters: onToggleFilters,
-          onReset: onReset,
-          onApply: onApply,
-        ),
+          const SizedBox(height: 8.0),
+          FilterActionsRow(
+            padding: paddingVal,
+            showAllFilters: showAllFilters,
+            hasActiveFilters: hasActiveFilters,
+            onToggleFilters: onToggleFilters,
+            onReset: onReset,
+            onApply: onApply,
+          ),
+        ],
       ],
     );
   }
