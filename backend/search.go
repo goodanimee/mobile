@@ -21,7 +21,6 @@ import (
 //go:embed graphql/media_search.graphql
 var mediaSearchQuery string
 
-
 type mediaSearchDTO struct {
 	Page struct {
 		PageInfo models.PageInfo    `json:"pageInfo"`
@@ -87,14 +86,14 @@ func FetchMediaSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.
 	}
 	if req.MinStartDate != nil || req.MaxStartDate != nil {
 		if req.MinStartDate != nil {
-			variables["minStartDate"] = (*req.MinStartDate - 1)*10000 + 1231
+			variables["minStartDate"] = (*req.MinStartDate-1)*10000 + 1231
 		}
 		if req.MaxStartDate != nil {
-			variables["maxStartDate"] = (*req.MaxStartDate + 1)*10000 + 101
+			variables["maxStartDate"] = (*req.MaxStartDate+1)*10000 + 101
 		}
 	} else if req.StartDate != nil {
-		variables["minStartDate"] = (*req.StartDate - 1)*10000 + 1231
-		variables["maxStartDate"] = (*req.StartDate + 1)*10000 + 101
+		variables["minStartDate"] = (*req.StartDate-1)*10000 + 1231
+		variables["maxStartDate"] = (*req.StartDate+1)*10000 + 101
 	}
 	if req.MinEpisodes != nil && req.MaxEpisodes != nil {
 		if *req.MinEpisodes < *req.MaxEpisodes {
@@ -195,5 +194,61 @@ func FetchMediaSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.
 	}
 	pbResponse.Media = pbMedia
 	pbResponse.PageInfo = apiResp.Data.Page.PageInfo.ToProto()
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+//go:embed graphql/studio_search.graphql
+var studioSearchQuery string
+
+// FetchStudioSearch searches for studios on AniList.
+//
+//export FetchStudioSearch
+func FetchStudioSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.FetchStudioSearchResponse{}
+
+	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+	var req pb.FetchStudioSearchRequest
+	if err := proto.Unmarshal(reqBytes, &req); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]any{
+		"page": req.Page,
+	}
+	if req.Query != nil && *req.Query != "" {
+		variables["query"] = *req.Query
+	}
+	if len(req.Sort) > 0 {
+		variables["sort"] = []string{req.Sort[0]}
+	}
+
+	respBody, err := rawGraphqlRequest(tk, studioSearchQuery, variables)
+	if err != nil {
+		pbResponse.Error = fmt.Sprintf("GraphQL request failed: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	var apiResp models.GraphQLResponse[models.StudioSearchDTO]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		pbResponse.Error = fmt.Sprintf("failed to decode API response: %v", err)
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	if len(apiResp.Errors) > 0 {
+		pbResponse.Error = apiResp.Errors[0].Message
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	var pbStudios []*pb.Studio
+	for _, s := range apiResp.Data.Page.Studios {
+		if s != nil {
+			pbStudios = append(pbStudios, s.ToProto())
+		}
+	}
+	pbResponse.Studios = pbStudios
+	pbResponse.PageInfo = apiResp.Data.Page.PageInfo.ToProto()
+
 	return marshalAndReturn(pbResponse, outLen)
 }

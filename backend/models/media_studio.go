@@ -100,3 +100,10 @@ type StudioMediaConnection struct {
 type StudioDTO struct {
 	Studio Studio `json:"Studio"`
 }
+
+type StudioSearchDTO struct {
+	Page struct {
+		PageInfo PageInfo  `json:"pageInfo"`
+		Studios  []*Studio `json:"studios"`
+	} `json:"Page"`
+}
