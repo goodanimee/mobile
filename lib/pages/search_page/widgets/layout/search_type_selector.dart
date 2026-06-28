@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '../../../../theme/theme.dart';
 
-/// Selector for media type (Anime or Manga).
-class MediaTypeSelector extends StatelessWidget {
-  /// The currently selected media type value.
+/// Selector for search type (Anime, Manga, etc.).
+class SearchTypeSelector extends StatelessWidget {
+  /// The currently selected search type value.
   final String selectedType;
 
-  /// Callback when a media type is selected.
+  /// Callback when a search type is selected.
   final void Function(String value) onChanged;
 
-  /// Creates a media type selector.
-  const MediaTypeSelector({
+  /// Creates a search type selector.
+  const SearchTypeSelector({
     super.key,
     required this.selectedType,
     required this.onChanged,

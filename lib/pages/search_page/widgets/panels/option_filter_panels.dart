@@ -7,6 +7,9 @@ class FormatFilterPanel extends StatelessWidget {
   /// Current map of format states.
   final Map<String, bool?> formats;
 
+  /// List of format keys that are allowed for this search type.
+  final List<String> allowedFormats;
+
   /// Callback when a format chip state changes.
   final void Function(String key, bool? state) onChanged;
 
@@ -14,6 +17,7 @@ class FormatFilterPanel extends StatelessWidget {
   const FormatFilterPanel({
     super.key,
     required this.formats,
+    required this.allowedFormats,
     required this.onChanged,
   });
 
@@ -45,17 +49,7 @@ class FormatFilterPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> formatKeys = [
-      'TV',
-      'MOVIE',
-      'SPECIAL',
-      'OVA',
-      'ONA',
-      'MUSIC',
-      'MANGA',
-      'NOVEL',
-      'ONE_SHOT',
-    ];
+    final List<String> formatKeys = allowedFormats;
 
     return Container(
       width: double.infinity,

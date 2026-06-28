@@ -28,7 +28,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   bool _hasSearchText = false;
-  String _mediaType = 'ANIME';
+  String _searchType = 'ANIME';
   bool? _onList;
   final Map<String, bool?> _formats = {
     'TV': null,
@@ -184,7 +184,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       final req = buildSearchRequest(
         page: 1,
         query: _searchController.text,
-        mediaType: _mediaType,
+        mediaType: _searchType,
         sortBy: _sortBy,
         formats: _formats,
         status: _status,
@@ -236,7 +236,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       final req = buildSearchRequest(
         page: _currentPage + 1,
         query: _searchController.text,
-        mediaType: _mediaType,
+        mediaType: _searchType,
         sortBy: _sortBy,
         formats: _formats,
         status: _status,
@@ -463,14 +463,15 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                           const SizedBox(height: 16.0),
                           SearchFiltersPanel(
                             paddingVal: paddingVal,
-                            mediaType: _mediaType,
-                            onMediaTypeChanged: (value) {
+                            searchType: _searchType,
+                            onSearchTypeChanged: (value) {
                               setState(() {
-                                _mediaType = value;
+                                _searchType = value;
                                 _countMin = null;
                                 _countMax = null;
                                 _durationMin = null;
                                 _durationMax = null;
+                                _formats.updateAll((key, val) => null);
                               });
                               _performSearch();
                             },
@@ -608,7 +609,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               ),
               SearchSortMenu(
                 isOpen: _activeDropdown == ActiveDropdown.sort,
-                mediaType: _mediaType,
+                mediaType: _searchType,
                 sortBy: _sortBy,
                 sortMenuAnimation: _sortMenuAnimation,
                 iconsFade: _iconsFade,
