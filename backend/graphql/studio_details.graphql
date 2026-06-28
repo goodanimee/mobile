@@ -1,53 +1,53 @@
 query Studio($studioId: Int, $page: Int) {
-    Studio(id: $studioId) {
-        favourites
-        id
-        isFavourite
-        name
-        media(sort: [START_DATE_DESC], isMain: true, page: $page, perPage: 25) {
-            pageInfo {
-                hasNextPage
-                currentPage
-            }
-            nodes {
-                ...MediaMinFields
-            }
-        }
+  Studio(id: $studioId) {
+    favourites
+    id
+    isFavourite
+    name
+    media(sort: [START_DATE_DESC], isMain: true, page: $page, perPage: 25) {
+      pageInfo {
+        hasNextPage
+        currentPage
+      }
+      nodes {
+        ...MediaMinFields
+      }
     }
+  }
 }
 
 fragment MediaMinFields on Media {
-    id
-    type
-    averageScore
-    episodes
-    chapters
-    volumes
-    format
-    isAdult
-    isFavourite
-    siteUrl
-    startDate {
-        year
-    }
-    coverImage {
-        ...CoverImageFields
-    }
-    title {
-        ...TitleFields
-    }
+  id
+  type
+  averageScore
+  episodes
+  chapters
+  volumes
+  format
+  isAdult
+  isFavourite
+  siteUrl
+  startDate {
+    year
+  }
+  coverImage {
+    ...CoverImageFields
+  }
+  title {
+    ...TitleFields
+  }
 }
 
 fragment TitleFields on MediaTitle {
-    english
-    native
-    romaji
-    userPreferred
+  english
+  native
+  romaji
+  userPreferred
 }
 
 fragment CoverImageFields on MediaCoverImage {
-    medium
-    color
-    large
-    extraLarge
+  medium
+  color
+  large
+  extraLarge
 }

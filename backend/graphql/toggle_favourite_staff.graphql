@@ -1,9 +1,9 @@
 mutation ToggleFavouriteStaff($id: Int) {
-    ToggleFavourite(staffId: $id) {
-        staff {
-            nodes {
-                id
-            }
-        }
+  ToggleFavourite(staffId: $id) {
+    staff {
+      nodes {
+        id
+      }
     }
+  }
 }
