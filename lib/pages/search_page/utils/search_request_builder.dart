@@ -170,6 +170,10 @@ FetchMediaSearchRequest buildSearchRequest({
 
 String? _mapSortOption(String sortBy) {
   switch (sortBy) {
+    case 'title_romaji':
+      return 'TITLE_ROMAJI';
+    case 'title_romaji_desc':
+      return 'TITLE_ROMAJI_DESC';
     case 'score_desc':
       return 'SCORE_DESC';
     case 'episodes_desc':

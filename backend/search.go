@@ -21,12 +21,6 @@ import (
 //go:embed graphql/media_search.graphql
 var mediaSearchQuery string
 
-func toFuzzyDateInt(y int32) int32 {
-	if y > 0 && y <= 9999 {
-		return y * 10000
-	}
-	return y
-}
 
 type mediaSearchDTO struct {
 	Page struct {
@@ -91,19 +85,16 @@ func FetchMediaSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.
 	if req.Season != nil {
 		variables["season"] = *req.Season
 	}
-	if req.MinStartDate != nil && req.MaxStartDate != nil {
-		if *req.MinStartDate < *req.MaxStartDate {
-			variables["minStartDate"] = toFuzzyDateInt(*req.MinStartDate) - 1
-			variables["maxStartDate"] = toFuzzyDateInt(*req.MaxStartDate) + 1
-		} else {
-			variables["startDate"] = toFuzzyDateInt(*req.MinStartDate)
+	if req.MinStartDate != nil || req.MaxStartDate != nil {
+		if req.MinStartDate != nil {
+			variables["minStartDate"] = (*req.MinStartDate - 1)*10000 + 1231
 		}
-	} else if req.MinStartDate != nil {
-		variables["minStartDate"] = toFuzzyDateInt(*req.MinStartDate) - 1
-	} else if req.MaxStartDate != nil {
-		variables["maxStartDate"] = toFuzzyDateInt(*req.MaxStartDate) + 1
+		if req.MaxStartDate != nil {
+			variables["maxStartDate"] = (*req.MaxStartDate + 1)*10000 + 101
+		}
 	} else if req.StartDate != nil {
-		variables["startDate"] = toFuzzyDateInt(*req.StartDate)
+		variables["minStartDate"] = (*req.StartDate - 1)*10000 + 1231
+		variables["maxStartDate"] = (*req.StartDate + 1)*10000 + 101
 	}
 	if req.MinEpisodes != nil && req.MaxEpisodes != nil {
 		if *req.MinEpisodes < *req.MaxEpisodes {
