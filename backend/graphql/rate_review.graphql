@@ -1,18 +1,18 @@
 mutation RateReview($reviewId: Int, $rating: ReviewRating) {
-    RateReview(reviewId: $reviewId, rating: $rating) {
-        rating
-        ratingAmount
-        userRating
-        id
-        score
-        user {
-            id
-            name
-            avatar {
-                medium
-            }
-        }
-        body(asHtml: true)
-        summary
+  RateReview(reviewId: $reviewId, rating: $rating) {
+    rating
+    ratingAmount
+    userRating
+    id
+    score
+    user {
+      id
+      name
+      avatar {
+        medium
+      }
     }
+    body(asHtml: true)
+    summary
+  }
 }

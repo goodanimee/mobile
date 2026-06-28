@@ -261,3 +261,15 @@ message FetchMediaSearchResponse {
   PageInfo page_info = 2;
   string error = 3;
 }
+
+message FetchStudioSearchRequest {
+  int32 page = 1;
+  optional string query = 2;
+  repeated string sort = 3;
+}
+
+message FetchStudioSearchResponse {
+  repeated Studio studios = 1;
+  PageInfo page_info = 2;
+  string error = 3;
+}

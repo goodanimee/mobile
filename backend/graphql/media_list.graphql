@@ -1,53 +1,53 @@
 query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
-    MediaListCollection(userId: $userId, type: $type, sort: $sort) {
-        lists {
-            name
-            status
-            entries {
-                id
-                media {
-                    id
-                    type
-                    averageScore
-                    episodes
-                    chapters
-                    volumes
-                    format
-                    isAdult
-                    isFavourite
-                    startDate {
-                        year
-                    }
-                    siteUrl
-                    title {
-                        english
-                        native
-                        romaji
-                        userPreferred
-                    }
-                    coverImage {
-                        color
-                        medium
-                        large
-                        extraLarge
-                    }
-                }
-                progress
-                progressVolumes
-                repeat
-                status
-                score(format: POINT_10_DECIMAL)
-                startedAt {
-                    day
-                    month
-                    year
-                }
-                completedAt {
-                    day
-                    month
-                    year
-                }
-            }
+  MediaListCollection(userId: $userId, type: $type, sort: $sort) {
+    lists {
+      name
+      status
+      entries {
+        id
+        media {
+          id
+          type
+          averageScore
+          episodes
+          chapters
+          volumes
+          format
+          isAdult
+          isFavourite
+          startDate {
+            year
+          }
+          siteUrl
+          title {
+            english
+            native
+            romaji
+            userPreferred
+          }
+          coverImage {
+            color
+            medium
+            large
+            extraLarge
+          }
         }
+        progress
+        progressVolumes
+        repeat
+        status
+        score(format: POINT_10_DECIMAL)
+        startedAt {
+          day
+          month
+          year
+        }
+        completedAt {
+          day
+          month
+          year
+        }
+      }
     }
+  }
 }

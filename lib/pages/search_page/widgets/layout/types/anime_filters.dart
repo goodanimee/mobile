@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
-import '../../../../models/media_misc.dart';
-import '../common/active_dropdown.dart';
-import 'filter_actions_row.dart';
-import 'search_type_selector.dart';
-import 'types/anime_filters.dart';
-import 'types/manga_filters.dart';
+import '../../../../../models/media_misc.dart';
+import '../../common/active_dropdown.dart';
+import '../../rows/adult_row.dart';
+import '../../rows/count_duration_row.dart';
+import '../../rows/format_status_row.dart';
+import '../../rows/genres_tags_row.dart';
+import '../../rows/season_year_row.dart';
 
-/// A panel containing all filter dropdowns, toggles, selectors, and action buttons.
-class SearchFiltersPanel extends StatelessWidget {
-  /// Horizontal padding for the panel.
+/// A component containing filter controls specific to Anime.
+class AnimeFilters extends StatelessWidget {
+  /// Horizontal padding for the filters.
   final double paddingVal;
-
-  /// Currently selected search type (ANIME, MANGA, etc.).
-  final String searchType;
-
-  /// Callback when search type selection changes.
-  final ValueChanged<String> onSearchTypeChanged;
-
-  /// Animation for sliding filters open and closed.
-  final Animation<double> filtersAnimation;
 
   /// Active formats selection.
   final Map<String, bool?> formats;
@@ -83,28 +75,28 @@ class SearchFiltersPanel extends StatelessWidget {
   /// Callback when year range selection changes.
   final void Function(int? min, int? max) onYearChanged;
 
-  /// Currently selected minimum count.
+  /// Currently selected minimum episode count.
   final int? countMin;
 
-  /// Currently selected maximum count.
+  /// Currently selected maximum episode count.
   final int? countMax;
 
-  /// Currently selected minimum duration/volume limit.
+  /// Currently selected minimum episode duration limit.
   final int? durationMin;
 
-  /// Currently selected maximum duration/volume limit.
+  /// Currently selected maximum episode duration limit.
   final int? durationMax;
 
-  /// LayerLink for anchoring the count dropdown overlay.
+  /// LayerLink for anchoring the episode count dropdown overlay.
   final LayerLink countLayerLink;
 
-  /// LayerLink for anchoring the duration dropdown overlay.
+  /// LayerLink for anchoring the episode duration dropdown overlay.
   final LayerLink durationLayerLink;
 
-  /// Callback when count range changes.
+  /// Callback when episode count range changes.
   final void Function(int? min, int? max) onCountChanged;
 
-  /// Callback when duration range changes.
+  /// Callback when episode duration range changes.
   final void Function(int? min, int? max) onDurationChanged;
 
   /// Whether adult content is filtered.
@@ -128,28 +120,10 @@ class SearchFiltersPanel extends StatelessWidget {
   /// Callback to trigger the Tag bottom sheet.
   final VoidCallback showTagBottomSheet;
 
-  /// Whether all filters are currently shown.
-  final bool showAllFilters;
-
-  /// Whether there are active filters selected.
-  final bool hasActiveFilters;
-
-  /// Callback when the filters visibility toggles.
-  final VoidCallback onToggleFilters;
-
-  /// Callback when filters are reset.
-  final VoidCallback onReset;
-
-  /// Callback when filters are applied.
-  final VoidCallback onApply;
-
-  /// Creates a search filters panel.
-  const SearchFiltersPanel({
+  /// Creates an Anime filters layout.
+  const AnimeFilters({
     super.key,
     required this.paddingVal,
-    required this.searchType,
-    required this.onSearchTypeChanged,
-    required this.filtersAnimation,
     required this.formats,
     required this.status,
     required this.onList,
@@ -186,130 +160,91 @@ class SearchFiltersPanel extends StatelessWidget {
     required this.allTags,
     required this.showGenreBottomSheet,
     required this.showTagBottomSheet,
-    required this.showAllFilters,
-    required this.hasActiveFilters,
-    required this.onToggleFilters,
-    required this.onReset,
-    required this.onApply,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bool isStudio = searchType == 'STUDIO';
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: paddingVal),
-          child: SearchTypeSelector(
-            selectedType: searchType,
-            onChanged: onSearchTypeChanged,
-          ),
-        ),
-        if (!isStudio) ...[
-          ClipRect(
-            child: SizeTransition(
-              sizeFactor: filtersAnimation,
-              alignment: Alignment.topCenter,
-              child: _buildTypeSpecificFilters(),
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          FilterActionsRow(
-            padding: paddingVal,
-            showAllFilters: showAllFilters,
-            hasActiveFilters: hasActiveFilters,
-            onToggleFilters: onToggleFilters,
-            onReset: onReset,
-            onApply: onApply,
-          ),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildTypeSpecificFilters() {
-    switch (searchType) {
-      case 'ANIME':
-        return AnimeFilters(
-          paddingVal: paddingVal,
+        const SizedBox(height: 16.0),
+        FormatStatusRow(
+          padding: paddingVal,
           formats: formats,
+          allowedFormats: const [
+            'TV',
+            'MOVIE',
+            'SPECIAL',
+            'OVA',
+            'ONA',
+            'MUSIC',
+          ],
           status: status,
           onList: onList,
           scoreMin: scoreMin,
           scoreMax: scoreMax,
-          activeDropdown: activeDropdown,
+          isFormatOpen: activeDropdown == ActiveDropdown.format,
+          isStatusOpen: activeDropdown == ActiveDropdown.status,
+          isScoreOpen: activeDropdown == ActiveDropdown.score,
           formatLayerLink: formatLayerLink,
           statusLayerLink: statusLayerLink,
           scoreLayerLink: scoreLayerLink,
-          onToggleDropdown: onToggleDropdown,
+          toggleFormat: () => onToggleDropdown(ActiveDropdown.format),
+          toggleStatus: () => onToggleDropdown(ActiveDropdown.status),
+          toggleScore: () => onToggleDropdown(ActiveDropdown.score),
           onFormatChanged: onFormatChanged,
           onStatusChanged: onStatusChanged,
           onOnListChanged: onOnListChanged,
           onScoreChanged: onScoreChanged,
+        ),
+        const SizedBox(height: 16.0),
+        SeasonYearRow(
+          padding: paddingVal,
           season: season,
           startYearMin: startYearMin,
           startYearMax: startYearMax,
+          isSeasonOpen: activeDropdown == ActiveDropdown.season,
+          isYearOpen: activeDropdown == ActiveDropdown.year,
           seasonLayerLink: seasonLayerLink,
           yearLayerLink: yearLayerLink,
+          toggleSeason: () => onToggleDropdown(ActiveDropdown.season),
+          toggleYear: () => onToggleDropdown(ActiveDropdown.year),
           onSeasonChanged: onSeasonChanged,
           onYearChanged: onYearChanged,
+        ),
+        const SizedBox(height: 16.0),
+        CountDurationRow(
+          padding: paddingVal,
+          mediaType: 'ANIME',
           countMin: countMin,
           countMax: countMax,
           durationMin: durationMin,
           durationMax: durationMax,
+          isCountOpen: activeDropdown == ActiveDropdown.count,
+          isDurationOpen: activeDropdown == ActiveDropdown.duration,
           countLayerLink: countLayerLink,
           durationLayerLink: durationLayerLink,
+          toggleCount: () => onToggleDropdown(ActiveDropdown.count),
+          toggleDuration: () => onToggleDropdown(ActiveDropdown.duration),
           onCountChanged: onCountChanged,
           onDurationChanged: onDurationChanged,
+        ),
+        const SizedBox(height: 16.0),
+        AdultRow(
+          padding: paddingVal,
           isAdult: isAdult,
           onAdultChanged: onAdultChanged,
+        ),
+        const SizedBox(height: 16.0),
+        GenresTagsRow(
+          padding: paddingVal,
           genres: genres,
           tags: tags,
           allTags: allTags,
           showGenreBottomSheet: showGenreBottomSheet,
           showTagBottomSheet: showTagBottomSheet,
-        );
-      case 'MANGA':
-        return MangaFilters(
-          paddingVal: paddingVal,
-          formats: formats,
-          status: status,
-          onList: onList,
-          scoreMin: scoreMin,
-          scoreMax: scoreMax,
-          activeDropdown: activeDropdown,
-          formatLayerLink: formatLayerLink,
-          statusLayerLink: statusLayerLink,
-          scoreLayerLink: scoreLayerLink,
-          onToggleDropdown: onToggleDropdown,
-          onFormatChanged: onFormatChanged,
-          onStatusChanged: onStatusChanged,
-          onOnListChanged: onOnListChanged,
-          onScoreChanged: onScoreChanged,
-          startYearMin: startYearMin,
-          startYearMax: startYearMax,
-          yearLayerLink: yearLayerLink,
-          onYearChanged: onYearChanged,
-          countMin: countMin,
-          countMax: countMax,
-          durationMin: durationMin,
-          durationMax: durationMax,
-          countLayerLink: countLayerLink,
-          durationLayerLink: durationLayerLink,
-          onCountChanged: onCountChanged,
-          onDurationChanged: onDurationChanged,
-          isAdult: isAdult,
-          onAdultChanged: onAdultChanged,
-          genres: genres,
-          tags: tags,
-          allTags: allTags,
-          showGenreBottomSheet: showGenreBottomSheet,
-          showTagBottomSheet: showTagBottomSheet,
-        );
-      default:
-        return const SizedBox.shrink();
-    }
+        ),
+      ],
+    );
   }
 }

@@ -1,10 +1,10 @@
 mutation ToggleFavouriteManga($mangaId: Int) {
-    ToggleFavourite(mangaId: $mangaId) {
-        manga {
-            nodes {
-                id
-                isFavourite
-            }
-        }
+  ToggleFavourite(mangaId: $mangaId) {
+    manga {
+      nodes {
+        id
+        isFavourite
+      }
     }
+  }
 }

@@ -14,6 +14,9 @@ class FormatStatusRow extends StatelessWidget {
   /// Active formats selection.
   final Map<String, bool?> formats;
 
+  /// Allowed formats for the current search type.
+  final List<String> allowedFormats;
+
   /// Selected media release status.
   final String? status;
 
@@ -70,6 +73,7 @@ class FormatStatusRow extends StatelessWidget {
     super.key,
     required this.padding,
     required this.formats,
+    required this.allowedFormats,
     required this.status,
     required this.onList,
     required this.scoreMin,
@@ -97,7 +101,7 @@ class FormatStatusRow extends StatelessWidget {
     bool? singleSelectedState;
 
     formats.forEach((key, value) {
-      if (value != null) {
+      if (allowedFormats.contains(key) && value != null) {
         if (value == true) {
           trueCount++;
         } else {
@@ -268,6 +272,7 @@ class FormatStatusRow extends StatelessWidget {
                     ),
                     menu: FormatFilterPanel(
                       formats: formats,
+                      allowedFormats: allowedFormats,
                       onChanged: onFormatChanged,
                     ),
                   ),

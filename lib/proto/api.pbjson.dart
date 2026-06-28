@@ -1075,3 +1075,52 @@ final $typed_data.Uint8List fetchMediaSearchResponseDescriptor = $convert.base64
     'ChhGZXRjaE1lZGlhU2VhcmNoUmVzcG9uc2USKQoFbWVkaWEYASADKAsyEy5nb29kYW5pbWUuTW'
     'VkaWFNaW5SBW1lZGlhEjAKCXBhZ2VfaW5mbxgCIAEoCzITLmdvb2RhbmltZS5QYWdlSW5mb1II'
     'cGFnZUluZm8SFAoFZXJyb3IYAyABKAlSBWVycm9y');
+
+@$core.Deprecated('Use fetchStudioSearchRequestDescriptor instead')
+const FetchStudioSearchRequest$json = {
+  '1': 'FetchStudioSearchRequest',
+  '2': [
+    {'1': 'page', '3': 1, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'query', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'query', '17': true},
+    {'1': 'sort', '3': 3, '4': 3, '5': 9, '10': 'sort'},
+  ],
+  '8': [
+    {'1': '_query'},
+  ],
+};
+
+/// Descriptor for `FetchStudioSearchRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchStudioSearchRequestDescriptor =
+    $convert.base64Decode(
+        'ChhGZXRjaFN0dWRpb1NlYXJjaFJlcXVlc3QSEgoEcGFnZRgBIAEoBVIEcGFnZRIZCgVxdWVyeR'
+        'gCIAEoCUgAUgVxdWVyeYgBARISCgRzb3J0GAMgAygJUgRzb3J0QggKBl9xdWVyeQ==');
+
+@$core.Deprecated('Use fetchStudioSearchResponseDescriptor instead')
+const FetchStudioSearchResponse$json = {
+  '1': 'FetchStudioSearchResponse',
+  '2': [
+    {
+      '1': 'studios',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.Studio',
+      '10': 'studios'
+    },
+    {
+      '1': 'page_info',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchStudioSearchResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchStudioSearchResponseDescriptor = $convert.base64Decode(
+    'ChlGZXRjaFN0dWRpb1NlYXJjaFJlc3BvbnNlEisKB3N0dWRpb3MYASADKAsyES5nb29kYW5pbW'
+    'UuU3R1ZGlvUgdzdHVkaW9zEjAKCXBhZ2VfaW5mbxgCIAEoCzITLmdvb2RhbmltZS5QYWdlSW5m'
+    'b1IIcGFnZUluZm8SFAoFZXJyb3IYAyABKAlSBWVycm9y');

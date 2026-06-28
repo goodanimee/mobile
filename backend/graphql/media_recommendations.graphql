@@ -1,43 +1,43 @@
 query Media($mediaId: Int, $page: Int, $perPage: Int) {
-    Media(id: $mediaId) {
-        id
-        recommendations(page: $page, perPage: $perPage, sort: [RATING_DESC]) {
-            pageInfo {
-                hasNextPage
-                currentPage
+  Media(id: $mediaId) {
+    id
+    recommendations(page: $page, perPage: $perPage, sort: [RATING_DESC]) {
+      pageInfo {
+        hasNextPage
+        currentPage
+      }
+      edges {
+        node {
+          rating
+          mediaRecommendation {
+            id
+            type
+            averageScore
+            episodes
+            chapters
+            volumes
+            format
+            isAdult
+            isFavourite
+            siteUrl
+            startDate {
+              year
             }
-            edges {
-                node {
-                    rating
-                    mediaRecommendation {
-                        id
-                        type
-                        averageScore
-                        episodes
-                        chapters
-                        volumes
-                        format
-                        isAdult
-                        isFavourite
-                        siteUrl
-                        startDate {
-                            year
-                        }
-                        title {
-                            english
-                            native
-                            romaji
-                            userPreferred
-                        }
-                        coverImage {
-                            color
-                            medium
-                            large
-                            extraLarge
-                        }
-                    }
-                }
+            title {
+              english
+              native
+              romaji
+              userPreferred
             }
+            coverImage {
+              color
+              medium
+              large
+              extraLarge
+            }
+          }
         }
+      }
     }
+  }
 }

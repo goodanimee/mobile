@@ -1,0 +1,14 @@
+query StudioSearch($page: Int, $query: String, $sort: [StudioSort]) {
+  Page(page: $page, perPage: 25) {
+    pageInfo {
+      hasNextPage
+      currentPage
+    }
+    studios(search: $query, sort: $sort) {
+      id
+      favourites
+      name
+      isFavourite
+    }
+  }
+}

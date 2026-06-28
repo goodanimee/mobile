@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../models/media_min.dart';
 import '../models/media_misc.dart';
+import '../models/media_studio.dart';
+import '../proto/api.pb.dart';
 import '../services/genre_service.dart';
 import '../services/search_service.dart';
 import '../theme/theme.dart';
+import '../utils/app_navigation.dart';
 import 'search_page/utils/search_request_builder.dart';
 import 'search_page/widgets/common/active_dropdown.dart';
 import 'search_page/widgets/layout/search_filters_panel.dart';
 import 'search_page/widgets/layout/search_results_list.dart';
 import 'search_page/widgets/layout/search_sort_menu.dart';
 import 'search_page/widgets/layout/search_top_bar.dart';
+import 'search_page/widgets/layout/studio_results_list.dart';
 import 'search_page/widgets/panels/genre_filter_sheet.dart';
 import 'search_page/widgets/panels/tag_filter_sheet.dart';
 
@@ -28,7 +32,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   bool _hasSearchText = false;
-  String _mediaType = 'ANIME';
+  String _searchType = 'ANIME';
   bool? _onList;
   final Map<String, bool?> _formats = {
     'TV': null,
@@ -78,6 +82,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   Timer? _debounceTimer;
   final ScrollController _scrollController = ScrollController();
   final List<MediaMin> _mediaResults = [];
+  final List<Studio> _studioResults = [];
   bool _isSearching = false;
   bool _isSearchingMore = false;
   bool _hasNextPage = false;
@@ -90,6 +95,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     _scrollController.addListener(_scrollListener);
     _loadGenresAndTags();
     _searchController.addListener(_onSearchChanged);
+    AppNavigation.pendingFiltersVersion.addListener(_checkPendingFilters);
     _sortMenuController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -111,12 +117,17 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
     _filtersController.value = 1.0;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkPendingFilters();
+    });
   }
 
   @override
   void dispose() {
     _debounceTimer?.cancel();
     _searchController.removeListener(_onSearchChanged);
+    AppNavigation.pendingFiltersVersion.removeListener(_checkPendingFilters);
     _searchController.dispose();
     _searchFocusNode.dispose();
     _sortMenuController.dispose();
@@ -142,15 +153,78 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           _allGenres.addAll(genresList);
           _allTags.addAll(tagsList);
           for (final genre in genresList) {
-            _genres[genre] = null;
+            if (!_genres.containsKey(genre)) {
+              _genres[genre] = null;
+            }
           }
           for (final tag in tagsList) {
-            _tags[tag.id] = null;
+            if (!_tags.containsKey(tag.id)) {
+              _tags[tag.id] = null;
+            }
           }
         });
       }
     } catch (_) {}
     await _performSearch();
+  }
+
+  void _checkPendingFilters() {
+    if (AppNavigation.pendingGenre != null ||
+        AppNavigation.pendingTagName != null) {
+      setState(() {
+        _onList = null;
+        _formats.updateAll((key, val) => null);
+        _status = null;
+        _season = null;
+        _startYearMin = null;
+        _startYearMax = null;
+        _countMin = null;
+        _countMax = null;
+        _durationMin = null;
+        _durationMax = null;
+        _scoreMin = null;
+        _scoreMax = null;
+        _isAdult = null;
+        _genres.updateAll((key, val) => null);
+        _tags.updateAll((key, val) => null);
+        _minTagPercentage = 18;
+        _activeDropdown = null;
+        _searchController.clear();
+        _hasSearchText = false;
+        _studioResults.clear();
+
+        _searchType = AppNavigation.pendingSearchType ?? 'ANIME';
+
+        if (AppNavigation.pendingGenre != null) {
+          _genres[AppNavigation.pendingGenre!] = true;
+          AppNavigation.pendingGenre = null;
+        }
+
+        if (AppNavigation.pendingTagName != null &&
+            AppNavigation.pendingTagId != null) {
+          _tags[AppNavigation.pendingTagId!] = true;
+          final hasTag = _allTags.any(
+            (t) => t.id == AppNavigation.pendingTagId,
+          );
+          if (!hasTag) {
+            _allTags.add(
+              MediaTag(
+                id: AppNavigation.pendingTagId!,
+                name: AppNavigation.pendingTagName!,
+                rank: 0,
+                isGeneralSpoiler: false,
+                isMediaSpoiler: false,
+              ),
+            );
+          }
+          AppNavigation.pendingTagId = null;
+          AppNavigation.pendingTagName = null;
+        }
+        AppNavigation.pendingSearchType = null;
+      });
+
+      _performSearch();
+    }
   }
 
   void _onSearchChanged() {
@@ -181,44 +255,66 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       });
     }
     try {
-      final req = buildSearchRequest(
-        page: 1,
-        query: _searchController.text,
-        mediaType: _mediaType,
-        sortBy: _sortBy,
-        formats: _formats,
-        status: _status,
-        onList: _onList,
-        scoreMin: _scoreMin,
-        scoreMax: _scoreMax,
-        season: _season,
-        startYearMin: _startYearMin,
-        startYearMax: _startYearMax,
-        countMin: _countMin,
-        countMax: _countMax,
-        durationMin: _durationMin,
-        durationMax: _durationMax,
-        isAdult: _isAdult,
-        genres: _genres,
-        tags: _tags,
-        allTags: _allTags,
-        minTagPercentage: _minTagPercentage,
-      );
-      final result = await SearchService.searchMedia(req);
-      if (mounted) {
-        setState(() {
-          _mediaResults.clear();
-          _mediaResults.addAll(result.media);
-          _currentPage = 1;
-          _hasNextPage = result.pageInfo.hasNextPage;
-          _isSearching = false;
-        });
+      if (_searchType == 'STUDIO') {
+        final req = FetchStudioSearchRequest(page: 1);
+        if (_searchController.text.isNotEmpty) {
+          req.query = _searchController.text;
+        }
+        final mappedSort = _mapStudioSortOption(_sortBy);
+        if (mappedSort != null) {
+          req.sort.add(mappedSort);
+        }
+        final result = await SearchService.searchStudios(req);
+        if (mounted) {
+          setState(() {
+            _studioResults.clear();
+            _studioResults.addAll(result.studios);
+            _currentPage = 1;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearching = false;
+          });
+        }
+      } else {
+        final req = buildSearchRequest(
+          page: 1,
+          query: _searchController.text,
+          mediaType: _searchType,
+          sortBy: _sortBy,
+          formats: _formats,
+          status: _status,
+          onList: _onList,
+          scoreMin: _scoreMin,
+          scoreMax: _scoreMax,
+          season: _season,
+          startYearMin: _startYearMin,
+          startYearMax: _startYearMax,
+          countMin: _countMin,
+          countMax: _countMax,
+          durationMin: _durationMin,
+          durationMax: _durationMax,
+          isAdult: _isAdult,
+          genres: _genres,
+          tags: _tags,
+          allTags: _allTags,
+          minTagPercentage: _minTagPercentage,
+        );
+        final result = await SearchService.searchMedia(req);
+        if (mounted) {
+          setState(() {
+            _mediaResults.clear();
+            _mediaResults.addAll(result.media);
+            _currentPage = 1;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearching = false;
+          });
+        }
       }
     } catch (e) {
       if (mounted) {
         setState(() {
           _searchError = e.toString();
           _mediaResults.clear();
+          _studioResults.clear();
           _hasNextPage = false;
           _currentPage = 1;
           _isSearching = false;
@@ -233,37 +329,57 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       _isSearchingMore = true;
     });
     try {
-      final req = buildSearchRequest(
-        page: _currentPage + 1,
-        query: _searchController.text,
-        mediaType: _mediaType,
-        sortBy: _sortBy,
-        formats: _formats,
-        status: _status,
-        onList: _onList,
-        scoreMin: _scoreMin,
-        scoreMax: _scoreMax,
-        season: _season,
-        startYearMin: _startYearMin,
-        startYearMax: _startYearMax,
-        countMin: _countMin,
-        countMax: _countMax,
-        durationMin: _durationMin,
-        durationMax: _durationMax,
-        isAdult: _isAdult,
-        genres: _genres,
-        tags: _tags,
-        allTags: _allTags,
-        minTagPercentage: _minTagPercentage,
-      );
-      final result = await SearchService.searchMedia(req);
-      if (mounted) {
-        setState(() {
-          _mediaResults.addAll(result.media);
-          _currentPage++;
-          _hasNextPage = result.pageInfo.hasNextPage;
-          _isSearchingMore = false;
-        });
+      if (_searchType == 'STUDIO') {
+        final req = FetchStudioSearchRequest(page: _currentPage + 1);
+        if (_searchController.text.isNotEmpty) {
+          req.query = _searchController.text;
+        }
+        final mappedSort = _mapStudioSortOption(_sortBy);
+        if (mappedSort != null) {
+          req.sort.add(mappedSort);
+        }
+        final result = await SearchService.searchStudios(req);
+        if (mounted) {
+          setState(() {
+            _studioResults.addAll(result.studios);
+            _currentPage++;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearchingMore = false;
+          });
+        }
+      } else {
+        final req = buildSearchRequest(
+          page: _currentPage + 1,
+          query: _searchController.text,
+          mediaType: _searchType,
+          sortBy: _sortBy,
+          formats: _formats,
+          status: _status,
+          onList: _onList,
+          scoreMin: _scoreMin,
+          scoreMax: _scoreMax,
+          season: _season,
+          startYearMin: _startYearMin,
+          startYearMax: _startYearMax,
+          countMin: _countMin,
+          countMax: _countMax,
+          durationMin: _durationMin,
+          durationMax: _durationMax,
+          isAdult: _isAdult,
+          genres: _genres,
+          tags: _tags,
+          allTags: _allTags,
+          minTagPercentage: _minTagPercentage,
+        );
+        final result = await SearchService.searchMedia(req);
+        if (mounted) {
+          setState(() {
+            _mediaResults.addAll(result.media);
+            _currentPage++;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearchingMore = false;
+          });
+        }
       }
     } catch (_) {
       if (mounted) {
@@ -271,6 +387,22 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           _isSearchingMore = false;
         });
       }
+    }
+  }
+
+  String? _mapStudioSortOption(String sortBy) {
+    switch (sortBy) {
+      case 'name':
+        return 'NAME';
+      case 'name_desc':
+        return 'NAME_DESC';
+      case 'favourites':
+        return 'FAVOURITES';
+      case 'favourites_desc':
+        return 'FAVOURITES_DESC';
+      case 'search_match':
+      default:
+        return null;
     }
   }
 
@@ -340,6 +472,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       _tags.updateAll((key, val) => null);
       _minTagPercentage = 18;
       _activeDropdown = null;
+      _studioResults.clear();
     });
   }
 
@@ -463,14 +596,17 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                           const SizedBox(height: 16.0),
                           SearchFiltersPanel(
                             paddingVal: paddingVal,
-                            mediaType: _mediaType,
-                            onMediaTypeChanged: (value) {
+                            searchType: _searchType,
+                            onSearchTypeChanged: (value) {
                               setState(() {
-                                _mediaType = value;
+                                _searchType = value;
                                 _countMin = null;
                                 _countMax = null;
                                 _durationMin = null;
                                 _durationMax = null;
+                                _formats.updateAll((key, val) => null);
+                                _sortBy = 'search_match';
+                                _studioResults.clear();
                               });
                               _performSearch();
                             },
@@ -593,13 +729,22 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                             ),
                           ),
                           const SizedBox(height: 16.0),
-                          SearchResultsList(
-                            mediaResults: _mediaResults,
-                            isSearching: _isSearching,
-                            isSearchingMore: _isSearchingMore,
-                            searchError: _searchError,
-                            onRetry: _performSearch,
-                          ),
+                          if (_searchType == 'STUDIO')
+                            StudioResultsList(
+                              studioResults: _studioResults,
+                              isSearching: _isSearching,
+                              isSearchingMore: _isSearchingMore,
+                              searchError: _searchError,
+                              onRetry: _performSearch,
+                            )
+                          else
+                            SearchResultsList(
+                              mediaResults: _mediaResults,
+                              isSearching: _isSearching,
+                              isSearchingMore: _isSearchingMore,
+                              searchError: _searchError,
+                              onRetry: _performSearch,
+                            ),
                         ],
                       ),
                     ),
@@ -608,7 +753,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               ),
               SearchSortMenu(
                 isOpen: _activeDropdown == ActiveDropdown.sort,
-                mediaType: _mediaType,
+                searchType: _searchType,
                 sortBy: _sortBy,
                 sortMenuAnimation: _sortMenuAnimation,
                 iconsFade: _iconsFade,

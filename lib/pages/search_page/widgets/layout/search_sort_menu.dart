@@ -7,8 +7,8 @@ class SearchSortMenu extends StatelessWidget {
   /// Whether the sort menu is currently visible.
   final bool isOpen;
 
-  /// Active media type (ANIME or MANGA).
-  final String mediaType;
+  /// Active search type (ANIME, MANGA, etc.).
+  final String searchType;
 
   /// Currently selected sort option.
   final String sortBy;
@@ -25,11 +25,40 @@ class SearchSortMenu extends StatelessWidget {
   /// Callback when the sort option changes.
   final ValueChanged<String> onSortChanged;
 
+  /// Map of search types to allowed sort options.
+  static const Map<String, List<({String type, String label})>> _sortOptions = {
+    'ANIME': [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'title_romaji', label: 'Title (Asc)'),
+      (type: 'title_romaji_desc', label: 'Title (Desc)'),
+      (type: 'score_desc', label: 'Highest Score'),
+      (type: 'episodes_desc', label: 'Most Episodes'),
+      (type: 'popularity_desc', label: 'Most Popular'),
+      (type: 'trending_desc', label: 'Trending'),
+    ],
+    'MANGA': [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'title_romaji', label: 'Title (Asc)'),
+      (type: 'title_romaji_desc', label: 'Title (Desc)'),
+      (type: 'score_desc', label: 'Highest Score'),
+      (type: 'chapters_desc', label: 'Most Chapters'),
+      (type: 'popularity_desc', label: 'Most Popular'),
+      (type: 'trending_desc', label: 'Trending'),
+    ],
+    'STUDIO': [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'name', label: 'Name (Asc)'),
+      (type: 'name_desc', label: 'Name (Desc)'),
+      (type: 'favourites', label: 'Favourites (Asc)'),
+      (type: 'favourites_desc', label: 'Favourites (Desc)'),
+    ],
+  };
+
   /// Creates a search sort menu.
   const SearchSortMenu({
     super.key,
     required this.isOpen,
-    required this.mediaType,
+    required this.searchType,
     required this.sortBy,
     required this.sortMenuAnimation,
     required this.iconsFade,
@@ -42,18 +71,8 @@ class SearchSortMenu extends StatelessWidget {
     if (!isOpen) return const SizedBox.shrink();
 
     final itemHeight = getResponsiveSize(context, 48.0);
-    final List<({String type, String label})> options = [
-      (type: 'search_match', label: 'Search Match'),
-      (type: 'title_romaji', label: 'Title (Asc)'),
-      (type: 'title_romaji_desc', label: 'Title (Desc)'),
-      (type: 'score_desc', label: 'Highest Score'),
-      if (mediaType == 'ANIME')
-        (type: 'episodes_desc', label: 'Most Episodes')
-      else
-        (type: 'chapters_desc', label: 'Most Chapters'),
-      (type: 'popularity_desc', label: 'Most Popular'),
-      (type: 'trending_desc', label: 'Trending'),
-    ];
+    final List<({String type, String label})> options =
+        _sortOptions[searchType] ?? _sortOptions['ANIME']!;
     final totalHeight = options.length * itemHeight;
     final menuWidth = getResponsiveSize(context, 160.0);
 
