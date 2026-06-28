@@ -13,6 +13,21 @@ class AppNavigation {
   /// Global state for the active tab on the HomePage
   static final ValueNotifier<int> currentTab = ValueNotifier<int>(1);
 
+  /// Notifier to track when new search filters are pending.
+  static final ValueNotifier<int> pendingFiltersVersion = ValueNotifier<int>(0);
+
+  /// Pending search type filter.
+  static String? pendingSearchType;
+
+  /// Pending genre filter.
+  static String? pendingGenre;
+
+  /// Pending tag ID filter.
+  static int? pendingTagId;
+
+  /// Pending tag name filter.
+  static String? pendingTagName;
+
   /// Navigate to Media details
   static Future<void> toMedia(
     BuildContext context,

@@ -6,6 +6,7 @@ import '../models/media_misc.dart';
 import '../services/genre_service.dart';
 import '../services/search_service.dart';
 import '../theme/theme.dart';
+import '../utils/app_navigation.dart';
 import 'search_page/utils/search_request_builder.dart';
 import 'search_page/widgets/common/active_dropdown.dart';
 import 'search_page/widgets/layout/search_filters_panel.dart';
@@ -90,6 +91,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     _scrollController.addListener(_scrollListener);
     _loadGenresAndTags();
     _searchController.addListener(_onSearchChanged);
+    AppNavigation.pendingFiltersVersion.addListener(_checkPendingFilters);
     _sortMenuController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -111,12 +113,17 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
     _filtersController.value = 1.0;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkPendingFilters();
+    });
   }
 
   @override
   void dispose() {
     _debounceTimer?.cancel();
     _searchController.removeListener(_onSearchChanged);
+    AppNavigation.pendingFiltersVersion.removeListener(_checkPendingFilters);
     _searchController.dispose();
     _searchFocusNode.dispose();
     _sortMenuController.dispose();
@@ -142,15 +149,77 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           _allGenres.addAll(genresList);
           _allTags.addAll(tagsList);
           for (final genre in genresList) {
-            _genres[genre] = null;
+            if (!_genres.containsKey(genre)) {
+              _genres[genre] = null;
+            }
           }
           for (final tag in tagsList) {
-            _tags[tag.id] = null;
+            if (!_tags.containsKey(tag.id)) {
+              _tags[tag.id] = null;
+            }
           }
         });
       }
     } catch (_) {}
     await _performSearch();
+  }
+
+  void _checkPendingFilters() {
+    if (AppNavigation.pendingGenre != null ||
+        AppNavigation.pendingTagName != null) {
+      setState(() {
+        _onList = null;
+        _formats.updateAll((key, val) => null);
+        _status = null;
+        _season = null;
+        _startYearMin = null;
+        _startYearMax = null;
+        _countMin = null;
+        _countMax = null;
+        _durationMin = null;
+        _durationMax = null;
+        _scoreMin = null;
+        _scoreMax = null;
+        _isAdult = null;
+        _genres.updateAll((key, val) => null);
+        _tags.updateAll((key, val) => null);
+        _minTagPercentage = 18;
+        _activeDropdown = null;
+        _searchController.clear();
+        _hasSearchText = false;
+
+        _searchType = AppNavigation.pendingSearchType ?? 'ANIME';
+
+        if (AppNavigation.pendingGenre != null) {
+          _genres[AppNavigation.pendingGenre!] = true;
+          AppNavigation.pendingGenre = null;
+        }
+
+        if (AppNavigation.pendingTagName != null &&
+            AppNavigation.pendingTagId != null) {
+          _tags[AppNavigation.pendingTagId!] = true;
+          final hasTag = _allTags.any(
+            (t) => t.id == AppNavigation.pendingTagId,
+          );
+          if (!hasTag) {
+            _allTags.add(
+              MediaTag(
+                id: AppNavigation.pendingTagId!,
+                name: AppNavigation.pendingTagName!,
+                rank: 0,
+                isGeneralSpoiler: false,
+                isMediaSpoiler: false,
+              ),
+            );
+          }
+          AppNavigation.pendingTagId = null;
+          AppNavigation.pendingTagName = null;
+        }
+        AppNavigation.pendingSearchType = null;
+      });
+
+      _performSearch();
+    }
   }
 
   void _onSearchChanged() {

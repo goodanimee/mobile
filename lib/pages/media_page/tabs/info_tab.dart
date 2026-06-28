@@ -105,6 +105,13 @@ class MediaInfoTab extends StatelessWidget {
                   horizontal: 12,
                   vertical: 6,
                 ),
+                onTap: () {
+                  AppNavigation.pendingGenre = genre;
+                  AppNavigation.pendingSearchType = media.type;
+                  AppNavigation.pendingFiltersVersion.value++;
+                  AppNavigation.currentTab.value = 3;
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
               );
             }).toList(),
           ),
@@ -160,6 +167,14 @@ class MediaInfoTab extends StatelessWidget {
                     label: tag.name,
                     leadingText: '${tag.rank}%',
                     isSpoiler: tag.isMediaSpoiler,
+                    onTap: () {
+                      AppNavigation.pendingTagId = tag.id;
+                      AppNavigation.pendingTagName = tag.name;
+                      AppNavigation.pendingSearchType = media.type;
+                      AppNavigation.pendingFiltersVersion.value++;
+                      AppNavigation.currentTab.value = 3;
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
                   );
                 }).toList(),
               ),
