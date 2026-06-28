@@ -44,6 +44,8 @@ class SearchSortMenu extends StatelessWidget {
     final itemHeight = getResponsiveSize(context, 48.0);
     final List<({String type, String label})> options = [
       (type: 'search_match', label: 'Search Match'),
+      (type: 'title_romaji', label: 'Title (Asc)'),
+      (type: 'title_romaji_desc', label: 'Title (Desc)'),
       (type: 'score_desc', label: 'Highest Score'),
       if (mediaType == 'ANIME')
         (type: 'episodes_desc', label: 'Most Episodes')
