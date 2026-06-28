@@ -541,6 +541,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 _durationMin = null;
                                 _durationMax = null;
                                 _formats.updateAll((key, val) => null);
+                                _sortBy = 'search_match';
                               });
                               _performSearch();
                             },
@@ -678,7 +679,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               ),
               SearchSortMenu(
                 isOpen: _activeDropdown == ActiveDropdown.sort,
-                mediaType: _searchType,
+                searchType: _searchType,
                 sortBy: _sortBy,
                 sortMenuAnimation: _sortMenuAnimation,
                 iconsFade: _iconsFade,
