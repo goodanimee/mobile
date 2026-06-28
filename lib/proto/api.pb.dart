@@ -3265,6 +3265,156 @@ class FetchMediaSearchResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(3);
 }
 
+class FetchStudioSearchRequest extends $pb.GeneratedMessage {
+  factory FetchStudioSearchRequest({
+    $core.int? page,
+    $core.String? query,
+    $core.Iterable<$core.String>? sort,
+  }) {
+    final result = create();
+    if (page != null) result.page = page;
+    if (query != null) result.query = query;
+    if (sort != null) result.sort.addAll(sort);
+    return result;
+  }
+
+  FetchStudioSearchRequest._();
+
+  factory FetchStudioSearchRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchStudioSearchRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchStudioSearchRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'page')
+    ..aOS(2, _omitFieldNames ? '' : 'query')
+    ..pPS(3, _omitFieldNames ? '' : 'sort')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStudioSearchRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStudioSearchRequest copyWith(
+          void Function(FetchStudioSearchRequest) updates) =>
+      super.copyWith((message) => updates(message as FetchStudioSearchRequest))
+          as FetchStudioSearchRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchStudioSearchRequest create() => FetchStudioSearchRequest._();
+  @$core.override
+  FetchStudioSearchRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchStudioSearchRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchStudioSearchRequest>(create);
+  static FetchStudioSearchRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get page => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set page($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPage() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get query => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set query($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasQuery() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearQuery() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$core.String> get sort => $_getList(2);
+}
+
+class FetchStudioSearchResponse extends $pb.GeneratedMessage {
+  factory FetchStudioSearchResponse({
+    $core.Iterable<$7.Studio>? studios,
+    $5.PageInfo? pageInfo,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (studios != null) result.studios.addAll(studios);
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchStudioSearchResponse._();
+
+  factory FetchStudioSearchResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchStudioSearchResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchStudioSearchResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..pPM<$7.Studio>(1, _omitFieldNames ? '' : 'studios',
+        subBuilder: $7.Studio.create)
+    ..aOM<$5.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $5.PageInfo.create)
+    ..aOS(3, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStudioSearchResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStudioSearchResponse copyWith(
+          void Function(FetchStudioSearchResponse) updates) =>
+      super.copyWith((message) => updates(message as FetchStudioSearchResponse))
+          as FetchStudioSearchResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchStudioSearchResponse create() => FetchStudioSearchResponse._();
+  @$core.override
+  FetchStudioSearchResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchStudioSearchResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchStudioSearchResponse>(create);
+  static FetchStudioSearchResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$7.Studio> get studios => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $5.PageInfo get pageInfo => $_getN(1);
+  @$pb.TagNumber(2)
+  set pageInfo($5.PageInfo value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPageInfo() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPageInfo() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $5.PageInfo ensurePageInfo() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.String get error => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set error($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasError() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearError() => $_clearField(3);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =
