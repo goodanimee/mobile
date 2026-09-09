@@ -158,29 +158,37 @@ class _HomePageState extends State<HomePage> {
       return LoginPage(onAuthenticated: _handleAuthenticated);
     }
 
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            _buildBody(),
-            Positioned(
-              bottom: 24,
-              right: 20,
-              child: FloatingNav(
-                selectedIndex: _navIndex,
-                onTap: (i) => AppNavigation.currentTab.value = i,
-                quickNavSections: (_navIndex == 1 || _navIndex == 2)
-                    ? _quickNavSections
-                    : null,
-                isGridMode: (_navIndex == 1 || _navIndex == 2)
-                    ? _isGridMode
-                    : null,
-                onToggleGridMode: (_navIndex == 1 || _navIndex == 2)
-                    ? _toggleGridMode
-                    : null,
+    return PopScope(
+      canPop: _navIndex == 1,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) {
+          AppNavigation.currentTab.value = 1;
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: [
+              _buildBody(),
+              Positioned(
+                bottom: 24,
+                right: 20,
+                child: FloatingNav(
+                  selectedIndex: _navIndex,
+                  onTap: (i) => AppNavigation.currentTab.value = i,
+                  quickNavSections: (_navIndex == 1 || _navIndex == 2)
+                      ? _quickNavSections
+                      : null,
+                  isGridMode: (_navIndex == 1 || _navIndex == 2)
+                      ? _isGridMode
+                      : null,
+                  onToggleGridMode: (_navIndex == 1 || _navIndex == 2)
+                      ? _toggleGridMode
+                      : null,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
