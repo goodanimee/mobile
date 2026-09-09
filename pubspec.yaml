@@ -17,7 +17,7 @@ dependencies:
   url_launcher: ^6.3.2
   app_links: ^7.0.0
   shared_preferences: ^2.5.5
-  cached_network_image: ^3.4.1
+  cached_network_image: ^4.0.0
   protobuf: ^6.0.0
   flutter_dotenv: ^6.0.1
   html: ^0.15.6
