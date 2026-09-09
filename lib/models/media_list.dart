@@ -36,10 +36,10 @@ class MediaListEntryWithMedia extends MediaListEntry {
       repeat: pbObj.entry.repeat,
       progressVolumes: pbObj.entry.progressVolumes,
       startedAt: pbObj.entry.hasStartedAt()
-          ? FuzzyDate.fromProto(pbObj.entry.startedAt)
+          ? FuzzyDate.fromProtoNullable(pbObj.entry.startedAt)
           : null,
       completedAt: pbObj.entry.hasCompletedAt()
-          ? FuzzyDate.fromProto(pbObj.entry.completedAt)
+          ? FuzzyDate.fromProtoNullable(pbObj.entry.completedAt)
           : null,
       media: MediaMin.fromProto(pbObj.media),
     );
