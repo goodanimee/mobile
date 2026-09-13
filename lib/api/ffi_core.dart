@@ -71,20 +71,21 @@ class FfiCore {
   ) {
     return Isolate.run(() {
       init();
-      final fn = lib.lookupFunction<
-        ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>,
-          ffi.Int32,
-          ffi.Pointer<Utf8>,
-          ffi.Pointer<ffi.Int32>,
-        ),
-        ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          ffi.Pointer<Utf8>,
-          ffi.Pointer<ffi.Int32>,
-        )
-      >(functionName);
+      final fn = lib
+          .lookupFunction<
+            ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Int32,
+              ffi.Pointer<Utf8>,
+              ffi.Pointer<ffi.Int32>,
+            ),
+            ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<ffi.Uint8>,
+              int,
+              ffi.Pointer<Utf8>,
+              ffi.Pointer<ffi.Int32>,
+            )
+          >(functionName);
 
       final reqPtr = calloc<ffi.Uint8>(requestBytes.length);
       final tokenPtr = token.toNativeUtf8();
@@ -101,22 +102,20 @@ class FfiCore {
   }
 
   /// Executes a token-only request in a background isolate
-  static Future<Uint8List> executeTokenCall(
-    String functionName,
-    String token,
-  ) {
+  static Future<Uint8List> executeTokenCall(String functionName, String token) {
     return Isolate.run(() {
       init();
-      final fn = lib.lookupFunction<
-        ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<Utf8>,
-          ffi.Pointer<ffi.Int32>,
-        ),
-        ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<Utf8>,
-          ffi.Pointer<ffi.Int32>,
-        )
-      >(functionName);
+      final fn = lib
+          .lookupFunction<
+            ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<Utf8>,
+              ffi.Pointer<ffi.Int32>,
+            ),
+            ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<Utf8>,
+              ffi.Pointer<ffi.Int32>,
+            )
+          >(functionName);
 
       final tokenPtr = token.toNativeUtf8();
       try {
@@ -135,20 +134,21 @@ class FfiCore {
   ) {
     return Isolate.run(() {
       init();
-      final fn = lib.lookupFunction<
-        ffi.Pointer<ffi.Uint8> Function(
-          ffi.Int32,
-          ffi.Pointer<Utf8>,
-          ffi.Pointer<Utf8>,
-          ffi.Pointer<ffi.Int32>,
-        ),
-        ffi.Pointer<ffi.Uint8> Function(
-          int,
-          ffi.Pointer<Utf8>,
-          ffi.Pointer<Utf8>,
-          ffi.Pointer<ffi.Int32>,
-        )
-      >('FetchMediaList');
+      final fn = lib
+          .lookupFunction<
+            ffi.Pointer<ffi.Uint8> Function(
+              ffi.Int32,
+              ffi.Pointer<Utf8>,
+              ffi.Pointer<Utf8>,
+              ffi.Pointer<ffi.Int32>,
+            ),
+            ffi.Pointer<ffi.Uint8> Function(
+              int,
+              ffi.Pointer<Utf8>,
+              ffi.Pointer<Utf8>,
+              ffi.Pointer<ffi.Int32>,
+            )
+          >('FetchMediaList');
 
       final tokenPtr = token.toNativeUtf8();
       final typePtr = mediaType.toNativeUtf8();

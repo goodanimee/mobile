@@ -191,9 +191,6 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
       }
     }
 
-    return copyWith(
-      startedAt: nextStartDate,
-      completedAt: nextFinishDate,
-    );
+    return copyWith(startedAt: nextStartDate, completedAt: nextFinishDate);
   }
 }

@@ -29,7 +29,8 @@ class MediaListTab extends StatefulWidget {
     List<MediaListStatus> statuses,
     MediaListStatus activeStatus,
     void Function(MediaListStatus) scrollTo,
-  )? onSectionsChanged;
+  )?
+  onSectionsChanged;
 
   /// Creates a media list tab.
   const MediaListTab({

@@ -211,7 +211,8 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
                       mainAxisSpacing: spacing,
                     ),
                     itemCount:
-                        _characters.length + (_isFetchingMoreCharacters ? 1 : 0),
+                        _characters.length +
+                        (_isFetchingMoreCharacters ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index == _characters.length) {
                         return const SizedBox(
@@ -270,40 +271,40 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
                       mainAxisSpacing: spacing,
                     ),
                     itemCount: _staff.length + (_isFetchingMoreStaff ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index == _staff.length) {
-                      return const SizedBox(
-                        width: 80,
-                        child: Center(
-                          child: AppLoadingIndicator(topPadding: 0),
-                        ),
+                    itemBuilder: (context, index) {
+                      if (index == _staff.length) {
+                        return const SizedBox(
+                          width: 80,
+                          child: Center(
+                            child: AppLoadingIndicator(topPadding: 0),
+                          ),
+                        );
+                      }
+
+                      final edge = _staff[index];
+                      final node = edge.node;
+                      final fullName = node?.name?.full ?? '';
+                      final nativeName = node?.name?.native ?? '';
+                      final role = edge.role.isNotEmpty
+                          ? edge.role
+                          : 'Unknown Role';
+                      final imageUrl = node?.image?.large ?? '';
+
+                      return AppEntityCard(
+                        imageUrl: imageUrl,
+                        name: fullName,
+                        nativeName: nativeName,
+                        subtitle: role,
+                        onTap: node != null
+                            ? () => AppNavigation.toStaff(context, node)
+                            : null,
                       );
-                    }
-
-                    final edge = _staff[index];
-                    final node = edge.node;
-                    final fullName = node?.name?.full ?? '';
-                    final nativeName = node?.name?.native ?? '';
-                    final role = edge.role.isNotEmpty
-                        ? edge.role
-                        : 'Unknown Role';
-                    final imageUrl = node?.image?.large ?? '';
-
-                    return AppEntityCard(
-                      imageUrl: imageUrl,
-                      name: fullName,
-                      nativeName: nativeName,
-                      subtitle: role,
-                      onTap: node != null
-                          ? () => AppNavigation.toStaff(context, node)
-                          : null,
-                    );
-                  },
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         ],
       ],
     );

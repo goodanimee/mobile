@@ -228,52 +228,52 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
                     itemCount:
                         ((_reviews.length / 2).ceil()) +
                         (_isFetchingMore ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index == (_reviews.length / 2).ceil()) {
-                      return const Padding(
-                        padding: EdgeInsets.only(left: 16, right: 16),
-                        child: Center(
-                          child: AppLoadingIndicator(topPadding: 0),
+                    itemBuilder: (context, index) {
+                      if (index == (_reviews.length / 2).ceil()) {
+                        return const Padding(
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: Center(
+                            child: AppLoadingIndicator(topPadding: 0),
+                          ),
+                        );
+                      }
+
+                      final firstIdx = index * 2;
+                      final secondIdx = firstIdx + 1;
+
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          right: index == ((_reviews.length / 2).ceil()) - 1
+                              ? 0
+                              : spacing,
                         ),
-                      );
-                    }
-
-                    final firstIdx = index * 2;
-                    final secondIdx = firstIdx + 1;
-
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        right: index == ((_reviews.length / 2).ceil()) - 1
-                            ? 0
-                            : spacing,
-                      ),
-                      child: SizedBox(
-                        width: cardWidth,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: rowHeight,
-                              child: _buildReviewCard(firstIdx),
-                            ),
-                            if (secondIdx < _reviews.length) ...[
-                              const SizedBox(height: spacing),
+                        child: SizedBox(
+                          width: cardWidth,
+                          child: Column(
+                            children: [
                               SizedBox(
                                 height: rowHeight,
-                                child: _buildReviewCard(secondIdx),
+                                child: _buildReviewCard(firstIdx),
                               ),
-                            ] else ...[
-                              const Spacer(),
+                              if (secondIdx < _reviews.length) ...[
+                                const SizedBox(height: spacing),
+                                SizedBox(
+                                  height: rowHeight,
+                                  child: _buildReviewCard(secondIdx),
+                                ),
+                              ] else ...[
+                                const Spacer(),
+                              ],
                             ],
-                          ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
           const SizedBox(height: 24),
         ],
         AppSection(
@@ -359,51 +359,51 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
           itemCount:
               ((_activities.length / 2).ceil()) +
               (_isFetchingMoreActivities ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index == (_activities.length / 2).ceil()) {
-            return const Padding(
-              padding: EdgeInsets.only(left: 16, right: 16),
-              child: Center(child: AppLoadingIndicator(topPadding: 0)),
-            );
-          }
+          itemBuilder: (context, index) {
+            if (index == (_activities.length / 2).ceil()) {
+              return const Padding(
+                padding: EdgeInsets.only(left: 16, right: 16),
+                child: Center(child: AppLoadingIndicator(topPadding: 0)),
+              );
+            }
 
-          final firstIdx = index * 2;
-          final secondIdx = firstIdx + 1;
+            final firstIdx = index * 2;
+            final secondIdx = firstIdx + 1;
 
-          return Padding(
-            padding: EdgeInsets.only(
-              right: index == ((_activities.length / 2).ceil()) - 1
-                  ? 0
-                  : spacing,
-            ),
-            child: SizedBox(
-              width: cardWidth,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: rowHeight,
-                    width: double.infinity,
-                    child: _buildActivityCard(_activities[firstIdx]),
-                  ),
-                  if (secondIdx < _activities.length) ...[
-                    const SizedBox(height: spacing),
+            return Padding(
+              padding: EdgeInsets.only(
+                right: index == ((_activities.length / 2).ceil()) - 1
+                    ? 0
+                    : spacing,
+              ),
+              child: SizedBox(
+                width: cardWidth,
+                child: Column(
+                  children: [
                     SizedBox(
                       height: rowHeight,
                       width: double.infinity,
-                      child: _buildActivityCard(_activities[secondIdx]),
+                      child: _buildActivityCard(_activities[firstIdx]),
                     ),
-                  ] else ...[
-                    const Spacer(),
+                    if (secondIdx < _activities.length) ...[
+                      const SizedBox(height: spacing),
+                      SizedBox(
+                        height: rowHeight,
+                        width: double.infinity,
+                        child: _buildActivityCard(_activities[secondIdx]),
+                      ),
+                    ] else ...[
+                      const Spacer(),
+                    ],
                   ],
-                ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   String _getActivityActionText(String status, String progress) {
     final s = status.toLowerCase();

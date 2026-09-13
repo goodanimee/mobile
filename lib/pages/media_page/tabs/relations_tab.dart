@@ -204,53 +204,54 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
                     itemCount:
                         ((_recommendations.length / 2).ceil()) +
                         (_isFetchingMore ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index == (_recommendations.length / 2).ceil()) {
-                      return const Padding(
-                        padding: EdgeInsets.only(left: 16, right: 16),
-                        child: Center(
-                          child: AppLoadingIndicator(topPadding: 0),
+                    itemBuilder: (context, index) {
+                      if (index == (_recommendations.length / 2).ceil()) {
+                        return const Padding(
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: Center(
+                            child: AppLoadingIndicator(topPadding: 0),
+                          ),
+                        );
+                      }
+
+                      final firstIdx = index * 2;
+                      final secondIdx = firstIdx + 1;
+
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          right:
+                              index ==
+                                  ((_recommendations.length / 2).ceil()) - 1
+                              ? 0
+                              : spacing,
                         ),
-                      );
-                    }
-
-                    final firstIdx = index * 2;
-                    final secondIdx = firstIdx + 1;
-
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        right:
-                            index == ((_recommendations.length / 2).ceil()) - 1
-                            ? 0
-                            : spacing,
-                      ),
-                      child: SizedBox(
-                        width: cardWidth,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: rowHeight,
-                              child: _buildRecommendationCard(firstIdx),
-                            ),
-                            if (secondIdx < _recommendations.length) ...[
-                              SizedBox(height: spacing),
+                        child: SizedBox(
+                          width: cardWidth,
+                          child: Column(
+                            children: [
                               SizedBox(
                                 height: rowHeight,
-                                child: _buildRecommendationCard(secondIdx),
+                                child: _buildRecommendationCard(firstIdx),
                               ),
-                            ] else ...[
-                              const Spacer(),
+                              if (secondIdx < _recommendations.length) ...[
+                                SizedBox(height: spacing),
+                                SizedBox(
+                                  height: rowHeight,
+                                  child: _buildRecommendationCard(secondIdx),
+                                ),
+                              ] else ...[
+                                const Spacer(),
+                              ],
                             ],
-                          ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         ],
       ],
     );

@@ -181,81 +181,81 @@ class _StudioPageState extends State<StudioPage> {
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             itemCount: itemCount,
-          itemBuilder: (context, index) {
-            if (index == flatList.length) {
-              if (_isFetchingMore) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Center(child: AppLoadingIndicator(topPadding: 0)),
-                );
-              } else {
-                return const SizedBox(height: 80);
+            itemBuilder: (context, index) {
+              if (index == flatList.length) {
+                if (_isFetchingMore) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Center(child: AppLoadingIndicator(topPadding: 0)),
+                  );
+                } else {
+                  return const SizedBox(height: 80);
+                }
               }
-            }
 
-            final element = flatList[index];
+              final element = flatList[index];
 
-            if (element is String) {
+              if (element is String) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 8),
+                  child: Text(
+                    element,
+                    style: TextStyle(
+                      color: textSecondary,
+                      fontSize: fontLarge(context),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              }
+
+              final media = element as MediaMin;
+              final titleText = media.title.userPreferred.isNotEmpty
+                  ? media.title.userPreferred
+                  : media.title.romaji.isNotEmpty
+                  ? media.title.romaji
+                  : media.title.english.isNotEmpty
+                  ? media.title.english
+                  : 'Unknown';
+
+              final format = media.format.replaceAll('_', ' ');
+              String subtitle = format;
+              if (media.type == 'ANIME') {
+                if (media.episodes > 0) {
+                  subtitle +=
+                      ' \u00B7 ${media.episodes} ${StringUtils.pluralize(media.episodes, 'Episode', 'Episodes')}';
+                }
+              } else if (media.type == 'MANGA') {
+                if (media.chapters > 0) {
+                  subtitle +=
+                      ' \u00B7 ${media.chapters} ${StringUtils.pluralize(media.chapters, 'Chapter', 'Chapters')}';
+                }
+              }
+
+              final colorHex = media.coverImage.color;
+              final color = ColorUtils.fromHex(
+                colorHex,
+                fallback: Colors.transparent,
+              );
+
               return Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 8),
-                child: Text(
-                  element,
-                  style: TextStyle(
-                    color: textSecondary,
-                    fontSize: fontLarge(context),
-                    fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: SizedBox(
+                  height: 110,
+                  child: AppRelationCard(
+                    imageUrl: media.coverImage.large,
+                    title: titleText,
+                    nativeTitle: media.title.native,
+                    subtitle: subtitle,
+                    color: color != Colors.transparent ? color : null,
+                    onTap: () => AppNavigation.toMedia(context, media.id),
                   ),
                 ),
               );
-            }
-
-            final media = element as MediaMin;
-            final titleText = media.title.userPreferred.isNotEmpty
-                ? media.title.userPreferred
-                : media.title.romaji.isNotEmpty
-                ? media.title.romaji
-                : media.title.english.isNotEmpty
-                ? media.title.english
-                : 'Unknown';
-
-            final format = media.format.replaceAll('_', ' ');
-            String subtitle = format;
-            if (media.type == 'ANIME') {
-              if (media.episodes > 0) {
-                subtitle +=
-                    ' \u00B7 ${media.episodes} ${StringUtils.pluralize(media.episodes, 'Episode', 'Episodes')}';
-              }
-            } else if (media.type == 'MANGA') {
-              if (media.chapters > 0) {
-                subtitle +=
-                    ' \u00B7 ${media.chapters} ${StringUtils.pluralize(media.chapters, 'Chapter', 'Chapters')}';
-              }
-            }
-
-            final colorHex = media.coverImage.color;
-            final color = ColorUtils.fromHex(
-              colorHex,
-              fallback: Colors.transparent,
-            );
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6),
-              child: SizedBox(
-                height: 110,
-                child: AppRelationCard(
-                  imageUrl: media.coverImage.large,
-                  title: titleText,
-                  nativeTitle: media.title.native,
-                  subtitle: subtitle,
-                  color: color != Colors.transparent ? color : null,
-                  onTap: () => AppNavigation.toMedia(context, media.id),
-                ),
-              ),
-            );
-          },
-        ),
-      );
-    }
+            },
+          ),
+        );
+      }
     }
 
     final isFav = _studio?.isFavourite ?? false;
