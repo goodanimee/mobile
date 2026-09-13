@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../components/app_entity_card.dart';
 import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
+import '../../../components/paged_scroll_listener.dart';
 import '../../../models/media_character.dart';
 import '../../../models/media_staff.dart';
 import '../../../services/media_service.dart';
@@ -42,13 +43,11 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
   int _characterPage = 1;
   bool _hasNextCharacterPage = false;
   bool _isFetchingMoreCharacters = false;
-  final ScrollController _charactersScrollController = ScrollController();
 
   final List<StaffEdge> _staff = [];
   int _staffPage = 1;
   bool _hasNextStaffPage = false;
   bool _isFetchingMoreStaff = false;
-  final ScrollController _staffScrollController = ScrollController();
 
   @override
   void initState() {
@@ -66,33 +65,6 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
       _hasNextStaffPage = widget.initialStaff!.pageInfo.hasNextPage;
     } else {
       _fetchStaff();
-    }
-
-    _charactersScrollController.addListener(_charactersScrollListener);
-    _staffScrollController.addListener(_staffScrollListener);
-  }
-
-  @override
-  void dispose() {
-    _charactersScrollController.dispose();
-    _staffScrollController.dispose();
-    super.dispose();
-  }
-
-  void _charactersScrollListener() {
-    if (!_hasNextCharacterPage || _isFetchingMoreCharacters) return;
-    final threshold =
-        _charactersScrollController.position.maxScrollExtent - 400;
-    if (_charactersScrollController.offset >= threshold) {
-      _loadMoreCharacters();
-    }
-  }
-
-  void _staffScrollListener() {
-    if (!_hasNextStaffPage || _isFetchingMoreStaff) return;
-    final threshold = _staffScrollController.position.maxScrollExtent - 400;
-    if (_staffScrollController.offset >= threshold) {
-      _loadMoreStaff();
     }
   }
 
@@ -225,48 +197,52 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
             children: [
               SizedBox(
                 height: carouselHeight,
-                child: GridView.builder(
-                  controller: _charactersScrollController,
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.zero,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: childAspectRatio,
-                    crossAxisSpacing: spacing,
-                    mainAxisSpacing: spacing,
-                  ),
-                  itemCount:
-                      _characters.length + (_isFetchingMoreCharacters ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index == _characters.length) {
-                      return const SizedBox(
-                        width: 80,
-                        child: Center(
-                          child: AppLoadingIndicator(topPadding: 0),
+                child: PagedScrollListener(
+                  onLoadMore: _loadMoreCharacters,
+                  hasMore: _hasNextCharacterPage,
+                  isLoading: _isFetchingMoreCharacters,
+                  child: GridView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.zero,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: childAspectRatio,
+                      crossAxisSpacing: spacing,
+                      mainAxisSpacing: spacing,
+                    ),
+                    itemCount:
+                        _characters.length + (_isFetchingMoreCharacters ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == _characters.length) {
+                        return const SizedBox(
+                          width: 80,
+                          child: Center(
+                            child: AppLoadingIndicator(topPadding: 0),
+                          ),
+                        );
+                      }
+
+                      final edge = _characters[index];
+                      final node = edge.node;
+                      final fullName = node?.name?.full ?? edge.name;
+                      final nativeName = node?.name?.native ?? '';
+                      final role = edge.role;
+                      final charImageUrl = node?.image?.large ?? '';
+
+                      return AppEntityCard(
+                        imageUrl: charImageUrl,
+                        name: fullName,
+                        nativeName: nativeName,
+                        subtitle: role,
+                        trailing: Icon(
+                          LucideIcons.badgeInfo,
+                          size: getResponsiveSize(context, 14.0),
+                          color: Colors.white.withValues(alpha: 0.25),
                         ),
+                        onTap: () => AppNavigation.toCharacter(context, edge),
                       );
-                    }
-
-                    final edge = _characters[index];
-                    final node = edge.node;
-                    final fullName = node?.name?.full ?? edge.name;
-                    final nativeName = node?.name?.native ?? '';
-                    final role = edge.role;
-                    final charImageUrl = node?.image?.large ?? '';
-
-                    return AppEntityCard(
-                      imageUrl: charImageUrl,
-                      name: fullName,
-                      nativeName: nativeName,
-                      subtitle: role,
-                      trailing: Icon(
-                        LucideIcons.badgeInfo,
-                        size: getResponsiveSize(context, 14.0),
-                        color: Colors.white.withValues(alpha: 0.25),
-                      ),
-                      onTap: () => AppNavigation.toCharacter(context, edge),
-                    );
-                  },
+                    },
+                  ),
                 ),
               ),
             ],
@@ -280,17 +256,20 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
             children: [
               SizedBox(
                 height: carouselHeight,
-                child: GridView.builder(
-                  controller: _staffScrollController,
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.zero,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: childAspectRatio,
-                    crossAxisSpacing: spacing,
-                    mainAxisSpacing: spacing,
-                  ),
-                  itemCount: _staff.length + (_isFetchingMoreStaff ? 1 : 0),
+                child: PagedScrollListener(
+                  onLoadMore: _loadMoreStaff,
+                  hasMore: _hasNextStaffPage,
+                  isLoading: _isFetchingMoreStaff,
+                  child: GridView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.zero,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: childAspectRatio,
+                      crossAxisSpacing: spacing,
+                      mainAxisSpacing: spacing,
+                    ),
+                    itemCount: _staff.length + (_isFetchingMoreStaff ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == _staff.length) {
                       return const SizedBox(
@@ -322,8 +301,9 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
                   },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
         ],
       ],
     );

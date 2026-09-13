@@ -7,6 +7,7 @@ import '../../../components/app_review_card.dart';
 import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../components/lucide_icons_helper.dart';
+import '../../../components/paged_scroll_listener.dart';
 import '../../../models/media_activity.dart';
 import '../../../models/media_review.dart';
 import '../../../services/media_service.dart';
@@ -30,16 +31,16 @@ class MediaReviewsTab extends StatefulWidget {
   /// Whether this tab is nested
   final bool isNested;
 
-  /// Trigger for manual refresh updates
+  /// Trigger for refreshing tab content
   final int refreshTrigger;
 
   /// Creates a reviews tab
   const MediaReviewsTab({
     super.key,
     required this.mediaId,
+    this.initialData,
     required this.mediaName,
     required this.mediaType,
-    this.initialData,
     this.isNested = false,
     this.refreshTrigger = 0,
   });
@@ -50,8 +51,6 @@ class MediaReviewsTab extends StatefulWidget {
 
 class _MediaReviewsTabState extends State<MediaReviewsTab> {
   final List<ReviewNode> _reviews = [];
-  final ScrollController _scrollController = ScrollController();
-  final ScrollController _activitiesScrollController = ScrollController();
   int _currentPage = 1;
   bool _hasNextPage = false;
   bool _isFetchingMore = false;
@@ -71,8 +70,6 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
       _reviews.addAll(widget.initialData!.nodes);
       _hasNextPage = widget.initialData!.pageInfo.hasNextPage;
     }
-    _scrollController.addListener(_scrollListener);
-    _activitiesScrollController.addListener(_activitiesScrollListener);
     _fetchActivities();
   }
 
@@ -151,22 +148,6 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     }
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    _activitiesScrollController.dispose();
-    super.dispose();
-  }
-
-  void _scrollListener() {
-    if (!_hasNextPage || _isFetchingMore) return;
-
-    final threshold = _scrollController.position.maxScrollExtent - 400;
-    if (_scrollController.offset >= threshold) {
-      _loadMore();
-    }
-  }
-
   Future<void> _loadMore() async {
     if (_isFetchingMore || !_hasNextPage) return;
 
@@ -190,16 +171,6 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
       if (mounted) {
         setState(() => _isFetchingMore = false);
       }
-    }
-  }
-
-  void _activitiesScrollListener() {
-    if (!_activitiesHasNextPage || _isFetchingMoreActivities) return;
-
-    final threshold =
-        _activitiesScrollController.position.maxScrollExtent - 400;
-    if (_activitiesScrollController.offset >= threshold) {
-      _loadMoreActivities();
     }
   }
 
@@ -247,13 +218,16 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
             children: [
               SizedBox(
                 height: carouselHeight,
-                child: ListView.builder(
-                  controller: _scrollController,
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.zero,
-                  itemCount:
-                      ((_reviews.length / 2).ceil()) +
-                      (_isFetchingMore ? 1 : 0),
+                child: PagedScrollListener(
+                  onLoadMore: _loadMore,
+                  hasMore: _hasNextPage,
+                  isLoading: _isFetchingMore,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.zero,
+                    itemCount:
+                        ((_reviews.length / 2).ceil()) +
+                        (_isFetchingMore ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == (_reviews.length / 2).ceil()) {
                       return const Padding(
@@ -297,8 +271,9 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
                   },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
           const SizedBox(height: 24),
         ],
         AppSection(
@@ -374,13 +349,16 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
 
     return SizedBox(
       height: carouselHeight,
-      child: ListView.builder(
-        controller: _activitiesScrollController,
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.zero,
-        itemCount:
-            ((_activities.length / 2).ceil()) +
-            (_isFetchingMoreActivities ? 1 : 0),
+      child: PagedScrollListener(
+        onLoadMore: _loadMoreActivities,
+        hasMore: _activitiesHasNextPage,
+        isLoading: _isFetchingMoreActivities,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.zero,
+          itemCount:
+              ((_activities.length / 2).ceil()) +
+              (_isFetchingMoreActivities ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == (_activities.length / 2).ceil()) {
             return const Padding(
@@ -423,8 +401,9 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
           );
         },
       ),
-    );
-  }
+    ),
+  );
+}
 
   String _getActivityActionText(String status, String progress) {
     final s = status.toLowerCase();

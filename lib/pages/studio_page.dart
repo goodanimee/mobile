@@ -5,6 +5,7 @@ import '../components/app_relation_card.dart';
 import '../components/error_view.dart';
 import '../components/loading_indicator.dart';
 import '../components/lucide_icons_helper.dart';
+import '../components/paged_scroll_listener.dart';
 import '../models/media_min.dart';
 import '../models/media_studio.dart';
 import '../services/media_service.dart';
@@ -25,7 +26,6 @@ class StudioPage extends StatefulWidget {
 }
 
 class _StudioPageState extends State<StudioPage> {
-  final ScrollController _scrollController = ScrollController();
   final List<MediaMin> _mediaNodes = [];
   int _currentPage = 1;
   bool _hasNextPage = false;
@@ -38,23 +38,7 @@ class _StudioPageState extends State<StudioPage> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_scrollListener);
     _fetchStudioDetails();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _scrollListener() {
-    if (!_hasNextPage || _isFetchingMore || _isLoading) return;
-
-    final threshold = _scrollController.position.maxScrollExtent - 400;
-    if (_scrollController.offset >= threshold) {
-      _loadMore();
-    }
   }
 
   Future<void> _fetchStudioDetails() async {
@@ -190,10 +174,13 @@ class _StudioPageState extends State<StudioPage> {
           itemCount += 1;
         }
 
-        body = ListView.builder(
-          controller: _scrollController,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          itemCount: itemCount,
+        body = PagedScrollListener(
+          onLoadMore: _loadMore,
+          hasMore: _hasNextPage,
+          isLoading: _isFetchingMore || _isLoading,
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            itemCount: itemCount,
           itemBuilder: (context, index) {
             if (index == flatList.length) {
               if (_isFetchingMore) {
@@ -266,8 +253,9 @@ class _StudioPageState extends State<StudioPage> {
               ),
             );
           },
-        );
-      }
+        ),
+      );
+    }
     }
 
     final isFav = _studio?.isFavourite ?? false;
