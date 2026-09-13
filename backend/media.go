@@ -8,14 +8,9 @@ import "C"
 
 import (
 	_ "embed"
-	"encoding/json"
-	"fmt"
-	"unsafe"
 
 	"goodanime-backend/models"
 	pb "goodanime-backend/proto"
-
-	"google.golang.org/protobuf/proto"
 )
 
 //go:embed graphql/media_details.graphql
@@ -55,10 +50,9 @@ func FetchMediaDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchMediaDetailsResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.FetchMediaDetailsRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
@@ -67,23 +61,13 @@ func FetchMediaDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 		"notYetAired": true,
 	}
 
-	respBody, err := rawGraphqlRequest(tk, mediaDetailsQuery, variables)
+	data, err := executeGraphQL[models.MediaDTO](tk, mediaDetailsQuery, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.MediaDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	pbResponse.Media = apiResp.Data.Media.ToProto()
+	pbResponse.Media = data.Media.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -94,10 +78,9 @@ func FetchMediaStaff(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.i
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchMediaStaffResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.FetchMediaStaffRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
@@ -107,23 +90,13 @@ func FetchMediaStaff(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.i
 		"perPage": req.PerPage,
 	}
 
-	respBody, err := rawGraphqlRequest(tk, mediaStaffQuery, variables)
+	data, err := executeGraphQL[models.MediaDTO](tk, mediaStaffQuery, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.MediaDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	pbResponse.Media = apiResp.Data.Media.ToProto()
+	pbResponse.Media = data.Media.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -134,10 +107,9 @@ func FetchMediaCharacters(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchMediaCharactersResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.FetchMediaCharactersRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
@@ -147,23 +119,13 @@ func FetchMediaCharacters(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 		"perPage": req.PerPage,
 	}
 
-	respBody, err := rawGraphqlRequest(tk, mediaCharactersQuery, variables)
+	data, err := executeGraphQL[models.MediaDTO](tk, mediaCharactersQuery, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.MediaDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	pbResponse.Media = apiResp.Data.Media.ToProto()
+	pbResponse.Media = data.Media.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -174,10 +136,9 @@ func FetchMediaRecommendations(reqPtr *C.uint8_t, reqLen C.int, token *C.char, o
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchMediaRecommendationsResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.FetchMediaRecommendationsRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
@@ -187,23 +148,13 @@ func FetchMediaRecommendations(reqPtr *C.uint8_t, reqLen C.int, token *C.char, o
 		"perPage": req.PerPage,
 	}
 
-	respBody, err := rawGraphqlRequest(tk, mediaRecommendationsQuery, variables)
+	data, err := executeGraphQL[models.MediaDTO](tk, mediaRecommendationsQuery, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.MediaDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	pbResponse.Media = apiResp.Data.Media.ToProto()
+	pbResponse.Media = data.Media.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -214,10 +165,9 @@ func FetchMediaReviews(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchMediaReviewsResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.FetchMediaReviewsRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
@@ -227,23 +177,13 @@ func FetchMediaReviews(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 		"perPage": req.PerPage,
 	}
 
-	respBody, err := rawGraphqlRequest(tk, mediaReviewsQuery, variables)
+	data, err := executeGraphQL[models.MediaDTO](tk, mediaReviewsQuery, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.MediaDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	pbResponse.Media = apiResp.Data.Media.ToProto()
+	pbResponse.Media = data.Media.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -254,33 +194,21 @@ func ToggleFavouriteAnime(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 	tk := C.GoString(token)
 	pbResponse := &pb.ToggleFavouriteAnimeResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.ToggleFavouriteAnimeRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
 	variables := map[string]any{"animeId": req.AnimeId}
 
-	respBody, err := rawGraphqlRequest(tk, toggleFavouriteAnimeMutation, variables)
+	data, err := executeGraphQL[models.ToggleFavouriteDTO](tk, toggleFavouriteAnimeMutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.ToggleFavouriteDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	s := apiResp.Data.ToggleFavourite
-
+	s := data.ToggleFavourite
 	pbResponse.AnimeId = req.AnimeId
 	if len(s.Anime.Nodes) == 0 {
 		pbResponse.IsFavourite = false
@@ -298,33 +226,21 @@ func ToggleFavouriteManga(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 	tk := C.GoString(token)
 	pbResponse := &pb.ToggleFavouriteMangaResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.ToggleFavouriteMangaRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
 	variables := map[string]any{"mangaId": req.MangaId}
 
-	respBody, err := rawGraphqlRequest(tk, toggleFavouriteMangaMutation, variables)
+	data, err := executeGraphQL[models.ToggleFavouriteMangaDTO](tk, toggleFavouriteMangaMutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.ToggleFavouriteMangaDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	s := apiResp.Data.ToggleFavourite
-
+	s := data.ToggleFavourite
 	pbResponse.MangaId = req.MangaId
 	if len(s.Manga.Nodes) == 0 {
 		pbResponse.IsFavourite = false
@@ -342,33 +258,22 @@ func ToggleActivityLike(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 	tk := C.GoString(token)
 	pbResponse := &pb.ToggleActivityLikeResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.ToggleActivityLikeRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
 	variables := map[string]any{"activityId": req.ActivityId}
 
-	respBody, err := rawGraphqlRequest(tk, toggleActivityLikeMutation, variables)
+	data, err := executeGraphQL[models.ToggleActivityLikeDTO](tk, toggleActivityLikeMutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.ToggleActivityLikeDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
 	pbResponse.ActivityId = req.ActivityId
-	for _, user := range apiResp.Data.ToggleActivityLike {
+	for _, user := range data.ToggleActivityLike {
 		pbResponse.LikedUserIds = append(pbResponse.LikedUserIds, user.ID)
 	}
 	return marshalAndReturn(pbResponse, outLen)
@@ -380,12 +285,13 @@ func ToggleActivityLike(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 func RateReview(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
 	pbResponse := &pb.RateReviewResponse{}
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+
 	var req pb.RateReviewRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
+
 	var ratingStr string
 	switch req.Rating {
 	case pb.ReviewUserRating_REVIEW_USER_RATING_UP_VOTE:
@@ -395,25 +301,19 @@ func RateReview(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *
 	default:
 		ratingStr = "NO_VOTE"
 	}
+
 	variables := map[string]any{
 		"reviewId": req.ReviewId,
 		"rating":   ratingStr,
 	}
-	respBody, err := rawGraphqlRequest(tk, rateReviewMutation, variables)
+
+	data, err := executeGraphQL[models.RateReviewDTO](tk, rateReviewMutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
-	var apiResp models.GraphQLResponse[models.RateReviewDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	pbResponse.Review = apiResp.Data.RateReview.ToProto()
+
+	pbResponse.Review = data.RateReview.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -424,10 +324,9 @@ func FetchMediaActivities(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchMediaActivitiesResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.FetchMediaActivitiesRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
@@ -437,24 +336,14 @@ func FetchMediaActivities(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 		"perPage": req.PerPage,
 	}
 
-	respBody, err := rawGraphqlRequest(tk, mediaActivitiesQuery, variables)
+	data, err := executeGraphQL[models.PageDTO](tk, mediaActivitiesQuery, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.PageDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	pbResponse.PageInfo = apiResp.Data.Page.PageInfo.ToProto()
-	for _, act := range apiResp.Data.Page.Activities {
+	pbResponse.PageInfo = data.Page.PageInfo.ToProto()
+	for _, act := range data.Page.Activities {
 		pbResponse.Activities = append(pbResponse.Activities, act.ToProto())
 	}
 	return marshalAndReturn(pbResponse, outLen)

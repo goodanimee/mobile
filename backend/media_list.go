@@ -8,14 +8,9 @@ import "C"
 
 import (
 	_ "embed"
-	"encoding/json"
-	"fmt"
-	"unsafe"
 
 	"goodanime-backend/models"
 	pb "goodanime-backend/proto"
-
-	"google.golang.org/protobuf/proto"
 )
 
 //go:embed graphql/media_list.graphql
@@ -37,27 +32,19 @@ func FetchMediaList(userId C.int, token *C.char, mediaType *C.char, outLen *C.in
 
 	pbResponse := &pb.FetchMediaListResponse{}
 
-	respBody, err := rawGraphqlRequest(tk, mediaListQuery, map[string]any{
+	variables := map[string]any{
 		"userId": uID,
 		"type":   mT,
 		"sort":   []string{"SCORE_DESC"},
-	})
+	}
+
+	data, err := executeGraphQL[models.MediaListDTO](tk, mediaListQuery, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.MediaListDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	pbResponse.Collection = apiResp.Data.MediaListCollection.ToProto()
+	pbResponse.Collection = data.MediaListCollection.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -68,10 +55,9 @@ func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 	tk := C.GoString(token)
 	pbResponse := &pb.SaveMediaListEntryResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.SaveMediaListEntryRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
@@ -98,24 +84,13 @@ func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 		variables["repeat"] = *req.Repeat
 	}
 
-	respBody, err := rawGraphqlRequest(tk, saveMediaListEntryMutation, variables)
+	data, err := executeGraphQL[models.SaveMediaListEntryDTO](tk, saveMediaListEntryMutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.SaveMediaListEntryDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	pbResponse.Entry = apiResp.Data.SaveMediaListEntry.ToProto()
-
+	pbResponse.Entry = data.SaveMediaListEntry.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -126,32 +101,21 @@ func DeleteMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 	tk := C.GoString(token)
 	pbResponse := &pb.DeleteMediaListEntryResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.DeleteMediaListEntryRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
 	variables := map[string]any{"mediaListEntryId": req.GetEntryId()}
 
-	respBody, err := rawGraphqlRequest(tk, deleteMediaListEntryMutation, variables)
+	data, err := executeGraphQL[models.DeleteMediaListEntryDTO](tk, deleteMediaListEntryMutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.DeleteMediaListEntryDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
 	pbResponse.EntryId = req.GetEntryId()
-	pbResponse.Deleted = apiResp.Data.DeleteMediaListEntry.Deleted
+	pbResponse.Deleted = data.DeleteMediaListEntry.Deleted
 	return marshalAndReturn(pbResponse, outLen)
 }

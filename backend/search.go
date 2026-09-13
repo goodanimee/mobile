@@ -8,14 +8,9 @@ import "C"
 
 import (
 	_ "embed"
-	"encoding/json"
-	"fmt"
-	"unsafe"
 
 	"goodanime-backend/models"
 	pb "goodanime-backend/proto"
-
-	"google.golang.org/protobuf/proto"
 )
 
 //go:embed graphql/media_search.graphql
@@ -28,18 +23,36 @@ type mediaSearchDTO struct {
 	} `json:"Page"`
 }
 
+func setIntRangeFilter(vars map[string]any, min, max, exact *int32, keyMin, keyMax, keyExact string, multiplier int32) {
+	if min != nil && max != nil {
+		if *min < *max {
+			vars[keyMin] = (*min)*multiplier - 1
+			vars[keyMax] = (*max)*multiplier + 1
+		} else {
+			vars[keyExact] = (*min) * multiplier
+		}
+	} else if min != nil {
+		vars[keyMin] = (*min)*multiplier - 1
+	} else if max != nil {
+		vars[keyMax] = (*max)*multiplier + 1
+	} else if exact != nil {
+		vars[keyExact] = (*exact) * multiplier
+	}
+}
+
 // FetchMediaSearch searches for media on AniList.
 //
 //export FetchMediaSearch
 func FetchMediaSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchMediaSearchResponse{}
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+
 	var req pb.FetchMediaSearchRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
+
 	variables := map[string]any{
 		"page": req.Page,
 	}
@@ -67,20 +80,9 @@ func FetchMediaSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.
 	if req.OnList != nil {
 		variables["onList"] = *req.OnList
 	}
-	if req.MinAverageScore != nil && req.MaxAverageScore != nil {
-		if *req.MinAverageScore < *req.MaxAverageScore {
-			variables["minAverageScore"] = (*req.MinAverageScore)*10 - 1
-			variables["maxAverageScore"] = (*req.MaxAverageScore)*10 + 1
-		} else {
-			variables["averageScore"] = (*req.MinAverageScore) * 10
-		}
-	} else if req.MinAverageScore != nil {
-		variables["minAverageScore"] = (*req.MinAverageScore)*10 - 1
-	} else if req.MaxAverageScore != nil {
-		variables["maxAverageScore"] = (*req.MaxAverageScore)*10 + 1
-	} else if req.AverageScore != nil {
-		variables["averageScore"] = (*req.AverageScore) * 10
-	}
+
+	setIntRangeFilter(variables, req.MinAverageScore, req.MaxAverageScore, req.AverageScore, "minAverageScore", "maxAverageScore", "averageScore", 10)
+
 	if req.Season != nil {
 		variables["season"] = *req.Season
 	}
@@ -95,62 +97,12 @@ func FetchMediaSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.
 		variables["minStartDate"] = (*req.StartDate-1)*10000 + 1231
 		variables["maxStartDate"] = (*req.StartDate+1)*10000 + 101
 	}
-	if req.MinEpisodes != nil && req.MaxEpisodes != nil {
-		if *req.MinEpisodes < *req.MaxEpisodes {
-			variables["minEpisodes"] = *req.MinEpisodes - 1
-			variables["maxEpisodes"] = *req.MaxEpisodes + 1
-		} else {
-			variables["episodes"] = *req.MinEpisodes
-		}
-	} else if req.MinEpisodes != nil {
-		variables["minEpisodes"] = *req.MinEpisodes - 1
-	} else if req.MaxEpisodes != nil {
-		variables["maxEpisodes"] = *req.MaxEpisodes + 1
-	} else if req.Episodes != nil {
-		variables["episodes"] = *req.Episodes
-	}
-	if req.MinDuration != nil && req.MaxDuration != nil {
-		if *req.MinDuration < *req.MaxDuration {
-			variables["minDuration"] = *req.MinDuration - 1
-			variables["maxDuration"] = *req.MaxDuration + 1
-		} else {
-			variables["duration"] = *req.MinDuration
-		}
-	} else if req.MinDuration != nil {
-		variables["minDuration"] = *req.MinDuration - 1
-	} else if req.MaxDuration != nil {
-		variables["maxDuration"] = *req.MaxDuration + 1
-	} else if req.Duration != nil {
-		variables["duration"] = *req.Duration
-	}
-	if req.MinChapters != nil && req.MaxChapters != nil {
-		if *req.MinChapters < *req.MaxChapters {
-			variables["minChapters"] = *req.MinChapters - 1
-			variables["maxChapters"] = *req.MaxChapters + 1
-		} else {
-			variables["chapters"] = *req.MinChapters
-		}
-	} else if req.MinChapters != nil {
-		variables["minChapters"] = *req.MinChapters - 1
-	} else if req.MaxChapters != nil {
-		variables["maxChapters"] = *req.MaxChapters + 1
-	} else if req.Chapters != nil {
-		variables["chapters"] = *req.Chapters
-	}
-	if req.MinVolumes != nil && req.MaxVolumes != nil {
-		if *req.MinVolumes < *req.MaxVolumes {
-			variables["minVolumes"] = *req.MinVolumes - 1
-			variables["maxVolumes"] = *req.MaxVolumes + 1
-		} else {
-			variables["volumes"] = *req.MinVolumes
-		}
-	} else if req.MinVolumes != nil {
-		variables["minVolumes"] = *req.MinVolumes - 1
-	} else if req.MaxVolumes != nil {
-		variables["maxVolumes"] = *req.MaxVolumes + 1
-	} else if req.Volumes != nil {
-		variables["volumes"] = *req.Volumes
-	}
+
+	setIntRangeFilter(variables, req.MinEpisodes, req.MaxEpisodes, req.Episodes, "minEpisodes", "maxEpisodes", "episodes", 1)
+	setIntRangeFilter(variables, req.MinDuration, req.MaxDuration, req.Duration, "minDuration", "maxDuration", "duration", 1)
+	setIntRangeFilter(variables, req.MinChapters, req.MaxChapters, req.Chapters, "minChapters", "maxChapters", "chapters", 1)
+	setIntRangeFilter(variables, req.MinVolumes, req.MaxVolumes, req.Volumes, "minVolumes", "maxVolumes", "volumes", 1)
+
 	if req.IsAdult != nil {
 		variables["isAdult"] = *req.IsAdult
 	}
@@ -172,28 +124,21 @@ func FetchMediaSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.
 	if len(req.Sort) > 0 {
 		variables["sort"] = []string{req.Sort[0]}
 	}
-	respBody, err := rawGraphqlRequest(tk, mediaSearchQuery, variables)
+
+	data, err := executeGraphQL[mediaSearchDTO](tk, mediaSearchQuery, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
-	var apiResp models.GraphQLResponse[mediaSearchDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
+
 	var pbMedia []*pb.MediaMin
-	for _, m := range apiResp.Data.Page.Media {
+	for _, m := range data.Page.Media {
 		if m != nil {
 			pbMedia = append(pbMedia, m.ToProto())
 		}
 	}
 	pbResponse.Media = pbMedia
-	pbResponse.PageInfo = apiResp.Data.Page.PageInfo.ToProto()
+	pbResponse.PageInfo = data.Page.PageInfo.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -207,10 +152,9 @@ func FetchStudioSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchStudioSearchResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.FetchStudioSearchRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
@@ -224,31 +168,20 @@ func FetchStudioSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 		variables["sort"] = []string{req.Sort[0]}
 	}
 
-	respBody, err := rawGraphqlRequest(tk, studioSearchQuery, variables)
+	data, err := executeGraphQL[models.StudioSearchDTO](tk, studioSearchQuery, variables)
 	if err != nil {
-		pbResponse.Error = fmt.Sprintf("GraphQL request failed: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	var apiResp models.GraphQLResponse[models.StudioSearchDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode API response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
 	var pbStudios []*pb.Studio
-	for _, s := range apiResp.Data.Page.Studios {
+	for _, s := range data.Page.Studios {
 		if s != nil {
 			pbStudios = append(pbStudios, s.ToProto())
 		}
 	}
 	pbResponse.Studios = pbStudios
-	pbResponse.PageInfo = apiResp.Data.Page.PageInfo.ToProto()
+	pbResponse.PageInfo = data.Page.PageInfo.ToProto()
 
 	return marshalAndReturn(pbResponse, outLen)
 }

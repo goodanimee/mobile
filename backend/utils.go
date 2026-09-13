@@ -12,11 +12,17 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
+	"unsafe"
 
 	"goodanime-backend/models"
 
 	"google.golang.org/protobuf/proto"
 )
+
+var httpClient = &http.Client{
+	Timeout: 30 * time.Second,
+}
 
 // rawGraphqlRequest sends GraphQL query and returns raw body
 func rawGraphqlRequest(token, query string, variables map[string]any) ([]byte, error) {
@@ -35,7 +41,7 @@ func rawGraphqlRequest(token, query string, variables map[string]any) ([]byte, e
 		req.Header.Set("Authorization", "Bearer "+token)
 	}
 
-	resp, err := (&http.Client{}).Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("request failed: %w", err)
 	}
@@ -47,6 +53,34 @@ func rawGraphqlRequest(token, query string, variables map[string]any) ([]byte, e
 	}
 
 	return respBody, nil
+}
+
+// executeGraphQL executes a GraphQL query and parses the response data into T.
+func executeGraphQL[T any](token, query string, variables map[string]any) (*T, error) {
+	respBody, err := rawGraphqlRequest(token, query, variables)
+	if err != nil {
+		return nil, err
+	}
+
+	var apiResp models.GraphQLResponse[T]
+	if err := json.Unmarshal(respBody, &apiResp); err != nil {
+		return nil, fmt.Errorf("failed to parse response: %w", err)
+	}
+
+	if len(apiResp.Errors) > 0 {
+		return nil, fmt.Errorf("%s", apiResp.Errors[0].Message)
+	}
+
+	return &apiResp.Data, nil
+}
+
+// decodeRequest unmarshals a protobuf request message from C memory buffer.
+func decodeRequest(reqPtr *C.uint8_t, reqLen C.int, req proto.Message) error {
+	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
+	if err := proto.Unmarshal(reqBytes, req); err != nil {
+		return fmt.Errorf("failed to decode request: %w", err)
+	}
+	return nil
 }
 
 // marshalAndReturn marshals protobuf message to C buffer
