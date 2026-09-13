@@ -8,6 +8,7 @@ import '../components/loading_indicator.dart';
 import '../models/media.dart';
 import '../models/media_list.dart';
 import '../models/media_list_entry.dart';
+import '../services/media_list_controller.dart';
 import '../services/media_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_options.dart';
@@ -174,9 +175,9 @@ class _MediaPageState extends State<MediaPage> {
 
       await CacheUtils.invalidateMedia(widget.mediaId);
       if (_mediaData!.type == 'ANIME') {
-        CacheUtils.animeListNeedsRefresh.value = true;
+        MediaListController.anime.markNeedsRefresh();
       } else if (_mediaData!.type == 'MANGA') {
-        CacheUtils.mangaListNeedsRefresh.value = true;
+        MediaListController.manga.markNeedsRefresh();
       }
       await _fetchMediaDetails(forceRefresh: true);
     }

@@ -81,12 +81,6 @@ class CacheUtils {
   static const String _cachePrefix = 'media_cache_';
   static const String _cacheKeysPref = 'media_cache_keys';
 
-  /// Notification flag for AnimeListTab stale data
-  static final animeListNeedsRefresh = ValueNotifier<bool>(false);
-
-  /// Notification flag for MangaListTab stale data
-  static final mangaListNeedsRefresh = ValueNotifier<bool>(false);
-
   /// Remove media entry from disk cache
   static Future<void> invalidateMedia(int mediaId) async {
     final prefs = await SharedPreferences.getInstance();

@@ -7,10 +7,10 @@ import '../components/floating_nav.dart';
 import '../components/loading_indicator.dart';
 import '../models/common.dart';
 import '../services/auth_service.dart';
+import '../services/media_list_controller.dart';
 import '../theme/theme.dart';
-import 'anime_list_tab.dart';
 import 'login_page.dart';
-import 'manga_list_tab.dart';
+import 'media_list_tab.dart';
 import 'profile_page.dart';
 import 'search_page.dart';
 
@@ -91,6 +91,7 @@ class _HomePageState extends State<HomePage> {
 
   /// Resets state on sign out
   void _handleSignOut() {
+    MediaListController.resetAll();
     setState(() {
       _token = null;
       _navIndex = 1;
@@ -104,17 +105,20 @@ class _HomePageState extends State<HomePage> {
     void Function(MediaListStatus) scrollTo,
   ) {
     if (!mounted) return;
-    setState(() {
-      _quickNavSections = statuses
-          .map(
-            (s) => QuickNavSection(
-              icon: _statusIcon(s, isManga: _navIndex == 2),
-              label: s.displayName(isManga: _navIndex == 2),
-              onTap: () => scrollTo(s),
-              isSelected: s == activeStatus,
-            ),
-          )
-          .toList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      setState(() {
+        _quickNavSections = statuses
+            .map(
+              (s) => QuickNavSection(
+                icon: _statusIcon(s, isManga: _navIndex == 2),
+                label: s.displayName(isManga: _navIndex == 2),
+                onTap: () => scrollTo(s),
+                isSelected: s == activeStatus,
+              ),
+            )
+            .toList();
+      });
     });
   }
 
@@ -122,13 +126,17 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBody() {
     switch (_navIndex) {
       case 1:
-        return AnimeListTab(
+        return MediaListTab(
+          key: const ValueKey('anime_tab'),
+          mediaType: 'ANIME',
           isGridMode: _isGridMode,
           onSignOut: _handleSignOut,
           onSectionsChanged: _handleSectionsChanged,
         );
       case 2:
-        return MangaListTab(
+        return MediaListTab(
+          key: const ValueKey('manga_tab'),
+          mediaType: 'MANGA',
           isGridMode: _isGridMode,
           onSignOut: _handleSignOut,
           onSectionsChanged: _handleSectionsChanged,

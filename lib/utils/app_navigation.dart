@@ -6,7 +6,7 @@ import '../pages/media_page.dart';
 import '../pages/media_page/widgets/character_sheet.dart';
 import '../pages/staff_page.dart';
 import '../pages/studio_page.dart';
-import 'utils.dart';
+import '../services/media_list_controller.dart';
 
 /// Centralized manager for app transitions and navigation
 class AppNavigation {
@@ -42,8 +42,8 @@ class AppNavigation {
     );
 
     if (result == true ||
-        CacheUtils.animeListNeedsRefresh.value ||
-        CacheUtils.mangaListNeedsRefresh.value) {
+        MediaListController.anime.needsRefresh ||
+        MediaListController.manga.needsRefresh) {
       onRefresh?.call();
     }
   }
