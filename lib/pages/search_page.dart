@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../components/paged_scroll_listener.dart';
 import '../models/media_min.dart';
 import '../models/media_misc.dart';
 import '../models/media_studio.dart';
@@ -13,6 +13,7 @@ import 'search_page/utils/search_request_builder.dart';
 import 'search_page/widgets/common/active_dropdown.dart';
 import 'search_page/widgets/layout/search_filters_panel.dart';
 import 'search_page/widgets/layout/search_results_list.dart';
+import 'search_page/widgets/layout/search_sort_button.dart';
 import 'search_page/widgets/layout/search_sort_menu.dart';
 import 'search_page/widgets/layout/search_top_bar.dart';
 import 'search_page/widgets/layout/studio_results_list.dart';
@@ -92,7 +93,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_scrollListener);
     _loadGenresAndTags();
     _searchController.addListener(_onSearchChanged);
     AppNavigation.pendingFiltersVersion.addListener(_checkPendingFilters);
@@ -134,14 +134,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     _filtersController.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void _scrollListener() {
-    if (!_hasNextPage || _isSearchingMore || _isSearching) return;
-    final threshold = _scrollController.position.maxScrollExtent - 400;
-    if (_scrollController.offset >= threshold) {
-      _loadMore();
-    }
   }
 
   Future<void> _loadGenresAndTags() async {
@@ -548,20 +540,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     }
   }
 
-  Widget _buildSortButton() {
-    return IconButton(
-      icon: Icon(
-        LucideIcons.sortDesc,
-        color:
-            _activeDropdown == ActiveDropdown.sort || _sortBy != 'search_match'
-            ? borderColor
-            : textPrimary,
-        size: getResponsiveSize(context, 24.0),
-      ),
-      onPressed: () => _toggleDropdown(ActiveDropdown.sort),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final double paddingVal = getResponsiveSize(context, 16.0);
@@ -585,12 +563,20 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     focusNode: _searchFocusNode,
                     hasSearchText: _hasSearchText,
                     onClear: _clearSearch,
-                    sortButton: _buildSortButton(),
+                    sortButton: SearchSortButton(
+                      isActive: _activeDropdown == ActiveDropdown.sort,
+                      sortBy: _sortBy,
+                      onPressed: () => _toggleDropdown(ActiveDropdown.sort),
+                    ),
                   ),
                   Expanded(
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      child: Column(
+                    child: PagedScrollListener(
+                      onLoadMore: _loadMore,
+                      hasMore: _hasNextPage,
+                      isLoading: _isSearchingMore || _isSearching,
+                      child: SingleChildScrollView(
+                        controller: _scrollController,
+                        child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 16.0),
@@ -749,7 +735,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                ],
+                ),
+              ],
               ),
               SearchSortMenu(
                 isOpen: _activeDropdown == ActiveDropdown.sort,
