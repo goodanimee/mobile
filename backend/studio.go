@@ -8,14 +8,9 @@ import "C"
 
 import (
 	_ "embed"
-	"encoding/json"
-	"fmt"
+
 	"goodanime-backend/models"
-	"unsafe"
-
 	pb "goodanime-backend/proto"
-
-	"google.golang.org/protobuf/proto"
 )
 
 //go:embed graphql/studio_details.graphql
@@ -28,10 +23,9 @@ func FetchStudioDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchStudioDetailsResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.FetchStudioDetailsRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
@@ -40,24 +34,13 @@ func FetchStudioDetails(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 		"page":     req.Page,
 	}
 
-	respBody, err := rawGraphqlRequest(tk, studioDetailsQuery, variables)
+	data, err := executeGraphQL[models.StudioDTO](tk, studioDetailsQuery, variables)
 	if err != nil {
-		pbResponse.Error = fmt.Sprintf("GraphQL request failed: %v", err)
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.StudioDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode API response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	pbResponse.Studio = apiResp.Data.Studio.ToProto()
+	pbResponse.Studio = data.Studio.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -71,28 +54,16 @@ func ToggleFavouriteStudio(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLe
 	tk := C.GoString(token)
 	pbResponse := &pb.ToggleFavouriteStudioResponse{}
 
-	reqBytes := C.GoBytes(unsafe.Pointer(reqPtr), reqLen)
 	var req pb.ToggleFavouriteStudioRequest
-	if err := proto.Unmarshal(reqBytes, &req); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to decode request: %v", err)
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
 	variables := map[string]any{"studioId": req.StudioId}
 
-	respBody, err := rawGraphqlRequest(tk, toggleFavouriteStudioMutation, variables)
-	if err != nil {
+	if _, err := executeGraphQL[any](tk, toggleFavouriteStudioMutation, variables); err != nil {
 		pbResponse.Error = err.Error()
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	var apiResp models.GraphQLResponse[any]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
 		return marshalAndReturn(pbResponse, outLen)
 	}
 

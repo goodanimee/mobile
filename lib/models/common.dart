@@ -17,11 +17,24 @@ class FuzzyDate {
   /// Creates a fuzzy date from a protobuf object
   factory FuzzyDate.fromProto(pb.FuzzyDate pbObj) {
     return FuzzyDate(
-      year: pbObj.hasYear() ? pbObj.year : null,
-      month: pbObj.hasMonth() ? pbObj.month : null,
-      day: pbObj.hasDay() ? pbObj.day : null,
+      year: pbObj.hasYear() && pbObj.year > 0 ? pbObj.year : null,
+      month: pbObj.hasMonth() && pbObj.month > 0 ? pbObj.month : null,
+      day: pbObj.hasDay() && pbObj.day > 0 ? pbObj.day : null,
     );
   }
+
+  /// Creates a fuzzy date from a protobuf object, returning null if empty
+  static FuzzyDate? fromProtoNullable(pb.FuzzyDate? pbObj) {
+    if (pbObj == null) return null;
+    final date = FuzzyDate.fromProto(pbObj);
+    return date.hasDate ? date : null;
+  }
+
+  /// Whether this date has valid components
+  bool get hasDate =>
+      (year != null && year! > 0) ||
+      (month != null && month! > 0) ||
+      (day != null && day! > 0);
 
   /// Formats the date as a string
   String toFormattedString() {
@@ -39,6 +52,18 @@ class FuzzyDate {
     if (day != null) pbObj.day = day!;
     return pbObj;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FuzzyDate &&
+          runtimeType == other.runtimeType &&
+          year == other.year &&
+          month == other.month &&
+          day == other.day;
+
+  @override
+  int get hashCode => Object.hash(year, month, day);
 }
 
 /// Contains pagination information

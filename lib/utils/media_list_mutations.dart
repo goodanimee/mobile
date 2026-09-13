@@ -10,9 +10,6 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
 
   /// Computes the next entry state when progress is set to a specific value
   MediaListEntryWithMedia updateProgress(int newProgress) {
-    final now = DateTime.now();
-    final fuzzyNow = FuzzyDate(year: now.year, month: now.month, day: now.day);
-
     final isManga = media.type == 'MANGA';
     final int? maxProgress = isManga
         ? (media.chapters > 0 ? media.chapters : null)
@@ -25,8 +22,6 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
     int nextRepeat = repeat;
     int nextProgressVolumes = progressVolumes;
     MediaListStatus nextStatus = status ?? MediaListStatus.current;
-    FuzzyDate? nextStartDate = startedAt;
-    FuzzyDate? nextFinishDate = completedAt;
 
     final isOverflow = maxProgress != null && newProgress > maxProgress;
     if (isOverflow) {
@@ -40,7 +35,7 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
           repeat: nextRepeat,
           progressVolumes: nextProgressVolumes,
           status: nextStatus,
-        );
+        )._applyDateRules();
       } else {
         nextProgress = maxProgress;
       }
@@ -60,7 +55,7 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
         progressVolumes: nextProgressVolumes,
         repeat: nextRepeat,
         status: nextStatus,
-      );
+      )._applyDateRules();
     }
 
     nextProgress = newProgress;
@@ -80,39 +75,15 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
           : MediaListStatus.current;
     }
 
-    if (nextProgress > 0 && nextStartDate == null && nextRepeat == 0) {
-      nextStartDate = fuzzyNow;
-    }
-    if (nextProgress == 0 && nextProgressVolumes == 0 && nextRepeat == 0) {
-      nextStartDate = null;
-    }
-
-    final wasCompleted = status == MediaListStatus.completed;
-    if (!wasCompleted &&
-        nextStatus == MediaListStatus.completed &&
-        nextRepeat == 0) {
-      nextFinishDate = fuzzyNow;
-    }
-    if (wasCompleted &&
-        nextStatus != MediaListStatus.completed &&
-        nextRepeat == 0) {
-      nextFinishDate = null;
-    }
-
     return copyWith(
       progress: nextProgress,
       progressVolumes: nextProgressVolumes,
       status: nextStatus,
-      startedAt: nextStartDate,
-      completedAt: nextFinishDate,
-    );
+    )._applyDateRules();
   }
 
   /// Computes the next entry state when volume progress is set to a specific value
   MediaListEntryWithMedia updateProgressVolumes(int newVolumes) {
-    final now = DateTime.now();
-    final fuzzyNow = FuzzyDate(year: now.year, month: now.month, day: now.day);
-
     final isManga = media.type == 'MANGA';
     final int? maxProgress = isManga
         ? (media.chapters > 0 ? media.chapters : null)
@@ -125,8 +96,6 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
     int nextRepeat = repeat;
     int nextProgressVolumes = newVolumes;
     MediaListStatus nextStatus = status ?? MediaListStatus.current;
-    FuzzyDate? nextStartDate = startedAt;
-    FuzzyDate? nextFinishDate = completedAt;
 
     final isOverflow =
         maxProgressVolumes != null && newVolumes > maxProgressVolumes;
@@ -140,7 +109,7 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
         progressVolumes: nextProgressVolumes,
         repeat: nextRepeat,
         status: nextStatus,
-      );
+      )._applyDateRules();
     }
 
     nextProgressVolumes = newVolumes;
@@ -152,47 +121,21 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
       if (maxProgress != null) {
         nextProgress = maxProgress;
       }
-      if (repeat == 0) {
-        nextStartDate ??= fuzzyNow;
-      }
     } else {
       nextStatus = repeat > 0
           ? MediaListStatus.repeating
           : MediaListStatus.current;
     }
 
-    if (nextProgressVolumes > 0 && nextStartDate == null && repeat == 0) {
-      nextStartDate = fuzzyNow;
-    }
-
-    final wasCompleted = status == MediaListStatus.completed;
-    if (isCompleted && !wasCompleted && repeat == 0) {
-      nextFinishDate = fuzzyNow;
-    }
-    if (wasCompleted &&
-        nextStatus != MediaListStatus.completed &&
-        repeat == 0) {
-      nextFinishDate = null;
-    }
-
-    if (nextProgress == 0 && nextProgressVolumes == 0 && repeat == 0) {
-      nextStartDate = null;
-    }
-
     return copyWith(
       progress: nextProgress,
       progressVolumes: nextProgressVolumes,
       status: nextStatus,
-      startedAt: nextStartDate,
-      completedAt: nextFinishDate,
-    );
+    )._applyDateRules();
   }
 
   /// Computes the next entry state when status is changed directly
   MediaListEntryWithMedia updateStatus(MediaListStatus newStatus) {
-    final now = DateTime.now();
-    final fuzzyNow = FuzzyDate(year: now.year, month: now.month, day: now.day);
-
     final isManga = media.type == 'MANGA';
     final int? maxProgress = isManga
         ? (media.chapters > 0 ? media.chapters : null)
@@ -203,7 +146,6 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
 
     int nextProgress = progress;
     int nextProgressVolumes = progressVolumes;
-    FuzzyDate? nextFinishDate = completedAt;
 
     if (newStatus == MediaListStatus.completed) {
       if (maxProgress != null) {
@@ -212,27 +154,43 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
       if (maxProgressVolumes != null) {
         nextProgressVolumes = maxProgressVolumes;
       }
-      if (status != MediaListStatus.completed && repeat == 0) {
-        nextFinishDate = fuzzyNow;
-      }
-    } else if (status == MediaListStatus.completed && repeat == 0) {
-      nextFinishDate = null;
     }
 
     return copyWith(
       status: newStatus,
       progress: nextProgress,
       progressVolumes: nextProgressVolumes,
-      completedAt: nextFinishDate,
-    );
+    )._applyDateRules();
   }
 
   /// Computes the next entry state when repeat count is changed directly
   MediaListEntryWithMedia updateRepeat(int newRepeat) {
+    return copyWith(repeat: newRepeat);
+  }
+
+  /// Applies date auto-fill rules based on the resulting status
+  MediaListEntryWithMedia _applyDateRules() {
+    final now = DateTime.now();
+    final fuzzyNow = FuzzyDate(year: now.year, month: now.month, day: now.day);
+
     FuzzyDate? nextStartDate = startedAt;
-    if (progress == 0 && progressVolumes == 0 && newRepeat == 0) {
-      nextStartDate = null;
+    FuzzyDate? nextFinishDate = completedAt;
+
+    if (status == MediaListStatus.current ||
+        status == MediaListStatus.repeating) {
+      if (nextStartDate == null || !nextStartDate.hasDate) {
+        nextStartDate = fuzzyNow;
+      }
+    } else if (status == MediaListStatus.completed ||
+        status == MediaListStatus.dropped) {
+      if (nextStartDate == null || !nextStartDate.hasDate) {
+        nextStartDate = fuzzyNow;
+      }
+      if (nextFinishDate == null || !nextFinishDate.hasDate) {
+        nextFinishDate = fuzzyNow;
+      }
     }
-    return copyWith(repeat: newRepeat, startedAt: nextStartDate);
+
+    return copyWith(startedAt: nextStartDate, completedAt: nextFinishDate);
   }
 }

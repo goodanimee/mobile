@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../components/app_relation_card.dart';
 import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
+import '../../../components/paged_scroll_listener.dart';
 import '../../../models/media_edge.dart';
 import '../../../models/media_recommendation.dart';
 import '../../../services/media_service.dart';
@@ -44,9 +45,6 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
   bool _hasNextRecommendationPage = false;
   bool _isFetchingMore = false;
 
-  ScrollController? _activeScrollController;
-  final ScrollController _recommendationsScrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();
@@ -54,35 +52,6 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
       _recommendations.addAll(widget.initialRecommendations!.edges);
       _hasNextRecommendationPage =
           widget.initialRecommendations!.pageInfo.hasNextPage;
-    }
-    _recommendationsScrollController.addListener(
-      _recommendationsScrollListener,
-    );
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final newController = PrimaryScrollController.maybeOf(context);
-    if (_activeScrollController != newController) {
-      _activeScrollController = newController;
-    }
-  }
-
-  @override
-  void dispose() {
-    _recommendationsScrollController.dispose();
-    super.dispose();
-  }
-
-  /// Listener for recommendations scroll to trigger pagination
-  void _recommendationsScrollListener() {
-    if (!_hasNextRecommendationPage || _isFetchingMore) return;
-
-    final threshold =
-        _recommendationsScrollController.position.maxScrollExtent - 400;
-    if (_recommendationsScrollController.offset >= threshold) {
-      _loadMoreRecommendations();
     }
   }
 
@@ -225,55 +194,60 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
             children: [
               SizedBox(
                 height: carouselHeight,
-                child: ListView.builder(
-                  controller: _recommendationsScrollController,
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.zero,
-                  itemCount:
-                      ((_recommendations.length / 2).ceil()) +
-                      (_isFetchingMore ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index == (_recommendations.length / 2).ceil()) {
-                      return const Padding(
-                        padding: EdgeInsets.only(left: 16, right: 16),
-                        child: Center(
-                          child: AppLoadingIndicator(topPadding: 0),
+                child: PagedScrollListener(
+                  onLoadMore: _loadMoreRecommendations,
+                  hasMore: _hasNextRecommendationPage,
+                  isLoading: _isFetchingMore,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.zero,
+                    itemCount:
+                        ((_recommendations.length / 2).ceil()) +
+                        (_isFetchingMore ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == (_recommendations.length / 2).ceil()) {
+                        return const Padding(
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: Center(
+                            child: AppLoadingIndicator(topPadding: 0),
+                          ),
+                        );
+                      }
+
+                      final firstIdx = index * 2;
+                      final secondIdx = firstIdx + 1;
+
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          right:
+                              index ==
+                                  ((_recommendations.length / 2).ceil()) - 1
+                              ? 0
+                              : spacing,
                         ),
-                      );
-                    }
-
-                    final firstIdx = index * 2;
-                    final secondIdx = firstIdx + 1;
-
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        right:
-                            index == ((_recommendations.length / 2).ceil()) - 1
-                            ? 0
-                            : spacing,
-                      ),
-                      child: SizedBox(
-                        width: cardWidth,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: rowHeight,
-                              child: _buildRecommendationCard(firstIdx),
-                            ),
-                            if (secondIdx < _recommendations.length) ...[
-                              SizedBox(height: spacing),
+                        child: SizedBox(
+                          width: cardWidth,
+                          child: Column(
+                            children: [
                               SizedBox(
                                 height: rowHeight,
-                                child: _buildRecommendationCard(secondIdx),
+                                child: _buildRecommendationCard(firstIdx),
                               ),
-                            ] else ...[
-                              const Spacer(),
+                              if (secondIdx < _recommendations.length) ...[
+                                SizedBox(height: spacing),
+                                SizedBox(
+                                  height: rowHeight,
+                                  child: _buildRecommendationCard(secondIdx),
+                                ),
+                              ] else ...[
+                                const Spacer(),
+                              ],
                             ],
-                          ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

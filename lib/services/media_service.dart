@@ -15,6 +15,7 @@ import '../proto/media.pb.dart' as pb_media;
 import '../proto/media_review.pb.dart' as pb_review;
 import '../utils/utils.dart';
 import 'auth_service.dart';
+import 'media_list_controller.dart';
 
 /// Service for managing media details and favorites.
 class MediaService {
@@ -67,7 +68,7 @@ class MediaService {
     );
 
     await CacheUtils.invalidateMedia(mediaId);
-    CacheUtils.animeListNeedsRefresh.value = true;
+    MediaListController.anime.markNeedsRefresh();
   }
 
   /// Toggles the favorite status of a manga.
@@ -92,7 +93,7 @@ class MediaService {
     );
 
     await CacheUtils.invalidateMedia(mediaId);
-    CacheUtils.mangaListNeedsRefresh.value = true;
+    MediaListController.manga.markNeedsRefresh();
   }
 
   /// Toggles the like status of an activity.

@@ -52,10 +52,10 @@ class MediaListEntry {
       repeat: pbObj.repeat,
       progressVolumes: pbObj.progressVolumes,
       startedAt: pbObj.hasStartedAt()
-          ? FuzzyDate.fromProto(pbObj.startedAt)
+          ? FuzzyDate.fromProtoNullable(pbObj.startedAt)
           : null,
       completedAt: pbObj.hasCompletedAt()
-          ? FuzzyDate.fromProto(pbObj.completedAt)
+          ? FuzzyDate.fromProtoNullable(pbObj.completedAt)
           : null,
     );
   }

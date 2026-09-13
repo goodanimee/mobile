@@ -8,8 +8,6 @@ import "C"
 
 import (
 	_ "embed"
-	"encoding/json"
-	"fmt"
 
 	"goodanime-backend/models"
 	pb "goodanime-backend/proto"
@@ -28,23 +26,13 @@ func FetchGenres(token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchGenresResponse{}
 
-	respBody, err := rawGraphqlRequest(tk, genresQuery, nil)
+	data, err := executeGraphQL[models.GenreCollectionDTO](tk, genresQuery, nil)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.GenreCollectionDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	pbResponse.Genres = apiResp.Data.GenreCollection
+	pbResponse.Genres = data.GenreCollection
 	return marshalAndReturn(pbResponse, outLen)
 }
 
@@ -55,23 +43,13 @@ func FetchTags(token *C.char, outLen *C.int) *C.uint8_t {
 	tk := C.GoString(token)
 	pbResponse := &pb.FetchTagsResponse{}
 
-	respBody, err := rawGraphqlRequest(tk, tagsQuery, nil)
+	data, err := executeGraphQL[models.MediaTagCollectionDTO](tk, tagsQuery, nil)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	var apiResp models.GraphQLResponse[models.MediaTagCollectionDTO]
-	if err := json.Unmarshal(respBody, &apiResp); err != nil {
-		pbResponse.Error = fmt.Sprintf("failed to parse response: %v", err)
-		return marshalAndReturn(pbResponse, outLen)
-	}
-	if len(apiResp.Errors) > 0 {
-		pbResponse.Error = apiResp.Errors[0].Message
-		return marshalAndReturn(pbResponse, outLen)
-	}
-
-	for _, tag := range apiResp.Data.MediaTagCollection {
+	for _, tag := range data.MediaTagCollection {
 		pbResponse.Tags = append(pbResponse.Tags, tag.ToProto())
 	}
 	return marshalAndReturn(pbResponse, outLen)

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../components/paged_scroll_listener.dart';
 import '../models/media_min.dart';
 import '../models/media_misc.dart';
 import '../models/media_studio.dart';
@@ -13,6 +13,7 @@ import 'search_page/utils/search_request_builder.dart';
 import 'search_page/widgets/common/active_dropdown.dart';
 import 'search_page/widgets/layout/search_filters_panel.dart';
 import 'search_page/widgets/layout/search_results_list.dart';
+import 'search_page/widgets/layout/search_sort_button.dart';
 import 'search_page/widgets/layout/search_sort_menu.dart';
 import 'search_page/widgets/layout/search_top_bar.dart';
 import 'search_page/widgets/layout/studio_results_list.dart';
@@ -92,7 +93,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_scrollListener);
     _loadGenresAndTags();
     _searchController.addListener(_onSearchChanged);
     AppNavigation.pendingFiltersVersion.addListener(_checkPendingFilters);
@@ -134,14 +134,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     _filtersController.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void _scrollListener() {
-    if (!_hasNextPage || _isSearchingMore || _isSearching) return;
-    final threshold = _scrollController.position.maxScrollExtent - 400;
-    if (_scrollController.offset >= threshold) {
-      _loadMore();
-    }
   }
 
   Future<void> _loadGenresAndTags() async {
@@ -548,20 +540,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     }
   }
 
-  Widget _buildSortButton() {
-    return IconButton(
-      icon: Icon(
-        LucideIcons.sortDesc,
-        color:
-            _activeDropdown == ActiveDropdown.sort || _sortBy != 'search_match'
-            ? borderColor
-            : textPrimary,
-        size: getResponsiveSize(context, 24.0),
-      ),
-      onPressed: () => _toggleDropdown(ActiveDropdown.sort),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final double paddingVal = getResponsiveSize(context, 16.0);
@@ -585,167 +563,176 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     focusNode: _searchFocusNode,
                     hasSearchText: _hasSearchText,
                     onClear: _clearSearch,
-                    sortButton: _buildSortButton(),
+                    sortButton: SearchSortButton(
+                      isActive: _activeDropdown == ActiveDropdown.sort,
+                      sortBy: _sortBy,
+                      onPressed: () => _toggleDropdown(ActiveDropdown.sort),
+                    ),
                   ),
                   Expanded(
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 16.0),
-                          SearchFiltersPanel(
-                            paddingVal: paddingVal,
-                            searchType: _searchType,
-                            onSearchTypeChanged: (value) {
-                              setState(() {
-                                _searchType = value;
-                                _countMin = null;
-                                _countMax = null;
-                                _durationMin = null;
-                                _durationMax = null;
-                                _formats.updateAll((key, val) => null);
-                                _sortBy = 'search_match';
-                                _studioResults.clear();
-                              });
-                              _performSearch();
-                            },
-                            filtersAnimation: _filtersAnimation,
-                            formats: _formats,
-                            status: _status,
-                            onList: _onList,
-                            scoreMin: _scoreMin,
-                            scoreMax: _scoreMax,
-                            activeDropdown: _activeDropdown,
-                            formatLayerLink: _formatLayerLink,
-                            statusLayerLink: _statusLayerLink,
-                            scoreLayerLink: _scoreLayerLink,
-                            onToggleDropdown: _toggleDropdown,
-                            onFormatChanged: (key, state) {
-                              setState(() {
-                                _formats[key] = state;
-                              });
-                            },
-                            onStatusChanged: (status) {
-                              setState(() {
-                                _status = status;
-                              });
-                            },
-                            onOnListChanged: (val) {
-                              setState(() {
-                                _onList = val;
-                              });
-                            },
-                            onScoreChanged: (min, max) {
-                              setState(() {
-                                if (min == 0.0 && max == 10.0) {
-                                  _scoreMin = null;
-                                  _scoreMax = null;
-                                } else {
-                                  _scoreMin = min;
-                                  _scoreMax = max;
-                                }
-                              });
-                            },
-                            season: _season,
-                            startYearMin: _startYearMin,
-                            startYearMax: _startYearMax,
-                            seasonLayerLink: _seasonLayerLink,
-                            yearLayerLink: _yearLayerLink,
-                            onSeasonChanged: (season) {
-                              setState(() {
-                                _season = season;
-                              });
-                            },
-                            onYearChanged: (min, max) {
-                              setState(() {
-                                final int maxLimit = DateTime.now().year + 1;
-                                if (min == 1917 && max == maxLimit) {
-                                  _startYearMin = null;
-                                  _startYearMax = null;
-                                } else {
-                                  _startYearMin = min;
-                                  _startYearMax = max;
-                                }
-                              });
-                            },
-                            countMin: _countMin,
-                            countMax: _countMax,
-                            durationMin: _durationMin,
-                            durationMax: _durationMax,
-                            countLayerLink: _countLayerLink,
-                            durationLayerLink: _durationLayerLink,
-                            onCountChanged: (min, max) {
-                              setState(() {
-                                _countMin = min;
-                                _countMax = max;
-                              });
-                            },
-                            onDurationChanged: (min, max) {
-                              setState(() {
-                                _durationMin = min;
-                                _durationMax = max;
-                              });
-                            },
-                            isAdult: _isAdult,
-                            onAdultChanged: (val) {
-                              setState(() {
-                                _isAdult = val;
-                              });
-                            },
-                            genres: _genres,
-                            tags: _tags,
-                            allTags: _allTags,
-                            showGenreBottomSheet: _showGenreBottomSheet,
-                            showTagBottomSheet: _showTagBottomSheet,
-                            showAllFilters: _showAllFilters,
-                            hasActiveFilters: _hasActiveFilters(),
-                            onToggleFilters: () {
-                              if (_showAllFilters) {
-                                _filtersController.reverse();
+                    child: PagedScrollListener(
+                      onLoadMore: _loadMore,
+                      hasMore: _hasNextPage,
+                      isLoading: _isSearchingMore || _isSearching,
+                      child: SingleChildScrollView(
+                        controller: _scrollController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 16.0),
+                            SearchFiltersPanel(
+                              paddingVal: paddingVal,
+                              searchType: _searchType,
+                              onSearchTypeChanged: (value) {
                                 setState(() {
-                                  _showAllFilters = false;
-                                  _activeDropdown = null;
+                                  _searchType = value;
+                                  _countMin = null;
+                                  _countMax = null;
+                                  _durationMin = null;
+                                  _durationMax = null;
+                                  _formats.updateAll((key, val) => null);
+                                  _sortBy = 'search_match';
+                                  _studioResults.clear();
                                 });
-                              } else {
+                                _performSearch();
+                              },
+                              filtersAnimation: _filtersAnimation,
+                              formats: _formats,
+                              status: _status,
+                              onList: _onList,
+                              scoreMin: _scoreMin,
+                              scoreMax: _scoreMax,
+                              activeDropdown: _activeDropdown,
+                              formatLayerLink: _formatLayerLink,
+                              statusLayerLink: _statusLayerLink,
+                              scoreLayerLink: _scoreLayerLink,
+                              onToggleDropdown: _toggleDropdown,
+                              onFormatChanged: (key, state) {
                                 setState(() {
-                                  _showAllFilters = true;
+                                  _formats[key] = state;
                                 });
-                                _filtersController.forward();
-                              }
-                            },
-                            onReset: _resetAllFilters,
-                            onApply: _performSearch,
-                          ),
-                          const SizedBox(height: 16.0),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: paddingVal,
+                              },
+                              onStatusChanged: (status) {
+                                setState(() {
+                                  _status = status;
+                                });
+                              },
+                              onOnListChanged: (val) {
+                                setState(() {
+                                  _onList = val;
+                                });
+                              },
+                              onScoreChanged: (min, max) {
+                                setState(() {
+                                  if (min == 0.0 && max == 10.0) {
+                                    _scoreMin = null;
+                                    _scoreMax = null;
+                                  } else {
+                                    _scoreMin = min;
+                                    _scoreMax = max;
+                                  }
+                                });
+                              },
+                              season: _season,
+                              startYearMin: _startYearMin,
+                              startYearMax: _startYearMax,
+                              seasonLayerLink: _seasonLayerLink,
+                              yearLayerLink: _yearLayerLink,
+                              onSeasonChanged: (season) {
+                                setState(() {
+                                  _season = season;
+                                });
+                              },
+                              onYearChanged: (min, max) {
+                                setState(() {
+                                  final int maxLimit = DateTime.now().year + 1;
+                                  if (min == 1917 && max == maxLimit) {
+                                    _startYearMin = null;
+                                    _startYearMax = null;
+                                  } else {
+                                    _startYearMin = min;
+                                    _startYearMax = max;
+                                  }
+                                });
+                              },
+                              countMin: _countMin,
+                              countMax: _countMax,
+                              durationMin: _durationMin,
+                              durationMax: _durationMax,
+                              countLayerLink: _countLayerLink,
+                              durationLayerLink: _durationLayerLink,
+                              onCountChanged: (min, max) {
+                                setState(() {
+                                  _countMin = min;
+                                  _countMax = max;
+                                });
+                              },
+                              onDurationChanged: (min, max) {
+                                setState(() {
+                                  _durationMin = min;
+                                  _durationMax = max;
+                                });
+                              },
+                              isAdult: _isAdult,
+                              onAdultChanged: (val) {
+                                setState(() {
+                                  _isAdult = val;
+                                });
+                              },
+                              genres: _genres,
+                              tags: _tags,
+                              allTags: _allTags,
+                              showGenreBottomSheet: _showGenreBottomSheet,
+                              showTagBottomSheet: _showTagBottomSheet,
+                              showAllFilters: _showAllFilters,
+                              hasActiveFilters: _hasActiveFilters(),
+                              onToggleFilters: () {
+                                if (_showAllFilters) {
+                                  _filtersController.reverse();
+                                  setState(() {
+                                    _showAllFilters = false;
+                                    _activeDropdown = null;
+                                  });
+                                } else {
+                                  setState(() {
+                                    _showAllFilters = true;
+                                  });
+                                  _filtersController.forward();
+                                }
+                              },
+                              onReset: _resetAllFilters,
+                              onApply: _performSearch,
                             ),
-                            child: const Divider(
-                              color: cardBorderColor,
-                              height: 1.0,
-                              thickness: 1.0,
+                            const SizedBox(height: 16.0),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: paddingVal,
+                              ),
+                              child: const Divider(
+                                color: cardBorderColor,
+                                height: 1.0,
+                                thickness: 1.0,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          if (_searchType == 'STUDIO')
-                            StudioResultsList(
-                              studioResults: _studioResults,
-                              isSearching: _isSearching,
-                              isSearchingMore: _isSearchingMore,
-                              searchError: _searchError,
-                              onRetry: _performSearch,
-                            )
-                          else
-                            SearchResultsList(
-                              mediaResults: _mediaResults,
-                              isSearching: _isSearching,
-                              isSearchingMore: _isSearchingMore,
-                              searchError: _searchError,
-                              onRetry: _performSearch,
-                            ),
-                        ],
+                            const SizedBox(height: 16.0),
+                            if (_searchType == 'STUDIO')
+                              StudioResultsList(
+                                studioResults: _studioResults,
+                                isSearching: _isSearching,
+                                isSearchingMore: _isSearchingMore,
+                                searchError: _searchError,
+                                onRetry: _performSearch,
+                              )
+                            else
+                              SearchResultsList(
+                                mediaResults: _mediaResults,
+                                isSearching: _isSearching,
+                                isSearchingMore: _isSearchingMore,
+                                searchError: _searchError,
+                                onRetry: _performSearch,
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
