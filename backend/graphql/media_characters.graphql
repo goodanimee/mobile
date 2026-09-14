@@ -10,33 +10,12 @@ query Media($mediaId: Int, $page: Int, $perPage: Int) {
         id
         role
         name
-        voiceActors(sort: [RELEVANCE]) {
-          id
-          image {
-            large
-            medium
-          }
-          name {
-            full
-          }
-          languageV2
-        }
         node {
+          id
           name {
             full
             native
-            alternative
-            alternativeSpoiler
-            userPreferred
           }
-          age
-          gender
-          dateOfBirth {
-            day
-            month
-            year
-          }
-          description(asHtml: true)
           image {
             large
             medium

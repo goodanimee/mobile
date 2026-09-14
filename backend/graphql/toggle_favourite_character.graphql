@@ -1,0 +1,9 @@
+mutation ToggleFavouriteCharacter($id: Int) {
+  ToggleFavourite(characterId: $id) {
+    characters {
+      nodes {
+        id
+      }
+    }
+  }
+}

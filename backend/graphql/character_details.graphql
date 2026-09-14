@@ -1,0 +1,113 @@
+query Character($characterId: Int, $mediaPage: Int) {
+  Character(id: $characterId) {
+    age
+    bloodType
+    dateOfBirth {
+      ...FuzzyDateFields
+    }
+    description(asHtml: true)
+    favourites
+    gender
+    id
+    image {
+      ...CharImageFields
+    }
+    isFavourite
+    isFavouriteBlocked
+    media(sort: [START_DATE_DESC], page: $mediaPage, perPage: 25) {
+      edges {
+        characterRole
+        voiceActors(sort: [RELEVANCE]) {
+          id
+          name {
+            ...VoiceActorName
+          }
+          image {
+            ...VoiceActorImage
+          }
+          languageV2
+        }
+        node {
+          ...MediaMinFields
+        }
+      }
+      pageInfo {
+        ...PageInfoFields
+      }
+    }
+    name {
+      ...CharNameFields
+    }
+    siteUrl
+  }
+}
+
+fragment MediaMinFields on Media {
+  id
+  type
+  averageScore
+  episodes
+  chapters
+  volumes
+  format
+  isAdult
+  isFavourite
+  siteUrl
+  startDate {
+    year
+  }
+  coverImage {
+    ...CoverImageFields
+  }
+  title {
+    ...TitleFields
+  }
+}
+
+fragment FuzzyDateFields on FuzzyDate {
+  day
+  month
+  year
+}
+
+fragment PageInfoFields on PageInfo {
+  hasNextPage
+  currentPage
+}
+
+fragment CharNameFields on CharacterName {
+  full
+  native
+  userPreferred
+  alternative
+  alternativeSpoiler
+}
+
+fragment CharImageFields on CharacterImage {
+  large
+  medium
+}
+
+fragment CoverImageFields on MediaCoverImage {
+  medium
+  color
+  large
+  extraLarge
+}
+
+fragment TitleFields on MediaTitle {
+  english
+  native
+  romaji
+  userPreferred
+}
+
+fragment VoiceActorName on StaffName {
+  full
+  native
+}
+
+fragment VoiceActorImage on StaffImage {
+  large
+  medium
+}
