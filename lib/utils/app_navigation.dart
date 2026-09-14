@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../models/media_character.dart';
 import '../models/media_staff.dart';
 import '../pages/media_page.dart';
-import '../pages/media_page/widgets/character_sheet.dart';
 import '../pages/staff_page.dart';
 import '../pages/studio_page.dart';
 import '../services/media_list_controller.dart';
@@ -66,13 +65,13 @@ class AppNavigation {
     );
   }
 
-  /// Open character details sheet
-  static void toCharacter(BuildContext context, CharacterEdge character) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CharacterSheet(character: character),
-    );
+  /// Navigate to Character details
+  static Future<void> toCharacter(
+    BuildContext context, {
+    CharacterMin? character,
+    int? characterId,
+  }) async {
+    final id = characterId ?? character?.id;
+    if (id == null) return;
   }
 }
