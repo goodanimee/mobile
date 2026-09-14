@@ -1,5 +1,7 @@
 import '../proto/media_character.pb.dart' as pb;
+import '../proto/media_min.pb.dart' as pbm;
 import 'common.dart';
+import 'media_min.dart';
 import 'media_staff.dart';
 
 /// Represents the names of a character
@@ -80,8 +82,111 @@ class CharacterImage {
   }
 }
 
-/// Represents a character in a media
+/// Represents minimal character information
+class CharacterMin {
+  /// Character ID
+  final int id;
+
+  /// Character name
+  final CharacterName? name;
+
+  /// Character image
+  final CharacterImage? image;
+
+  /// Creates a minimal character
+  const CharacterMin({required this.id, this.name, this.image});
+
+  /// Creates a minimal character from a protobuf object
+  factory CharacterMin.fromProto(pb.CharacterMin pbObj) {
+    return CharacterMin(
+      id: pbObj.id,
+      name: pbObj.hasName() ? CharacterName.fromProto(pbObj.name) : null,
+      image: pbObj.hasImage() ? CharacterImage.fromProto(pbObj.image) : null,
+    );
+  }
+
+  /// Converts the minimal character to a protobuf object
+  pb.CharacterMin toProto() {
+    final pbObj = pb.CharacterMin(id: id);
+    if (name != null) pbObj.name = name!.toProto();
+    if (image != null) pbObj.image = image!.toProto();
+    return pbObj;
+  }
+}
+
+/// Represents a media appearance for a character
+class CharacterMediaEdge {
+  /// Character role in media
+  final String? characterRole;
+
+  /// The media item
+  final MediaMin? node;
+
+  /// Associated voice actors
+  final List<StaffMin> voiceActors;
+
+  /// Creates a character media edge
+  const CharacterMediaEdge({
+    this.characterRole,
+    this.node,
+    required this.voiceActors,
+  });
+
+  /// Creates a character media edge from a protobuf object
+  factory CharacterMediaEdge.fromProto(pb.CharacterMediaEdge pbObj) {
+    return CharacterMediaEdge(
+      characterRole: pbObj.hasCharacterRole() ? pbObj.characterRole : null,
+      node: pbObj.hasNode() ? MediaMin.fromProto(pbObj.node) : null,
+      voiceActors: pbObj.voiceActors.map(StaffMin.fromProto).toList(),
+    );
+  }
+
+  /// Converts the character media edge to a protobuf object
+  pb.CharacterMediaEdge toProto() {
+    final pbObj = pb.CharacterMediaEdge(
+      voiceActors: voiceActors.map((v) => v.toProto()),
+    );
+    if (characterRole != null) pbObj.characterRole = characterRole!;
+    if (node != null) pbObj.node = node!.toProto() as pbm.MediaMin;
+    return pbObj;
+  }
+}
+
+/// Represents a paginated list of media appearances for a character
+class CharacterMediaConnection {
+  /// Media appearance edges
+  final List<CharacterMediaEdge> edges;
+
+  /// Pagination information
+  final PageInfo pageInfo;
+
+  /// Creates a character media connection
+  const CharacterMediaConnection({required this.edges, required this.pageInfo});
+
+  /// Creates a character media connection from a protobuf object
+  factory CharacterMediaConnection.fromProto(
+    pb.CharacterMediaConnection pbObj,
+  ) {
+    return CharacterMediaConnection(
+      edges: pbObj.edges.map(CharacterMediaEdge.fromProto).toList(),
+      pageInfo: PageInfo.fromProto(pbObj.pageInfo),
+    );
+  }
+
+  /// Converts the character media connection to a protobuf object
+  pb.CharacterMediaConnection toProto() {
+    return pb.CharacterMediaConnection(
+      edges: edges.map((e) => e.toProto()),
+      pageInfo: pageInfo.toProto(),
+    );
+  }
+}
+
+/// Represents detailed character information
 class Character {
+  /// Character ID
+  final int? id;
+
   /// Character name
   final CharacterName? name;
 
@@ -94,45 +199,123 @@ class Character {
   /// Character age
   final String? age;
 
+  /// Character blood type
+  final String? bloodType;
+
   /// Character date of birth
   final FuzzyDate? dateOfBirth;
 
   /// Character description
   final String? description;
 
+  /// Whether the character is a favourite
+  final bool? isFavourite;
+
+  /// Site URL
+  final String? siteUrl;
+
+  /// Number of favourites
+  final int? favourites;
+
+  /// Whether favorite toggling is blocked
+  final bool? isFavouriteBlocked;
+
+  /// Media appearances
+  final CharacterMediaConnection? media;
+
   /// Creates a character
   const Character({
+    this.id,
     this.name,
     this.image,
     this.gender,
     this.age,
+    this.bloodType,
     this.dateOfBirth,
     this.description,
+    this.isFavourite,
+    this.siteUrl,
+    this.favourites,
+    this.isFavouriteBlocked,
+    this.media,
   });
+
+  /// Creates a copy of this object with the given fields replaced
+  Character copyWith({
+    int? id,
+    CharacterName? name,
+    CharacterImage? image,
+    String? gender,
+    String? age,
+    String? bloodType,
+    FuzzyDate? dateOfBirth,
+    String? description,
+    bool? isFavourite,
+    String? siteUrl,
+    int? favourites,
+    bool? isFavouriteBlocked,
+    CharacterMediaConnection? media,
+  }) {
+    return Character(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      image: image ?? this.image,
+      gender: gender ?? this.gender,
+      age: age ?? this.age,
+      bloodType: bloodType ?? this.bloodType,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      description: description ?? this.description,
+      isFavourite: isFavourite ?? this.isFavourite,
+      siteUrl: siteUrl ?? this.siteUrl,
+      favourites: favourites ?? this.favourites,
+      isFavouriteBlocked: isFavouriteBlocked ?? this.isFavouriteBlocked,
+      media: media ?? this.media,
+    );
+  }
 
   /// Creates a character from a protobuf object
   factory Character.fromProto(pb.Character pbObj) {
     return Character(
+      id: pbObj.hasId() ? pbObj.id : null,
       name: pbObj.hasName() ? CharacterName.fromProto(pbObj.name) : null,
       image: pbObj.hasImage() ? CharacterImage.fromProto(pbObj.image) : null,
       gender: pbObj.hasGender() ? pbObj.gender : null,
       age: pbObj.hasAge() ? pbObj.age : null,
+      bloodType: pbObj.hasBloodType() ? pbObj.bloodType : null,
       dateOfBirth: pbObj.hasDateOfBirth()
           ? FuzzyDate.fromProto(pbObj.dateOfBirth)
           : null,
       description: pbObj.hasDescription() ? pbObj.description : null,
+      isFavourite: pbObj.hasIsFavourite() ? pbObj.isFavourite : null,
+      siteUrl: pbObj.hasSiteUrl() ? pbObj.siteUrl : null,
+      favourites: pbObj.hasFavourites() ? pbObj.favourites : null,
+      isFavouriteBlocked: pbObj.hasIsFavouriteBlocked()
+          ? pbObj.isFavouriteBlocked
+          : null,
+      media: pbObj.hasMedia()
+          ? CharacterMediaConnection.fromProto(pbObj.media)
+          : null,
     );
   }
 
   /// Converts the character to a protobuf object
   pb.Character toProto() {
     final pbObj = pb.Character();
+    if (id != null) pbObj.id = id!;
     if (name != null) pbObj.name = name!.toProto();
     if (image != null) pbObj.image = image!.toProto();
     if (gender != null) pbObj.gender = gender!;
     if (age != null) pbObj.age = age!;
+    if (bloodType != null) pbObj.bloodType = bloodType!;
     if (dateOfBirth != null) pbObj.dateOfBirth = dateOfBirth!.toProto();
     if (description != null) pbObj.description = description!;
+    if (isFavourite != null) pbObj.isFavourite = isFavourite!;
+    if (siteUrl != null) pbObj.siteUrl = siteUrl!;
+    if (favourites != null) pbObj.favourites = favourites!;
+    if (isFavouriteBlocked != null) {
+      pbObj.isFavouriteBlocked = isFavouriteBlocked!;
+    }
+    if (media != null) pbObj.media = media!.toProto();
     return pbObj;
   }
 }
@@ -149,10 +332,7 @@ class CharacterEdge {
   final String name;
 
   /// The character
-  final Character? node;
-
-  /// The voice actors of the character
-  final List<StaffMin> voiceActors;
+  final CharacterMin? node;
 
   /// Creates a character edge
   const CharacterEdge({
@@ -160,7 +340,6 @@ class CharacterEdge {
     required this.role,
     required this.name,
     this.node,
-    required this.voiceActors,
   });
 
   /// Creates a character edge from a protobuf object
@@ -169,20 +348,15 @@ class CharacterEdge {
       id: pbObj.id,
       role: pbObj.role,
       name: pbObj.name,
-      node: pbObj.hasNode() ? Character.fromProto(pbObj.node) : null,
-      voiceActors: pbObj.voiceActors.map(StaffMin.fromProto).toList(),
+      node: pbObj.hasNode() ? CharacterMin.fromProto(pbObj.node) : null,
     );
   }
 
   /// Converts the character edge to a protobuf object
   pb.CharacterEdge toProto() {
-    return pb.CharacterEdge(
-      id: id,
-      role: role,
-      name: name,
-      node: node?.toProto(),
-      voiceActors: voiceActors.map((v) => v.toProto()).toList(),
-    );
+    final pbObj = pb.CharacterEdge(id: id, role: role, name: name);
+    if (node != null) pbObj.node = node!.toProto();
+    return pbObj;
   }
 }
 
