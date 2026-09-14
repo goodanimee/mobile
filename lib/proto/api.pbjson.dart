@@ -1124,3 +1124,69 @@ final $typed_data.Uint8List fetchStudioSearchResponseDescriptor = $convert.base6
     'ChlGZXRjaFN0dWRpb1NlYXJjaFJlc3BvbnNlEisKB3N0dWRpb3MYASADKAsyES5nb29kYW5pbW'
     'UuU3R1ZGlvUgdzdHVkaW9zEjAKCXBhZ2VfaW5mbxgCIAEoCzITLmdvb2RhbmltZS5QYWdlSW5m'
     'b1IIcGFnZUluZm8SFAoFZXJyb3IYAyABKAlSBWVycm9y');
+
+@$core.Deprecated('Use fetchCharacterDetailsRequestDescriptor instead')
+const FetchCharacterDetailsRequest$json = {
+  '1': 'FetchCharacterDetailsRequest',
+  '2': [
+    {'1': 'character_id', '3': 1, '4': 1, '5': 5, '10': 'characterId'},
+    {'1': 'page', '3': 2, '4': 1, '5': 5, '10': 'page'},
+  ],
+};
+
+/// Descriptor for `FetchCharacterDetailsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchCharacterDetailsRequestDescriptor =
+    $convert.base64Decode(
+        'ChxGZXRjaENoYXJhY3RlckRldGFpbHNSZXF1ZXN0EiEKDGNoYXJhY3Rlcl9pZBgBIAEoBVILY2'
+        'hhcmFjdGVySWQSEgoEcGFnZRgCIAEoBVIEcGFnZQ==');
+
+@$core.Deprecated('Use fetchCharacterDetailsResponseDescriptor instead')
+const FetchCharacterDetailsResponse$json = {
+  '1': 'FetchCharacterDetailsResponse',
+  '2': [
+    {
+      '1': 'character',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.Character',
+      '10': 'character'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchCharacterDetailsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchCharacterDetailsResponseDescriptor =
+    $convert.base64Decode(
+        'Ch1GZXRjaENoYXJhY3RlckRldGFpbHNSZXNwb25zZRIyCgljaGFyYWN0ZXIYASABKAsyFC5nb2'
+        '9kYW5pbWUuQ2hhcmFjdGVyUgljaGFyYWN0ZXISFAoFZXJyb3IYAiABKAlSBWVycm9y');
+
+@$core.Deprecated('Use toggleFavouriteCharacterRequestDescriptor instead')
+const ToggleFavouriteCharacterRequest$json = {
+  '1': 'ToggleFavouriteCharacterRequest',
+  '2': [
+    {'1': 'character_id', '3': 1, '4': 1, '5': 5, '10': 'characterId'},
+  ],
+};
+
+/// Descriptor for `ToggleFavouriteCharacterRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFavouriteCharacterRequestDescriptor =
+    $convert.base64Decode(
+        'Ch9Ub2dnbGVGYXZvdXJpdGVDaGFyYWN0ZXJSZXF1ZXN0EiEKDGNoYXJhY3Rlcl9pZBgBIAEoBV'
+        'ILY2hhcmFjdGVySWQ=');
+
+@$core.Deprecated('Use toggleFavouriteCharacterResponseDescriptor instead')
+const ToggleFavouriteCharacterResponse$json = {
+  '1': 'ToggleFavouriteCharacterResponse',
+  '2': [
+    {'1': 'character_id', '3': 1, '4': 1, '5': 5, '10': 'characterId'},
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `ToggleFavouriteCharacterResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFavouriteCharacterResponseDescriptor =
+    $convert.base64Decode(
+        'CiBUb2dnbGVGYXZvdXJpdGVDaGFyYWN0ZXJSZXNwb25zZRIhCgxjaGFyYWN0ZXJfaWQYASABKA'
+        'VSC2NoYXJhY3RlcklkEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');

@@ -70,6 +70,107 @@ final $typed_data.Uint8List characterImageDescriptor = $convert.base64Decode(
     'Cg5DaGFyYWN0ZXJJbWFnZRIZCgVsYXJnZRgBIAEoCUgAUgVsYXJnZYgBARIbCgZtZWRpdW0YAi'
     'ABKAlIAVIGbWVkaXVtiAEBQggKBl9sYXJnZUIJCgdfbWVkaXVt');
 
+@$core.Deprecated('Use characterMinDescriptor instead')
+const CharacterMin$json = {
+  '1': 'CharacterMin',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
+    {
+      '1': 'name',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.CharacterName',
+      '10': 'name'
+    },
+    {
+      '1': 'image',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.CharacterImage',
+      '10': 'image'
+    },
+  ],
+};
+
+/// Descriptor for `CharacterMin`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List characterMinDescriptor = $convert.base64Decode(
+    'CgxDaGFyYWN0ZXJNaW4SDgoCaWQYASABKAVSAmlkEiwKBG5hbWUYAiABKAsyGC5nb29kYW5pbW'
+    'UuQ2hhcmFjdGVyTmFtZVIEbmFtZRIvCgVpbWFnZRgDIAEoCzIZLmdvb2RhbmltZS5DaGFyYWN0'
+    'ZXJJbWFnZVIFaW1hZ2U=');
+
+@$core.Deprecated('Use characterMediaEdgeDescriptor instead')
+const CharacterMediaEdge$json = {
+  '1': 'CharacterMediaEdge',
+  '2': [
+    {
+      '1': 'character_role',
+      '3': 1,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'characterRole',
+      '17': true
+    },
+    {
+      '1': 'node',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.MediaMin',
+      '10': 'node'
+    },
+    {
+      '1': 'voice_actors',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.StaffMin',
+      '10': 'voiceActors'
+    },
+  ],
+  '8': [
+    {'1': '_character_role'},
+  ],
+};
+
+/// Descriptor for `CharacterMediaEdge`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List characterMediaEdgeDescriptor = $convert.base64Decode(
+    'ChJDaGFyYWN0ZXJNZWRpYUVkZ2USKgoOY2hhcmFjdGVyX3JvbGUYASABKAlIAFINY2hhcmFjdG'
+    'VyUm9sZYgBARInCgRub2RlGAIgASgLMhMuZ29vZGFuaW1lLk1lZGlhTWluUgRub2RlEjYKDHZv'
+    'aWNlX2FjdG9ycxgDIAMoCzITLmdvb2RhbmltZS5TdGFmZk1pblILdm9pY2VBY3RvcnNCEQoPX2'
+    'NoYXJhY3Rlcl9yb2xl');
+
+@$core.Deprecated('Use characterMediaConnectionDescriptor instead')
+const CharacterMediaConnection$json = {
+  '1': 'CharacterMediaConnection',
+  '2': [
+    {
+      '1': 'edges',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.CharacterMediaEdge',
+      '10': 'edges'
+    },
+    {
+      '1': 'page_info',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+  ],
+};
+
+/// Descriptor for `CharacterMediaConnection`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List characterMediaConnectionDescriptor = $convert.base64Decode(
+    'ChhDaGFyYWN0ZXJNZWRpYUNvbm5lY3Rpb24SMwoFZWRnZXMYASADKAsyHS5nb29kYW5pbWUuQ2'
+    'hhcmFjdGVyTWVkaWFFZGdlUgVlZGdlcxIwCglwYWdlX2luZm8YAiABKAsyEy5nb29kYW5pbWUu'
+    'UGFnZUluZm9SCHBhZ2VJbmZv');
+
 @$core.Deprecated('Use characterDescriptor instead')
 const Character$json = {
   '1': 'Character',
@@ -109,11 +210,71 @@ const Character$json = {
       '10': 'description',
       '17': true
     },
+    {'1': 'id', '3': 7, '4': 1, '5': 5, '9': 3, '10': 'id', '17': true},
+    {
+      '1': 'blood_type',
+      '3': 8,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'bloodType',
+      '17': true
+    },
+    {
+      '1': 'favourites',
+      '3': 9,
+      '4': 1,
+      '5': 5,
+      '9': 5,
+      '10': 'favourites',
+      '17': true
+    },
+    {
+      '1': 'is_favourite',
+      '3': 10,
+      '4': 1,
+      '5': 8,
+      '9': 6,
+      '10': 'isFavourite',
+      '17': true
+    },
+    {
+      '1': 'site_url',
+      '3': 11,
+      '4': 1,
+      '5': 9,
+      '9': 7,
+      '10': 'siteUrl',
+      '17': true
+    },
+    {
+      '1': 'media',
+      '3': 12,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.CharacterMediaConnection',
+      '10': 'media'
+    },
+    {
+      '1': 'is_favourite_blocked',
+      '3': 13,
+      '4': 1,
+      '5': 8,
+      '9': 8,
+      '10': 'isFavouriteBlocked',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_gender'},
     {'1': '_age'},
     {'1': '_description'},
+    {'1': '_id'},
+    {'1': '_blood_type'},
+    {'1': '_favourites'},
+    {'1': '_is_favourite'},
+    {'1': '_site_url'},
+    {'1': '_is_favourite_blocked'},
   ],
 };
 
@@ -123,8 +284,14 @@ final $typed_data.Uint8List characterDescriptor = $convert.base64Decode(
     '1lEi8KBWltYWdlGAIgASgLMhkuZ29vZGFuaW1lLkNoYXJhY3RlckltYWdlUgVpbWFnZRIbCgZn'
     'ZW5kZXIYAyABKAlIAFIGZ2VuZGVyiAEBEhUKA2FnZRgEIAEoCUgBUgNhZ2WIAQESOAoNZGF0ZV'
     '9vZl9iaXJ0aBgFIAEoCzIULmdvb2RhbmltZS5GdXp6eURhdGVSC2RhdGVPZkJpcnRoEiUKC2Rl'
-    'c2NyaXB0aW9uGAYgASgJSAJSC2Rlc2NyaXB0aW9uiAEBQgkKB19nZW5kZXJCBgoEX2FnZUIOCg'
-    'xfZGVzY3JpcHRpb24=');
+    'c2NyaXB0aW9uGAYgASgJSAJSC2Rlc2NyaXB0aW9uiAEBEhMKAmlkGAcgASgFSANSAmlkiAEBEi'
+    'IKCmJsb29kX3R5cGUYCCABKAlIBFIJYmxvb2RUeXBliAEBEiMKCmZhdm91cml0ZXMYCSABKAVI'
+    'BVIKZmF2b3VyaXRlc4gBARImCgxpc19mYXZvdXJpdGUYCiABKAhIBlILaXNGYXZvdXJpdGWIAQ'
+    'ESHgoIc2l0ZV91cmwYCyABKAlIB1IHc2l0ZVVybIgBARI5CgVtZWRpYRgMIAEoCzIjLmdvb2Rh'
+    'bmltZS5DaGFyYWN0ZXJNZWRpYUNvbm5lY3Rpb25SBW1lZGlhEjUKFGlzX2Zhdm91cml0ZV9ibG'
+    '9ja2VkGA0gASgISAhSEmlzRmF2b3VyaXRlQmxvY2tlZIgBAUIJCgdfZ2VuZGVyQgYKBF9hZ2VC'
+    'DgoMX2Rlc2NyaXB0aW9uQgUKA19pZEINCgtfYmxvb2RfdHlwZUINCgtfZmF2b3VyaXRlc0IPCg'
+    '1faXNfZmF2b3VyaXRlQgsKCV9zaXRlX3VybEIXChVfaXNfZmF2b3VyaXRlX2Jsb2NrZWQ=');
 
 @$core.Deprecated('Use characterEdgeDescriptor instead')
 const CharacterEdge$json = {
@@ -138,16 +305,8 @@ const CharacterEdge$json = {
       '3': 4,
       '4': 1,
       '5': 11,
-      '6': '.goodanime.Character',
+      '6': '.goodanime.CharacterMin',
       '10': 'node'
-    },
-    {
-      '1': 'voice_actors',
-      '3': 5,
-      '4': 3,
-      '5': 11,
-      '6': '.goodanime.StaffMin',
-      '10': 'voiceActors'
     },
   ],
 };
@@ -155,9 +314,8 @@ const CharacterEdge$json = {
 /// Descriptor for `CharacterEdge`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List characterEdgeDescriptor = $convert.base64Decode(
     'Cg1DaGFyYWN0ZXJFZGdlEg4KAmlkGAEgASgFUgJpZBISCgRyb2xlGAIgASgJUgRyb2xlEhIKBG'
-    '5hbWUYAyABKAlSBG5hbWUSKAoEbm9kZRgEIAEoCzIULmdvb2RhbmltZS5DaGFyYWN0ZXJSBG5v'
-    'ZGUSNgoMdm9pY2VfYWN0b3JzGAUgAygLMhMuZ29vZGFuaW1lLlN0YWZmTWluUgt2b2ljZUFjdG'
-    '9ycw==');
+    '5hbWUYAyABKAlSBG5hbWUSKwoEbm9kZRgEIAEoCzIXLmdvb2RhbmltZS5DaGFyYWN0ZXJNaW5S'
+    'BG5vZGU=');
 
 @$core.Deprecated('Use characterConnectionDescriptor instead')
 const CharacterConnection$json = {

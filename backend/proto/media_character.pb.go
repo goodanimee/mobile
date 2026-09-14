@@ -149,21 +149,200 @@ func (x *CharacterImage) GetMedium() string {
 	return ""
 }
 
-type Character struct {
+type CharacterMin struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          *CharacterName         `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Image         *CharacterImage        `protobuf:"bytes,2,opt,name=image,proto3" json:"image,omitempty"`
-	Gender        *string                `protobuf:"bytes,3,opt,name=gender,proto3,oneof" json:"gender,omitempty"`
-	Age           *string                `protobuf:"bytes,4,opt,name=age,proto3,oneof" json:"age,omitempty"`
-	DateOfBirth   *FuzzyDate             `protobuf:"bytes,5,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
-	Description   *string                `protobuf:"bytes,6,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          *CharacterName         `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Image         *CharacterImage        `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *CharacterMin) Reset() {
+	*x = CharacterMin{}
+	mi := &file_media_character_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CharacterMin) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CharacterMin) ProtoMessage() {}
+
+func (x *CharacterMin) ProtoReflect() protoreflect.Message {
+	mi := &file_media_character_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CharacterMin.ProtoReflect.Descriptor instead.
+func (*CharacterMin) Descriptor() ([]byte, []int) {
+	return file_media_character_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CharacterMin) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *CharacterMin) GetName() *CharacterName {
+	if x != nil {
+		return x.Name
+	}
+	return nil
+}
+
+func (x *CharacterMin) GetImage() *CharacterImage {
+	if x != nil {
+		return x.Image
+	}
+	return nil
+}
+
+type CharacterMediaEdge struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CharacterRole *string                `protobuf:"bytes,1,opt,name=character_role,json=characterRole,proto3,oneof" json:"character_role,omitempty"`
+	Node          *MediaMin              `protobuf:"bytes,2,opt,name=node,proto3" json:"node,omitempty"`
+	VoiceActors   []*StaffMin            `protobuf:"bytes,3,rep,name=voice_actors,json=voiceActors,proto3" json:"voice_actors,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CharacterMediaEdge) Reset() {
+	*x = CharacterMediaEdge{}
+	mi := &file_media_character_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CharacterMediaEdge) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CharacterMediaEdge) ProtoMessage() {}
+
+func (x *CharacterMediaEdge) ProtoReflect() protoreflect.Message {
+	mi := &file_media_character_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CharacterMediaEdge.ProtoReflect.Descriptor instead.
+func (*CharacterMediaEdge) Descriptor() ([]byte, []int) {
+	return file_media_character_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *CharacterMediaEdge) GetCharacterRole() string {
+	if x != nil && x.CharacterRole != nil {
+		return *x.CharacterRole
+	}
+	return ""
+}
+
+func (x *CharacterMediaEdge) GetNode() *MediaMin {
+	if x != nil {
+		return x.Node
+	}
+	return nil
+}
+
+func (x *CharacterMediaEdge) GetVoiceActors() []*StaffMin {
+	if x != nil {
+		return x.VoiceActors
+	}
+	return nil
+}
+
+type CharacterMediaConnection struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Edges         []*CharacterMediaEdge  `protobuf:"bytes,1,rep,name=edges,proto3" json:"edges,omitempty"`
+	PageInfo      *PageInfo              `protobuf:"bytes,2,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CharacterMediaConnection) Reset() {
+	*x = CharacterMediaConnection{}
+	mi := &file_media_character_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CharacterMediaConnection) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CharacterMediaConnection) ProtoMessage() {}
+
+func (x *CharacterMediaConnection) ProtoReflect() protoreflect.Message {
+	mi := &file_media_character_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CharacterMediaConnection.ProtoReflect.Descriptor instead.
+func (*CharacterMediaConnection) Descriptor() ([]byte, []int) {
+	return file_media_character_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *CharacterMediaConnection) GetEdges() []*CharacterMediaEdge {
+	if x != nil {
+		return x.Edges
+	}
+	return nil
+}
+
+func (x *CharacterMediaConnection) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+type Character struct {
+	state              protoimpl.MessageState    `protogen:"open.v1"`
+	Name               *CharacterName            `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Image              *CharacterImage           `protobuf:"bytes,2,opt,name=image,proto3" json:"image,omitempty"`
+	Gender             *string                   `protobuf:"bytes,3,opt,name=gender,proto3,oneof" json:"gender,omitempty"`
+	Age                *string                   `protobuf:"bytes,4,opt,name=age,proto3,oneof" json:"age,omitempty"`
+	DateOfBirth        *FuzzyDate                `protobuf:"bytes,5,opt,name=date_of_birth,json=dateOfBirth,proto3" json:"date_of_birth,omitempty"`
+	Description        *string                   `protobuf:"bytes,6,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Id                 *int32                    `protobuf:"varint,7,opt,name=id,proto3,oneof" json:"id,omitempty"`
+	BloodType          *string                   `protobuf:"bytes,8,opt,name=blood_type,json=bloodType,proto3,oneof" json:"blood_type,omitempty"`
+	Favourites         *int32                    `protobuf:"varint,9,opt,name=favourites,proto3,oneof" json:"favourites,omitempty"`
+	IsFavourite        *bool                     `protobuf:"varint,10,opt,name=is_favourite,json=isFavourite,proto3,oneof" json:"is_favourite,omitempty"`
+	SiteUrl            *string                   `protobuf:"bytes,11,opt,name=site_url,json=siteUrl,proto3,oneof" json:"site_url,omitempty"`
+	Media              *CharacterMediaConnection `protobuf:"bytes,12,opt,name=media,proto3" json:"media,omitempty"`
+	IsFavouriteBlocked *bool                     `protobuf:"varint,13,opt,name=is_favourite_blocked,json=isFavouriteBlocked,proto3,oneof" json:"is_favourite_blocked,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
 func (x *Character) Reset() {
 	*x = Character{}
-	mi := &file_media_character_proto_msgTypes[2]
+	mi := &file_media_character_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -175,7 +354,7 @@ func (x *Character) String() string {
 func (*Character) ProtoMessage() {}
 
 func (x *Character) ProtoReflect() protoreflect.Message {
-	mi := &file_media_character_proto_msgTypes[2]
+	mi := &file_media_character_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -188,7 +367,7 @@ func (x *Character) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Character.ProtoReflect.Descriptor instead.
 func (*Character) Descriptor() ([]byte, []int) {
-	return file_media_character_proto_rawDescGZIP(), []int{2}
+	return file_media_character_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Character) GetName() *CharacterName {
@@ -233,20 +412,68 @@ func (x *Character) GetDescription() string {
 	return ""
 }
 
+func (x *Character) GetId() int32 {
+	if x != nil && x.Id != nil {
+		return *x.Id
+	}
+	return 0
+}
+
+func (x *Character) GetBloodType() string {
+	if x != nil && x.BloodType != nil {
+		return *x.BloodType
+	}
+	return ""
+}
+
+func (x *Character) GetFavourites() int32 {
+	if x != nil && x.Favourites != nil {
+		return *x.Favourites
+	}
+	return 0
+}
+
+func (x *Character) GetIsFavourite() bool {
+	if x != nil && x.IsFavourite != nil {
+		return *x.IsFavourite
+	}
+	return false
+}
+
+func (x *Character) GetSiteUrl() string {
+	if x != nil && x.SiteUrl != nil {
+		return *x.SiteUrl
+	}
+	return ""
+}
+
+func (x *Character) GetMedia() *CharacterMediaConnection {
+	if x != nil {
+		return x.Media
+	}
+	return nil
+}
+
+func (x *Character) GetIsFavouriteBlocked() bool {
+	if x != nil && x.IsFavouriteBlocked != nil {
+		return *x.IsFavouriteBlocked
+	}
+	return false
+}
+
 type CharacterEdge struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Role          string                 `protobuf:"bytes,2,opt,name=role,proto3" json:"role,omitempty"`
 	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Node          *Character             `protobuf:"bytes,4,opt,name=node,proto3" json:"node,omitempty"`
-	VoiceActors   []*StaffMin            `protobuf:"bytes,5,rep,name=voice_actors,json=voiceActors,proto3" json:"voice_actors,omitempty"`
+	Node          *CharacterMin          `protobuf:"bytes,4,opt,name=node,proto3" json:"node,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CharacterEdge) Reset() {
 	*x = CharacterEdge{}
-	mi := &file_media_character_proto_msgTypes[3]
+	mi := &file_media_character_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -258,7 +485,7 @@ func (x *CharacterEdge) String() string {
 func (*CharacterEdge) ProtoMessage() {}
 
 func (x *CharacterEdge) ProtoReflect() protoreflect.Message {
-	mi := &file_media_character_proto_msgTypes[3]
+	mi := &file_media_character_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -271,7 +498,7 @@ func (x *CharacterEdge) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CharacterEdge.ProtoReflect.Descriptor instead.
 func (*CharacterEdge) Descriptor() ([]byte, []int) {
-	return file_media_character_proto_rawDescGZIP(), []int{3}
+	return file_media_character_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CharacterEdge) GetId() int32 {
@@ -295,16 +522,9 @@ func (x *CharacterEdge) GetName() string {
 	return ""
 }
 
-func (x *CharacterEdge) GetNode() *Character {
+func (x *CharacterEdge) GetNode() *CharacterMin {
 	if x != nil {
 		return x.Node
-	}
-	return nil
-}
-
-func (x *CharacterEdge) GetVoiceActors() []*StaffMin {
-	if x != nil {
-		return x.VoiceActors
 	}
 	return nil
 }
@@ -319,7 +539,7 @@ type CharacterConnection struct {
 
 func (x *CharacterConnection) Reset() {
 	*x = CharacterConnection{}
-	mi := &file_media_character_proto_msgTypes[4]
+	mi := &file_media_character_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -331,7 +551,7 @@ func (x *CharacterConnection) String() string {
 func (*CharacterConnection) ProtoMessage() {}
 
 func (x *CharacterConnection) ProtoReflect() protoreflect.Message {
-	mi := &file_media_character_proto_msgTypes[4]
+	mi := &file_media_character_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -344,7 +564,7 @@ func (x *CharacterConnection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CharacterConnection.ProtoReflect.Descriptor instead.
 func (*CharacterConnection) Descriptor() ([]byte, []int) {
-	return file_media_character_proto_rawDescGZIP(), []int{4}
+	return file_media_character_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CharacterConnection) GetEdges() []*CharacterEdge {
@@ -365,7 +585,7 @@ var File_media_character_proto protoreflect.FileDescriptor
 
 const file_media_character_proto_rawDesc = "" +
 	"\n" +
-	"\x15media_character.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\x11media_staff.proto\"\xdd\x01\n" +
+	"\x15media_character.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\x0fmedia_min.proto\x1a\x11media_staff.proto\"\xdd\x01\n" +
 	"\rCharacterName\x12\x12\n" +
 	"\x04full\x18\x01 \x01(\tR\x04full\x12\x1b\n" +
 	"\x06native\x18\x02 \x01(\tH\x00R\x06native\x88\x01\x01\x12*\n" +
@@ -378,23 +598,51 @@ const file_media_character_proto_rawDesc = "" +
 	"\x05large\x18\x01 \x01(\tH\x00R\x05large\x88\x01\x01\x12\x1b\n" +
 	"\x06medium\x18\x02 \x01(\tH\x01R\x06medium\x88\x01\x01B\b\n" +
 	"\x06_largeB\t\n" +
-	"\a_medium\"\xa2\x02\n" +
+	"\a_medium\"}\n" +
+	"\fCharacterMin\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12,\n" +
+	"\x04name\x18\x02 \x01(\v2\x18.goodanime.CharacterNameR\x04name\x12/\n" +
+	"\x05image\x18\x03 \x01(\v2\x19.goodanime.CharacterImageR\x05image\"\xb4\x01\n" +
+	"\x12CharacterMediaEdge\x12*\n" +
+	"\x0echaracter_role\x18\x01 \x01(\tH\x00R\rcharacterRole\x88\x01\x01\x12'\n" +
+	"\x04node\x18\x02 \x01(\v2\x13.goodanime.MediaMinR\x04node\x126\n" +
+	"\fvoice_actors\x18\x03 \x03(\v2\x13.goodanime.StaffMinR\vvoiceActorsB\x11\n" +
+	"\x0f_character_role\"\x81\x01\n" +
+	"\x18CharacterMediaConnection\x123\n" +
+	"\x05edges\x18\x01 \x03(\v2\x1d.goodanime.CharacterMediaEdgeR\x05edges\x120\n" +
+	"\tpage_info\x18\x02 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\"\x96\x05\n" +
 	"\tCharacter\x12,\n" +
 	"\x04name\x18\x01 \x01(\v2\x18.goodanime.CharacterNameR\x04name\x12/\n" +
 	"\x05image\x18\x02 \x01(\v2\x19.goodanime.CharacterImageR\x05image\x12\x1b\n" +
 	"\x06gender\x18\x03 \x01(\tH\x00R\x06gender\x88\x01\x01\x12\x15\n" +
 	"\x03age\x18\x04 \x01(\tH\x01R\x03age\x88\x01\x01\x128\n" +
 	"\rdate_of_birth\x18\x05 \x01(\v2\x14.goodanime.FuzzyDateR\vdateOfBirth\x12%\n" +
-	"\vdescription\x18\x06 \x01(\tH\x02R\vdescription\x88\x01\x01B\t\n" +
+	"\vdescription\x18\x06 \x01(\tH\x02R\vdescription\x88\x01\x01\x12\x13\n" +
+	"\x02id\x18\a \x01(\x05H\x03R\x02id\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"blood_type\x18\b \x01(\tH\x04R\tbloodType\x88\x01\x01\x12#\n" +
+	"\n" +
+	"favourites\x18\t \x01(\x05H\x05R\n" +
+	"favourites\x88\x01\x01\x12&\n" +
+	"\fis_favourite\x18\n" +
+	" \x01(\bH\x06R\visFavourite\x88\x01\x01\x12\x1e\n" +
+	"\bsite_url\x18\v \x01(\tH\aR\asiteUrl\x88\x01\x01\x129\n" +
+	"\x05media\x18\f \x01(\v2#.goodanime.CharacterMediaConnectionR\x05media\x125\n" +
+	"\x14is_favourite_blocked\x18\r \x01(\bH\bR\x12isFavouriteBlocked\x88\x01\x01B\t\n" +
 	"\a_genderB\x06\n" +
 	"\x04_ageB\x0e\n" +
-	"\f_description\"\xa9\x01\n" +
+	"\f_descriptionB\x05\n" +
+	"\x03_idB\r\n" +
+	"\v_blood_typeB\r\n" +
+	"\v_favouritesB\x0f\n" +
+	"\r_is_favouriteB\v\n" +
+	"\t_site_urlB\x17\n" +
+	"\x15_is_favourite_blocked\"t\n" +
 	"\rCharacterEdge\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04role\x18\x02 \x01(\tR\x04role\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12(\n" +
-	"\x04node\x18\x04 \x01(\v2\x14.goodanime.CharacterR\x04node\x126\n" +
-	"\fvoice_actors\x18\x05 \x03(\v2\x13.goodanime.StaffMinR\vvoiceActors\"w\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12+\n" +
+	"\x04node\x18\x04 \x01(\v2\x17.goodanime.CharacterMinR\x04node\"w\n" +
 	"\x13CharacterConnection\x12.\n" +
 	"\x05edges\x18\x01 \x03(\v2\x18.goodanime.CharacterEdgeR\x05edges\x120\n" +
 	"\tpage_info\x18\x02 \x01(\v2\x13.goodanime.PageInfoR\bpageInfoB\x19Z\x17goodanime/backend/protob\x06proto3"
@@ -411,30 +659,40 @@ func file_media_character_proto_rawDescGZIP() []byte {
 	return file_media_character_proto_rawDescData
 }
 
-var file_media_character_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_media_character_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_media_character_proto_goTypes = []any{
-	(*CharacterName)(nil),       // 0: goodanime.CharacterName
-	(*CharacterImage)(nil),      // 1: goodanime.CharacterImage
-	(*Character)(nil),           // 2: goodanime.Character
-	(*CharacterEdge)(nil),       // 3: goodanime.CharacterEdge
-	(*CharacterConnection)(nil), // 4: goodanime.CharacterConnection
-	(*FuzzyDate)(nil),           // 5: goodanime.FuzzyDate
-	(*StaffMin)(nil),            // 6: goodanime.StaffMin
-	(*PageInfo)(nil),            // 7: goodanime.PageInfo
+	(*CharacterName)(nil),            // 0: goodanime.CharacterName
+	(*CharacterImage)(nil),           // 1: goodanime.CharacterImage
+	(*CharacterMin)(nil),             // 2: goodanime.CharacterMin
+	(*CharacterMediaEdge)(nil),       // 3: goodanime.CharacterMediaEdge
+	(*CharacterMediaConnection)(nil), // 4: goodanime.CharacterMediaConnection
+	(*Character)(nil),                // 5: goodanime.Character
+	(*CharacterEdge)(nil),            // 6: goodanime.CharacterEdge
+	(*CharacterConnection)(nil),      // 7: goodanime.CharacterConnection
+	(*MediaMin)(nil),                 // 8: goodanime.MediaMin
+	(*StaffMin)(nil),                 // 9: goodanime.StaffMin
+	(*PageInfo)(nil),                 // 10: goodanime.PageInfo
+	(*FuzzyDate)(nil),                // 11: goodanime.FuzzyDate
 }
 var file_media_character_proto_depIdxs = []int32{
-	0, // 0: goodanime.Character.name:type_name -> goodanime.CharacterName
-	1, // 1: goodanime.Character.image:type_name -> goodanime.CharacterImage
-	5, // 2: goodanime.Character.date_of_birth:type_name -> goodanime.FuzzyDate
-	2, // 3: goodanime.CharacterEdge.node:type_name -> goodanime.Character
-	6, // 4: goodanime.CharacterEdge.voice_actors:type_name -> goodanime.StaffMin
-	3, // 5: goodanime.CharacterConnection.edges:type_name -> goodanime.CharacterEdge
-	7, // 6: goodanime.CharacterConnection.page_info:type_name -> goodanime.PageInfo
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	0,  // 0: goodanime.CharacterMin.name:type_name -> goodanime.CharacterName
+	1,  // 1: goodanime.CharacterMin.image:type_name -> goodanime.CharacterImage
+	8,  // 2: goodanime.CharacterMediaEdge.node:type_name -> goodanime.MediaMin
+	9,  // 3: goodanime.CharacterMediaEdge.voice_actors:type_name -> goodanime.StaffMin
+	3,  // 4: goodanime.CharacterMediaConnection.edges:type_name -> goodanime.CharacterMediaEdge
+	10, // 5: goodanime.CharacterMediaConnection.page_info:type_name -> goodanime.PageInfo
+	0,  // 6: goodanime.Character.name:type_name -> goodanime.CharacterName
+	1,  // 7: goodanime.Character.image:type_name -> goodanime.CharacterImage
+	11, // 8: goodanime.Character.date_of_birth:type_name -> goodanime.FuzzyDate
+	4,  // 9: goodanime.Character.media:type_name -> goodanime.CharacterMediaConnection
+	2,  // 10: goodanime.CharacterEdge.node:type_name -> goodanime.CharacterMin
+	6,  // 11: goodanime.CharacterConnection.edges:type_name -> goodanime.CharacterEdge
+	10, // 12: goodanime.CharacterConnection.page_info:type_name -> goodanime.PageInfo
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_media_character_proto_init() }
@@ -443,17 +701,19 @@ func file_media_character_proto_init() {
 		return
 	}
 	file_common_proto_init()
+	file_media_min_proto_init()
 	file_media_staff_proto_init()
 	file_media_character_proto_msgTypes[0].OneofWrappers = []any{}
 	file_media_character_proto_msgTypes[1].OneofWrappers = []any{}
-	file_media_character_proto_msgTypes[2].OneofWrappers = []any{}
+	file_media_character_proto_msgTypes[3].OneofWrappers = []any{}
+	file_media_character_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_media_character_proto_rawDesc), len(file_media_character_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
