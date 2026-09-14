@@ -77,11 +77,11 @@ class _MediaListTabState extends State<MediaListTab>
 
     _sortMenuController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: kAnimStandard,
     );
     _sortMenuAnimation = CurvedAnimation(
       parent: _sortMenuController,
-      curve: Curves.easeInOut,
+      curve: kCurveSymmetric,
     );
     _iconsFade = CurvedAnimation(
       parent: _sortMenuController,

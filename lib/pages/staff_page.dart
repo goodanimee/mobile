@@ -218,11 +218,6 @@ class _StaffPageState extends State<StaffPage> {
     }
   }
 
-  void _handleNavTap(int index) {
-    AppNavigation.currentTab.value = index;
-    Navigator.of(context).popUntil((route) => route.isFirst);
-  }
-
   Widget _buildActiveTab() {
     if (_isLoading) {
       return const Padding(
@@ -286,8 +281,8 @@ class _StaffPageState extends State<StaffPage> {
           setState(() => _selectedTabIndex = 0);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -299,8 +294,8 @@ class _StaffPageState extends State<StaffPage> {
           setState(() => _selectedTabIndex = 1);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -312,8 +307,8 @@ class _StaffPageState extends State<StaffPage> {
           setState(() => _selectedTabIndex = 2);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -371,7 +366,7 @@ class _StaffPageState extends State<StaffPage> {
             right: 20,
             child: FloatingNav(
               selectedIndex: -1,
-              onTap: _handleNavTap,
+              onTap: (index) => AppNavigation.handleNavTap(context, index),
               quickNavSections: quickNavItems,
             ),
           ),

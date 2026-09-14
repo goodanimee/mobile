@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mix/mix.dart';
 
+export 'animations.dart';
 export 'typography.dart';
 
 /// Primary brand red

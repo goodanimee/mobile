@@ -212,11 +212,6 @@ class _CharacterPageState extends State<CharacterPage> {
     }
   }
 
-  void _handleNavTap(int index) {
-    AppNavigation.currentTab.value = index;
-    Navigator.of(context).popUntil((route) => route.isFirst);
-  }
-
   Widget _buildActiveTab() {
     if (_isLoading && _character == null) {
       return const Padding(
@@ -289,8 +284,8 @@ class _CharacterPageState extends State<CharacterPage> {
           setState(() => _selectedTabIndex = 0);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -302,8 +297,8 @@ class _CharacterPageState extends State<CharacterPage> {
           setState(() => _selectedTabIndex = 1);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -362,7 +357,7 @@ class _CharacterPageState extends State<CharacterPage> {
                 ),
                 FloatingNav(
                   selectedIndex: -1,
-                  onTap: _handleNavTap,
+                  onTap: (index) => AppNavigation.handleNavTap(context, index),
                   quickNavSections: quickNavItems,
                 ),
               ],

@@ -98,11 +98,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     AppNavigation.pendingFiltersVersion.addListener(_checkPendingFilters);
     _sortMenuController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: kAnimStandard,
     );
     _sortMenuAnimation = CurvedAnimation(
       parent: _sortMenuController,
-      curve: Curves.easeInOut,
+      curve: kCurveSymmetric,
     );
     _iconsFade = CurvedAnimation(
       parent: _sortMenuController,
@@ -110,11 +110,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     );
     _filtersController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: kAnimStandard,
     );
     _filtersAnimation = CurvedAnimation(
       parent: _filtersController,
-      curve: Curves.easeInOut,
+      curve: kCurveSymmetric,
     );
     _filtersController.value = 1.0;
 

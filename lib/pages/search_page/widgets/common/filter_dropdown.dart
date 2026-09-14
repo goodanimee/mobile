@@ -49,9 +49,9 @@ class _FilterDropdownState extends State<FilterDropdown>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: kAnimStandard,
     );
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+    _animation = CurvedAnimation(parent: _controller, curve: kCurveSymmetric);
     _fadeAnimation = CurvedAnimation(
       parent: _controller,
       curve: const Interval(0.5, 1.0, curve: Curves.easeIn),

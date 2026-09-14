@@ -77,9 +77,9 @@ class AppRelationCard extends StatelessWidget {
       width: 85,
       height: double.infinity,
       child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        switchInCurve: Curves.easeIn,
-        switchOutCurve: Curves.easeOut,
+        duration: kAnimStandard,
+        switchInCurve: kCurveEnter,
+        switchOutCurve: kCurveExit,
         child: AppNetworkImage(
           key: ValueKey<String?>(rightImageUrl),
           imageUrl: rightImageUrl!,

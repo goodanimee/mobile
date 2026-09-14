@@ -24,16 +24,16 @@ class CharacterLanguageFab extends StatelessWidget {
     final double iconSize = getResponsiveSize(context, 22.0);
 
     return AnimatedSize(
-      duration: const Duration(milliseconds: 250),
-      curve: Curves.easeInOut,
+      duration: kAnimStandard,
+      curve: kCurveSymmetric,
       child: AnimatedScale(
         scale: isVisible ? 1.0 : 0.0,
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
+        duration: kAnimStandard,
+        curve: kCurveSymmetric,
         child: AnimatedOpacity(
           opacity: isVisible ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeInOut,
+          duration: kAnimFast,
+          curve: kCurveSymmetric,
           child: isVisible
               ? Padding(
                   padding: const EdgeInsets.only(bottom: 8),

@@ -55,7 +55,7 @@ class StickyHeader extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
+          duration: kAnimFast,
           height: topPadding + 56,
           padding: EdgeInsets.only(top: topPadding),
           decoration: BoxDecoration(
@@ -90,7 +90,7 @@ class StickyHeader extends StatelessWidget {
                 right: 16,
                 child: AnimatedOpacity(
                   opacity: showStickyBar ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 200),
+                  duration: kAnimFast,
                   child: Center(
                     child: Row(
                       children: [

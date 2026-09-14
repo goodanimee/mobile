@@ -159,7 +159,7 @@ class _CounterEditorState extends State<CounterEditor> {
                         : null,
                     behavior: HitTestBehavior.opaque,
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
+                      duration: kAnimFast,
                       width: buttonSize,
                       height: buttonSize,
                       decoration: BoxDecoration(
@@ -224,7 +224,7 @@ class _CounterEditorState extends State<CounterEditor> {
                                 )
                               : ClipRect(
                                   child: AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 250),
+                                    duration: kAnimStandard,
                                     transitionBuilder:
                                         (
                                           Widget child,
@@ -256,7 +256,7 @@ class _CounterEditorState extends State<CounterEditor> {
                                               ).animate(
                                                 CurvedAnimation(
                                                   parent: animation,
-                                                  curve: Curves.easeInOutCubic,
+                                                  curve: kCurveSymmetric,
                                                 ),
                                               );
 
@@ -299,7 +299,7 @@ class _CounterEditorState extends State<CounterEditor> {
                     onTap: () => widget.onChanged(widget.value + 1),
                     behavior: HitTestBehavior.opaque,
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
+                      duration: kAnimFast,
                       width: buttonSize,
                       height: buttonSize,
                       decoration: BoxDecoration(

@@ -128,12 +128,6 @@ class _MediaPageState extends State<MediaPage> {
     }
   }
 
-  /// Handles navigation bar taps
-  void _handleNavTap(int index) {
-    AppNavigation.currentTab.value = index;
-    Navigator.of(context).popUntil((route) => route.isFirst);
-  }
-
   /// Shows the media options bottom sheet
   Future<void> _showItemOptions() async {
     if (_mediaData == null) return;
@@ -275,8 +269,8 @@ class _MediaPageState extends State<MediaPage> {
           setState(() => _selectedTabIndex = 0);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -288,8 +282,8 @@ class _MediaPageState extends State<MediaPage> {
           setState(() => _selectedTabIndex = 1);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -301,8 +295,8 @@ class _MediaPageState extends State<MediaPage> {
           setState(() => _selectedTabIndex = 2);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -314,8 +308,8 @@ class _MediaPageState extends State<MediaPage> {
           setState(() => _selectedTabIndex = 3);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -327,8 +321,8 @@ class _MediaPageState extends State<MediaPage> {
           setState(() => _selectedTabIndex = 4);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -340,8 +334,8 @@ class _MediaPageState extends State<MediaPage> {
           setState(() => _selectedTabIndex = 5);
           _scrollController.animateTo(
             0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
           );
         },
       ),
@@ -398,7 +392,7 @@ class _MediaPageState extends State<MediaPage> {
                   const SizedBox(height: 8),
                   FloatingNav(
                     selectedIndex: -1,
-                    onTap: _handleNavTap,
+                    onTap: (index) => AppNavigation.handleNavTap(context, index),
                     quickNavSections: quickNavItems,
                   ),
                 ],

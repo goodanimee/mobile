@@ -36,7 +36,7 @@ const _navItems = [
 const _fabSize = 52.0;
 const _navBarWidth = 360.0;
 const _gap = 8.0;
-const _duration = Duration(milliseconds: 300);
+const _duration = kAnimStandard;
 
 final _boxDecoration = BoxDecoration(
   color: bgColor,
@@ -93,7 +93,7 @@ class _FloatingNavState extends State<FloatingNav>
     _controller = AnimationController(vsync: this, duration: _duration);
     _widthFactor = CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeInOut,
+      curve: kCurveSymmetric,
     );
     _iconsFade = CurvedAnimation(
       parent: _controller,
@@ -168,7 +168,7 @@ class _FloatingNavState extends State<FloatingNav>
         behavior: HitTestBehavior.opaque,
         child: Center(
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
+            duration: kAnimFast,
             transitionBuilder: (child, anim) =>
                 ScaleTransition(scale: anim, child: child),
             child: Icon(
@@ -197,7 +197,7 @@ class _FloatingNavState extends State<FloatingNav>
         behavior: HitTestBehavior.opaque,
         child: Center(
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
+            duration: kAnimFast,
             transitionBuilder: (child, anim) =>
                 ScaleTransition(scale: anim, child: child),
             child: Icon(
