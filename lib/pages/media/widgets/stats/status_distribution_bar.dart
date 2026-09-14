@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../models/common.dart';
-import '../../../theme/theme.dart';
+import '../../../../models/common.dart';
+import '../../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
 /// A widget displaying a horizontal bar showing the status distribution of an anime

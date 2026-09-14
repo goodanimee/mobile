@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../components/section.dart';
-import '../../../theme/theme.dart';
+import '../../../../components/section.dart';
+import '../../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
 /// A widget displaying a line chart of various anime trends

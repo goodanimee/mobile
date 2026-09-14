@@ -12,7 +12,7 @@ import '../../../models/media_activity.dart';
 import '../../../models/media_review.dart';
 import '../../../services/media_service.dart';
 import '../../../theme/theme.dart';
-import '../widgets/review_sheet.dart';
+import '../widgets/social/review_sheet.dart';
 
 /// Tab displaying paginated reviews for a media item
 class MediaReviewsTab extends StatefulWidget {

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../components/app_network_image.dart';
-import '../../../models/media.dart';
-import '../../../theme/theme.dart';
-import '../../../utils/utils.dart';
+import '../../../../components/app_network_image.dart';
+import '../../../../models/media.dart';
+import '../../../../theme/theme.dart';
+import '../../../../utils/utils.dart';
 
 /// Header component for the media details page
-class MediaPageHeader extends StatelessWidget {
+class MediaHeader extends StatelessWidget {
   /// The media data
   final Media media;
 
   /// Creates a media page header
-  const MediaPageHeader({super.key, required this.media});
+  const MediaHeader({super.key, required this.media});
 
   @override
   /// Builds the media page header widget

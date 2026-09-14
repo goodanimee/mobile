@@ -20,9 +20,9 @@ import 'tabs/placeholder_tab.dart';
 import 'tabs/rankings_tab.dart';
 import 'tabs/relations_tab.dart';
 import 'tabs/reviews_tab.dart';
-import 'widgets/edit_entry_fab.dart';
-import 'widgets/media_page_header.dart';
-import 'widgets/sticky_header.dart';
+import 'widgets/layout/edit_entry_fab.dart';
+import 'widgets/layout/header.dart';
+import 'widgets/layout/sticky_header.dart';
 
 /// A page displaying detailed information about a media item
 class MediaPage extends StatefulWidget {
@@ -289,7 +289,7 @@ class _MediaPageState extends State<MediaPage> {
                 controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
-                  SliverToBoxAdapter(child: MediaPageHeader(media: media)),
+                  SliverToBoxAdapter(child: MediaHeader(media: media)),
                   SliverToBoxAdapter(child: _buildActiveTab(media)),
                   const SliverToBoxAdapter(child: SizedBox(height: 128)),
                 ],

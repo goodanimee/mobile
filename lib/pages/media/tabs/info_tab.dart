@@ -11,7 +11,7 @@ import '../../../models/media_misc.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../utils/utils.dart';
-import '../widgets/airing_countdown.dart';
+import '../widgets/info/airing_countdown.dart';
 
 /// A tab displaying general information and synopsis for a media item
 class MediaInfoTab extends StatelessWidget {

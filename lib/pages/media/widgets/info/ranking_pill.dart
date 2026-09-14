@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../components/lucide_icons_helper.dart';
-import '../../../theme/theme.dart';
+import '../../../../components/lucide_icons_helper.dart';
+import '../../../../theme/theme.dart';
 
 /// A pill-shaped widget displaying ranking information for an anime
 class RankingPill extends StatelessWidget {

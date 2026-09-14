@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../components/lucide_icons_helper.dart';
-import '../../../models/media.dart';
-import '../../../theme/theme.dart';
+import '../../../../components/lucide_icons_helper.dart';
+import '../../../../models/media.dart';
+import '../../../../theme/theme.dart';
 
 /// A sticky app bar header widget for the media details page
 class StickyHeader extends StatelessWidget {

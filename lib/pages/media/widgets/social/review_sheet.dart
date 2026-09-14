@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../components/app_network_image.dart';
-import '../../../components/html_description.dart';
-import '../../../components/lucide_icons_helper.dart';
-import '../../../models/media_review.dart';
-import '../../../services/media_service.dart';
-import '../../../theme/theme.dart';
+import '../../../../components/app_network_image.dart';
+import '../../../../components/html_description.dart';
+import '../../../../components/lucide_icons_helper.dart';
+import '../../../../models/media_review.dart';
+import '../../../../services/media_service.dart';
+import '../../../../theme/theme.dart';
 
 /// A bottom sheet displaying details about a review
 class ReviewSheet extends StatefulWidget {

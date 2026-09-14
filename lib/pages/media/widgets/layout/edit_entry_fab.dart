@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../theme/theme.dart';
+import '../../../../theme/theme.dart';
 
 /// Floating action button to trigger entry editing
 class EditEntryFab extends StatelessWidget {

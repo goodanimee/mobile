@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../theme/theme.dart';
+import '../../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
 /// A widget displaying a histogram of scores for an anime

@@ -4,11 +4,11 @@ import '../../../components/section.dart';
 import '../../../models/media.dart';
 import '../../../models/media_misc.dart';
 import '../../../theme/theme.dart';
-import '../widgets/ranking_pill.dart';
-import '../widgets/score_histogram.dart';
-import '../widgets/stat_tooltip.dart';
-import '../widgets/status_distribution_bar.dart';
-import '../widgets/trend_line_chart.dart';
+import '../widgets/info/ranking_pill.dart';
+import '../widgets/stats/score_histogram.dart';
+import '../widgets/stats/stat_tooltip.dart';
+import '../widgets/stats/status_distribution_bar.dart';
+import '../widgets/stats/trend_line_chart.dart';
 
 /// A tab displaying ranking and statistical information for a media item
 class MediaRankingsTab extends StatefulWidget {
