@@ -11,6 +11,8 @@ import '../theme/theme.dart';
 import '../utils/app_navigation.dart';
 import 'character_page/tabs/character_info_tab.dart';
 import 'character_page/tabs/character_media_tab.dart';
+import 'character_page/widgets/character_language_fab.dart';
+import 'character_page/widgets/character_language_sheet.dart';
 import 'character_page/widgets/character_sticky_header.dart';
 
 /// A page displaying details for a character
@@ -39,6 +41,7 @@ class _CharacterPageState extends State<CharacterPage> {
   int _mediaPage = 1;
   bool _hasNextMediaPage = false;
   bool _isFetchingMoreMedia = false;
+  String _selectedLanguage = 'Japanese';
 
   @override
   void initState() {
@@ -53,6 +56,44 @@ class _CharacterPageState extends State<CharacterPage> {
   }
 
   int? get _resolvedId => widget.characterId ?? widget.character?.id;
+
+  List<String> get _availableLanguages {
+    final edges = _character?.media?.edges ?? [];
+    final languages = <String>{};
+    for (final edge in edges) {
+      for (final va in edge.voiceActors) {
+        if (va.languageV2 != null && va.languageV2!.isNotEmpty) {
+          languages.add(va.languageV2!);
+        }
+      }
+    }
+    final list = languages.toList();
+    list.sort((a, b) {
+      if (a.toLowerCase() == 'japanese') return -1;
+      if (b.toLowerCase() == 'japanese') return 1;
+      return a.compareTo(b);
+    });
+    return list;
+  }
+
+  void _showLanguageSelector() {
+    final languages = _availableLanguages;
+    if (languages.isEmpty) return;
+
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CharacterLanguageSheet(
+        languages: languages,
+        selectedLanguage: _selectedLanguage,
+        onLanguageSelected: (language) {
+          setState(() {
+            _selectedLanguage = language;
+          });
+        },
+      ),
+    );
+  }
 
   void _onLoadMore() {
     if (_character == null || _isLoading) return;
@@ -217,6 +258,7 @@ class _CharacterPageState extends State<CharacterPage> {
         return CharacterMediaTab(
           character: _character!,
           isLoadingMore: _isFetchingMoreMedia,
+          selectedLanguage: _selectedLanguage,
         );
       default:
         return CharacterInfoTab(
@@ -309,10 +351,21 @@ class _CharacterPageState extends State<CharacterPage> {
           Positioned(
             bottom: 24,
             right: 20,
-            child: FloatingNav(
-              selectedIndex: -1,
-              onTap: _handleNavTap,
-              quickNavSections: quickNavItems,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CharacterLanguageFab(
+                  isVisible:
+                      _selectedTabIndex == 1 && _availableLanguages.isNotEmpty,
+                  onTap: _showLanguageSelector,
+                ),
+                FloatingNav(
+                  selectedIndex: -1,
+                  onTap: _handleNavTap,
+                  quickNavSections: quickNavItems,
+                ),
+              ],
             ),
           ),
         ],

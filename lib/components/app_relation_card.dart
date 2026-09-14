@@ -73,15 +73,25 @@ class AppRelationCard extends StatelessWidget {
   }
 
   Widget _buildRightImage() {
-    return AppNetworkImage(
-      imageUrl: rightImageUrl!,
+    return SizedBox(
       width: 85,
       height: double.infinity,
-      fallbackIcon: LucideIcons.clapperboard,
-      checkDefault: true,
-      borderRadius: const BorderRadius.only(
-        topRight: Radius.circular(11),
-        bottomRight: Radius.circular(11),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        switchInCurve: Curves.easeIn,
+        switchOutCurve: Curves.easeOut,
+        child: AppNetworkImage(
+          key: ValueKey<String?>(rightImageUrl),
+          imageUrl: rightImageUrl!,
+          width: 85,
+          height: double.infinity,
+          fallbackIcon: LucideIcons.clapperboard,
+          checkDefault: true,
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(11),
+            bottomRight: Radius.circular(11),
+          ),
+        ),
       ),
     );
   }
