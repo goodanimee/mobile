@@ -91,10 +91,7 @@ class _FloatingNavState extends State<FloatingNav>
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: _duration);
-    _widthFactor = CurvedAnimation(
-      parent: _controller,
-      curve: kCurveSymmetric,
-    );
+    _widthFactor = CurvedAnimation(parent: _controller, curve: kCurveSymmetric);
     _iconsFade = CurvedAnimation(
       parent: _controller,
       curve: const Interval(0.5, 1.0, curve: Curves.easeIn),

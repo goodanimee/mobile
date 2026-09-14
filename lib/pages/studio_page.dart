@@ -6,6 +6,7 @@ import '../components/error_view.dart';
 import '../components/loading_indicator.dart';
 import '../components/lucide_icons_helper.dart';
 import '../components/paged_scroll_listener.dart';
+import '../components/skeleton.dart';
 import '../models/media_min.dart';
 import '../models/media_studio.dart';
 import '../services/media_service.dart';
@@ -134,7 +135,7 @@ class _StudioPageState extends State<StudioPage> {
 
     Widget body;
     if (_isLoading) {
-      body = const AppLoadingIndicator();
+      body = Skeleton.list();
     } else if (_error != null || _studio == null) {
       body = AppErrorView(
         message: _error ?? 'Studio not found',

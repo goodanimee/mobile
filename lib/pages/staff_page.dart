@@ -3,8 +3,8 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../components/error_view.dart';
 import '../components/floating_nav.dart';
-import '../components/loading_indicator.dart';
 import '../components/paged_scroll_listener.dart';
+import '../components/skeleton.dart';
 import '../models/media_staff.dart';
 import '../services/media_service.dart';
 import '../theme/theme.dart';
@@ -220,10 +220,7 @@ class _StaffPageState extends State<StaffPage> {
 
   Widget _buildActiveTab() {
     if (_isLoading) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 80),
-        child: AppLoadingIndicator(topPadding: 0),
-      );
+      return Skeleton.tabContent();
     }
 
     if (_error != null || _staff == null) {

@@ -47,10 +47,7 @@ class _FilterDropdownState extends State<FilterDropdown>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: kAnimStandard,
-    );
+    _controller = AnimationController(vsync: this, duration: kAnimStandard);
     _animation = CurvedAnimation(parent: _controller, curve: kCurveSymmetric);
     _fadeAnimation = CurvedAnimation(
       parent: _controller,

@@ -4,7 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../components/error_view.dart';
 import '../components/floating_nav.dart';
-import '../components/loading_indicator.dart';
+import '../components/skeleton.dart';
 import '../models/media.dart';
 import '../models/media_list.dart';
 import '../models/media_list_entry.dart';
@@ -238,10 +238,7 @@ class _MediaPageState extends State<MediaPage> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        backgroundColor: bgColor,
-        body: AppLoadingIndicator(),
-      );
+      return Scaffold(backgroundColor: bgColor, body: Skeleton.detailPage());
     }
 
     if (_error != null || _mediaData == null) {
@@ -392,7 +389,8 @@ class _MediaPageState extends State<MediaPage> {
                   const SizedBox(height: 8),
                   FloatingNav(
                     selectedIndex: -1,
-                    onTap: (index) => AppNavigation.handleNavTap(context, index),
+                    onTap: (index) =>
+                        AppNavigation.handleNavTap(context, index),
                     quickNavSections: quickNavItems,
                   ),
                 ],

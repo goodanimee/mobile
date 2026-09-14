@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../components/skeleton.dart';
 import '../components/user_profile.dart';
 import '../models/viewer.dart';
 import '../services/auth_service.dart';
@@ -72,11 +73,15 @@ class _ProfilePageState extends State<ProfilePage> {
   /// Builds the profile page widget
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _isLoading
-            ? const CircularProgressIndicator(color: borderColor)
-            : UserProfile(userData: _userData!, onSignOut: _handleSignOut),
-      ),
+      backgroundColor: bgColor,
+      body: _isLoading
+          ? Skeleton.profile()
+          : Center(
+              child: UserProfile(
+                userData: _userData!,
+                onSignOut: _handleSignOut,
+              ),
+            ),
     );
   }
 }

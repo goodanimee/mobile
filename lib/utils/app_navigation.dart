@@ -39,12 +39,7 @@ class AppNavigation {
             position: Tween<Offset>(
               begin: const Offset(0.05, 0),
               end: Offset.zero,
-            ).animate(
-              CurvedAnimation(
-                parent: animation,
-                curve: kCurveEnter,
-              ),
-            ),
+            ).animate(CurvedAnimation(parent: animation, curve: kCurveEnter)),
             child: child,
           ),
         );
