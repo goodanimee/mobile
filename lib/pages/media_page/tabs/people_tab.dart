@@ -235,12 +235,12 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
                         name: fullName,
                         nativeName: nativeName,
                         subtitle: role,
-                        trailing: Icon(
-                          LucideIcons.badgeInfo,
-                          size: getResponsiveSize(context, 14.0),
-                          color: Colors.white.withValues(alpha: 0.25),
-                        ),
-                        onTap: () => AppNavigation.toCharacter(context, edge),
+                        onTap: node != null
+                            ? () => AppNavigation.toCharacter(
+                                context,
+                                character: node,
+                              )
+                            : null,
                       );
                     },
                   ),

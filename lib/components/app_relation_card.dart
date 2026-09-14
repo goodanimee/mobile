@@ -38,6 +38,9 @@ class AppRelationCard extends StatelessWidget {
   /// Callback when tapped
   final VoidCallback? onTap;
 
+  /// Optional callback when the right image is tapped
+  final VoidCallback? onRightTap;
+
   /// Creates a relation card
   const AppRelationCard({
     super.key,
@@ -52,151 +55,218 @@ class AppRelationCard extends StatelessWidget {
     this.color,
     this.trailing,
     this.onTap,
+    this.onRightTap,
   });
+
+  Widget _buildLeftImage() {
+    return AppNetworkImage(
+      imageUrl: imageUrl,
+      width: 85,
+      height: double.infinity,
+      fallbackIcon: LucideIcons.clapperboard,
+      checkDefault: true,
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(11),
+        bottomLeft: Radius.circular(11),
+      ),
+    );
+  }
+
+  Widget _buildRightImage() {
+    return SizedBox(
+      width: 85,
+      height: double.infinity,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        switchInCurve: Curves.easeIn,
+        switchOutCurve: Curves.easeOut,
+        child: AppNetworkImage(
+          key: ValueKey<String?>(rightImageUrl),
+          imageUrl: rightImageUrl!,
+          width: 85,
+          height: double.infinity,
+          fallbackIcon: LucideIcons.clapperboard,
+          checkDefault: true,
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(11),
+            bottomRight: Radius.circular(11),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextColumn() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                title,
+                maxLines: format != null ? 1 : 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  height: 1.2,
+                ),
+              ),
+              if (nativeTitle != null &&
+                  nativeTitle!.isNotEmpty &&
+                  nativeTitle != title) ...[
+                const SizedBox(height: 2),
+                Text(
+                  nativeTitle!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.5),
+                    fontSize: 15,
+                    height: 1.2,
+                  ),
+                ),
+              ],
+              if (format != null && format!.isNotEmpty) ...[
+                const SizedBox(height: 2),
+                Text(
+                  format!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.7),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    height: 1.2,
+                  ),
+                ),
+              ],
+            ],
+          ),
+          const Spacer(),
+          Row(
+            mainAxisAlignment: rightAlignSubtitle
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
+            children: [
+              Flexible(
+                child: Text(
+                  subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: rightAlignSubtitle
+                      ? TextAlign.end
+                      : TextAlign.start,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.7),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    height: 1.2,
+                  ),
+                ),
+              ),
+              if (subtitleIcon != null) ...[
+                const SizedBox(width: 4),
+                subtitleIcon!,
+              ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
+    final hasRightImage = rightImageUrl != null && rightImageUrl!.isNotEmpty;
+    final isDualTap = onRightTap != null && hasRightImage;
+
+    final cardDecoration = BoxDecoration(
+      gradient: color != null
+          ? LinearGradient(
+              colors: [
+                color!.withValues(alpha: 0.15),
+                Color.lerp(color!.withValues(alpha: 0.15), hoverBgColor, 0.75)!,
+              ],
+            )
+          : null,
+      color: color == null ? Colors.white.withValues(alpha: 0.03) : null,
       borderRadius: BorderRadius.circular(12),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: color != null
-              ? LinearGradient(
-                  colors: [
-                    color!.withValues(alpha: 0.15),
-                    Color.lerp(
-                      color!.withValues(alpha: 0.15),
-                      hoverBgColor,
-                      0.75,
-                    )!,
-                  ],
-                )
-              : null,
-          color: color == null ? Colors.white.withValues(alpha: 0.03) : null,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: color != null
-                ? color!.withValues(alpha: 0.2)
-                : Colors.white12,
-          ),
-        ),
+      border: Border.all(
+        color: color != null ? color!.withValues(alpha: 0.2) : Colors.white12,
+      ),
+    );
+
+    if (isDualTap) {
+      return Container(
+        decoration: cardDecoration,
+        clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                AppNetworkImage(
-                  imageUrl: imageUrl,
-                  width: 85,
-                  height: double.infinity,
-                  fallbackIcon: LucideIcons.clapperboard,
-                  checkDefault: true,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(11),
-                    bottomLeft: Radius.circular(11),
-                  ),
-                ),
-                const SizedBox(width: 12),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 8,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              title,
-                              maxLines: format != null ? 1 : 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                height: 1.2,
-                              ),
-                            ),
-                            if (nativeTitle != null &&
-                                nativeTitle!.isNotEmpty &&
-                                nativeTitle != title) ...[
-                              const SizedBox(height: 2),
-                              Text(
-                                nativeTitle!,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.5),
-                                  fontSize: 15,
-                                  height: 1.2,
-                                ),
-                              ),
-                            ],
-                            if (format != null && format!.isNotEmpty) ...[
-                              const SizedBox(height: 2),
-                              Text(
-                                format!,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.7),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.2,
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                        const Spacer(),
-                        Row(
-                          mainAxisAlignment: rightAlignSubtitle
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                subtitle,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: rightAlignSubtitle
-                                    ? TextAlign.end
-                                    : TextAlign.start,
-                                style: TextStyle(
-                                  color: Colors.white.withValues(alpha: 0.7),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.2,
-                                ),
-                              ),
-                            ),
-                            if (subtitleIcon != null) ...[
-                              const SizedBox(width: 4),
-                              subtitleIcon!,
-                            ],
-                          ],
-                        ),
-                      ],
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: onTap,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(11),
+                        bottomLeft: Radius.circular(11),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _buildLeftImage(),
+                          const SizedBox(width: 12),
+                          Expanded(child: _buildTextColumn()),
+                          const SizedBox(width: 12),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                if (rightImageUrl != null && rightImageUrl!.isNotEmpty) ...[
-                  const SizedBox(width: 12),
-                  AppNetworkImage(
-                    imageUrl: rightImageUrl!,
-                    width: 85,
-                    height: double.infinity,
-                    fallbackIcon: LucideIcons.clapperboard,
-                    checkDefault: true,
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: onRightTap,
                     borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(11),
                       bottomRight: Radius.circular(11),
                     ),
+                    child: _buildRightImage(),
                   ),
+                ),
+              ],
+            ),
+            if (trailing != null)
+              Positioned(bottom: 8, right: 8, child: trailing!),
+          ],
+        ),
+      );
+    }
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        decoration: cardDecoration,
+        child: Stack(
+          children: [
+            Row(
+              children: [
+                _buildLeftImage(),
+                const SizedBox(width: 12),
+                Expanded(child: _buildTextColumn()),
+                if (hasRightImage) ...[
+                  const SizedBox(width: 12),
+                  _buildRightImage(),
                 ],
               ],
             ),

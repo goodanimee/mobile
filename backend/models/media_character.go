@@ -27,19 +27,72 @@ func (i *CharacterImage) ToProto() *pb.CharacterImage {
 	}
 }
 
+// ToProto converts CharacterMin to its protobuf representation.
+func (c *CharacterMin) ToProto() *pb.CharacterMin {
+	if c == nil {
+		return nil
+	}
+	return &pb.CharacterMin{
+		Id:    c.ID,
+		Name:  c.Name.ToProto(),
+		Image: c.Image.ToProto(),
+	}
+}
+
 // ToProto converts Character to its protobuf representation.
 func (c *Character) ToProto() *pb.Character {
 	if c == nil {
 		return nil
 	}
-	return &pb.Character{
-		Name:        c.Name.ToProto(),
-		Image:       c.Image.ToProto(),
-		Gender:      c.Gender,
-		Age:         c.Age,
-		DateOfBirth: c.DateOfBirth.ToProto(),
-		Description: c.Description,
+	res := &pb.Character{
+		Id:                 &c.ID,
+		Name:               c.Name.ToProto(),
+		Image:              c.Image.ToProto(),
+		Gender:             c.Gender,
+		Age:                c.Age,
+		BloodType:          c.BloodType,
+		DateOfBirth:        c.DateOfBirth.ToProto(),
+		Description:        c.Description,
+		IsFavourite:        c.IsFavourite,
+		SiteUrl:            c.SiteUrl,
+		Favourites:         c.Favourites,
+		IsFavouriteBlocked: c.IsFavouriteBlocked,
 	}
+	if c.Media != nil {
+		res.Media = c.Media.ToProto()
+	}
+	return res
+}
+
+// ToProto converts CharacterMediaEdge to its protobuf representation.
+func (e *CharacterMediaEdge) ToProto() *pb.CharacterMediaEdge {
+	if e == nil {
+		return nil
+	}
+	res := &pb.CharacterMediaEdge{
+		CharacterRole: e.CharacterRole,
+	}
+	if e.Node != nil {
+		res.Node = e.Node.ToProto()
+	}
+	for _, va := range e.VoiceActors {
+		res.VoiceActors = append(res.VoiceActors, va.ToProto())
+	}
+	return res
+}
+
+// ToProto converts CharacterMediaConnection to its protobuf representation.
+func (c *CharacterMediaConnection) ToProto() *pb.CharacterMediaConnection {
+	if c == nil {
+		return nil
+	}
+	res := &pb.CharacterMediaConnection{
+		PageInfo: c.PageInfo.ToProto(),
+	}
+	for _, edge := range c.Edges {
+		res.Edges = append(res.Edges, edge.ToProto())
+	}
+	return res
 }
 
 // ToProto converts CharacterEdge to its protobuf representation.
@@ -47,16 +100,12 @@ func (e *CharacterEdge) ToProto() *pb.CharacterEdge {
 	if e == nil {
 		return nil
 	}
-	res := &pb.CharacterEdge{
+	return &pb.CharacterEdge{
 		Id:   e.ID,
 		Role: e.Role,
 		Name: e.Name,
 		Node: e.Node.ToProto(),
 	}
-	for _, va := range e.VoiceActors {
-		res.VoiceActors = append(res.VoiceActors, va.ToProto())
-	}
-	return res
 }
 
 // ToProto converts CharacterConnection to its protobuf representation.
@@ -88,27 +137,69 @@ type CharacterImage struct {
 	Medium *string `json:"medium"`
 }
 
-// Character represents a character in a media
+// CharacterMin represents minimal character info
+type CharacterMin struct {
+	ID    int32           `json:"id"`
+	Name  *CharacterName  `json:"name"`
+	Image *CharacterImage `json:"image"`
+}
+
+// Character represents detailed character information
 type Character struct {
-	Name        *CharacterName  `json:"name"`
-	Image       *CharacterImage `json:"image"`
-	Gender      *string         `json:"gender"`
-	Age         *string         `json:"age"`
-	DateOfBirth *FuzzyDate      `json:"dateOfBirth"`
-	Description *string         `json:"description"`
+	ID                 int32                     `json:"id"`
+	Name               *CharacterName            `json:"name"`
+	Image              *CharacterImage           `json:"image"`
+	Gender             *string                   `json:"gender"`
+	Age                *string                   `json:"age"`
+	BloodType          *string                   `json:"bloodType"`
+	DateOfBirth        *FuzzyDate                `json:"dateOfBirth"`
+	Description        *string                   `json:"description"`
+	IsFavourite        *bool                     `json:"isFavourite"`
+	SiteUrl            *string                   `json:"siteUrl"`
+	Favourites         *int32                    `json:"favourites"`
+	IsFavouriteBlocked *bool                     `json:"isFavouriteBlocked"`
+	Media              *CharacterMediaConnection `json:"media"`
+}
+
+// CharacterMediaEdge represents a media appearance for a character
+type CharacterMediaEdge struct {
+	CharacterRole *string    `json:"characterRole"`
+	Node          *MediaMin  `json:"node"`
+	VoiceActors   []StaffMin `json:"voiceActors"`
+}
+
+// CharacterMediaConnection represents a paginated list of media appearances
+type CharacterMediaConnection struct {
+	Edges    []CharacterMediaEdge `json:"edges"`
+	PageInfo PageInfo             `json:"pageInfo"`
 }
 
 // CharacterEdge represents a link between a media and a character
 type CharacterEdge struct {
-	ID          int32      `json:"id"`
-	Role        string     `json:"role"`
-	Name        string     `json:"name"`
-	Node        *Character `json:"node"`
-	VoiceActors []StaffMin `json:"voiceActors"`
+	ID   int32         `json:"id"`
+	Role string        `json:"role"`
+	Name string        `json:"name"`
+	Node *CharacterMin `json:"node"`
 }
 
 // CharacterConnection represents a paginated list of characters
 type CharacterConnection struct {
 	Edges    []CharacterEdge `json:"edges"`
 	PageInfo PageInfo        `json:"pageInfo"`
+}
+
+// CharacterDTO represents the root response for character details
+type CharacterDTO struct {
+	Character Character `json:"Character"`
+}
+
+// CharacterToggleFavouriteDTO represents the response for character favorite toggling
+type CharacterToggleFavouriteDTO struct {
+	ToggleFavourite struct {
+		Characters struct {
+			Nodes []struct {
+				ID int32 `json:"id"`
+			} `json:"nodes"`
+		} `json:"characters"`
+	} `json:"ToggleFavourite"`
 }

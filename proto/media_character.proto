@@ -3,6 +3,7 @@ syntax = "proto3";
 package goodanime;
 
 import "common.proto";
+import "media_min.proto";
 import "media_staff.proto";
 
 option go_package = "goodanime/backend/proto";
@@ -20,6 +21,23 @@ message CharacterImage {
   optional string medium = 2;
 }
 
+message CharacterMin {
+  int32 id = 1;
+  CharacterName name = 2;
+  CharacterImage image = 3;
+}
+
+message CharacterMediaEdge {
+  optional string character_role = 1;
+  MediaMin node = 2;
+  repeated StaffMin voice_actors = 3;
+}
+
+message CharacterMediaConnection {
+  repeated CharacterMediaEdge edges = 1;
+  PageInfo page_info = 2;
+}
+
 message Character {
   CharacterName name = 1;
   CharacterImage image = 2;
@@ -27,14 +45,20 @@ message Character {
   optional string age = 4;
   FuzzyDate date_of_birth = 5;
   optional string description = 6;
+  optional int32 id = 7;
+  optional string blood_type = 8;
+  optional int32 favourites = 9;
+  optional bool is_favourite = 10;
+  optional string site_url = 11;
+  CharacterMediaConnection media = 12;
+  optional bool is_favourite_blocked = 13;
 }
 
 message CharacterEdge {
   int32 id = 1;
   string role = 2;
   string name = 3;
-  Character node = 4;
-  repeated StaffMin voice_actors = 5;
+  CharacterMin node = 4;
 }
 
 message CharacterConnection {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../models/media_character.dart';
 import '../models/media_staff.dart';
+import '../pages/character_page.dart';
 import '../pages/media_page.dart';
-import '../pages/media_page/widgets/character_sheet.dart';
 import '../pages/staff_page.dart';
 import '../pages/studio_page.dart';
 import '../services/media_list_controller.dart';
@@ -66,13 +66,38 @@ class AppNavigation {
     );
   }
 
-  /// Open character details sheet
-  static void toCharacter(BuildContext context, CharacterEdge character) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CharacterSheet(character: character),
+  /// Navigate to Character details
+  static Future<void> toCharacter(
+    BuildContext context, {
+    CharacterMin? character,
+    int? characterId,
+  }) async {
+    final id = characterId ?? character?.id;
+    if (id == null) return;
+    await Navigator.push(
+      context,
+      PageRouteBuilder<void>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            CharacterPage(characterId: id, character: character),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position:
+                  Tween<Offset>(
+                    begin: const Offset(0.05, 0),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOutCubic,
+                    ),
+                  ),
+              child: child,
+            ),
+          );
+        },
+      ),
     );
   }
 }

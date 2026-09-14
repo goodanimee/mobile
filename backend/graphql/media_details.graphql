@@ -165,26 +165,12 @@ fragment CharacterFields on CharacterConnection {
     id
     role
     name
-    voiceActors(sort: [RELEVANCE]) {
-      id
-      image {
-        ...StaffImageFields
-      }
-      name {
-        ...StaffNameFields
-      }
-      languageV2
-    }
     node {
+      id
       name {
-        ...CharNameFields
+        full
+        native
       }
-      gender
-      age
-      dateOfBirth {
-        ...FuzzyDateFields
-      }
-      description(asHtml: true)
       image {
         ...CharImageFields
       }
@@ -289,13 +275,6 @@ fragment CharImageFields on CharacterImage {
   medium
 }
 
-fragment CharNameFields on CharacterName {
-  full
-  native
-  userPreferred
-  alternative
-  alternativeSpoiler
-}
 
 fragment NextAiringEpisodeFields on AiringSchedule {
   airingAt

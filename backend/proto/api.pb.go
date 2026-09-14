@@ -2589,11 +2589,211 @@ func (x *FetchStudioSearchResponse) GetError() string {
 	return ""
 }
 
+type FetchCharacterDetailsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`
+	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchCharacterDetailsRequest) Reset() {
+	*x = FetchCharacterDetailsRequest{}
+	mi := &file_api_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchCharacterDetailsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchCharacterDetailsRequest) ProtoMessage() {}
+
+func (x *FetchCharacterDetailsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchCharacterDetailsRequest.ProtoReflect.Descriptor instead.
+func (*FetchCharacterDetailsRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *FetchCharacterDetailsRequest) GetCharacterId() int32 {
+	if x != nil {
+		return x.CharacterId
+	}
+	return 0
+}
+
+func (x *FetchCharacterDetailsRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+type FetchCharacterDetailsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Character     *Character             `protobuf:"bytes,1,opt,name=character,proto3" json:"character,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchCharacterDetailsResponse) Reset() {
+	*x = FetchCharacterDetailsResponse{}
+	mi := &file_api_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchCharacterDetailsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchCharacterDetailsResponse) ProtoMessage() {}
+
+func (x *FetchCharacterDetailsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchCharacterDetailsResponse.ProtoReflect.Descriptor instead.
+func (*FetchCharacterDetailsResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *FetchCharacterDetailsResponse) GetCharacter() *Character {
+	if x != nil {
+		return x.Character
+	}
+	return nil
+}
+
+func (x *FetchCharacterDetailsResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type ToggleFavouriteCharacterRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleFavouriteCharacterRequest) Reset() {
+	*x = ToggleFavouriteCharacterRequest{}
+	mi := &file_api_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleFavouriteCharacterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleFavouriteCharacterRequest) ProtoMessage() {}
+
+func (x *ToggleFavouriteCharacterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleFavouriteCharacterRequest.ProtoReflect.Descriptor instead.
+func (*ToggleFavouriteCharacterRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *ToggleFavouriteCharacterRequest) GetCharacterId() int32 {
+	if x != nil {
+		return x.CharacterId
+	}
+	return 0
+}
+
+type ToggleFavouriteCharacterResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleFavouriteCharacterResponse) Reset() {
+	*x = ToggleFavouriteCharacterResponse{}
+	mi := &file_api_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleFavouriteCharacterResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleFavouriteCharacterResponse) ProtoMessage() {}
+
+func (x *ToggleFavouriteCharacterResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleFavouriteCharacterResponse.ProtoReflect.Descriptor instead.
+func (*ToggleFavouriteCharacterResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *ToggleFavouriteCharacterResponse) GetCharacterId() int32 {
+	if x != nil {
+		return x.CharacterId
+	}
+	return 0
+}
+
+func (x *ToggleFavouriteCharacterResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
 	"\n" +
-	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x14media_activity.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\fviewer.proto\"X\n" +
+	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x14media_activity.proto\x1a\x15media_character.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\fviewer.proto\"X\n" +
 	"\x15FetchMediaListRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x12\n" +
@@ -2822,7 +3022,18 @@ const file_api_proto_rawDesc = "" +
 	"\x19FetchStudioSearchResponse\x12+\n" +
 	"\astudios\x18\x01 \x03(\v2\x11.goodanime.StudioR\astudios\x120\n" +
 	"\tpage_info\x18\x02 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
-	"\x05error\x18\x03 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x05error\x18\x03 \x01(\tR\x05error\"U\n" +
+	"\x1cFetchCharacterDetailsRequest\x12!\n" +
+	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x12\n" +
+	"\x04page\x18\x02 \x01(\x05R\x04page\"i\n" +
+	"\x1dFetchCharacterDetailsResponse\x122\n" +
+	"\tcharacter\x18\x01 \x01(\v2\x14.goodanime.CharacterR\tcharacter\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"D\n" +
+	"\x1fToggleFavouriteCharacterRequest\x12!\n" +
+	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\"[\n" +
+	" ToggleFavouriteCharacterResponse\x12!\n" +
+	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_api_proto_rawDescOnce sync.Once
@@ -2836,7 +3047,7 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 42)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 46)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
@@ -2880,46 +3091,52 @@ var file_api_proto_goTypes = []any{
 	(*FetchMediaSearchResponse)(nil),          // 39: goodanime.FetchMediaSearchResponse
 	(*FetchStudioSearchRequest)(nil),          // 40: goodanime.FetchStudioSearchRequest
 	(*FetchStudioSearchResponse)(nil),         // 41: goodanime.FetchStudioSearchResponse
-	(*MediaListCollection)(nil),               // 42: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 43: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 44: goodanime.MediaListEntry
-	(*Media)(nil),                             // 45: goodanime.Media
-	(ReviewUserRating)(0),                     // 46: goodanime.ReviewUserRating
-	(*ReviewNode)(nil),                        // 47: goodanime.ReviewNode
-	(*PageInfo)(nil),                          // 48: goodanime.PageInfo
-	(*ListActivity)(nil),                      // 49: goodanime.ListActivity
-	(*Studio)(nil),                            // 50: goodanime.Studio
-	(*Staff)(nil),                             // 51: goodanime.Staff
-	(*MediaTag)(nil),                          // 52: goodanime.MediaTag
-	(*MediaMin)(nil),                          // 53: goodanime.MediaMin
+	(*FetchCharacterDetailsRequest)(nil),      // 42: goodanime.FetchCharacterDetailsRequest
+	(*FetchCharacterDetailsResponse)(nil),     // 43: goodanime.FetchCharacterDetailsResponse
+	(*ToggleFavouriteCharacterRequest)(nil),   // 44: goodanime.ToggleFavouriteCharacterRequest
+	(*ToggleFavouriteCharacterResponse)(nil),  // 45: goodanime.ToggleFavouriteCharacterResponse
+	(*MediaListCollection)(nil),               // 46: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 47: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 48: goodanime.MediaListEntry
+	(*Media)(nil),                             // 49: goodanime.Media
+	(ReviewUserRating)(0),                     // 50: goodanime.ReviewUserRating
+	(*ReviewNode)(nil),                        // 51: goodanime.ReviewNode
+	(*PageInfo)(nil),                          // 52: goodanime.PageInfo
+	(*ListActivity)(nil),                      // 53: goodanime.ListActivity
+	(*Studio)(nil),                            // 54: goodanime.Studio
+	(*Staff)(nil),                             // 55: goodanime.Staff
+	(*MediaTag)(nil),                          // 56: goodanime.MediaTag
+	(*MediaMin)(nil),                          // 57: goodanime.MediaMin
+	(*Character)(nil),                         // 58: goodanime.Character
 }
 var file_api_proto_depIdxs = []int32{
-	42, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	43, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	46, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	47, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	44, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	45, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	45, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	45, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	45, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	45, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
-	46, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
-	47, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
-	48, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
-	49, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
-	50, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
-	51, // 15: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
-	52, // 16: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
-	53, // 17: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
-	48, // 18: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
-	50, // 19: goodanime.FetchStudioSearchResponse.studios:type_name -> goodanime.Studio
-	48, // 20: goodanime.FetchStudioSearchResponse.page_info:type_name -> goodanime.PageInfo
-	21, // [21:21] is the sub-list for method output_type
-	21, // [21:21] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	48, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	49, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	49, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	49, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	49, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	49, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	50, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
+	51, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
+	52, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	53, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
+	54, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
+	55, // 15: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
+	56, // 16: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
+	57, // 17: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
+	52, // 18: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
+	54, // 19: goodanime.FetchStudioSearchResponse.studios:type_name -> goodanime.Studio
+	52, // 20: goodanime.FetchStudioSearchResponse.page_info:type_name -> goodanime.PageInfo
+	58, // 21: goodanime.FetchCharacterDetailsResponse.character:type_name -> goodanime.Character
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -2930,6 +3147,7 @@ func file_api_proto_init() {
 	file_common_proto_init()
 	file_media_proto_init()
 	file_media_activity_proto_init()
+	file_media_character_proto_init()
 	file_media_list_proto_init()
 	file_media_list_entry_proto_init()
 	file_media_min_proto_init()
@@ -2948,7 +3166,7 @@ func file_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   42,
+			NumMessages:   46,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

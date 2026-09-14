@@ -5,6 +5,7 @@ package goodanime;
 import "common.proto";
 import "media.proto";
 import "media_activity.proto";
+import "media_character.proto";
 import "media_list.proto";
 import "media_list_entry.proto";
 import "media_min.proto";
@@ -273,3 +274,23 @@ message FetchStudioSearchResponse {
   PageInfo page_info = 2;
   string error = 3;
 }
+
+message FetchCharacterDetailsRequest {
+  int32 character_id = 1;
+  int32 page = 2;
+}
+
+message FetchCharacterDetailsResponse {
+  Character character = 1;
+  string error = 2;
+}
+
+message ToggleFavouriteCharacterRequest {
+  int32 character_id = 1;
+}
+
+message ToggleFavouriteCharacterResponse {
+  int32 character_id = 1;
+  string error = 2;
+}
+

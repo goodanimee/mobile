@@ -17,6 +17,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'common.pb.dart' as $5;
 import 'media.pb.dart' as $3;
 import 'media_activity.pb.dart' as $6;
+import 'media_character.pb.dart' as $11;
 import 'media_list.pb.dart' as $0;
 import 'media_list_entry.pb.dart' as $2;
 import 'media_min.pb.dart' as $10;
@@ -3413,6 +3414,276 @@ class FetchStudioSearchResponse extends $pb.GeneratedMessage {
   $core.bool hasError() => $_has(2);
   @$pb.TagNumber(3)
   void clearError() => $_clearField(3);
+}
+
+class FetchCharacterDetailsRequest extends $pb.GeneratedMessage {
+  factory FetchCharacterDetailsRequest({
+    $core.int? characterId,
+    $core.int? page,
+  }) {
+    final result = create();
+    if (characterId != null) result.characterId = characterId;
+    if (page != null) result.page = page;
+    return result;
+  }
+
+  FetchCharacterDetailsRequest._();
+
+  factory FetchCharacterDetailsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchCharacterDetailsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchCharacterDetailsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'characterId')
+    ..aI(2, _omitFieldNames ? '' : 'page')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchCharacterDetailsRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchCharacterDetailsRequest copyWith(
+          void Function(FetchCharacterDetailsRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as FetchCharacterDetailsRequest))
+          as FetchCharacterDetailsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchCharacterDetailsRequest create() =>
+      FetchCharacterDetailsRequest._();
+  @$core.override
+  FetchCharacterDetailsRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchCharacterDetailsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchCharacterDetailsRequest>(create);
+  static FetchCharacterDetailsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get characterId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set characterId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasCharacterId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCharacterId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+}
+
+class FetchCharacterDetailsResponse extends $pb.GeneratedMessage {
+  factory FetchCharacterDetailsResponse({
+    $11.Character? character,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (character != null) result.character = character;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchCharacterDetailsResponse._();
+
+  factory FetchCharacterDetailsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchCharacterDetailsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchCharacterDetailsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aOM<$11.Character>(1, _omitFieldNames ? '' : 'character',
+        subBuilder: $11.Character.create)
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchCharacterDetailsResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchCharacterDetailsResponse copyWith(
+          void Function(FetchCharacterDetailsResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as FetchCharacterDetailsResponse))
+          as FetchCharacterDetailsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchCharacterDetailsResponse create() =>
+      FetchCharacterDetailsResponse._();
+  @$core.override
+  FetchCharacterDetailsResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchCharacterDetailsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchCharacterDetailsResponse>(create);
+  static FetchCharacterDetailsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $11.Character get character => $_getN(0);
+  @$pb.TagNumber(1)
+  set character($11.Character value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasCharacter() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCharacter() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $11.Character ensureCharacter() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
+class ToggleFavouriteCharacterRequest extends $pb.GeneratedMessage {
+  factory ToggleFavouriteCharacterRequest({
+    $core.int? characterId,
+  }) {
+    final result = create();
+    if (characterId != null) result.characterId = characterId;
+    return result;
+  }
+
+  ToggleFavouriteCharacterRequest._();
+
+  factory ToggleFavouriteCharacterRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ToggleFavouriteCharacterRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ToggleFavouriteCharacterRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'characterId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteCharacterRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteCharacterRequest copyWith(
+          void Function(ToggleFavouriteCharacterRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as ToggleFavouriteCharacterRequest))
+          as ToggleFavouriteCharacterRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteCharacterRequest create() =>
+      ToggleFavouriteCharacterRequest._();
+  @$core.override
+  ToggleFavouriteCharacterRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteCharacterRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteCharacterRequest>(
+          create);
+  static ToggleFavouriteCharacterRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get characterId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set characterId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasCharacterId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCharacterId() => $_clearField(1);
+}
+
+class ToggleFavouriteCharacterResponse extends $pb.GeneratedMessage {
+  factory ToggleFavouriteCharacterResponse({
+    $core.int? characterId,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (characterId != null) result.characterId = characterId;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  ToggleFavouriteCharacterResponse._();
+
+  factory ToggleFavouriteCharacterResponse.fromBuffer(
+          $core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ToggleFavouriteCharacterResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ToggleFavouriteCharacterResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'characterId')
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteCharacterResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ToggleFavouriteCharacterResponse copyWith(
+          void Function(ToggleFavouriteCharacterResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as ToggleFavouriteCharacterResponse))
+          as ToggleFavouriteCharacterResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteCharacterResponse create() =>
+      ToggleFavouriteCharacterResponse._();
+  @$core.override
+  ToggleFavouriteCharacterResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ToggleFavouriteCharacterResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteCharacterResponse>(
+          create);
+  static ToggleFavouriteCharacterResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get characterId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set characterId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasCharacterId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCharacterId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
 }
 
 const $core.bool _omitFieldNames =
