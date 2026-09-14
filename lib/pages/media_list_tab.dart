@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/error_view.dart';
 import '../components/loading_indicator.dart';
+import '../components/sort_menu.dart';
 import '../models/common.dart';
 import '../models/media_list.dart';
 import '../services/media_list_controller.dart';
@@ -11,7 +12,6 @@ import '../theme/theme.dart';
 import '../utils/app_options.dart';
 import 'media_list_tab/widgets/grid_view.dart';
 import 'media_list_tab/widgets/list_view.dart';
-import 'media_list_tab/widgets/sort_menu.dart';
 
 /// Unified tab widget for displaying user's anime or manga lists.
 class MediaListTab extends StatefulWidget {
@@ -404,11 +404,20 @@ class _MediaListTabState extends State<MediaListTab>
         ),
         SortMenuOverlay(
           visible: _showSortMenu,
+          options: const [
+            (type: 'score', label: 'Score'),
+            (type: 'title', label: 'Title'),
+            (type: 'progress', label: 'Progress'),
+            (type: 'release_date', label: 'Release date'),
+            (type: 'started_date', label: 'Started date'),
+            (type: 'completed_date', label: 'Completed date'),
+          ],
           activeSortType: _sortType,
           sortDirections: _sortDirections,
-          animationController: _sortMenuController,
           sizeAnimation: _sortMenuAnimation,
           fadeAnimation: _iconsFade,
+          topOffset: 60,
+          rightOffset: 16,
           onDismiss: _toggleSortMenu,
           onSelected: (type) {
             setState(() {

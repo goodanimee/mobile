@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../components/detail_header.dart';
 import '../components/error_view.dart';
 import '../components/floating_nav.dart';
 import '../components/paged_scroll_listener.dart';
@@ -12,7 +13,6 @@ import '../utils/app_navigation.dart';
 import 'staff_page/tabs/staff_characters_tab.dart';
 import 'staff_page/tabs/staff_info_tab.dart';
 import 'staff_page/tabs/staff_media_tab.dart';
-import 'staff_page/widgets/staff_sticky_header.dart';
 
 /// A page displaying details for a staff member.
 class StaffPage extends StatefulWidget {
@@ -269,47 +269,16 @@ class _StaffPageState extends State<StaffPage> {
     final isFav = _staff?.isFavourite ?? false;
     final favouritesCount = _staff?.favourites ?? 0;
 
-    final quickNavItems = [
-      QuickNavSection(
-        icon: LucideIcons.info,
-        label: 'Info',
-        isSelected: _selectedTabIndex == 0,
-        onTap: () {
-          setState(() => _selectedTabIndex = 0);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-      QuickNavSection(
-        icon: LucideIcons.film,
-        label: 'Media',
-        isSelected: _selectedTabIndex == 1,
-        onTap: () {
-          setState(() => _selectedTabIndex = 1);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-      QuickNavSection(
-        icon: LucideIcons.users,
-        label: 'Characters',
-        isSelected: _selectedTabIndex == 2,
-        onTap: () {
-          setState(() => _selectedTabIndex = 2);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-    ];
+    final quickNavItems = QuickNavSection.fromTabs(
+      tabs: const [
+        (icon: LucideIcons.info, label: 'Info'),
+        (icon: LucideIcons.film, label: 'Media'),
+        (icon: LucideIcons.users, label: 'Characters'),
+      ],
+      selectedIndex: _selectedTabIndex,
+      onSelect: (index) => setState(() => _selectedTabIndex = index),
+      scrollController: _scrollController,
+    );
 
     final hasMore = switch (_selectedTabIndex) {
       1 => _hasNextStaffMediaPage,
@@ -348,8 +317,8 @@ class _StaffPageState extends State<StaffPage> {
             top: 0,
             left: 0,
             right: 0,
-            child: StaffStickyHeader(
-              staffName: staffName,
+            child: DetailHeader(
+              title: staffName,
               onBack: () => Navigator.of(context).pop(),
               isFavourite: isFav,
               favouritesCount: favouritesCount,

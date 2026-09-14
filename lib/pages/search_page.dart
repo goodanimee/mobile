@@ -1,6 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import '../components/paged_scroll_listener.dart';
+import '../components/sort_menu.dart';
 import '../models/media_min.dart';
 import '../models/media_misc.dart';
 import '../models/media_studio.dart';
@@ -14,7 +17,6 @@ import 'search_page/widgets/common/active_dropdown.dart';
 import 'search_page/widgets/layout/search_filters_panel.dart';
 import 'search_page/widgets/layout/search_results_list.dart';
 import 'search_page/widgets/layout/search_sort_button.dart';
-import 'search_page/widgets/layout/search_sort_menu.dart';
 import 'search_page/widgets/layout/search_top_bar.dart';
 import 'search_page/widgets/layout/studio_results_list.dart';
 import 'search_page/widgets/panels/genre_filter_sheet.dart';
@@ -30,6 +32,34 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
+  static const Map<String, List<({String type, String label})>> _sortOptions = {
+    'ANIME': [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'title_romaji', label: 'Title (Asc)'),
+      (type: 'title_romaji_desc', label: 'Title (Desc)'),
+      (type: 'score_desc', label: 'Highest Score'),
+      (type: 'episodes_desc', label: 'Most Episodes'),
+      (type: 'popularity_desc', label: 'Most Popular'),
+      (type: 'trending_desc', label: 'Trending'),
+    ],
+    'MANGA': [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'title_romaji', label: 'Title (Asc)'),
+      (type: 'title_romaji_desc', label: 'Title (Desc)'),
+      (type: 'score_desc', label: 'Highest Score'),
+      (type: 'chapters_desc', label: 'Most Chapters'),
+      (type: 'popularity_desc', label: 'Most Popular'),
+      (type: 'trending_desc', label: 'Trending'),
+    ],
+    'STUDIO': [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'name', label: 'Name (Asc)'),
+      (type: 'name_desc', label: 'Name (Desc)'),
+      (type: 'favourites', label: 'Favourites (Asc)'),
+      (type: 'favourites_desc', label: 'Favourites (Desc)'),
+    ],
+  };
+
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   bool _hasSearchText = false;
@@ -738,14 +768,14 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   ),
                 ],
               ),
-              SearchSortMenu(
-                isOpen: _activeDropdown == ActiveDropdown.sort,
-                searchType: _searchType,
-                sortBy: _sortBy,
-                sortMenuAnimation: _sortMenuAnimation,
-                iconsFade: _iconsFade,
-                toggleSort: () => _toggleDropdown(ActiveDropdown.sort),
-                onSortChanged: (val) {
+              SortMenuOverlay(
+                visible: _activeDropdown == ActiveDropdown.sort,
+                options: _sortOptions[_searchType] ?? _sortOptions['ANIME']!,
+                activeSortType: _sortBy,
+                sizeAnimation: _sortMenuAnimation,
+                fadeAnimation: _iconsFade,
+                onDismiss: () => _toggleDropdown(ActiveDropdown.sort),
+                onSelected: (val) {
                   setState(() {
                     _sortBy = val;
                   });

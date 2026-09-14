@@ -257,86 +257,19 @@ class _MediaPageState extends State<MediaPage> {
 
     final media = _mediaData!;
 
-    final quickNavItems = [
-      QuickNavSection(
-        icon: LucideIcons.info,
-        label: 'Info',
-        isSelected: _selectedTabIndex == 0,
-        onTap: () {
-          setState(() => _selectedTabIndex = 0);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-      QuickNavSection(
-        icon: LucideIcons.monitorPlay,
-        label: 'Content',
-        isSelected: _selectedTabIndex == 1,
-        onTap: () {
-          setState(() => _selectedTabIndex = 1);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-      QuickNavSection(
-        icon: LucideIcons.users,
-        label: 'People',
-        isSelected: _selectedTabIndex == 2,
-        onTap: () {
-          setState(() => _selectedTabIndex = 2);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-      QuickNavSection(
-        icon: LucideIcons.network,
-        label: 'Relations',
-        isSelected: _selectedTabIndex == 3,
-        onTap: () {
-          setState(() => _selectedTabIndex = 3);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-      QuickNavSection(
-        icon: LucideIcons.barChart3,
-        label: 'Stats',
-        isSelected: _selectedTabIndex == 4,
-        onTap: () {
-          setState(() => _selectedTabIndex = 4);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-      QuickNavSection(
-        icon: LucideIcons.messageSquareHeart,
-        label: 'Social',
-        isSelected: _selectedTabIndex == 5,
-        onTap: () {
-          setState(() => _selectedTabIndex = 5);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-    ];
+    final quickNavItems = QuickNavSection.fromTabs(
+      tabs: const [
+        (icon: LucideIcons.info, label: 'Info'),
+        (icon: LucideIcons.monitorPlay, label: 'Content'),
+        (icon: LucideIcons.users, label: 'People'),
+        (icon: LucideIcons.network, label: 'Relations'),
+        (icon: LucideIcons.barChart3, label: 'Stats'),
+        (icon: LucideIcons.messageSquareHeart, label: 'Social'),
+      ],
+      selectedIndex: _selectedTabIndex,
+      onSelect: (index) => setState(() => _selectedTabIndex = index),
+      scrollController: _scrollController,
+    );
 
     return Scaffold(
       backgroundColor: bgColor,

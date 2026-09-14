@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../components/detail_header.dart';
 import '../components/error_view.dart';
 import '../components/floating_nav.dart';
 import '../components/paged_scroll_listener.dart';
@@ -13,7 +14,6 @@ import 'character_page/tabs/character_info_tab.dart';
 import 'character_page/tabs/character_media_tab.dart';
 import 'character_page/widgets/character_language_fab.dart';
 import 'character_page/widgets/character_language_sheet.dart';
-import 'character_page/widgets/character_sticky_header.dart';
 
 /// A page displaying details for a character
 class CharacterPage extends StatefulWidget {
@@ -269,34 +269,15 @@ class _CharacterPageState extends State<CharacterPage> {
     final isFav = _character?.isFavourite ?? false;
     final favouritesCount = _character?.favourites ?? 0;
 
-    final quickNavItems = [
-      QuickNavSection(
-        icon: LucideIcons.info,
-        label: 'Info',
-        isSelected: _selectedTabIndex == 0,
-        onTap: () {
-          setState(() => _selectedTabIndex = 0);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-      QuickNavSection(
-        icon: LucideIcons.film,
-        label: 'Media',
-        isSelected: _selectedTabIndex == 1,
-        onTap: () {
-          setState(() => _selectedTabIndex = 1);
-          _scrollController.animateTo(
-            0,
-            duration: kAnimStandard,
-            curve: kCurveEnter,
-          );
-        },
-      ),
-    ];
+    final quickNavItems = QuickNavSection.fromTabs(
+      tabs: const [
+        (icon: LucideIcons.info, label: 'Info'),
+        (icon: LucideIcons.film, label: 'Media'),
+      ],
+      selectedIndex: _selectedTabIndex,
+      onSelect: (index) => setState(() => _selectedTabIndex = index),
+      scrollController: _scrollController,
+    );
 
     final hasMore = _selectedTabIndex == 1 && _hasNextMediaPage;
     final isFetchingMore = _selectedTabIndex == 1 && _isFetchingMoreMedia;
@@ -327,8 +308,8 @@ class _CharacterPageState extends State<CharacterPage> {
             top: 0,
             left: 0,
             right: 0,
-            child: CharacterStickyHeader(
-              characterName: characterName,
+            child: DetailHeader(
+              title: characterName,
               onBack: () => Navigator.of(context).pop(),
               isFavourite: isFav,
               favouritesCount: favouritesCount,

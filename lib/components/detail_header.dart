@@ -1,43 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../components/lucide_icons_helper.dart';
-import '../../../theme/theme.dart';
-import '../../../utils/utils.dart';
+import '../theme/theme.dart';
+import '../utils/utils.dart';
+import 'lucide_icons_helper.dart';
 
-/// Sticky header for the staff details page with title and favourite action.
-class StaffStickyHeader extends StatelessWidget {
-  /// The full name of the staff member.
-  final String staffName;
+/// Sticky app bar header for detail screens with title and optional favourite action
+class DetailHeader extends StatelessWidget {
+  /// Header title text
+  final String title;
 
-  /// Callback when the back button is pressed.
+  /// Callback when back button is pressed
   final VoidCallback onBack;
 
-  /// Whether the staff member is marked as favourite.
+  /// Whether the item is marked as favourite
   final bool isFavourite;
 
-  /// The total number of favourites.
+  /// Total number of favourites
   final int favouritesCount;
 
-  /// Callback to toggle the favourite status.
+  /// Callback to toggle favourite status
   final VoidCallback onToggleFavourite;
 
-  /// Whether the favourite operation is in progress.
+  /// Whether the favourite operation is in progress
   final bool isFavouriteLoading;
 
-  /// Whether to display the favourite action.
+  /// Whether to display the favourite action
   final bool showFavourite;
 
-  /// Creates a staff sticky header.
-  const StaffStickyHeader({
+  /// Creates a detail header
+  const DetailHeader({
     super.key,
-    required this.staffName,
+    required this.title,
     required this.onBack,
-    required this.isFavourite,
-    required this.favouritesCount,
+    this.isFavourite = false,
+    this.favouritesCount = 0,
     required this.onToggleFavourite,
-    required this.isFavouriteLoading,
-    required this.showFavourite,
+    this.isFavouriteLoading = false,
+    this.showFavourite = true,
   });
 
   @override
@@ -70,7 +70,7 @@ class StaffStickyHeader extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                staffName,
+                title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

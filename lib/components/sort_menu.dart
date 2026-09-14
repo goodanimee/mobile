@@ -1,97 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../../theme/theme.dart';
 
-/// A sort overlay dropdown menu for the search page.
-class SearchSortMenu extends StatelessWidget {
-  /// Whether the sort menu is currently visible.
-  final bool isOpen;
+import '../theme/theme.dart';
 
-  /// Active search type (ANIME, MANGA, etc.).
-  final String searchType;
+/// Floating sort menu overlay dropdown with expand animation
+class SortMenuOverlay extends StatelessWidget {
+  /// Whether the menu is currently visible
+  final bool visible;
 
-  /// Currently selected sort option.
-  final String sortBy;
+  /// Available sort options
+  final List<({String type, String label})> options;
 
-  /// Animation for the menu height expansion.
-  final Animation<double> sortMenuAnimation;
+  /// Active sort option type
+  final String activeSortType;
 
-  /// Animation for the menu icons/text opacity fade.
-  final Animation<double> iconsFade;
+  /// Optional sort direction map for arrow indicators
+  final Map<String, bool>? sortDirections;
 
-  /// Callback to toggle or close the sort menu.
-  final VoidCallback toggleSort;
+  /// Animation for menu expand size
+  final Animation<double> sizeAnimation;
 
-  /// Callback when the sort option changes.
-  final ValueChanged<String> onSortChanged;
+  /// Animation for fading in option labels
+  final Animation<double> fadeAnimation;
 
-  /// Map of search types to allowed sort options.
-  static const Map<String, List<({String type, String label})>> _sortOptions = {
-    'ANIME': [
-      (type: 'search_match', label: 'Search Match'),
-      (type: 'title_romaji', label: 'Title (Asc)'),
-      (type: 'title_romaji_desc', label: 'Title (Desc)'),
-      (type: 'score_desc', label: 'Highest Score'),
-      (type: 'episodes_desc', label: 'Most Episodes'),
-      (type: 'popularity_desc', label: 'Most Popular'),
-      (type: 'trending_desc', label: 'Trending'),
-    ],
-    'MANGA': [
-      (type: 'search_match', label: 'Search Match'),
-      (type: 'title_romaji', label: 'Title (Asc)'),
-      (type: 'title_romaji_desc', label: 'Title (Desc)'),
-      (type: 'score_desc', label: 'Highest Score'),
-      (type: 'chapters_desc', label: 'Most Chapters'),
-      (type: 'popularity_desc', label: 'Most Popular'),
-      (type: 'trending_desc', label: 'Trending'),
-    ],
-    'STUDIO': [
-      (type: 'search_match', label: 'Search Match'),
-      (type: 'name', label: 'Name (Asc)'),
-      (type: 'name_desc', label: 'Name (Desc)'),
-      (type: 'favourites', label: 'Favourites (Asc)'),
-      (type: 'favourites_desc', label: 'Favourites (Desc)'),
-    ],
-  };
+  /// Callback when a sort option is selected
+  final ValueChanged<String> onSelected;
 
-  /// Creates a search sort menu.
-  const SearchSortMenu({
+  /// Callback to dismiss or toggle the menu
+  final VoidCallback onDismiss;
+
+  /// Top offset positioning
+  final double? topOffset;
+
+  /// Right offset positioning
+  final double? rightOffset;
+
+  /// Creates a sort menu overlay
+  const SortMenuOverlay({
     super.key,
-    required this.isOpen,
-    required this.searchType,
-    required this.sortBy,
-    required this.sortMenuAnimation,
-    required this.iconsFade,
-    required this.toggleSort,
-    required this.onSortChanged,
+    required this.visible,
+    required this.options,
+    required this.activeSortType,
+    this.sortDirections,
+    required this.sizeAnimation,
+    required this.fadeAnimation,
+    required this.onSelected,
+    required this.onDismiss,
+    this.topOffset,
+    this.rightOffset,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (!isOpen) return const SizedBox.shrink();
+    if (!visible) return const SizedBox.shrink();
 
     final itemHeight = getResponsiveSize(context, 48.0);
-    final List<({String type, String label})> options =
-        _sortOptions[searchType] ?? _sortOptions['ANIME']!;
     final totalHeight = options.length * itemHeight;
     final menuWidth = getResponsiveSize(context, 160.0);
+    final top = topOffset ?? getResponsiveSize(context, 56.0);
+    final right = rightOffset ?? getResponsiveSize(context, 16.0);
 
     return Stack(
       children: [
         GestureDetector(
-          onTap: toggleSort,
+          onTap: onDismiss,
           behavior: HitTestBehavior.opaque,
           child: const SizedBox.expand(),
         ),
         Positioned(
-          top: getResponsiveSize(context, 56.0),
-          right: getResponsiveSize(context, 16.0),
+          top: top,
+          right: right,
           child: AnimatedBuilder(
-            animation: sortMenuAnimation,
+            animation: sizeAnimation,
             builder: (context, _) {
               return Container(
                 width: menuWidth,
-                height: totalHeight * sortMenuAnimation.value,
+                height: totalHeight * sizeAnimation.value,
                 decoration: BoxDecoration(
                   color: bgColor,
                   borderRadius: BorderRadius.circular(16),
@@ -107,7 +91,7 @@ class SearchSortMenu extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Opacity(
-                    opacity: iconsFade.value,
+                    opacity: fadeAnimation.value,
                     child: OverflowBox(
                       minWidth: menuWidth,
                       maxWidth: menuWidth,
@@ -117,12 +101,12 @@ class SearchSortMenu extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: options.map((opt) {
-                          final isActive = sortBy == opt.type;
+                          final isActive = activeSortType == opt.type;
+                          final isAscending =
+                              sortDirections?[opt.type] ?? false;
+
                           return GestureDetector(
-                            onTap: () {
-                              onSortChanged(opt.type);
-                              toggleSort();
-                            },
+                            onTap: () => onSelected(opt.type),
                             behavior: HitTestBehavior.opaque,
                             child: Container(
                               width: double.infinity,
@@ -152,7 +136,11 @@ class SearchSortMenu extends StatelessWidget {
                                   ),
                                   if (isActive)
                                     Icon(
-                                      LucideIcons.check,
+                                      sortDirections != null
+                                          ? (isAscending
+                                                ? LucideIcons.arrowUp
+                                                : LucideIcons.arrowDown)
+                                          : LucideIcons.check,
                                       size: getResponsiveSize(context, 16.0),
                                       color: borderColor,
                                     ),

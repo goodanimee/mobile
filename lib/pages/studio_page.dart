@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../components/app_relation_card.dart';
+import '../components/detail_header.dart';
 import '../components/error_view.dart';
 import '../components/loading_indicator.dart';
-import '../components/lucide_icons_helper.dart';
 import '../components/paged_scroll_listener.dart';
 import '../components/skeleton.dart';
 import '../models/media_min.dart';
@@ -131,8 +130,6 @@ class _StudioPageState extends State<StudioPage> {
 
   @override
   Widget build(BuildContext context) {
-    final topPadding = MediaQuery.of(context).padding.top;
-
     Widget body;
     if (_isLoading) {
       body = Skeleton.list();
@@ -266,91 +263,14 @@ class _StudioPageState extends State<StudioPage> {
       backgroundColor: bgColor,
       body: Column(
         children: [
-          Container(
-            height: topPadding + 56,
-            padding: EdgeInsets.only(top: topPadding),
-            decoration: const BoxDecoration(
-              color: bgColor,
-              border: Border(bottom: BorderSide(color: cardBorderColor)),
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  left: 8,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: IconButton(
-                      icon: const Icon(
-                        LucideIcons.arrowLeft,
-                        color: textPrimary,
-                      ),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ),
-                ),
-                Positioned.fill(
-                  left: 56,
-                  right: 110,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      _isLoading ? 'Loading...' : studioName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: fontTitle(context),
-                        fontWeight: FontWeight.bold,
-                        color: textPrimary,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 16,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: _isLoading
-                        ? const SizedBox.shrink()
-                        : Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                '(${StringUtils.formatCompactNumber(_studio?.favourites ?? 0)})',
-                                style: TextStyle(
-                                  color: textSecondary,
-                                  fontSize: fontBody(context),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              GestureDetector(
-                                onTap: _isFavouriteLoading
-                                    ? null
-                                    : _toggleFavourite,
-                                child: _isFavouriteLoading
-                                    ? const SizedBox(
-                                        width: 24,
-                                        height: 24,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2.5,
-                                          color: textPrimary,
-                                        ),
-                                      )
-                                    : LucideHeartIcon(
-                                        isFilled: isFav,
-                                        color: isFav
-                                            ? Colors.redAccent.shade400
-                                            : textPrimary,
-                                      ),
-                              ),
-                            ],
-                          ),
-                  ),
-                ),
-              ],
-            ),
+          DetailHeader(
+            title: _isLoading ? 'Loading...' : studioName,
+            onBack: () => Navigator.of(context).pop(),
+            isFavourite: isFav,
+            favouritesCount: _studio?.favourites ?? 0,
+            onToggleFavourite: _toggleFavourite,
+            isFavouriteLoading: _isFavouriteLoading,
+            showFavourite: !_isLoading,
           ),
           Expanded(child: body),
         ],

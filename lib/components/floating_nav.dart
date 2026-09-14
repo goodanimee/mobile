@@ -23,6 +23,31 @@ class QuickNavSection {
     required this.onTap,
     this.isSelected = false,
   });
+
+  /// Builds quick navigation sections from tab definitions
+  static List<QuickNavSection> fromTabs({
+    required List<({IconData icon, String label})> tabs,
+    required int selectedIndex,
+    required void Function(int index) onSelect,
+    ScrollController? scrollController,
+  }) {
+    return List.generate(tabs.length, (index) {
+      final tab = tabs[index];
+      return QuickNavSection(
+        icon: tab.icon,
+        label: tab.label,
+        isSelected: selectedIndex == index,
+        onTap: () {
+          onSelect(index);
+          scrollController?.animateTo(
+            0,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
+          );
+        },
+      );
+    });
+  }
 }
 
 const _navItems = [
