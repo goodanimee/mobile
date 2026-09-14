@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../components/error_view.dart';
-import '../components/loading_indicator.dart';
-import '../components/sort_menu.dart';
-import '../models/common.dart';
-import '../models/media_list.dart';
-import '../services/media_list_controller.dart';
-import '../theme/theme.dart';
-import '../utils/app_options.dart';
-import 'media_list_tab/widgets/grid_view.dart';
-import 'media_list_tab/widgets/list_view.dart';
+import '../../components/error_view.dart';
+import '../../components/loading_indicator.dart';
+import '../../components/sort_menu.dart';
+import '../../models/common.dart';
+import '../../models/media_list.dart';
+import '../../services/media_list_controller.dart';
+import '../../theme/theme.dart';
+import '../../utils/app_options.dart';
+import 'widgets/grid_view.dart';
+import 'widgets/list_view.dart';
 
 /// Unified tab widget for displaying user's anime or manga lists.
 class MediaListTab extends StatefulWidget {

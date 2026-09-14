@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../components/detail_header.dart';
-import '../components/error_view.dart';
-import '../components/floating_nav.dart';
-import '../components/paged_scroll_listener.dart';
-import '../components/skeleton.dart';
-import '../models/media_character.dart';
-import '../services/character_service.dart';
-import '../theme/theme.dart';
-import '../utils/app_navigation.dart';
-import 'character_page/tabs/character_info_tab.dart';
-import 'character_page/tabs/character_media_tab.dart';
-import 'character_page/widgets/character_language_fab.dart';
-import 'character_page/widgets/character_language_sheet.dart';
+import '../../components/detail_header.dart';
+import '../../components/error_view.dart';
+import '../../components/floating_nav.dart';
+import '../../components/paged_scroll_listener.dart';
+import '../../components/skeleton.dart';
+import '../../models/media_character.dart';
+import '../../services/character_service.dart';
+import '../../theme/theme.dart';
+import '../../utils/app_navigation.dart';
+import 'tabs/info_tab.dart';
+import 'tabs/media_tab.dart';
+import 'widgets/language_fab.dart';
+import 'widgets/language_sheet.dart';
 
 /// A page displaying details for a character
 class CharacterPage extends StatefulWidget {

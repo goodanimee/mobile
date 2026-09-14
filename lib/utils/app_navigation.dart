@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../models/media_character.dart';
 import '../models/media_staff.dart';
-import '../pages/character_page.dart';
-import '../pages/media_page.dart';
-import '../pages/staff_page.dart';
-import '../pages/studio_page.dart';
+import '../pages/characters/page.dart';
+import '../pages/media/page.dart';
+import '../pages/staff/page.dart';
+import '../pages/studio/page.dart';
 import '../services/media_list_controller.dart';
 import '../theme/theme.dart';
 

@@ -7,9 +7,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mix/mix.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../components/app_button.dart';
-import '../services/auth_service.dart';
-import '../theme/theme.dart';
+import '../../components/app_button.dart';
+import '../../services/auth_service.dart';
+import '../../theme/theme.dart';
 
 /// A page for user authentication via AniList
 class LoginPage extends StatefulWidget {

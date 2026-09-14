@@ -2,25 +2,25 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../components/paged_scroll_listener.dart';
-import '../components/sort_menu.dart';
-import '../models/media_min.dart';
-import '../models/media_misc.dart';
-import '../models/media_studio.dart';
-import '../proto/api.pb.dart';
-import '../services/genre_service.dart';
-import '../services/search_service.dart';
-import '../theme/theme.dart';
-import '../utils/app_navigation.dart';
-import 'search_page/utils/search_request_builder.dart';
-import 'search_page/widgets/common/active_dropdown.dart';
-import 'search_page/widgets/layout/search_filters_panel.dart';
-import 'search_page/widgets/layout/search_results_list.dart';
-import 'search_page/widgets/layout/search_sort_button.dart';
-import 'search_page/widgets/layout/search_top_bar.dart';
-import 'search_page/widgets/layout/studio_results_list.dart';
-import 'search_page/widgets/panels/genre_filter_sheet.dart';
-import 'search_page/widgets/panels/tag_filter_sheet.dart';
+import '../../components/paged_scroll_listener.dart';
+import '../../components/sort_menu.dart';
+import '../../models/media_min.dart';
+import '../../models/media_misc.dart';
+import '../../models/media_studio.dart';
+import '../../proto/api.pb.dart';
+import '../../services/genre_service.dart';
+import '../../services/search_service.dart';
+import '../../theme/theme.dart';
+import '../../utils/app_navigation.dart';
+import 'utils/search_request_builder.dart';
+import 'widgets/common/active_dropdown.dart';
+import 'widgets/layout/search_filters_panel.dart';
+import 'widgets/layout/search_results_list.dart';
+import 'widgets/layout/search_sort_button.dart';
+import 'widgets/layout/search_top_bar.dart';
+import 'widgets/layout/studio_results_list.dart';
+import 'widgets/panels/genre_filter_sheet.dart';
+import 'widgets/panels/tag_filter_sheet.dart';
 
 /// A page that allows users to search for media and filter results.
 class SearchPage extends StatefulWidget {

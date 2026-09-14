@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:goodanime/utils/app_navigation.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../components/error_view.dart';
-import '../components/floating_nav.dart';
-import '../components/skeleton.dart';
-import '../models/media.dart';
-import '../models/media_list.dart';
-import '../models/media_list_entry.dart';
-import '../services/media_list_controller.dart';
-import '../services/media_service.dart';
-import '../theme/theme.dart';
-import '../utils/app_options.dart';
-import '../utils/utils.dart';
-import 'media_page/tabs/content_tab.dart';
-import 'media_page/tabs/info_tab.dart';
-import 'media_page/tabs/people_tab.dart';
-import 'media_page/tabs/placeholder_tab.dart';
-import 'media_page/tabs/rankings_tab.dart';
-import 'media_page/tabs/relations_tab.dart';
-import 'media_page/tabs/reviews_tab.dart';
-import 'media_page/widgets/edit_entry_fab.dart';
-import 'media_page/widgets/media_page_header.dart';
-import 'media_page/widgets/sticky_header.dart';
+import '../../components/error_view.dart';
+import '../../components/floating_nav.dart';
+import '../../components/skeleton.dart';
+import '../../models/media.dart';
+import '../../models/media_list.dart';
+import '../../models/media_list_entry.dart';
+import '../../services/media_list_controller.dart';
+import '../../services/media_service.dart';
+import '../../theme/theme.dart';
+import '../../utils/app_options.dart';
+import '../../utils/utils.dart';
+import 'tabs/content_tab.dart';
+import 'tabs/info_tab.dart';
+import 'tabs/people_tab.dart';
+import 'tabs/placeholder_tab.dart';
+import 'tabs/rankings_tab.dart';
+import 'tabs/relations_tab.dart';
+import 'tabs/reviews_tab.dart';
+import 'widgets/edit_entry_fab.dart';
+import 'widgets/media_page_header.dart';
+import 'widgets/sticky_header.dart';
 
 /// A page displaying detailed information about a media item
 class MediaPage extends StatefulWidget {

@@ -3,16 +3,16 @@ import 'package:goodanime/utils/app_navigation.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../components/floating_nav.dart';
-import '../components/loading_indicator.dart';
-import '../models/common.dart';
-import '../services/auth_service.dart';
-import '../services/media_list_controller.dart';
-import '../theme/theme.dart';
-import 'login_page.dart';
-import 'media_list_tab.dart';
-import 'profile_page.dart';
-import 'search_page.dart';
+import '../../components/floating_nav.dart';
+import '../../components/loading_indicator.dart';
+import '../../models/common.dart';
+import '../../services/auth_service.dart';
+import '../../services/media_list_controller.dart';
+import '../../theme/theme.dart';
+import '../login/page.dart';
+import '../media_list/page.dart';
+import '../profile/page.dart';
+import '../search/page.dart';
 
 /// The main container page for the application
 class HomePage extends StatefulWidget {

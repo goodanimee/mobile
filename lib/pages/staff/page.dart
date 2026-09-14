@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../components/detail_header.dart';
-import '../components/error_view.dart';
-import '../components/floating_nav.dart';
-import '../components/paged_scroll_listener.dart';
-import '../components/skeleton.dart';
-import '../models/media_staff.dart';
-import '../services/media_service.dart';
-import '../theme/theme.dart';
-import '../utils/app_navigation.dart';
-import 'staff_page/tabs/staff_characters_tab.dart';
-import 'staff_page/tabs/staff_info_tab.dart';
-import 'staff_page/tabs/staff_media_tab.dart';
+import '../../components/detail_header.dart';
+import '../../components/error_view.dart';
+import '../../components/floating_nav.dart';
+import '../../components/paged_scroll_listener.dart';
+import '../../components/skeleton.dart';
+import '../../models/media_staff.dart';
+import '../../services/media_service.dart';
+import '../../theme/theme.dart';
+import '../../utils/app_navigation.dart';
+import 'tabs/characters_tab.dart';
+import 'tabs/info_tab.dart';
+import 'tabs/media_tab.dart';
 
 /// A page displaying details for a staff member.
 class StaffPage extends StatefulWidget {

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../components/app_relation_card.dart';
-import '../components/detail_header.dart';
-import '../components/error_view.dart';
-import '../components/loading_indicator.dart';
-import '../components/paged_scroll_listener.dart';
-import '../components/skeleton.dart';
-import '../models/media_min.dart';
-import '../models/media_studio.dart';
-import '../services/media_service.dart';
-import '../theme/theme.dart';
-import '../utils/app_navigation.dart';
-import '../utils/utils.dart';
+import '../../components/app_relation_card.dart';
+import '../../components/detail_header.dart';
+import '../../components/error_view.dart';
+import '../../components/loading_indicator.dart';
+import '../../components/paged_scroll_listener.dart';
+import '../../components/skeleton.dart';
+import '../../models/media_min.dart';
+import '../../models/media_studio.dart';
+import '../../services/media_service.dart';
+import '../../theme/theme.dart';
+import '../../utils/app_navigation.dart';
+import '../../utils/utils.dart';
 
 /// A page displaying details for a production studio
 class StudioPage extends StatefulWidget {
