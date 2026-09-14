@@ -3,7 +3,7 @@ import 'package:mix/mix.dart';
 
 import '../models/viewer.dart';
 import '../theme/theme.dart';
-import 'app_button.dart';
+import 'button.dart';
 
 /// A widget displaying user profile information
 class UserProfile extends StatelessWidget {
@@ -49,7 +49,7 @@ class UserProfile extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 40),
-        AppButton(
+        Button(
           onPress: onSignOut,
           style: BoxStyler()
               .color(Colors.transparent)

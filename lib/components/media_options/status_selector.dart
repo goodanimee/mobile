@@ -100,8 +100,8 @@ class StatusSelector extends StatelessWidget {
                         children: [
                           if (selectedIndex >= 0)
                             AnimatedPositioned(
-                              duration: const Duration(milliseconds: 250),
-                              curve: Curves.easeInOutCubic,
+                              duration: kAnimStandard,
+                              curve: kCurveSymmetric,
                               left: selectedIndex * tabWidth,
                               top: 0,
                               bottom: 0,

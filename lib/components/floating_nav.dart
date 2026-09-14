@@ -23,6 +23,31 @@ class QuickNavSection {
     required this.onTap,
     this.isSelected = false,
   });
+
+  /// Builds quick navigation sections from tab definitions
+  static List<QuickNavSection> fromTabs({
+    required List<({IconData icon, String label})> tabs,
+    required int selectedIndex,
+    required void Function(int index) onSelect,
+    ScrollController? scrollController,
+  }) {
+    return List.generate(tabs.length, (index) {
+      final tab = tabs[index];
+      return QuickNavSection(
+        icon: tab.icon,
+        label: tab.label,
+        isSelected: selectedIndex == index,
+        onTap: () {
+          onSelect(index);
+          scrollController?.animateTo(
+            0,
+            duration: kAnimStandard,
+            curve: kCurveEnter,
+          );
+        },
+      );
+    });
+  }
 }
 
 const _navItems = [
@@ -36,7 +61,7 @@ const _navItems = [
 const _fabSize = 52.0;
 const _navBarWidth = 360.0;
 const _gap = 8.0;
-const _duration = Duration(milliseconds: 300);
+const _duration = kAnimStandard;
 
 final _boxDecoration = BoxDecoration(
   color: bgColor,
@@ -91,10 +116,7 @@ class _FloatingNavState extends State<FloatingNav>
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: _duration);
-    _widthFactor = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    );
+    _widthFactor = CurvedAnimation(parent: _controller, curve: kCurveSymmetric);
     _iconsFade = CurvedAnimation(
       parent: _controller,
       curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
@@ -168,7 +190,7 @@ class _FloatingNavState extends State<FloatingNav>
         behavior: HitTestBehavior.opaque,
         child: Center(
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
+            duration: kAnimFast,
             transitionBuilder: (child, anim) =>
                 ScaleTransition(scale: anim, child: child),
             child: Icon(
@@ -197,7 +219,7 @@ class _FloatingNavState extends State<FloatingNav>
         behavior: HitTestBehavior.opaque,
         child: Center(
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
+            duration: kAnimFast,
             transitionBuilder: (child, anim) =>
                 ScaleTransition(scale: anim, child: child),
             child: Icon(
