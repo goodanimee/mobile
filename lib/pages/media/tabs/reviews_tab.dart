@@ -3,11 +3,11 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../components/app_network_image.dart';
-import '../../../components/app_review_card.dart';
-import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../components/lucide_icons_helper.dart';
 import '../../../components/paged_scroll_listener.dart';
+import '../../../components/review_card.dart';
+import '../../../components/section.dart';
 import '../../../models/media_activity.dart';
 import '../../../models/media_review.dart';
 import '../../../services/media_service.dart';
@@ -212,7 +212,7 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (_reviews.isNotEmpty) ...[
-          AppSection(
+          Section(
             title: 'Reviews',
             topSpacing: 0,
             children: [
@@ -276,7 +276,7 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
           ),
           const SizedBox(height: 24),
         ],
-        AppSection(
+        Section(
           title: 'Recent Activity',
           topSpacing: _reviews.isEmpty ? 0 : 8,
           children: [_buildActivitiesSection()],
@@ -555,7 +555,7 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     if (index >= _reviews.length) return const SizedBox.shrink();
 
     final review = _reviews[index];
-    return AppReviewCard(
+    return ReviewCard(
       review: review,
       onTap: () {
         showModalBottomSheet<void>(

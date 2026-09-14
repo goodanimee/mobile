@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../components/app_entity_card.dart';
-import '../../../components/app_section.dart';
+import '../../../components/entity_card.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../components/paged_scroll_listener.dart';
+import '../../../components/section.dart';
 import '../../../models/media_character.dart';
 import '../../../models/media_staff.dart';
 import '../../../services/media_service.dart';
@@ -191,7 +191,7 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (hasCharacters) ...[
-          AppSection(
+          Section(
             title: 'Characters & Cast',
             topSpacing: 0,
             children: [
@@ -230,7 +230,7 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
                       final role = edge.role;
                       final charImageUrl = node?.image?.large ?? '';
 
-                      return AppEntityCard(
+                      return EntityCard(
                         imageUrl: charImageUrl,
                         name: fullName,
                         nativeName: nativeName,
@@ -251,7 +251,7 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
           const SizedBox(height: 12),
         ],
         if (hasStaff) ...[
-          AppSection(
+          Section(
             title: 'Production Staff',
             topSpacing: hasCharacters ? 8 : 0,
             children: [
@@ -290,7 +290,7 @@ class _MediaPeopleTabState extends State<MediaPeopleTab> {
                           : 'Unknown Role';
                       final imageUrl = node?.image?.large ?? '';
 
-                      return AppEntityCard(
+                      return EntityCard(
                         imageUrl: imageUrl,
                         name: fullName,
                         nativeName: nativeName,

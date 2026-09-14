@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../components/app_section.dart';
+import '../../../components/section.dart';
 import '../../../theme/theme.dart';
 import 'stat_tooltip.dart';
 
@@ -35,7 +35,7 @@ class _TrendLineChartState extends State<TrendLineChart> {
 
     final reversedTrends = widget.trends.reversed.toList();
 
-    return AppSection(
+    return Section(
       title: 'Trends',
       children: [
         const SizedBox(height: 8),

@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mix/mix.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../components/app_button.dart';
+import '../../components/button.dart';
 import '../../services/auth_service.dart';
 import '../../theme/theme.dart';
 
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: AppButton(
+          child: Button(
             onPress: _launchAnilistAuth,
             child: Row(
               mainAxisSize: MainAxisSize.min,

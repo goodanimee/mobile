@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../components/app_relation_card.dart';
 import '../../../components/loading_indicator.dart';
+import '../../../components/relation_card.dart';
 import '../../../models/media_character.dart';
 import '../../../models/media_staff.dart';
 import '../../../theme/theme.dart';
@@ -133,7 +133,7 @@ class CharacterMediaTab extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 6),
           child: SizedBox(
             height: 110,
-            child: AppRelationCard(
+            child: RelationCard(
               imageUrl: media.coverImage.large,
               title: mediaTitle,
               nativeTitle: media.title.native,

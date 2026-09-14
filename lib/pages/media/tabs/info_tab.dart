@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../components/app_pill.dart';
-import '../../../components/app_section.dart';
 import '../../../components/html_description.dart';
+import '../../../components/pill.dart';
+import '../../../components/section.dart';
 import '../../../components/stat_item.dart';
 import '../../../models/media.dart';
 import '../../../models/media_misc.dart';
@@ -89,7 +89,7 @@ class MediaInfoTab extends StatelessWidget {
           ],
         ),
         if (media.description.isNotEmpty)
-          AppSection(
+          Section(
             title: 'Synopsis',
             children: [HtmlDescription(html: media.description)],
           ),
@@ -99,7 +99,7 @@ class MediaInfoTab extends StatelessWidget {
             spacing: 8.0,
             runSpacing: 8.0,
             children: media.genres.map((genre) {
-              return AppPill(
+              return Pill(
                 label: genre,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -119,7 +119,7 @@ class MediaInfoTab extends StatelessWidget {
         _buildStudiosSection(context),
         _buildTitlesSection(),
         if (tags.isNotEmpty)
-          AppSection(
+          Section(
             title: 'Community Tags',
             trailing: hasSpoilers
                 ? GestureDetector(
@@ -163,7 +163,7 @@ class MediaInfoTab extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: visibleTags.map((tag) {
-                  return AppPill(
+                  return Pill(
                     label: tag.name,
                     leadingText: '${tag.rank}%',
                     isSpoiler: tag.isMediaSpoiler,
@@ -181,7 +181,7 @@ class MediaInfoTab extends StatelessWidget {
             ],
           ),
         if (externalLinks.isNotEmpty)
-          AppSection(
+          Section(
             title: 'External Links',
             children: [
               Wrap(
@@ -196,7 +196,7 @@ class MediaInfoTab extends StatelessWidget {
                       : 'Link';
                   final leadingText = rawAbbr != 'Link' ? rawAbbr : null;
 
-                  return AppPill(
+                  return Pill(
                     label: site,
                     leadingText: leadingText,
                     trailing: const Icon(
@@ -267,14 +267,14 @@ class MediaInfoTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (mainStudios.isNotEmpty)
-          AppSection(
+          Section(
             title: 'Studios',
             children: [
               Wrap(
                 spacing: 8.0,
                 runSpacing: 8.0,
                 children: mainStudios.map((studio) {
-                  return AppPill(
+                  return Pill(
                     label: studio.name,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -287,14 +287,14 @@ class MediaInfoTab extends StatelessWidget {
             ],
           ),
         if (producerStudios.isNotEmpty)
-          AppSection(
+          Section(
             title: 'Producers',
             children: [
               Wrap(
                 spacing: 8.0,
                 runSpacing: 8.0,
                 children: producerStudios.map((studio) {
-                  return AppPill(
+                  return Pill(
                     label: studio.name,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -333,7 +333,7 @@ class MediaInfoTab extends StatelessWidget {
 
     if (rows.isEmpty) return const SizedBox.shrink();
 
-    return AppSection(
+    return Section(
       title: 'Titles & Synonyms',
       children: [
         Table(

@@ -7,7 +7,7 @@ import '../utils/utils.dart';
 import 'app_network_image.dart';
 
 /// A specialized card for media items with dynamic borders and status badges
-class AppMediaCard extends StatelessWidget {
+class MediaCard extends StatelessWidget {
   /// The image URL for the media
   final String imageUrl;
 
@@ -36,7 +36,7 @@ class AppMediaCard extends StatelessWidget {
   final Widget? adultBadge;
 
   /// Creates a media card
-  const AppMediaCard({
+  const MediaCard({
     super.key,
     required this.imageUrl,
     required this.title,

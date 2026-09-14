@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../components/app_relation_card.dart';
-import '../../../components/app_section.dart';
 import '../../../components/loading_indicator.dart';
 import '../../../components/paged_scroll_listener.dart';
+import '../../../components/relation_card.dart';
+import '../../../components/section.dart';
 import '../../../models/media_edge.dart';
 import '../../../models/media_recommendation.dart';
 import '../../../services/media_service.dart';
@@ -125,7 +125,7 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (hasRelations) ...[
-          AppSection(
+          Section(
             title: 'Relations',
             topSpacing: 0,
             children: [
@@ -165,7 +165,7 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
                       fallback: Colors.transparent,
                     );
 
-                    return AppRelationCard(
+                    return RelationCard(
                       imageUrl: imageUrl,
                       title: name,
                       nativeTitle: nativeName,
@@ -188,7 +188,7 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
           const SizedBox(height: 12),
         ],
         if (hasRecommendations) ...[
-          AppSection(
+          Section(
             title: 'Recommendations',
             topSpacing: hasRelations ? 8 : 0,
             children: [
@@ -293,7 +293,7 @@ class _MediaRelationsTabState extends State<MediaRelationsTab> {
     final colorHex = media?.coverImage.color;
     final color = ColorUtils.fromHex(colorHex, fallback: Colors.transparent);
 
-    return AppRelationCard(
+    return RelationCard(
       imageUrl: imageUrl,
       title: name,
       nativeTitle: nativeName,

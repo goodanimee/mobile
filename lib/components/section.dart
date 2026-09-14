@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'section_title.dart';
 
 /// A wrapper component that provides standardized spacing and a title for sections
-class AppSection extends StatelessWidget {
+class Section extends StatelessWidget {
   /// The title of the section
   final String title;
 
@@ -19,7 +19,7 @@ class AppSection extends StatelessWidget {
   final Widget? trailing;
 
   /// Creates an app section
-  const AppSection({
+  const Section({
     super.key,
     required this.title,
     required this.children,

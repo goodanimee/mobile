@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../components/app_badges.dart';
-import '../../../components/app_media_card.dart';
+import '../../../components/badges.dart';
 import '../../../components/error_view.dart';
+import '../../../components/media_card.dart';
 import '../../../models/media_list.dart';
 import '../../../utils/app_navigation.dart';
 
@@ -72,14 +72,14 @@ class MediaListGridView extends StatelessWidget {
                 final entry = entries[index];
                 final media = entry.media;
 
-                return AppMediaCard(
+                return MediaCard(
                   imageUrl: media.coverImage.large,
                   title: media.title.userPreferred,
                   colorStr: media.coverImage.color,
                   isAdult: media.isAdult,
                   isFavourite: media.isFavourite,
-                  favouriteBadge: const AppFavouriteBadge(hasBackground: true),
-                  adultBadge: const AppAdultBadge(),
+                  favouriteBadge: const FavouriteBadge(hasBackground: true),
+                  adultBadge: const AdultBadge(),
                   onTap: () {
                     final mediaId = media.id;
                     if (mediaId != 0) {

@@ -3,7 +3,7 @@ import 'package:mix/mix.dart';
 import '../theme/theme.dart';
 
 /// A custom button widget using the mix library
-class AppButton extends StatelessWidget {
+class Button extends StatelessWidget {
   /// Callback for button press
   final VoidCallback onPress;
 
@@ -14,7 +14,7 @@ class AppButton extends StatelessWidget {
   final BoxStyler? style;
 
   /// Creates an app button
-  const AppButton({
+  const Button({
     super.key,
     required this.onPress,
     required this.child,

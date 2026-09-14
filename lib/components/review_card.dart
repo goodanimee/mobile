@@ -7,7 +7,7 @@ import 'app_network_image.dart';
 import 'lucide_icons_helper.dart';
 
 /// Card to display user reviews
-class AppReviewCard extends StatelessWidget {
+class ReviewCard extends StatelessWidget {
   /// The review data to display
   final ReviewNode review;
 
@@ -15,7 +15,7 @@ class AppReviewCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   /// Creates a review card
-  const AppReviewCard({super.key, required this.review, this.onTap});
+  const ReviewCard({super.key, required this.review, this.onTap});
 
   @override
   Widget build(BuildContext context) {

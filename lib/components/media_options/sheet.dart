@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../models/common.dart';
-import '../models/media_list.dart';
-import '../services/media_list_service.dart';
-import '../theme/theme.dart';
-import '../utils/app_options.dart';
-import '../utils/media_list_mutations.dart';
-import './media_options/counter_editor.dart';
-import './media_options/date_editor.dart';
-import './media_options/score_slider.dart';
-import './media_options/status_selector.dart';
+import '../../models/common.dart';
+import '../../models/media_list.dart';
+import '../../services/media_list_service.dart';
+import '../../theme/theme.dart';
+import '../../utils/app_options.dart';
+import '../../utils/media_list_mutations.dart';
+import 'counter_editor.dart';
+import 'date_editor.dart';
+import 'score_slider.dart';
+import 'status_selector.dart';
 
 /// A bottom sheet for editing media list entry options
 class MediaOptionsSheet extends StatefulWidget {

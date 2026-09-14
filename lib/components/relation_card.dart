@@ -4,7 +4,7 @@ import '../theme/theme.dart';
 import 'app_network_image.dart';
 
 /// Card for related media entries
-class AppRelationCard extends StatelessWidget {
+class RelationCard extends StatelessWidget {
   /// The cover image URL
   final String imageUrl;
 
@@ -42,7 +42,7 @@ class AppRelationCard extends StatelessWidget {
   final VoidCallback? onRightTap;
 
   /// Creates a relation card
-  const AppRelationCard({
+  const RelationCard({
     super.key,
     required this.imageUrl,
     required this.title,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../../components/app_relation_card.dart';
 import '../../../../components/error_view.dart';
 import '../../../../components/loading_indicator.dart';
+import '../../../../components/relation_card.dart';
 import '../../../../models/media_min.dart';
 import '../../../../theme/theme.dart';
 import '../../../../utils/app_navigation.dart';
@@ -97,7 +97,7 @@ class SearchResultsList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 6),
           child: SizedBox(
             height: 110,
-            child: AppRelationCard(
+            child: RelationCard(
               imageUrl: media.coverImage.large,
               title: titleText,
               nativeTitle: media.title.native,

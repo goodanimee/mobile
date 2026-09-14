@@ -4,9 +4,9 @@ import '../theme/theme.dart';
 import 'lucide_icons_helper.dart';
 
 /// A badge indicating adult/18+ content with glassmorphism effect
-class AppAdultBadge extends StatelessWidget {
+class AdultBadge extends StatelessWidget {
   /// Creates an adult badge
-  const AppAdultBadge({super.key});
+  const AdultBadge({super.key});
 
   @override
   /// Builds the adult badge widget
@@ -44,7 +44,7 @@ class AppAdultBadge extends StatelessWidget {
 }
 
 /// A heart icon indicating a favorite item
-class AppFavouriteBadge extends StatelessWidget {
+class FavouriteBadge extends StatelessWidget {
   /// Whether to show a circular background
   final bool hasBackground;
 
@@ -52,11 +52,7 @@ class AppFavouriteBadge extends StatelessWidget {
   final double size;
 
   /// Creates a favorite badge
-  const AppFavouriteBadge({
-    super.key,
-    this.hasBackground = false,
-    this.size = 14,
-  });
+  const FavouriteBadge({super.key, this.hasBackground = false, this.size = 14});
 
   @override
   /// Builds the favorite badge widget

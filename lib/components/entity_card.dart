@@ -4,7 +4,7 @@ import '../theme/theme.dart';
 import 'app_network_image.dart';
 
 /// Card for entities (staff/characters)
-class AppEntityCard extends StatelessWidget {
+class EntityCard extends StatelessWidget {
   /// The image URL for the entity
   final String imageUrl;
 
@@ -24,7 +24,7 @@ class AppEntityCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   /// Creates an entity card
-  const AppEntityCard({
+  const EntityCard({
     super.key,
     required this.imageUrl,
     required this.name,

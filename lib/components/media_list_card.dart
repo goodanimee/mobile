@@ -8,8 +8,8 @@ import '../theme/theme.dart';
 import '../utils/app_options.dart';
 import '../utils/media_list_mutations.dart';
 import '../utils/utils.dart';
-import 'app_badges.dart';
 import 'app_network_image.dart';
+import 'badges.dart';
 import 'lucide_icons_helper.dart';
 
 /// Builds a badge showing repeat count
@@ -400,11 +400,11 @@ class _MediaListCardState extends State<MediaListCard> {
                                     ],
                                     if (isAdult) ...[
                                       const SizedBox(width: 6),
-                                      const AppAdultBadge(),
+                                      const AdultBadge(),
                                     ],
                                     if (isFavourite) ...[
                                       const SizedBox(width: 6),
-                                      const AppFavouriteBadge(size: 16),
+                                      const FavouriteBadge(size: 16),
                                     ],
                                   ],
                                 ),

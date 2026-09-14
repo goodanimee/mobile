@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 
 /// A versatile pill/chip widget for tags, links, and metadata
-class AppPill extends StatelessWidget {
+class Pill extends StatelessWidget {
   /// The main label text
   final String label;
 
@@ -22,7 +22,7 @@ class AppPill extends StatelessWidget {
   final Widget? trailing;
 
   /// Creates an app pill
-  const AppPill({
+  const Pill({
     super.key,
     required this.label,
     this.leadingText,

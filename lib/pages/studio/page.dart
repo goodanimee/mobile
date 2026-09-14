@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../components/app_relation_card.dart';
 import '../../components/detail_header.dart';
 import '../../components/error_view.dart';
 import '../../components/loading_indicator.dart';
 import '../../components/paged_scroll_listener.dart';
+import '../../components/relation_card.dart';
 import '../../components/skeleton.dart';
 import '../../models/media_min.dart';
 import '../../models/media_studio.dart';
@@ -240,7 +240,7 @@ class _StudioPageState extends State<StudioPage> {
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: SizedBox(
                   height: 110,
-                  child: AppRelationCard(
+                  child: RelationCard(
                     imageUrl: media.coverImage.large,
                     title: titleText,
                     nativeTitle: media.title.native,

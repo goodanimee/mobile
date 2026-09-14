@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../components/app_section.dart';
+import '../../../components/section.dart';
 import '../../../models/media.dart';
 import '../../../models/media_misc.dart';
 import '../../../theme/theme.dart';
@@ -130,7 +130,7 @@ class _MediaRankingsTabState extends State<MediaRankingsTab> {
             .toList() ??
         [];
 
-    return AppSection(
+    return Section(
       title: 'Stats',
       children: [
         const SizedBox(height: 16),

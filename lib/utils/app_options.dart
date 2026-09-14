@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../components/media_options_sheet.dart';
+import '../components/media_options/sheet.dart';
 import '../models/media_list.dart';
 
 /// The result from the media options sheet
