@@ -4,11 +4,13 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../components/error_view.dart';
 import '../components/floating_nav.dart';
 import '../components/loading_indicator.dart';
+import '../components/paged_scroll_listener.dart';
 import '../models/media_character.dart';
 import '../services/character_service.dart';
 import '../theme/theme.dart';
 import '../utils/app_navigation.dart';
 import 'character_page/tabs/character_info_tab.dart';
+import 'character_page/tabs/character_media_tab.dart';
 import 'character_page/widgets/character_sticky_header.dart';
 
 /// A page displaying details for a character
@@ -34,6 +36,10 @@ class _CharacterPageState extends State<CharacterPage> {
   Character? _character;
   String? _error;
 
+  int _mediaPage = 1;
+  bool _hasNextMediaPage = false;
+  bool _isFetchingMoreMedia = false;
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +53,13 @@ class _CharacterPageState extends State<CharacterPage> {
   }
 
   int? get _resolvedId => widget.characterId ?? widget.character?.id;
+
+  void _onLoadMore() {
+    if (_character == null || _isLoading) return;
+    if (_selectedTabIndex == 1) {
+      _loadMoreMedia();
+    }
+  }
 
   Future<void> _fetchCharacterDetails() async {
     final id = _resolvedId;
@@ -63,6 +76,8 @@ class _CharacterPageState extends State<CharacterPage> {
       if (mounted) {
         setState(() {
           _character = data;
+          _hasNextMediaPage = data.media?.pageInfo.hasNextPage ?? false;
+          _mediaPage = 1;
           _isLoading = false;
         });
       }
@@ -71,6 +86,51 @@ class _CharacterPageState extends State<CharacterPage> {
         setState(() {
           _error = 'Failed to load character details: $e';
           _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _loadMoreMedia() async {
+    final id = _resolvedId;
+    if (_isFetchingMoreMedia ||
+        !_hasNextMediaPage ||
+        _character == null ||
+        id == null) {
+      return;
+    }
+
+    setState(() {
+      _isFetchingMoreMedia = true;
+    });
+
+    try {
+      final data = await CharacterService.getCharacterDetails(
+        id,
+        _mediaPage + 1,
+      );
+
+      if (mounted) {
+        setState(() {
+          final currentMedia = _character!.media;
+          if (currentMedia != null && data.media != null) {
+            final newEdges = [...currentMedia.edges, ...data.media!.edges];
+            _character = _character!.copyWith(
+              media: CharacterMediaConnection(
+                edges: newEdges,
+                pageInfo: data.media!.pageInfo,
+              ),
+            );
+          }
+          _mediaPage++;
+          _hasNextMediaPage = data.media?.pageInfo.hasNextPage ?? false;
+          _isFetchingMoreMedia = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _isFetchingMoreMedia = false;
         });
       }
     }
@@ -153,6 +213,11 @@ class _CharacterPageState extends State<CharacterPage> {
           character: _character!,
           fallbackMin: widget.character,
         );
+      case 1:
+        return CharacterMediaTab(
+          character: _character!,
+          isLoadingMore: _isFetchingMoreMedia,
+        );
       default:
         return CharacterInfoTab(
           character: _character!,
@@ -187,24 +252,45 @@ class _CharacterPageState extends State<CharacterPage> {
           );
         },
       ),
+      QuickNavSection(
+        icon: LucideIcons.film,
+        label: 'Media',
+        isSelected: _selectedTabIndex == 1,
+        onTap: () {
+          setState(() => _selectedTabIndex = 1);
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        },
+      ),
     ];
+
+    final hasMore = _selectedTabIndex == 1 && _hasNextMediaPage;
+    final isFetchingMore = _selectedTabIndex == 1 && _isFetchingMoreMedia;
 
     return Scaffold(
       backgroundColor: bgColor,
       body: Stack(
         children: [
-          CustomScrollView(
-            controller: _scrollController,
-            physics: const AlwaysScrollableScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: MediaQuery.of(context).padding.top + 56 + 16,
+          PagedScrollListener(
+            hasMore: hasMore,
+            isLoading: isFetchingMore,
+            onLoadMore: _onLoadMore,
+            child: CustomScrollView(
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).padding.top + 56 + 16,
+                  ),
                 ),
-              ),
-              SliverToBoxAdapter(child: _buildActiveTab()),
-              const SliverToBoxAdapter(child: SizedBox(height: 128)),
-            ],
+                SliverToBoxAdapter(child: _buildActiveTab()),
+                const SliverToBoxAdapter(child: SizedBox(height: 128)),
+              ],
+            ),
           ),
           Positioned(
             top: 0,
