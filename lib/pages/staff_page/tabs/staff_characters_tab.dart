@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../components/app_relation_card.dart';
 import '../../../components/loading_indicator.dart';
+import '../../../models/media_character.dart';
 import '../../../models/media_min.dart';
 import '../../../models/media_staff.dart';
 import '../../../theme/theme.dart';
@@ -135,6 +136,29 @@ class StaffCharactersTab extends StatelessWidget {
               rightAlignSubtitle: true,
               color: color != Colors.transparent ? color : null,
               onTap: () {
+                AppNavigation.toCharacter(
+                  context,
+                  characterId: char.id,
+                  character: CharacterMin(
+                    id: char.id,
+                    name: char.name != null
+                        ? CharacterName(
+                            full: char.name?.userPreferred ?? '',
+                            userPreferred: char.name?.userPreferred,
+                            alternative: const [],
+                            alternativeSpoiler: const [],
+                          )
+                        : null,
+                    image: char.image != null
+                        ? CharacterImage(
+                            large: char.image?.large,
+                            medium: char.image?.medium,
+                          )
+                        : null,
+                  ),
+                );
+              },
+              onRightTap: () {
                 AppNavigation.toMedia(context, media.id);
               },
             ),
