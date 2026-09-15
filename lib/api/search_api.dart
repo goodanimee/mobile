@@ -36,4 +36,38 @@ class SearchApi {
     }
     return response;
   }
+
+  /// Searches for characters on AniList using native FFI.
+  static Future<FetchCharacterSearchResponse> fetchCharacterSearch(
+    FetchCharacterSearchRequest request,
+    String token,
+  ) async {
+    final bytes = await FfiCore.executeProtoCall(
+      'FetchCharacterSearch',
+      request.writeToBuffer(),
+      token,
+    );
+    final response = FetchCharacterSearchResponse.fromBuffer(bytes);
+    if (response.error.isNotEmpty) {
+      throw Exception(response.error);
+    }
+    return response;
+  }
+
+  /// Searches for staff on AniList using native FFI.
+  static Future<FetchStaffSearchResponse> fetchStaffSearch(
+    FetchStaffSearchRequest request,
+    String token,
+  ) async {
+    final bytes = await FfiCore.executeProtoCall(
+      'FetchStaffSearch',
+      request.writeToBuffer(),
+      token,
+    );
+    final response = FetchStaffSearchResponse.fromBuffer(bytes);
+    if (response.error.isNotEmpty) {
+      throw Exception(response.error);
+    }
+    return response;
+  }
 }

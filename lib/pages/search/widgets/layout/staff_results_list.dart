@@ -4,15 +4,15 @@ import '../../../../components/error_view.dart';
 import '../../../../components/loading_indicator.dart';
 import '../../../../components/relation_card.dart';
 import '../../../../components/skeleton.dart';
-import '../../../../models/media_min.dart';
+import '../../../../models/media_staff.dart';
 import '../../../../theme/theme.dart';
 import '../../../../utils/app_navigation.dart';
 import '../../../../utils/utils.dart';
 
-/// A widget that displays the list of media search results.
-class SearchResultsList extends StatelessWidget {
-  /// The list of media results to display.
-  final List<MediaMin> mediaResults;
+/// A widget that displays the list of staff search results.
+class StaffResultsList extends StatelessWidget {
+  /// The list of staff results to display.
+  final List<Staff> staffResults;
 
   /// Whether a search is currently in progress.
   final bool isSearching;
@@ -26,10 +26,10 @@ class SearchResultsList extends StatelessWidget {
   /// Callback to retry the search after an error.
   final VoidCallback onRetry;
 
-  /// Creates a search results list.
-  const SearchResultsList({
+  /// Creates a staff search results list.
+  const StaffResultsList({
     super.key,
-    required this.mediaResults,
+    required this.staffResults,
     required this.isSearching,
     required this.isSearchingMore,
     required this.searchError,
@@ -52,7 +52,7 @@ class SearchResultsList extends StatelessWidget {
         ),
       );
     }
-    if (mediaResults.isEmpty) {
+    if (staffResults.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 40.0),
@@ -65,30 +65,25 @@ class SearchResultsList extends StatelessWidget {
     }
 
     final List<Widget> cards = [];
-    for (final media in mediaResults) {
-      final titleText = media.title.userPreferred.isNotEmpty
-          ? media.title.userPreferred
-          : media.title.romaji.isNotEmpty
-          ? media.title.romaji
-          : media.title.english.isNotEmpty
-          ? media.title.english
-          : 'Unknown';
-
-      var subtitle = media.format.replaceAll('_', ' ');
-      if (media.type == 'ANIME') {
-        if (media.episodes > 0) {
-          subtitle +=
-              ' \u00B7 ${media.episodes} ${StringUtils.pluralize(media.episodes, "Episode", "Episodes")}';
+    for (final staff in staffResults) {
+      final name = staff.name;
+      final String titleText;
+      if (name != null) {
+        final preferred = name.userPreferred;
+        if (preferred != null && preferred.isNotEmpty) {
+          titleText = preferred;
+        } else if (name.full.isNotEmpty) {
+          titleText = name.full;
+        } else {
+          titleText = 'Unknown';
         }
-      } else if (media.type == 'MANGA') {
-        if (media.chapters > 0) {
-          subtitle +=
-              ' \u00B7 ${media.chapters} ${StringUtils.pluralize(media.chapters, "Chapter", "Chapters")}';
-        }
+      } else {
+        titleText = 'Unknown';
       }
 
-      final colorHex = media.coverImage.color;
-      final color = ColorUtils.fromHex(colorHex, fallback: Colors.transparent);
+      final primaryOccupations = staff.primaryOccupations.isNotEmpty
+          ? staff.primaryOccupations.join(', ')
+          : null;
 
       cards.add(
         Padding(
@@ -96,23 +91,23 @@ class SearchResultsList extends StatelessWidget {
           child: SizedBox(
             height: 110,
             child: RelationCard(
-              imageUrl: media.coverImage.large,
+              imageUrl: staff.image?.large ?? '',
               title: titleText,
-              nativeTitle: media.title.native,
-              subtitle: subtitle,
-              color: color != Colors.transparent ? color : null,
-              trailing: media.averageScore > 0
+              nativeTitle: staff.name?.native,
+              format: primaryOccupations,
+              subtitle: '',
+              trailing: (staff.favourites != null && staff.favourites! > 0)
                   ? Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(
-                          LucideIcons.star,
-                          color: Colors.amber,
+                          LucideIcons.heart,
+                          color: paletteRed,
                           size: 14,
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          (media.averageScore / 10).toStringAsFixed(1),
+                          StringUtils.formatCompactNumber(staff.favourites!),
                           style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 12,
@@ -122,7 +117,7 @@ class SearchResultsList extends StatelessWidget {
                       ],
                     )
                   : null,
-              onTap: () => AppNavigation.toMedia(context, media.id),
+              onTap: () => AppNavigation.toStaff(context, staff.toMin()),
             ),
           ),
         ),

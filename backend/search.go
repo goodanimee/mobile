@@ -185,3 +185,97 @@ func FetchStudioSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 
 	return marshalAndReturn(pbResponse, outLen)
 }
+
+//go:embed graphql/character_search.graphql
+var characterSearchQuery string
+
+// FetchCharacterSearch searches for characters on AniList.
+//
+//export FetchCharacterSearch
+func FetchCharacterSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.FetchCharacterSearchResponse{}
+
+	var req pb.FetchCharacterSearchRequest
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]any{
+		"page": req.Page,
+	}
+	if req.Query != nil && *req.Query != "" {
+		variables["query"] = *req.Query
+	}
+	if req.IsBirthday != nil {
+		variables["isBirthday"] = *req.IsBirthday
+	}
+	if len(req.Sort) > 0 {
+		variables["sort"] = []string{req.Sort[0]}
+	}
+
+	data, err := executeGraphQL[models.CharacterSearchDTO](tk, characterSearchQuery, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	var pbCharacters []*pb.Character
+	for _, c := range data.Page.Characters {
+		if c != nil {
+			pbCharacters = append(pbCharacters, c.ToProto())
+		}
+	}
+	pbResponse.Characters = pbCharacters
+	pbResponse.PageInfo = data.Page.PageInfo.ToProto()
+
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+//go:embed graphql/staff_search.graphql
+var staffSearchQuery string
+
+// FetchStaffSearch searches for staff on AniList.
+//
+//export FetchStaffSearch
+func FetchStaffSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.FetchStaffSearchResponse{}
+
+	var req pb.FetchStaffSearchRequest
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]any{
+		"page": req.Page,
+	}
+	if req.Query != nil && *req.Query != "" {
+		variables["query"] = *req.Query
+	}
+	if req.IsBirthday != nil {
+		variables["isBirthday"] = *req.IsBirthday
+	}
+	if len(req.Sort) > 0 {
+		variables["sort"] = []string{req.Sort[0]}
+	}
+
+	data, err := executeGraphQL[models.StaffSearchDTO](tk, staffSearchQuery, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	var pbStaff []*pb.Staff
+	for _, s := range data.Page.Staff {
+		if s != nil {
+			pbStaff = append(pbStaff, s.ToProto())
+		}
+	}
+	pbResponse.Staff = pbStaff
+	pbResponse.PageInfo = data.Page.PageInfo.ToProto()
+
+	return marshalAndReturn(pbResponse, outLen)
+}

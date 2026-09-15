@@ -3686,6 +3686,334 @@ class ToggleFavouriteCharacterResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(2);
 }
 
+class FetchCharacterSearchRequest extends $pb.GeneratedMessage {
+  factory FetchCharacterSearchRequest({
+    $core.int? page,
+    $core.String? query,
+    $core.Iterable<$core.String>? sort,
+    $core.bool? isBirthday,
+  }) {
+    final result = create();
+    if (page != null) result.page = page;
+    if (query != null) result.query = query;
+    if (sort != null) result.sort.addAll(sort);
+    if (isBirthday != null) result.isBirthday = isBirthday;
+    return result;
+  }
+
+  FetchCharacterSearchRequest._();
+
+  factory FetchCharacterSearchRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchCharacterSearchRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchCharacterSearchRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'page')
+    ..aOS(2, _omitFieldNames ? '' : 'query')
+    ..pPS(3, _omitFieldNames ? '' : 'sort')
+    ..aOB(4, _omitFieldNames ? '' : 'isBirthday')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchCharacterSearchRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchCharacterSearchRequest copyWith(
+          void Function(FetchCharacterSearchRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as FetchCharacterSearchRequest))
+          as FetchCharacterSearchRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchCharacterSearchRequest create() =>
+      FetchCharacterSearchRequest._();
+  @$core.override
+  FetchCharacterSearchRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchCharacterSearchRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchCharacterSearchRequest>(create);
+  static FetchCharacterSearchRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get page => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set page($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPage() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get query => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set query($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasQuery() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearQuery() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$core.String> get sort => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $core.bool get isBirthday => $_getBF(3);
+  @$pb.TagNumber(4)
+  set isBirthday($core.bool value) => $_setBool(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasIsBirthday() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearIsBirthday() => $_clearField(4);
+}
+
+class FetchCharacterSearchResponse extends $pb.GeneratedMessage {
+  factory FetchCharacterSearchResponse({
+    $core.Iterable<$11.Character>? characters,
+    $5.PageInfo? pageInfo,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (characters != null) result.characters.addAll(characters);
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchCharacterSearchResponse._();
+
+  factory FetchCharacterSearchResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchCharacterSearchResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchCharacterSearchResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..pPM<$11.Character>(1, _omitFieldNames ? '' : 'characters',
+        subBuilder: $11.Character.create)
+    ..aOM<$5.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $5.PageInfo.create)
+    ..aOS(3, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchCharacterSearchResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchCharacterSearchResponse copyWith(
+          void Function(FetchCharacterSearchResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as FetchCharacterSearchResponse))
+          as FetchCharacterSearchResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchCharacterSearchResponse create() =>
+      FetchCharacterSearchResponse._();
+  @$core.override
+  FetchCharacterSearchResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchCharacterSearchResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchCharacterSearchResponse>(create);
+  static FetchCharacterSearchResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$11.Character> get characters => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $5.PageInfo get pageInfo => $_getN(1);
+  @$pb.TagNumber(2)
+  set pageInfo($5.PageInfo value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPageInfo() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPageInfo() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $5.PageInfo ensurePageInfo() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.String get error => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set error($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasError() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearError() => $_clearField(3);
+}
+
+class FetchStaffSearchRequest extends $pb.GeneratedMessage {
+  factory FetchStaffSearchRequest({
+    $core.int? page,
+    $core.String? query,
+    $core.Iterable<$core.String>? sort,
+    $core.bool? isBirthday,
+  }) {
+    final result = create();
+    if (page != null) result.page = page;
+    if (query != null) result.query = query;
+    if (sort != null) result.sort.addAll(sort);
+    if (isBirthday != null) result.isBirthday = isBirthday;
+    return result;
+  }
+
+  FetchStaffSearchRequest._();
+
+  factory FetchStaffSearchRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchStaffSearchRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchStaffSearchRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'page')
+    ..aOS(2, _omitFieldNames ? '' : 'query')
+    ..pPS(3, _omitFieldNames ? '' : 'sort')
+    ..aOB(4, _omitFieldNames ? '' : 'isBirthday')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStaffSearchRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStaffSearchRequest copyWith(
+          void Function(FetchStaffSearchRequest) updates) =>
+      super.copyWith((message) => updates(message as FetchStaffSearchRequest))
+          as FetchStaffSearchRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchStaffSearchRequest create() => FetchStaffSearchRequest._();
+  @$core.override
+  FetchStaffSearchRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchStaffSearchRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchStaffSearchRequest>(create);
+  static FetchStaffSearchRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get page => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set page($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPage() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get query => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set query($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasQuery() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearQuery() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$core.String> get sort => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $core.bool get isBirthday => $_getBF(3);
+  @$pb.TagNumber(4)
+  set isBirthday($core.bool value) => $_setBool(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasIsBirthday() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearIsBirthday() => $_clearField(4);
+}
+
+class FetchStaffSearchResponse extends $pb.GeneratedMessage {
+  factory FetchStaffSearchResponse({
+    $core.Iterable<$8.Staff>? staff,
+    $5.PageInfo? pageInfo,
+    $core.String? error,
+  }) {
+    final result = create();
+    if (staff != null) result.staff.addAll(staff);
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchStaffSearchResponse._();
+
+  factory FetchStaffSearchResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory FetchStaffSearchResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchStaffSearchResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: create)
+    ..pPM<$8.Staff>(1, _omitFieldNames ? '' : 'staff',
+        subBuilder: $8.Staff.create)
+    ..aOM<$5.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $5.PageInfo.create)
+    ..aOS(3, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStaffSearchResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchStaffSearchResponse copyWith(
+          void Function(FetchStaffSearchResponse) updates) =>
+      super.copyWith((message) => updates(message as FetchStaffSearchResponse))
+          as FetchStaffSearchResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FetchStaffSearchResponse create() => FetchStaffSearchResponse._();
+  @$core.override
+  FetchStaffSearchResponse createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static FetchStaffSearchResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchStaffSearchResponse>(create);
+  static FetchStaffSearchResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$8.Staff> get staff => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $5.PageInfo get pageInfo => $_getN(1);
+  @$pb.TagNumber(2)
+  set pageInfo($5.PageInfo value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPageInfo() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPageInfo() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $5.PageInfo ensurePageInfo() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.String get error => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set error($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasError() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearError() => $_clearField(3);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

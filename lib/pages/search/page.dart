@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 import '../../components/paged_scroll_listener.dart';
 import '../../components/sort_menu.dart';
+import '../../models/media_character.dart';
 import '../../models/media_min.dart';
 import '../../models/media_misc.dart';
+import '../../models/media_staff.dart';
 import '../../models/media_studio.dart';
 import '../../proto/api.pb.dart';
 import '../../services/genre_service.dart';
@@ -14,10 +16,12 @@ import '../../theme/theme.dart';
 import '../../utils/app_navigation.dart';
 import 'utils/search_request_builder.dart';
 import 'widgets/common/active_dropdown.dart';
+import 'widgets/layout/character_results_list.dart';
 import 'widgets/layout/search_filters_panel.dart';
 import 'widgets/layout/search_results_list.dart';
 import 'widgets/layout/search_sort_button.dart';
 import 'widgets/layout/search_top_bar.dart';
+import 'widgets/layout/staff_results_list.dart';
 import 'widgets/layout/studio_results_list.dart';
 import 'widgets/panels/genre_filter_sheet.dart';
 import 'widgets/panels/tag_filter_sheet.dart';
@@ -58,6 +62,14 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       (type: 'favourites', label: 'Favourites (Asc)'),
       (type: 'favourites_desc', label: 'Favourites (Desc)'),
     ],
+    'CHARACTER': [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'favourites_desc', label: 'Favourites'),
+    ],
+    'STAFF': [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'favourites_desc', label: 'Favourites'),
+    ],
   };
 
   final TextEditingController _searchController = TextEditingController();
@@ -96,6 +108,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   double? _scoreMin;
   double? _scoreMax;
   bool? _isAdult;
+  bool? _isBirthday;
 
   final LayerLink _formatLayerLink = LayerLink();
   final LayerLink _statusLayerLink = LayerLink();
@@ -114,6 +127,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   final List<MediaMin> _mediaResults = [];
   final List<Studio> _studioResults = [];
+  final List<Character> _characterResults = [];
+  final List<Staff> _staffResults = [];
   bool _isSearching = false;
   bool _isSearchingMore = false;
   bool _hasNextPage = false;
@@ -207,6 +222,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         _scoreMin = null;
         _scoreMax = null;
         _isAdult = null;
+        _isBirthday = null;
         _genres.updateAll((key, val) => null);
         _tags.updateAll((key, val) => null);
         _minTagPercentage = 18;
@@ -214,6 +230,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         _searchController.clear();
         _hasSearchText = false;
         _studioResults.clear();
+        _characterResults.clear();
+        _staffResults.clear();
 
         _searchType = AppNavigation.pendingSearchType ?? 'ANIME';
 
@@ -296,6 +314,50 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             _isSearching = false;
           });
         }
+      } else if (_searchType == 'CHARACTER') {
+        final req = FetchCharacterSearchRequest(page: 1);
+        if (_searchController.text.isNotEmpty) {
+          req.query = _searchController.text;
+        }
+        if (_isBirthday != null) {
+          req.isBirthday = _isBirthday!;
+        }
+        final mappedSort = _mapEntitySortOption(_sortBy);
+        if (mappedSort != null) {
+          req.sort.add(mappedSort);
+        }
+        final result = await SearchService.searchCharacters(req);
+        if (mounted) {
+          setState(() {
+            _characterResults.clear();
+            _characterResults.addAll(result.characters);
+            _currentPage = 1;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearching = false;
+          });
+        }
+      } else if (_searchType == 'STAFF') {
+        final req = FetchStaffSearchRequest(page: 1);
+        if (_searchController.text.isNotEmpty) {
+          req.query = _searchController.text;
+        }
+        if (_isBirthday != null) {
+          req.isBirthday = _isBirthday!;
+        }
+        final mappedSort = _mapEntitySortOption(_sortBy);
+        if (mappedSort != null) {
+          req.sort.add(mappedSort);
+        }
+        final result = await SearchService.searchStaff(req);
+        if (mounted) {
+          setState(() {
+            _staffResults.clear();
+            _staffResults.addAll(result.staff);
+            _currentPage = 1;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearching = false;
+          });
+        }
       } else {
         final req = buildSearchRequest(
           page: 1,
@@ -337,6 +399,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           _searchError = e.toString();
           _mediaResults.clear();
           _studioResults.clear();
+          _characterResults.clear();
+          _staffResults.clear();
           _hasNextPage = false;
           _currentPage = 1;
           _isSearching = false;
@@ -364,6 +428,48 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         if (mounted) {
           setState(() {
             _studioResults.addAll(result.studios);
+            _currentPage++;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearchingMore = false;
+          });
+        }
+      } else if (_searchType == 'CHARACTER') {
+        final req = FetchCharacterSearchRequest(page: _currentPage + 1);
+        if (_searchController.text.isNotEmpty) {
+          req.query = _searchController.text;
+        }
+        if (_isBirthday != null) {
+          req.isBirthday = _isBirthday!;
+        }
+        final mappedSort = _mapEntitySortOption(_sortBy);
+        if (mappedSort != null) {
+          req.sort.add(mappedSort);
+        }
+        final result = await SearchService.searchCharacters(req);
+        if (mounted) {
+          setState(() {
+            _characterResults.addAll(result.characters);
+            _currentPage++;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearchingMore = false;
+          });
+        }
+      } else if (_searchType == 'STAFF') {
+        final req = FetchStaffSearchRequest(page: _currentPage + 1);
+        if (_searchController.text.isNotEmpty) {
+          req.query = _searchController.text;
+        }
+        if (_isBirthday != null) {
+          req.isBirthday = _isBirthday!;
+        }
+        final mappedSort = _mapEntitySortOption(_sortBy);
+        if (mappedSort != null) {
+          req.sort.add(mappedSort);
+        }
+        final result = await SearchService.searchStaff(req);
+        if (mounted) {
+          setState(() {
+            _staffResults.addAll(result.staff);
             _currentPage++;
             _hasNextPage = result.pageInfo.hasNextPage;
             _isSearchingMore = false;
@@ -428,6 +534,20 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     }
   }
 
+  String? _mapEntitySortOption(String sortBy) {
+    switch (sortBy) {
+      case 'favourites_desc':
+        return 'FAVOURITES_DESC';
+      case 'search_match':
+        if (_searchController.text.isNotEmpty) {
+          return 'SEARCH_MATCH';
+        }
+        return 'FAVOURITES_DESC';
+      default:
+        return null;
+    }
+  }
+
   void _toggleDropdown(ActiveDropdown type) {
     if (type == ActiveDropdown.sort) {
       if (_activeDropdown == ActiveDropdown.sort) {
@@ -469,6 +589,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     if (_durationMin != null || _durationMax != null) return true;
     if (_scoreMin != null || _scoreMax != null) return true;
     if (_isAdult != null) return true;
+    if (_isBirthday != null) return true;
     if (_genres.values.any((val) => val != null)) return true;
     if (_tags.values.any((val) => val != null)) return true;
     if (_minTagPercentage != 18) return true;
@@ -490,11 +611,14 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       _scoreMin = null;
       _scoreMax = null;
       _isAdult = null;
+      _isBirthday = null;
       _genres.updateAll((key, val) => null);
       _tags.updateAll((key, val) => null);
       _minTagPercentage = 18;
       _activeDropdown = null;
       _studioResults.clear();
+      _characterResults.clear();
+      _staffResults.clear();
     });
   }
 
@@ -621,8 +745,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                   _durationMin = null;
                                   _durationMax = null;
                                   _formats.updateAll((key, val) => null);
+                                  _isBirthday = null;
                                   _sortBy = 'search_match';
                                   _studioResults.clear();
+                                  _characterResults.clear();
+                                  _staffResults.clear();
                                 });
                                 _performSearch();
                               },
@@ -709,6 +836,13 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                   _isAdult = val;
                                 });
                               },
+                              isBirthday: _isBirthday,
+                              onBirthdayChanged: (val) {
+                                setState(() {
+                                  _isBirthday = val;
+                                });
+                                _performSearch();
+                              },
                               genres: _genres,
                               tags: _tags,
                               allTags: _allTags,
@@ -748,6 +882,22 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                             if (_searchType == 'STUDIO')
                               StudioResultsList(
                                 studioResults: _studioResults,
+                                isSearching: _isSearching,
+                                isSearchingMore: _isSearchingMore,
+                                searchError: _searchError,
+                                onRetry: _performSearch,
+                              )
+                            else if (_searchType == 'CHARACTER')
+                              CharacterResultsList(
+                                characterResults: _characterResults,
+                                isSearching: _isSearching,
+                                isSearchingMore: _isSearchingMore,
+                                searchError: _searchError,
+                                onRetry: _performSearch,
+                              )
+                            else if (_searchType == 'STAFF')
+                              StaffResultsList(
+                                staffResults: _staffResults,
                                 isSearching: _isSearching,
                                 isSearchingMore: _isSearchingMore,
                                 searchError: _searchError,

@@ -530,4 +530,7 @@ class Staff {
       staffMedia: staffMedia ?? this.staffMedia,
     );
   }
+
+  /// Converts to minimal staff representation
+  StaffMin toMin() => StaffMin(id: id, name: name, image: image);
 }

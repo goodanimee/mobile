@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../models/media_misc.dart';
+import '../../../../theme/theme.dart';
 import '../common/active_dropdown.dart';
+import '../common/search_filter_button.dart';
 import 'filter_actions_row.dart';
 import 'search_type_selector.dart';
 import 'types/anime_filters.dart';
@@ -143,6 +146,12 @@ class SearchFiltersPanel extends StatelessWidget {
   /// Callback when filters are applied.
   final VoidCallback onApply;
 
+  /// Whether birthday filter is active for characters or staff.
+  final bool? isBirthday;
+
+  /// Callback when birthday filter state changes.
+  final ValueChanged<bool?>? onBirthdayChanged;
+
   /// Creates a search filters panel.
   const SearchFiltersPanel({
     super.key,
@@ -191,11 +200,15 @@ class SearchFiltersPanel extends StatelessWidget {
     required this.onToggleFilters,
     required this.onReset,
     required this.onApply,
+    this.isBirthday,
+    this.onBirthdayChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bool isStudio = searchType == 'STUDIO';
+    final bool isMedia = searchType == 'ANIME' || searchType == 'MANGA';
+    final bool isCharacterOrStaff =
+        searchType == 'CHARACTER' || searchType == 'STAFF';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,7 +220,7 @@ class SearchFiltersPanel extends StatelessWidget {
             onChanged: onSearchTypeChanged,
           ),
         ),
-        if (!isStudio) ...[
+        if (isMedia) ...[
           ClipRect(
             child: SizeTransition(
               sizeFactor: filtersAnimation,
@@ -224,8 +237,39 @@ class SearchFiltersPanel extends StatelessWidget {
             onReset: onReset,
             onApply: onApply,
           ),
+        ] else if (isCharacterOrStaff) ...[
+          const SizedBox(height: 16.0),
+          _buildBirthdayFilter(context),
         ],
       ],
+    );
+  }
+
+  Widget _buildBirthdayFilter(BuildContext context) {
+    final bool active = isBirthday ?? false;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: paddingVal),
+      child: SizedBox(
+        width: double.infinity,
+        child: Wrap(
+          spacing: 8.0,
+          runSpacing: 8.0,
+          children: [
+            SearchFilterButton(
+              label: 'Birthday Today',
+              icon: LucideIcons.cake,
+              iconColor: active ? borderColor : textSecondary,
+              backgroundColor: active
+                  ? borderColor.withValues(alpha: 0.15)
+                  : Colors.transparent,
+              borderColor: active ? borderColor : cardBorderColor,
+              textColor: textPrimary,
+              onTap: () => onBirthdayChanged?.call(!active),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

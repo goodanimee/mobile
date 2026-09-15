@@ -18,14 +18,21 @@ class SearchTypeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        _buildTypeChip(context, 'Anime', 'ANIME'),
-        const SizedBox(width: 8.0),
-        _buildTypeChip(context, 'Manga', 'MANGA'),
-        const SizedBox(width: 8.0),
-        _buildTypeChip(context, 'Studio', 'STUDIO'),
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _buildTypeChip(context, 'Anime', 'ANIME'),
+          const SizedBox(width: 8.0),
+          _buildTypeChip(context, 'Manga', 'MANGA'),
+          const SizedBox(width: 8.0),
+          _buildTypeChip(context, 'Characters', 'CHARACTER'),
+          const SizedBox(width: 8.0),
+          _buildTypeChip(context, 'Staff', 'STAFF'),
+          const SizedBox(width: 8.0),
+          _buildTypeChip(context, 'Studio', 'STUDIO'),
+        ],
+      ),
     );
   }
 

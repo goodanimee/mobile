@@ -1,0 +1,24 @@
+query StaffSearch($page: Int, $query: String, $isBirthday: Boolean, $sort: [StaffSort]) {
+  Page(page: $page, perPage: 25) {
+    pageInfo {
+      hasNextPage
+      currentPage
+    }
+    staff(search: $query, isBirthday: $isBirthday, sort: $sort) {
+      id
+      name {
+        full
+        native
+        userPreferred
+        alternative
+      }
+      image {
+        large
+        medium
+      }
+      primaryOccupations
+      favourites
+      isFavourite
+    }
+  }
+}

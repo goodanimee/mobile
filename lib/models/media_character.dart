@@ -318,6 +318,9 @@ class Character {
     if (media != null) pbObj.media = media!.toProto();
     return pbObj;
   }
+
+  /// Converts to minimal character representation
+  CharacterMin toMin() => CharacterMin(id: id ?? 0, name: name, image: image);
 }
 
 /// Represents a link between a media and a character
