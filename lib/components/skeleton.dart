@@ -268,13 +268,15 @@ class Skeleton extends StatelessWidget {
   }
 
   /// List skeleton layout with repeated card rows
-  factory Skeleton.list({int count = 6}) {
+  factory Skeleton.list({int count = 6, EdgeInsetsGeometry? padding}) {
     return Skeleton._(
       SkeletonShimmer(
         child: ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding:
+              padding ??
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           itemCount: count,
           itemBuilder: (context, index) {
             return Padding(

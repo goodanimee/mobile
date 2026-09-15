@@ -63,11 +63,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       (type: 'favourites_desc', label: 'Favourites (Desc)'),
     ],
     'CHARACTER': [
-      (type: 'search_match', label: 'Relevance'),
+      (type: 'search_match', label: 'Search Match'),
       (type: 'favourites_desc', label: 'Favourites'),
     ],
     'STAFF': [
-      (type: 'search_match', label: 'Relevance'),
+      (type: 'search_match', label: 'Search Match'),
       (type: 'favourites_desc', label: 'Favourites'),
     ],
   };
@@ -746,12 +746,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                   _durationMax = null;
                                   _formats.updateAll((key, val) => null);
                                   _isBirthday = null;
-                                  _sortBy =
-                                      (value == 'CHARACTER' ||
-                                              value == 'STAFF') &&
-                                          _searchController.text.isEmpty
-                                      ? 'favourites_desc'
-                                      : 'search_match';
+                                  _sortBy = 'search_match';
                                   _studioResults.clear();
                                   _characterResults.clear();
                                   _staffResults.clear();

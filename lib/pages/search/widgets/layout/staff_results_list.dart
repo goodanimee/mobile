@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../components/error_view.dart';
 import '../../../../components/loading_indicator.dart';
 import '../../../../components/relation_card.dart';
+import '../../../../components/skeleton.dart';
 import '../../../../models/media_staff.dart';
 import '../../../../theme/theme.dart';
 import '../../../../utils/app_navigation.dart';
@@ -39,11 +40,8 @@ class StaffResultsList extends StatelessWidget {
   Widget build(BuildContext context) {
     final double paddingVal = getResponsiveSize(context, 16.0);
     if (isSearching) {
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 40.0),
-          child: AppLoadingIndicator(),
-        ),
+      return Skeleton.list(
+        padding: EdgeInsets.symmetric(horizontal: paddingVal),
       );
     }
     if (searchError != null) {
