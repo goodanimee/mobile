@@ -203,3 +203,11 @@ type CharacterToggleFavouriteDTO struct {
 		} `json:"characters"`
 	} `json:"ToggleFavourite"`
 }
+
+// CharacterSearchDTO represents the response for character search
+type CharacterSearchDTO struct {
+	Page struct {
+		PageInfo   PageInfo     `json:"pageInfo"`
+		Characters []*Character `json:"characters"`
+	} `json:"Page"`
+}

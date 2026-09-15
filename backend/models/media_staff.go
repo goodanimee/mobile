@@ -167,6 +167,14 @@ type StaffDTO struct {
 	Staff Staff `json:"Staff"`
 }
 
+// StaffSearchDTO represents the response for staff search
+type StaffSearchDTO struct {
+	Page struct {
+		PageInfo PageInfo `json:"pageInfo"`
+		Staff    []*Staff `json:"staff"`
+	} `json:"Page"`
+}
+
 // ToProto converts StaffCharacterName to its protobuf representation.
 func (s *StaffCharacterName) ToProto() *pb.StaffCharacterName {
 	if s == nil {
