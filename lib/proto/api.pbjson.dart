@@ -1190,3 +1190,123 @@ final $typed_data.Uint8List toggleFavouriteCharacterResponseDescriptor =
     $convert.base64Decode(
         'CiBUb2dnbGVGYXZvdXJpdGVDaGFyYWN0ZXJSZXNwb25zZRIhCgxjaGFyYWN0ZXJfaWQYASABKA'
         'VSC2NoYXJhY3RlcklkEhQKBWVycm9yGAIgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use fetchCharacterSearchRequestDescriptor instead')
+const FetchCharacterSearchRequest$json = {
+  '1': 'FetchCharacterSearchRequest',
+  '2': [
+    {'1': 'page', '3': 1, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'query', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'query', '17': true},
+    {'1': 'sort', '3': 3, '4': 3, '5': 9, '10': 'sort'},
+    {
+      '1': 'is_birthday',
+      '3': 4,
+      '4': 1,
+      '5': 8,
+      '9': 1,
+      '10': 'isBirthday',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_query'},
+    {'1': '_is_birthday'},
+  ],
+};
+
+/// Descriptor for `FetchCharacterSearchRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchCharacterSearchRequestDescriptor =
+    $convert.base64Decode(
+        'ChtGZXRjaENoYXJhY3RlclNlYXJjaFJlcXVlc3QSEgoEcGFnZRgBIAEoBVIEcGFnZRIZCgVxdW'
+        'VyeRgCIAEoCUgAUgVxdWVyeYgBARISCgRzb3J0GAMgAygJUgRzb3J0EiQKC2lzX2JpcnRoZGF5'
+        'GAQgASgISAFSCmlzQmlydGhkYXmIAQFCCAoGX3F1ZXJ5Qg4KDF9pc19iaXJ0aGRheQ==');
+
+@$core.Deprecated('Use fetchCharacterSearchResponseDescriptor instead')
+const FetchCharacterSearchResponse$json = {
+  '1': 'FetchCharacterSearchResponse',
+  '2': [
+    {
+      '1': 'characters',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.Character',
+      '10': 'characters'
+    },
+    {
+      '1': 'page_info',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchCharacterSearchResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchCharacterSearchResponseDescriptor =
+    $convert.base64Decode(
+        'ChxGZXRjaENoYXJhY3RlclNlYXJjaFJlc3BvbnNlEjQKCmNoYXJhY3RlcnMYASADKAsyFC5nb2'
+        '9kYW5pbWUuQ2hhcmFjdGVyUgpjaGFyYWN0ZXJzEjAKCXBhZ2VfaW5mbxgCIAEoCzITLmdvb2Rh'
+        'bmltZS5QYWdlSW5mb1IIcGFnZUluZm8SFAoFZXJyb3IYAyABKAlSBWVycm9y');
+
+@$core.Deprecated('Use fetchStaffSearchRequestDescriptor instead')
+const FetchStaffSearchRequest$json = {
+  '1': 'FetchStaffSearchRequest',
+  '2': [
+    {'1': 'page', '3': 1, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'query', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'query', '17': true},
+    {'1': 'sort', '3': 3, '4': 3, '5': 9, '10': 'sort'},
+    {
+      '1': 'is_birthday',
+      '3': 4,
+      '4': 1,
+      '5': 8,
+      '9': 1,
+      '10': 'isBirthday',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_query'},
+    {'1': '_is_birthday'},
+  ],
+};
+
+/// Descriptor for `FetchStaffSearchRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchStaffSearchRequestDescriptor = $convert.base64Decode(
+    'ChdGZXRjaFN0YWZmU2VhcmNoUmVxdWVzdBISCgRwYWdlGAEgASgFUgRwYWdlEhkKBXF1ZXJ5GA'
+    'IgASgJSABSBXF1ZXJ5iAEBEhIKBHNvcnQYAyADKAlSBHNvcnQSJAoLaXNfYmlydGhkYXkYBCAB'
+    'KAhIAVIKaXNCaXJ0aGRheYgBAUIICgZfcXVlcnlCDgoMX2lzX2JpcnRoZGF5');
+
+@$core.Deprecated('Use fetchStaffSearchResponseDescriptor instead')
+const FetchStaffSearchResponse$json = {
+  '1': 'FetchStaffSearchResponse',
+  '2': [
+    {
+      '1': 'staff',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.Staff',
+      '10': 'staff'
+    },
+    {
+      '1': 'page_info',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchStaffSearchResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchStaffSearchResponseDescriptor = $convert.base64Decode(
+    'ChhGZXRjaFN0YWZmU2VhcmNoUmVzcG9uc2USJgoFc3RhZmYYASADKAsyEC5nb29kYW5pbWUuU3'
+    'RhZmZSBXN0YWZmEjAKCXBhZ2VfaW5mbxgCIAEoCzITLmdvb2RhbmltZS5QYWdlSW5mb1IIcGFn'
+    'ZUluZm8SFAoFZXJyb3IYAyABKAlSBWVycm9y');

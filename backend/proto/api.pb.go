@@ -2789,6 +2789,262 @@ func (x *ToggleFavouriteCharacterResponse) GetError() string {
 	return ""
 }
 
+type FetchCharacterSearchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	Query         *string                `protobuf:"bytes,2,opt,name=query,proto3,oneof" json:"query,omitempty"`
+	Sort          []string               `protobuf:"bytes,3,rep,name=sort,proto3" json:"sort,omitempty"`
+	IsBirthday    *bool                  `protobuf:"varint,4,opt,name=is_birthday,json=isBirthday,proto3,oneof" json:"is_birthday,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchCharacterSearchRequest) Reset() {
+	*x = FetchCharacterSearchRequest{}
+	mi := &file_api_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchCharacterSearchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchCharacterSearchRequest) ProtoMessage() {}
+
+func (x *FetchCharacterSearchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchCharacterSearchRequest.ProtoReflect.Descriptor instead.
+func (*FetchCharacterSearchRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *FetchCharacterSearchRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *FetchCharacterSearchRequest) GetQuery() string {
+	if x != nil && x.Query != nil {
+		return *x.Query
+	}
+	return ""
+}
+
+func (x *FetchCharacterSearchRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+func (x *FetchCharacterSearchRequest) GetIsBirthday() bool {
+	if x != nil && x.IsBirthday != nil {
+		return *x.IsBirthday
+	}
+	return false
+}
+
+type FetchCharacterSearchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Characters    []*Character           `protobuf:"bytes,1,rep,name=characters,proto3" json:"characters,omitempty"`
+	PageInfo      *PageInfo              `protobuf:"bytes,2,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Error         string                 `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchCharacterSearchResponse) Reset() {
+	*x = FetchCharacterSearchResponse{}
+	mi := &file_api_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchCharacterSearchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchCharacterSearchResponse) ProtoMessage() {}
+
+func (x *FetchCharacterSearchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchCharacterSearchResponse.ProtoReflect.Descriptor instead.
+func (*FetchCharacterSearchResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *FetchCharacterSearchResponse) GetCharacters() []*Character {
+	if x != nil {
+		return x.Characters
+	}
+	return nil
+}
+
+func (x *FetchCharacterSearchResponse) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *FetchCharacterSearchResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type FetchStaffSearchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	Query         *string                `protobuf:"bytes,2,opt,name=query,proto3,oneof" json:"query,omitempty"`
+	Sort          []string               `protobuf:"bytes,3,rep,name=sort,proto3" json:"sort,omitempty"`
+	IsBirthday    *bool                  `protobuf:"varint,4,opt,name=is_birthday,json=isBirthday,proto3,oneof" json:"is_birthday,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchStaffSearchRequest) Reset() {
+	*x = FetchStaffSearchRequest{}
+	mi := &file_api_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchStaffSearchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchStaffSearchRequest) ProtoMessage() {}
+
+func (x *FetchStaffSearchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchStaffSearchRequest.ProtoReflect.Descriptor instead.
+func (*FetchStaffSearchRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *FetchStaffSearchRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *FetchStaffSearchRequest) GetQuery() string {
+	if x != nil && x.Query != nil {
+		return *x.Query
+	}
+	return ""
+}
+
+func (x *FetchStaffSearchRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+func (x *FetchStaffSearchRequest) GetIsBirthday() bool {
+	if x != nil && x.IsBirthday != nil {
+		return *x.IsBirthday
+	}
+	return false
+}
+
+type FetchStaffSearchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Staff         []*Staff               `protobuf:"bytes,1,rep,name=staff,proto3" json:"staff,omitempty"`
+	PageInfo      *PageInfo              `protobuf:"bytes,2,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Error         string                 `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchStaffSearchResponse) Reset() {
+	*x = FetchStaffSearchResponse{}
+	mi := &file_api_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchStaffSearchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchStaffSearchResponse) ProtoMessage() {}
+
+func (x *FetchStaffSearchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchStaffSearchResponse.ProtoReflect.Descriptor instead.
+func (*FetchStaffSearchResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *FetchStaffSearchResponse) GetStaff() []*Staff {
+	if x != nil {
+		return x.Staff
+	}
+	return nil
+}
+
+func (x *FetchStaffSearchResponse) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *FetchStaffSearchResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
@@ -3033,7 +3289,33 @@ const file_api_proto_rawDesc = "" +
 	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\"[\n" +
 	" ToggleFavouriteCharacterResponse\x12!\n" +
 	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x14\n" +
-	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x05error\x18\x02 \x01(\tR\x05error\"\xa0\x01\n" +
+	"\x1bFetchCharacterSearchRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x19\n" +
+	"\x05query\x18\x02 \x01(\tH\x00R\x05query\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x03 \x03(\tR\x04sort\x12$\n" +
+	"\vis_birthday\x18\x04 \x01(\bH\x01R\n" +
+	"isBirthday\x88\x01\x01B\b\n" +
+	"\x06_queryB\x0e\n" +
+	"\f_is_birthday\"\x9c\x01\n" +
+	"\x1cFetchCharacterSearchResponse\x124\n" +
+	"\n" +
+	"characters\x18\x01 \x03(\v2\x14.goodanime.CharacterR\n" +
+	"characters\x120\n" +
+	"\tpage_info\x18\x02 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
+	"\x05error\x18\x03 \x01(\tR\x05error\"\x9c\x01\n" +
+	"\x17FetchStaffSearchRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x19\n" +
+	"\x05query\x18\x02 \x01(\tH\x00R\x05query\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x03 \x03(\tR\x04sort\x12$\n" +
+	"\vis_birthday\x18\x04 \x01(\bH\x01R\n" +
+	"isBirthday\x88\x01\x01B\b\n" +
+	"\x06_queryB\x0e\n" +
+	"\f_is_birthday\"\x8a\x01\n" +
+	"\x18FetchStaffSearchResponse\x12&\n" +
+	"\x05staff\x18\x01 \x03(\v2\x10.goodanime.StaffR\x05staff\x120\n" +
+	"\tpage_info\x18\x02 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
+	"\x05error\x18\x03 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_api_proto_rawDescOnce sync.Once
@@ -3047,7 +3329,7 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 46)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 50)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
@@ -3095,48 +3377,56 @@ var file_api_proto_goTypes = []any{
 	(*FetchCharacterDetailsResponse)(nil),     // 43: goodanime.FetchCharacterDetailsResponse
 	(*ToggleFavouriteCharacterRequest)(nil),   // 44: goodanime.ToggleFavouriteCharacterRequest
 	(*ToggleFavouriteCharacterResponse)(nil),  // 45: goodanime.ToggleFavouriteCharacterResponse
-	(*MediaListCollection)(nil),               // 46: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 47: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 48: goodanime.MediaListEntry
-	(*Media)(nil),                             // 49: goodanime.Media
-	(ReviewUserRating)(0),                     // 50: goodanime.ReviewUserRating
-	(*ReviewNode)(nil),                        // 51: goodanime.ReviewNode
-	(*PageInfo)(nil),                          // 52: goodanime.PageInfo
-	(*ListActivity)(nil),                      // 53: goodanime.ListActivity
-	(*Studio)(nil),                            // 54: goodanime.Studio
-	(*Staff)(nil),                             // 55: goodanime.Staff
-	(*MediaTag)(nil),                          // 56: goodanime.MediaTag
-	(*MediaMin)(nil),                          // 57: goodanime.MediaMin
-	(*Character)(nil),                         // 58: goodanime.Character
+	(*FetchCharacterSearchRequest)(nil),       // 46: goodanime.FetchCharacterSearchRequest
+	(*FetchCharacterSearchResponse)(nil),      // 47: goodanime.FetchCharacterSearchResponse
+	(*FetchStaffSearchRequest)(nil),           // 48: goodanime.FetchStaffSearchRequest
+	(*FetchStaffSearchResponse)(nil),          // 49: goodanime.FetchStaffSearchResponse
+	(*MediaListCollection)(nil),               // 50: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 51: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 52: goodanime.MediaListEntry
+	(*Media)(nil),                             // 53: goodanime.Media
+	(ReviewUserRating)(0),                     // 54: goodanime.ReviewUserRating
+	(*ReviewNode)(nil),                        // 55: goodanime.ReviewNode
+	(*PageInfo)(nil),                          // 56: goodanime.PageInfo
+	(*ListActivity)(nil),                      // 57: goodanime.ListActivity
+	(*Studio)(nil),                            // 58: goodanime.Studio
+	(*Staff)(nil),                             // 59: goodanime.Staff
+	(*MediaTag)(nil),                          // 60: goodanime.MediaTag
+	(*MediaMin)(nil),                          // 61: goodanime.MediaMin
+	(*Character)(nil),                         // 62: goodanime.Character
 }
 var file_api_proto_depIdxs = []int32{
-	46, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	47, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	50, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	51, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	48, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	49, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	49, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	49, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	49, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	49, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
-	50, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
-	51, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
-	52, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
-	53, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
-	54, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
-	55, // 15: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
-	56, // 16: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
-	57, // 17: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
-	52, // 18: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
-	54, // 19: goodanime.FetchStudioSearchResponse.studios:type_name -> goodanime.Studio
-	52, // 20: goodanime.FetchStudioSearchResponse.page_info:type_name -> goodanime.PageInfo
-	58, // 21: goodanime.FetchCharacterDetailsResponse.character:type_name -> goodanime.Character
-	22, // [22:22] is the sub-list for method output_type
-	22, // [22:22] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	52, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	53, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	53, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	53, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	53, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	53, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	54, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
+	55, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
+	56, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	57, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
+	58, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
+	59, // 15: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
+	60, // 16: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
+	61, // 17: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
+	56, // 18: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
+	58, // 19: goodanime.FetchStudioSearchResponse.studios:type_name -> goodanime.Studio
+	56, // 20: goodanime.FetchStudioSearchResponse.page_info:type_name -> goodanime.PageInfo
+	62, // 21: goodanime.FetchCharacterDetailsResponse.character:type_name -> goodanime.Character
+	62, // 22: goodanime.FetchCharacterSearchResponse.characters:type_name -> goodanime.Character
+	56, // 23: goodanime.FetchCharacterSearchResponse.page_info:type_name -> goodanime.PageInfo
+	59, // 24: goodanime.FetchStaffSearchResponse.staff:type_name -> goodanime.Staff
+	56, // 25: goodanime.FetchStaffSearchResponse.page_info:type_name -> goodanime.PageInfo
+	26, // [26:26] is the sub-list for method output_type
+	26, // [26:26] is the sub-list for method input_type
+	26, // [26:26] is the sub-list for extension type_name
+	26, // [26:26] is the sub-list for extension extendee
+	0,  // [0:26] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -3160,13 +3450,15 @@ func file_api_proto_init() {
 	file_api_proto_msgTypes[4].OneofWrappers = []any{}
 	file_api_proto_msgTypes[38].OneofWrappers = []any{}
 	file_api_proto_msgTypes[40].OneofWrappers = []any{}
+	file_api_proto_msgTypes[46].OneofWrappers = []any{}
+	file_api_proto_msgTypes[48].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   46,
+			NumMessages:   50,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -294,3 +294,29 @@ message ToggleFavouriteCharacterResponse {
   string error = 2;
 }
 
+message FetchCharacterSearchRequest {
+  int32 page = 1;
+  optional string query = 2;
+  repeated string sort = 3;
+  optional bool is_birthday = 4;
+}
+
+message FetchCharacterSearchResponse {
+  repeated Character characters = 1;
+  PageInfo page_info = 2;
+  string error = 3;
+}
+
+message FetchStaffSearchRequest {
+  int32 page = 1;
+  optional string query = 2;
+  repeated string sort = 3;
+  optional bool is_birthday = 4;
+}
+
+message FetchStaffSearchResponse {
+  repeated Staff staff = 1;
+  PageInfo page_info = 2;
+  string error = 3;
+}
+
