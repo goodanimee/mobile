@@ -58,6 +58,14 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       (type: 'favourites', label: 'Favourites (Asc)'),
       (type: 'favourites_desc', label: 'Favourites (Desc)'),
     ],
+    'CHARACTER': [
+      (type: 'search_match', label: 'Relevance'),
+      (type: 'favourites_desc', label: 'Favourites'),
+    ],
+    'STAFF': [
+      (type: 'search_match', label: 'Relevance'),
+      (type: 'favourites_desc', label: 'Favourites'),
+    ],
   };
 
   final TextEditingController _searchController = TextEditingController();
@@ -96,6 +104,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   double? _scoreMin;
   double? _scoreMax;
   bool? _isAdult;
+  bool? _isBirthday;
 
   final LayerLink _formatLayerLink = LayerLink();
   final LayerLink _statusLayerLink = LayerLink();
@@ -207,6 +216,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         _scoreMin = null;
         _scoreMax = null;
         _isAdult = null;
+        _isBirthday = null;
         _genres.updateAll((key, val) => null);
         _tags.updateAll((key, val) => null);
         _minTagPercentage = 18;
@@ -469,6 +479,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     if (_durationMin != null || _durationMax != null) return true;
     if (_scoreMin != null || _scoreMax != null) return true;
     if (_isAdult != null) return true;
+    if (_isBirthday != null) return true;
     if (_genres.values.any((val) => val != null)) return true;
     if (_tags.values.any((val) => val != null)) return true;
     if (_minTagPercentage != 18) return true;
@@ -490,6 +501,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       _scoreMin = null;
       _scoreMax = null;
       _isAdult = null;
+      _isBirthday = null;
       _genres.updateAll((key, val) => null);
       _tags.updateAll((key, val) => null);
       _minTagPercentage = 18;
@@ -621,7 +633,13 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                   _durationMin = null;
                                   _durationMax = null;
                                   _formats.updateAll((key, val) => null);
-                                  _sortBy = 'search_match';
+                                  _isBirthday = null;
+                                  _sortBy =
+                                      (value == 'CHARACTER' ||
+                                              value == 'STAFF') &&
+                                          _searchController.text.isEmpty
+                                      ? 'favourites_desc'
+                                      : 'search_match';
                                   _studioResults.clear();
                                 });
                                 _performSearch();
@@ -708,6 +726,13 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 setState(() {
                                   _isAdult = val;
                                 });
+                              },
+                              isBirthday: _isBirthday,
+                              onBirthdayChanged: (val) {
+                                setState(() {
+                                  _isBirthday = val;
+                                });
+                                _performSearch();
                               },
                               genres: _genres,
                               tags: _tags,
