@@ -1,0 +1,24 @@
+query CharacterSearch($page: Int, $query: String, $isBirthday: Boolean, $sort: [CharacterSort]) {
+  Page(page: $page, perPage: 25) {
+    pageInfo {
+      hasNextPage
+      currentPage
+    }
+    characters(search: $query, isBirthday: $isBirthday, sort: $sort) {
+      id
+      name {
+        full
+        native
+        userPreferred
+        alternative
+        alternativeSpoiler
+      }
+      image {
+        large
+        medium
+      }
+      favourites
+      isFavourite
+    }
+  }
+}
