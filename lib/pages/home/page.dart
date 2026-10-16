@@ -5,9 +5,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/floating_nav.dart';
 import '../../components/loading_indicator.dart';
+import '../../components/update_dialog.dart';
 import '../../models/common.dart';
 import '../../services/auth_service.dart';
 import '../../services/media_list_controller.dart';
+import '../../services/update_service.dart';
 import '../../theme/theme.dart';
 import '../login/page.dart';
 import '../media_list/page.dart';
@@ -72,6 +74,18 @@ class _HomePageState extends State<HomePage> {
         _isGridMode = isGridMode;
         _token = token;
         _isLoading = false;
+      });
+      if (token != null) {
+        await _checkForUpdate();
+      }
+    }
+  }
+
+  Future<void> _checkForUpdate() async {
+    final release = await UpdateService.checkForUpdate();
+    if (release != null && mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) UpdateDialog.show(context, release);
       });
     }
   }
