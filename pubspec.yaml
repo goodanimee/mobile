@@ -1,7 +1,7 @@
 name: goodanime
 description: "A new Flutter project."
 publish_to: "none"
-version: 0.6.4+13
+version: 0.7.0+14
 
 environment:
   sdk: ^3.11.5
