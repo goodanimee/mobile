@@ -10,6 +10,7 @@ import '../../models/media_list.dart';
 import '../../services/media_list_controller.dart';
 import '../../theme/theme.dart';
 import '../../utils/app_options.dart';
+import '../../utils/utils.dart';
 import 'widgets/grid_view.dart';
 import 'widgets/list_view.dart';
 
@@ -216,96 +217,11 @@ class _MediaListTabState extends State<MediaListTab>
 
   void _sortEntries(List<MediaListEntryWithMedia> entries) {
     final isAscending = _sortDirections[_sortType] ?? false;
-    switch (_sortType) {
-      case 'title':
-        entries.sort((a, b) {
-          final tA = a.media.title.userPreferred.trim().toLowerCase();
-          final tB = b.media.title.userPreferred.trim().toLowerCase();
-          if (tA.isEmpty && tB.isEmpty) return 0;
-          if (tA.isEmpty) return -1;
-          if (tB.isEmpty) return 1;
-          return isAscending ? tA.compareTo(tB) : tB.compareTo(tA);
-        });
-        break;
-      case 'score':
-        entries.sort((a, b) {
-          final scoreA = a.score;
-          final scoreB = b.score;
-          final hasScoreA = scoreA > 0;
-          final hasScoreB = scoreB > 0;
-
-          if (hasScoreA && hasScoreB) {
-            return isAscending
-                ? scoreA.compareTo(scoreB)
-                : scoreB.compareTo(scoreA);
-          }
-          if (hasScoreA) return -1;
-          if (hasScoreB) return 1;
-
-          final commA = a.media.averageScore;
-          final commB = b.media.averageScore;
-          return isAscending ? commA.compareTo(commB) : commB.compareTo(commA);
-        });
-        break;
-      case 'progress':
-        entries.sort((a, b) {
-          return isAscending
-              ? a.progress.compareTo(b.progress)
-              : b.progress.compareTo(a.progress);
-        });
-        break;
-      case 'release_date':
-        entries.sort((a, b) {
-          final yA = (a.media.startYear == 0) ? null : a.media.startYear;
-          final yB = (b.media.startYear == 0) ? null : b.media.startYear;
-          if (yA == null && yB == null) return 0;
-          if (yA == null) return 1;
-          if (yB == null) return -1;
-          return isAscending ? yA.compareTo(yB) : yB.compareTo(yA);
-        });
-        break;
-      case 'started_date':
-        entries.sort((a, b) {
-          return _compareFuzzyDates(a.startedAt, b.startedAt, isAscending);
-        });
-        break;
-      case 'completed_date':
-        entries.sort((a, b) {
-          return _compareFuzzyDates(a.completedAt, b.completedAt, isAscending);
-        });
-        break;
-    }
-  }
-
-  int _compareFuzzyDates(FuzzyDate? a, FuzzyDate? b, bool ascending) {
-    if (a == null && b == null) return 0;
-    if (a == null) return 1;
-    if (b == null) return -1;
-
-    final yA = (a.year == 0) ? null : a.year;
-    final yB = (b.year == 0) ? null : b.year;
-    if (yA == null && yB == null) return 0;
-    if (yA == null) return 1;
-    if (yB == null) return -1;
-    if (yA != yB) {
-      return ascending ? yA.compareTo(yB) : yB.compareTo(yA);
-    }
-
-    final mA = (a.month == 0) ? null : a.month;
-    final mB = (b.month == 0) ? null : b.month;
-    if (mA == null && mB == null) return 0;
-    if (mA == null) return 1;
-    if (mB == null) return -1;
-    if (mA != mB) {
-      return ascending ? mA.compareTo(mB) : mB.compareTo(mA);
-    }
-
-    final dA = (a.day == 0) ? null : a.day;
-    final dB = (b.day == 0) ? null : b.day;
-    if (dA == null && dB == null) return 0;
-    if (dA == null) return 1;
-    if (dB == null) return -1;
-    return ascending ? dA.compareTo(dB) : dB.compareTo(dA);
+    MediaListSortUtils.sortEntries(
+      entries,
+      sortType: _sortType,
+      isAscending: isAscending,
+    );
   }
 
   @override
