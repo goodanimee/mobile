@@ -50,6 +50,15 @@ const MediaListEntry$json = {
       '10': 'completedAt'
     },
     {'1': 'progress_volumes', '3': 8, '4': 1, '5': 5, '10': 'progressVolumes'},
+    {'1': 'private', '3': 9, '4': 1, '5': 8, '10': 'private'},
+    {
+      '1': 'hidden_from_status_lists',
+      '3': 10,
+      '4': 1,
+      '5': 8,
+      '10': 'hiddenFromStatusLists'
+    },
+    {'1': 'notes', '3': 11, '4': 1, '5': 9, '10': 'notes'},
   ],
   '8': [
     {'1': '_status'},
@@ -63,4 +72,6 @@ final $typed_data.Uint8List mediaListEntryDescriptor = $convert.base64Decode(
     'b2dyZXNzEhQKBXNjb3JlGAQgASgBUgVzY29yZRIWCgZyZXBlYXQYBSABKAVSBnJlcGVhdBIzCg'
     'pzdGFydGVkX2F0GAYgASgLMhQuZ29vZGFuaW1lLkZ1enp5RGF0ZVIJc3RhcnRlZEF0EjcKDGNv'
     'bXBsZXRlZF9hdBgHIAEoCzIULmdvb2RhbmltZS5GdXp6eURhdGVSC2NvbXBsZXRlZEF0EikKEH'
-    'Byb2dyZXNzX3ZvbHVtZXMYCCABKAVSD3Byb2dyZXNzVm9sdW1lc0IJCgdfc3RhdHVz');
+    'Byb2dyZXNzX3ZvbHVtZXMYCCABKAVSD3Byb2dyZXNzVm9sdW1lcxIYCgdwcml2YXRlGAkgASgI'
+    'Ugdwcml2YXRlEjcKGGhpZGRlbl9mcm9tX3N0YXR1c19saXN0cxgKIAEoCFIVaGlkZGVuRnJvbV'
+    'N0YXR1c0xpc3RzEhQKBW5vdGVzGAsgASgJUgVub3Rlc0IJCgdfc3RhdHVz');

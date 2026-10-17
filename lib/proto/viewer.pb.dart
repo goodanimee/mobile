@@ -20,7 +20,7 @@ class ViewerAvatar extends $pb.GeneratedMessage {
   factory ViewerAvatar({
     $core.String? medium,
   }) {
-    final result = create();
+    final result = ViewerAvatar._();
     if (medium != null) result.medium = medium;
     return result;
   }
@@ -29,15 +29,15 @@ class ViewerAvatar extends $pb.GeneratedMessage {
 
   factory ViewerAvatar.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ViewerAvatar()..mergeFromBuffer(data, registry);
   factory ViewerAvatar.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ViewerAvatar()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ViewerAvatar',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ViewerAvatar.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'medium')
     ..hasRequiredFields = false;
 
@@ -52,12 +52,15 @@ class ViewerAvatar extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use ViewerAvatar() / ViewerAvatar.new instead')
   static ViewerAvatar create() => ViewerAvatar._();
+  static $pb.GeneratedMessage $_createMessage() => ViewerAvatar._();
   @$core.override
-  ViewerAvatar createEmptyInstance() => create();
+  ViewerAvatar createEmptyInstance() => ViewerAvatar._();
   @$core.pragma('dart2js:noInline')
-  static ViewerAvatar getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ViewerAvatar>(create);
+  static ViewerAvatar getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ViewerAvatar>(
+          ViewerAvatar.$_createMessage);
   static ViewerAvatar? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -77,7 +80,7 @@ class Viewer extends $pb.GeneratedMessage {
     $core.int? createdAt,
     ViewerAvatar? avatar,
   }) {
-    final result = create();
+    final result = Viewer._();
     if (id != null) result.id = id;
     if (name != null) result.name = name;
     if (createdAt != null) result.createdAt = createdAt;
@@ -89,20 +92,20 @@ class Viewer extends $pb.GeneratedMessage {
 
   factory Viewer.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      Viewer()..mergeFromBuffer(data, registry);
   factory Viewer.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      Viewer()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Viewer',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: Viewer.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aI(3, _omitFieldNames ? '' : 'createdAt')
     ..aOM<ViewerAvatar>(4, _omitFieldNames ? '' : 'avatar',
-        subBuilder: ViewerAvatar.create)
+        subBuilder: ViewerAvatar.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -115,12 +118,14 @@ class Viewer extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use Viewer() / Viewer.new instead')
   static Viewer create() => Viewer._();
+  static $pb.GeneratedMessage $_createMessage() => Viewer._();
   @$core.override
-  Viewer createEmptyInstance() => create();
+  Viewer createEmptyInstance() => Viewer._();
   @$core.pragma('dart2js:noInline')
-  static Viewer getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Viewer>(create);
+  static Viewer getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Viewer>(Viewer.$_createMessage);
   static Viewer? _defaultInstance;
 
   @$pb.TagNumber(1)

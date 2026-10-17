@@ -26,7 +26,7 @@ class StaffName extends $pb.GeneratedMessage {
     $core.String? userPreferred,
     $core.Iterable<$core.String>? alternative,
   }) {
-    final result = create();
+    final result = StaffName._();
     if (full != null) result.full = full;
     if (native != null) result.native = native;
     if (userPreferred != null) result.userPreferred = userPreferred;
@@ -38,15 +38,15 @@ class StaffName extends $pb.GeneratedMessage {
 
   factory StaffName.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffName()..mergeFromBuffer(data, registry);
   factory StaffName.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffName()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffName',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffName.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'full')
     ..aOS(2, _omitFieldNames ? '' : 'native')
     ..aOS(3, _omitFieldNames ? '' : 'userPreferred')
@@ -63,12 +63,14 @@ class StaffName extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StaffName() / StaffName.new instead')
   static StaffName create() => StaffName._();
+  static $pb.GeneratedMessage $_createMessage() => StaffName._();
   @$core.override
-  StaffName createEmptyInstance() => create();
+  StaffName createEmptyInstance() => StaffName._();
   @$core.pragma('dart2js:noInline')
-  static StaffName getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StaffName>(create);
+  static StaffName getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StaffName>(StaffName.$_createMessage);
   static StaffName? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -107,7 +109,7 @@ class StaffImage extends $pb.GeneratedMessage {
     $core.String? large,
     $core.String? medium,
   }) {
-    final result = create();
+    final result = StaffImage._();
     if (large != null) result.large = large;
     if (medium != null) result.medium = medium;
     return result;
@@ -117,15 +119,15 @@ class StaffImage extends $pb.GeneratedMessage {
 
   factory StaffImage.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffImage()..mergeFromBuffer(data, registry);
   factory StaffImage.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffImage()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffImage',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffImage.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'large')
     ..aOS(2, _omitFieldNames ? '' : 'medium')
     ..hasRequiredFields = false;
@@ -140,12 +142,14 @@ class StaffImage extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StaffImage() / StaffImage.new instead')
   static StaffImage create() => StaffImage._();
+  static $pb.GeneratedMessage $_createMessage() => StaffImage._();
   @$core.override
-  StaffImage createEmptyInstance() => create();
+  StaffImage createEmptyInstance() => StaffImage._();
   @$core.pragma('dart2js:noInline')
   static StaffImage getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StaffImage>(create);
+      $pb.GeneratedMessage.$_defaultFor<StaffImage>(StaffImage.$_createMessage);
   static StaffImage? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -174,7 +178,7 @@ class StaffMin extends $pb.GeneratedMessage {
     StaffImage? image,
     $core.String? languageV2,
   }) {
-    final result = create();
+    final result = StaffMin._();
     if (id != null) result.id = id;
     if (name != null) result.name = name;
     if (image != null) result.image = image;
@@ -186,20 +190,20 @@ class StaffMin extends $pb.GeneratedMessage {
 
   factory StaffMin.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffMin()..mergeFromBuffer(data, registry);
   factory StaffMin.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffMin()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffMin',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffMin.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
     ..aOM<StaffName>(2, _omitFieldNames ? '' : 'name',
-        subBuilder: StaffName.create)
+        subBuilder: StaffName.$_createMessage)
     ..aOM<StaffImage>(3, _omitFieldNames ? '' : 'image',
-        subBuilder: StaffImage.create)
+        subBuilder: StaffImage.$_createMessage)
     ..aOS(4, _omitFieldNames ? '' : 'languageV2')
     ..hasRequiredFields = false;
 
@@ -213,12 +217,14 @@ class StaffMin extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StaffMin() / StaffMin.new instead')
   static StaffMin create() => StaffMin._();
+  static $pb.GeneratedMessage $_createMessage() => StaffMin._();
   @$core.override
-  StaffMin createEmptyInstance() => create();
+  StaffMin createEmptyInstance() => StaffMin._();
   @$core.pragma('dart2js:noInline')
-  static StaffMin getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StaffMin>(create);
+  static StaffMin getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StaffMin>(StaffMin.$_createMessage);
   static StaffMin? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -267,7 +273,7 @@ class StaffEdge extends $pb.GeneratedMessage {
     $core.String? role,
     StaffMin? node,
   }) {
-    final result = create();
+    final result = StaffEdge._();
     if (role != null) result.role = role;
     if (node != null) result.node = node;
     return result;
@@ -277,18 +283,18 @@ class StaffEdge extends $pb.GeneratedMessage {
 
   factory StaffEdge.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffEdge()..mergeFromBuffer(data, registry);
   factory StaffEdge.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffEdge()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffEdge',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffEdge.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'role')
     ..aOM<StaffMin>(2, _omitFieldNames ? '' : 'node',
-        subBuilder: StaffMin.create)
+        subBuilder: StaffMin.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -301,12 +307,14 @@ class StaffEdge extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StaffEdge() / StaffEdge.new instead')
   static StaffEdge create() => StaffEdge._();
+  static $pb.GeneratedMessage $_createMessage() => StaffEdge._();
   @$core.override
-  StaffEdge createEmptyInstance() => create();
+  StaffEdge createEmptyInstance() => StaffEdge._();
   @$core.pragma('dart2js:noInline')
-  static StaffEdge getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StaffEdge>(create);
+  static StaffEdge getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StaffEdge>(StaffEdge.$_createMessage);
   static StaffEdge? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -335,7 +343,7 @@ class StaffConnection extends $pb.GeneratedMessage {
     $core.Iterable<StaffEdge>? edges,
     $0.PageInfo? pageInfo,
   }) {
-    final result = create();
+    final result = StaffConnection._();
     if (edges != null) result.edges.addAll(edges);
     if (pageInfo != null) result.pageInfo = pageInfo;
     return result;
@@ -345,19 +353,19 @@ class StaffConnection extends $pb.GeneratedMessage {
 
   factory StaffConnection.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffConnection()..mergeFromBuffer(data, registry);
   factory StaffConnection.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffConnection()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffConnection',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffConnection.$_createMessage)
     ..pPM<StaffEdge>(1, _omitFieldNames ? '' : 'edges',
-        subBuilder: StaffEdge.create)
+        subBuilder: StaffEdge.$_createMessage)
     ..aOM<$0.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $0.PageInfo.create)
+        subBuilder: $0.PageInfo.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -371,12 +379,15 @@ class StaffConnection extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StaffConnection() / StaffConnection.new instead')
   static StaffConnection create() => StaffConnection._();
+  static $pb.GeneratedMessage $_createMessage() => StaffConnection._();
   @$core.override
-  StaffConnection createEmptyInstance() => create();
+  StaffConnection createEmptyInstance() => StaffConnection._();
   @$core.pragma('dart2js:noInline')
-  static StaffConnection getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StaffConnection>(create);
+  static StaffConnection getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StaffConnection>(
+          StaffConnection.$_createMessage);
   static StaffConnection? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -398,7 +409,7 @@ class StaffCharacterName extends $pb.GeneratedMessage {
   factory StaffCharacterName({
     $core.String? userPreferred,
   }) {
-    final result = create();
+    final result = StaffCharacterName._();
     if (userPreferred != null) result.userPreferred = userPreferred;
     return result;
   }
@@ -407,15 +418,15 @@ class StaffCharacterName extends $pb.GeneratedMessage {
 
   factory StaffCharacterName.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffCharacterName()..mergeFromBuffer(data, registry);
   factory StaffCharacterName.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffCharacterName()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffCharacterName',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffCharacterName.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'userPreferred')
     ..hasRequiredFields = false;
 
@@ -430,12 +441,15 @@ class StaffCharacterName extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StaffCharacterName() / StaffCharacterName.new instead')
   static StaffCharacterName create() => StaffCharacterName._();
+  static $pb.GeneratedMessage $_createMessage() => StaffCharacterName._();
   @$core.override
-  StaffCharacterName createEmptyInstance() => create();
+  StaffCharacterName createEmptyInstance() => StaffCharacterName._();
   @$core.pragma('dart2js:noInline')
   static StaffCharacterName getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StaffCharacterName>(create);
+      $pb.GeneratedMessage.$_defaultFor<StaffCharacterName>(
+          StaffCharacterName.$_createMessage);
   static StaffCharacterName? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -453,7 +467,7 @@ class StaffCharacterImage extends $pb.GeneratedMessage {
     $core.String? large,
     $core.String? medium,
   }) {
-    final result = create();
+    final result = StaffCharacterImage._();
     if (large != null) result.large = large;
     if (medium != null) result.medium = medium;
     return result;
@@ -463,15 +477,15 @@ class StaffCharacterImage extends $pb.GeneratedMessage {
 
   factory StaffCharacterImage.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffCharacterImage()..mergeFromBuffer(data, registry);
   factory StaffCharacterImage.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffCharacterImage()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffCharacterImage',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffCharacterImage.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'large')
     ..aOS(2, _omitFieldNames ? '' : 'medium')
     ..hasRequiredFields = false;
@@ -487,12 +501,16 @@ class StaffCharacterImage extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use StaffCharacterImage() / StaffCharacterImage.new instead')
   static StaffCharacterImage create() => StaffCharacterImage._();
+  static $pb.GeneratedMessage $_createMessage() => StaffCharacterImage._();
   @$core.override
-  StaffCharacterImage createEmptyInstance() => create();
+  StaffCharacterImage createEmptyInstance() => StaffCharacterImage._();
   @$core.pragma('dart2js:noInline')
   static StaffCharacterImage getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StaffCharacterImage>(create);
+      $pb.GeneratedMessage.$_defaultFor<StaffCharacterImage>(
+          StaffCharacterImage.$_createMessage);
   static StaffCharacterImage? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -520,7 +538,7 @@ class StaffCharacter extends $pb.GeneratedMessage {
     StaffCharacterName? name,
     StaffCharacterImage? image,
   }) {
-    final result = create();
+    final result = StaffCharacter._();
     if (id != null) result.id = id;
     if (name != null) result.name = name;
     if (image != null) result.image = image;
@@ -531,20 +549,20 @@ class StaffCharacter extends $pb.GeneratedMessage {
 
   factory StaffCharacter.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffCharacter()..mergeFromBuffer(data, registry);
   factory StaffCharacter.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffCharacter()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffCharacter',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffCharacter.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
     ..aOM<StaffCharacterName>(2, _omitFieldNames ? '' : 'name',
-        subBuilder: StaffCharacterName.create)
+        subBuilder: StaffCharacterName.$_createMessage)
     ..aOM<StaffCharacterImage>(3, _omitFieldNames ? '' : 'image',
-        subBuilder: StaffCharacterImage.create)
+        subBuilder: StaffCharacterImage.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -558,12 +576,15 @@ class StaffCharacter extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StaffCharacter() / StaffCharacter.new instead')
   static StaffCharacter create() => StaffCharacter._();
+  static $pb.GeneratedMessage $_createMessage() => StaffCharacter._();
   @$core.override
-  StaffCharacter createEmptyInstance() => create();
+  StaffCharacter createEmptyInstance() => StaffCharacter._();
   @$core.pragma('dart2js:noInline')
-  static StaffCharacter getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StaffCharacter>(create);
+  static StaffCharacter getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StaffCharacter>(
+          StaffCharacter.$_createMessage);
   static StaffCharacter? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -604,7 +625,7 @@ class StaffCharacterMediaEdge extends $pb.GeneratedMessage {
     $1.MediaMin? node,
     $core.Iterable<StaffCharacter>? characters,
   }) {
-    final result = create();
+    final result = StaffCharacterMediaEdge._();
     if (characterRole != null) result.characterRole = characterRole;
     if (node != null) result.node = node;
     if (characters != null) result.characters.addAll(characters);
@@ -615,20 +636,20 @@ class StaffCharacterMediaEdge extends $pb.GeneratedMessage {
 
   factory StaffCharacterMediaEdge.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffCharacterMediaEdge()..mergeFromBuffer(data, registry);
   factory StaffCharacterMediaEdge.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffCharacterMediaEdge()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffCharacterMediaEdge',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffCharacterMediaEdge.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'characterRole')
     ..aOM<$1.MediaMin>(2, _omitFieldNames ? '' : 'node',
-        subBuilder: $1.MediaMin.create)
+        subBuilder: $1.MediaMin.$_createMessage)
     ..pPM<StaffCharacter>(3, _omitFieldNames ? '' : 'characters',
-        subBuilder: StaffCharacter.create)
+        subBuilder: StaffCharacter.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -643,12 +664,16 @@ class StaffCharacterMediaEdge extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use StaffCharacterMediaEdge() / StaffCharacterMediaEdge.new instead')
   static StaffCharacterMediaEdge create() => StaffCharacterMediaEdge._();
+  static $pb.GeneratedMessage $_createMessage() => StaffCharacterMediaEdge._();
   @$core.override
-  StaffCharacterMediaEdge createEmptyInstance() => create();
+  StaffCharacterMediaEdge createEmptyInstance() => StaffCharacterMediaEdge._();
   @$core.pragma('dart2js:noInline')
   static StaffCharacterMediaEdge getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StaffCharacterMediaEdge>(create);
+      $pb.GeneratedMessage.$_defaultFor<StaffCharacterMediaEdge>(
+          StaffCharacterMediaEdge.$_createMessage);
   static StaffCharacterMediaEdge? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -680,7 +705,7 @@ class StaffCharacterMediaConnection extends $pb.GeneratedMessage {
     $core.Iterable<StaffCharacterMediaEdge>? edges,
     $0.PageInfo? pageInfo,
   }) {
-    final result = create();
+    final result = StaffCharacterMediaConnection._();
     if (edges != null) result.edges.addAll(edges);
     if (pageInfo != null) result.pageInfo = pageInfo;
     return result;
@@ -690,19 +715,19 @@ class StaffCharacterMediaConnection extends $pb.GeneratedMessage {
 
   factory StaffCharacterMediaConnection.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffCharacterMediaConnection()..mergeFromBuffer(data, registry);
   factory StaffCharacterMediaConnection.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffCharacterMediaConnection()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffCharacterMediaConnection',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffCharacterMediaConnection.$_createMessage)
     ..pPM<StaffCharacterMediaEdge>(1, _omitFieldNames ? '' : 'edges',
-        subBuilder: StaffCharacterMediaEdge.create)
+        subBuilder: StaffCharacterMediaEdge.$_createMessage)
     ..aOM<$0.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $0.PageInfo.create)
+        subBuilder: $0.PageInfo.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -718,13 +743,19 @@ class StaffCharacterMediaConnection extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use StaffCharacterMediaConnection() / StaffCharacterMediaConnection.new instead')
   static StaffCharacterMediaConnection create() =>
       StaffCharacterMediaConnection._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      StaffCharacterMediaConnection._();
   @$core.override
-  StaffCharacterMediaConnection createEmptyInstance() => create();
+  StaffCharacterMediaConnection createEmptyInstance() =>
+      StaffCharacterMediaConnection._();
   @$core.pragma('dart2js:noInline')
   static StaffCharacterMediaConnection getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StaffCharacterMediaConnection>(create);
+      $pb.GeneratedMessage.$_defaultFor<StaffCharacterMediaConnection>(
+          StaffCharacterMediaConnection.$_createMessage);
   static StaffCharacterMediaConnection? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -747,7 +778,7 @@ class StaffMediaEdge extends $pb.GeneratedMessage {
     $core.String? staffRole,
     $1.MediaMin? node,
   }) {
-    final result = create();
+    final result = StaffMediaEdge._();
     if (staffRole != null) result.staffRole = staffRole;
     if (node != null) result.node = node;
     return result;
@@ -757,18 +788,18 @@ class StaffMediaEdge extends $pb.GeneratedMessage {
 
   factory StaffMediaEdge.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffMediaEdge()..mergeFromBuffer(data, registry);
   factory StaffMediaEdge.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffMediaEdge()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffMediaEdge',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffMediaEdge.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'staffRole')
     ..aOM<$1.MediaMin>(2, _omitFieldNames ? '' : 'node',
-        subBuilder: $1.MediaMin.create)
+        subBuilder: $1.MediaMin.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -782,12 +813,15 @@ class StaffMediaEdge extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StaffMediaEdge() / StaffMediaEdge.new instead')
   static StaffMediaEdge create() => StaffMediaEdge._();
+  static $pb.GeneratedMessage $_createMessage() => StaffMediaEdge._();
   @$core.override
-  StaffMediaEdge createEmptyInstance() => create();
+  StaffMediaEdge createEmptyInstance() => StaffMediaEdge._();
   @$core.pragma('dart2js:noInline')
-  static StaffMediaEdge getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StaffMediaEdge>(create);
+  static StaffMediaEdge getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StaffMediaEdge>(
+          StaffMediaEdge.$_createMessage);
   static StaffMediaEdge? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -816,7 +850,7 @@ class StaffMediaConnection extends $pb.GeneratedMessage {
     $core.Iterable<StaffMediaEdge>? edges,
     $0.PageInfo? pageInfo,
   }) {
-    final result = create();
+    final result = StaffMediaConnection._();
     if (edges != null) result.edges.addAll(edges);
     if (pageInfo != null) result.pageInfo = pageInfo;
     return result;
@@ -826,19 +860,19 @@ class StaffMediaConnection extends $pb.GeneratedMessage {
 
   factory StaffMediaConnection.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StaffMediaConnection()..mergeFromBuffer(data, registry);
   factory StaffMediaConnection.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StaffMediaConnection()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StaffMediaConnection',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StaffMediaConnection.$_createMessage)
     ..pPM<StaffMediaEdge>(1, _omitFieldNames ? '' : 'edges',
-        subBuilder: StaffMediaEdge.create)
+        subBuilder: StaffMediaEdge.$_createMessage)
     ..aOM<$0.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $0.PageInfo.create)
+        subBuilder: $0.PageInfo.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -852,12 +886,16 @@ class StaffMediaConnection extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use StaffMediaConnection() / StaffMediaConnection.new instead')
   static StaffMediaConnection create() => StaffMediaConnection._();
+  static $pb.GeneratedMessage $_createMessage() => StaffMediaConnection._();
   @$core.override
-  StaffMediaConnection createEmptyInstance() => create();
+  StaffMediaConnection createEmptyInstance() => StaffMediaConnection._();
   @$core.pragma('dart2js:noInline')
   static StaffMediaConnection getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StaffMediaConnection>(create);
+      $pb.GeneratedMessage.$_defaultFor<StaffMediaConnection>(
+          StaffMediaConnection.$_createMessage);
   static StaffMediaConnection? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -895,7 +933,7 @@ class Staff extends $pb.GeneratedMessage {
     StaffCharacterMediaConnection? characterMedia,
     StaffMediaConnection? staffMedia,
   }) {
-    final result = create();
+    final result = Staff._();
     if (id != null) result.id = id;
     if (name != null) result.name = name;
     if (image != null) result.image = image;
@@ -921,20 +959,20 @@ class Staff extends $pb.GeneratedMessage {
 
   factory Staff.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      Staff()..mergeFromBuffer(data, registry);
   factory Staff.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      Staff()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Staff',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: Staff.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
     ..aOM<StaffName>(2, _omitFieldNames ? '' : 'name',
-        subBuilder: StaffName.create)
+        subBuilder: StaffName.$_createMessage)
     ..aOM<StaffImage>(3, _omitFieldNames ? '' : 'image',
-        subBuilder: StaffImage.create)
+        subBuilder: StaffImage.$_createMessage)
     ..aOS(4, _omitFieldNames ? '' : 'description')
     ..aI(5, _omitFieldNames ? '' : 'favourites')
     ..aOB(6, _omitFieldNames ? '' : 'isFavourite')
@@ -945,15 +983,15 @@ class Staff extends $pb.GeneratedMessage {
     ..aOS(11, _omitFieldNames ? '' : 'bloodType')
     ..pPS(12, _omitFieldNames ? '' : 'primaryOccupations')
     ..aOM<$0.FuzzyDate>(13, _omitFieldNames ? '' : 'dateOfBirth',
-        subBuilder: $0.FuzzyDate.create)
+        subBuilder: $0.FuzzyDate.$_createMessage)
     ..aOM<$0.FuzzyDate>(14, _omitFieldNames ? '' : 'dateOfDeath',
-        subBuilder: $0.FuzzyDate.create)
+        subBuilder: $0.FuzzyDate.$_createMessage)
     ..aOS(15, _omitFieldNames ? '' : 'language')
     ..aOM<StaffCharacterMediaConnection>(
         16, _omitFieldNames ? '' : 'characterMedia',
-        subBuilder: StaffCharacterMediaConnection.create)
+        subBuilder: StaffCharacterMediaConnection.$_createMessage)
     ..aOM<StaffMediaConnection>(17, _omitFieldNames ? '' : 'staffMedia',
-        subBuilder: StaffMediaConnection.create)
+        subBuilder: StaffMediaConnection.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -966,12 +1004,14 @@ class Staff extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use Staff() / Staff.new instead')
   static Staff create() => Staff._();
+  static $pb.GeneratedMessage $_createMessage() => Staff._();
   @$core.override
-  Staff createEmptyInstance() => create();
+  Staff createEmptyInstance() => Staff._();
   @$core.pragma('dart2js:noInline')
-  static Staff getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Staff>(create);
+  static Staff getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Staff>(Staff.$_createMessage);
   static Staff? _defaultInstance;
 
   @$pb.TagNumber(1)

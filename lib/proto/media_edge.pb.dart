@@ -23,7 +23,7 @@ class MediaEdge extends $pb.GeneratedMessage {
     $core.String? relationType,
     $0.MediaMin? node,
   }) {
-    final result = create();
+    final result = MediaEdge._();
     if (relationType != null) result.relationType = relationType;
     if (node != null) result.node = node;
     return result;
@@ -33,18 +33,18 @@ class MediaEdge extends $pb.GeneratedMessage {
 
   factory MediaEdge.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaEdge()..mergeFromBuffer(data, registry);
   factory MediaEdge.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaEdge()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaEdge',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaEdge.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'relationType')
     ..aOM<$0.MediaMin>(2, _omitFieldNames ? '' : 'node',
-        subBuilder: $0.MediaMin.create)
+        subBuilder: $0.MediaMin.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -57,12 +57,14 @@ class MediaEdge extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use MediaEdge() / MediaEdge.new instead')
   static MediaEdge create() => MediaEdge._();
+  static $pb.GeneratedMessage $_createMessage() => MediaEdge._();
   @$core.override
-  MediaEdge createEmptyInstance() => create();
+  MediaEdge createEmptyInstance() => MediaEdge._();
   @$core.pragma('dart2js:noInline')
-  static MediaEdge getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MediaEdge>(create);
+  static MediaEdge getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MediaEdge>(MediaEdge.$_createMessage);
   static MediaEdge? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -90,7 +92,7 @@ class MediaConnection extends $pb.GeneratedMessage {
   factory MediaConnection({
     $core.Iterable<MediaEdge>? edges,
   }) {
-    final result = create();
+    final result = MediaConnection._();
     if (edges != null) result.edges.addAll(edges);
     return result;
   }
@@ -99,17 +101,17 @@ class MediaConnection extends $pb.GeneratedMessage {
 
   factory MediaConnection.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaConnection()..mergeFromBuffer(data, registry);
   factory MediaConnection.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaConnection()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaConnection',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaConnection.$_createMessage)
     ..pPM<MediaEdge>(1, _omitFieldNames ? '' : 'edges',
-        subBuilder: MediaEdge.create)
+        subBuilder: MediaEdge.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -123,12 +125,15 @@ class MediaConnection extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use MediaConnection() / MediaConnection.new instead')
   static MediaConnection create() => MediaConnection._();
+  static $pb.GeneratedMessage $_createMessage() => MediaConnection._();
   @$core.override
-  MediaConnection createEmptyInstance() => create();
+  MediaConnection createEmptyInstance() => MediaConnection._();
   @$core.pragma('dart2js:noInline')
-  static MediaConnection getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MediaConnection>(create);
+  static MediaConnection getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MediaConnection>(
+          MediaConnection.$_createMessage);
   static MediaConnection? _defaultInstance;
 
   @$pb.TagNumber(1)

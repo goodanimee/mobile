@@ -25,7 +25,7 @@ class MediaListEntryWithMedia extends $pb.GeneratedMessage {
     $0.MediaListEntry? entry,
     $1.MediaMin? media,
   }) {
-    final result = create();
+    final result = MediaListEntryWithMedia._();
     if (entry != null) result.entry = entry;
     if (media != null) result.media = media;
     return result;
@@ -35,19 +35,19 @@ class MediaListEntryWithMedia extends $pb.GeneratedMessage {
 
   factory MediaListEntryWithMedia.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaListEntryWithMedia()..mergeFromBuffer(data, registry);
   factory MediaListEntryWithMedia.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaListEntryWithMedia()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaListEntryWithMedia',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaListEntryWithMedia.$_createMessage)
     ..aOM<$0.MediaListEntry>(1, _omitFieldNames ? '' : 'entry',
-        subBuilder: $0.MediaListEntry.create)
+        subBuilder: $0.MediaListEntry.$_createMessage)
     ..aOM<$1.MediaMin>(2, _omitFieldNames ? '' : 'media',
-        subBuilder: $1.MediaMin.create)
+        subBuilder: $1.MediaMin.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -62,12 +62,16 @@ class MediaListEntryWithMedia extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use MediaListEntryWithMedia() / MediaListEntryWithMedia.new instead')
   static MediaListEntryWithMedia create() => MediaListEntryWithMedia._();
+  static $pb.GeneratedMessage $_createMessage() => MediaListEntryWithMedia._();
   @$core.override
-  MediaListEntryWithMedia createEmptyInstance() => create();
+  MediaListEntryWithMedia createEmptyInstance() => MediaListEntryWithMedia._();
   @$core.pragma('dart2js:noInline')
   static MediaListEntryWithMedia getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MediaListEntryWithMedia>(create);
+      $pb.GeneratedMessage.$_defaultFor<MediaListEntryWithMedia>(
+          MediaListEntryWithMedia.$_createMessage);
   static MediaListEntryWithMedia? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -99,7 +103,7 @@ class MediaListGroup extends $pb.GeneratedMessage {
     $2.MediaListStatus? status,
     $core.Iterable<MediaListEntryWithMedia>? entries,
   }) {
-    final result = create();
+    final result = MediaListGroup._();
     if (name != null) result.name = name;
     if (status != null) result.status = status;
     if (entries != null) result.entries.addAll(entries);
@@ -110,20 +114,20 @@ class MediaListGroup extends $pb.GeneratedMessage {
 
   factory MediaListGroup.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaListGroup()..mergeFromBuffer(data, registry);
   factory MediaListGroup.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaListGroup()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaListGroup',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaListGroup.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'name')
     ..aE<$2.MediaListStatus>(2, _omitFieldNames ? '' : 'status',
         enumValues: $2.MediaListStatus.values)
     ..pPM<MediaListEntryWithMedia>(3, _omitFieldNames ? '' : 'entries',
-        subBuilder: MediaListEntryWithMedia.create)
+        subBuilder: MediaListEntryWithMedia.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -137,12 +141,15 @@ class MediaListGroup extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use MediaListGroup() / MediaListGroup.new instead')
   static MediaListGroup create() => MediaListGroup._();
+  static $pb.GeneratedMessage $_createMessage() => MediaListGroup._();
   @$core.override
-  MediaListGroup createEmptyInstance() => create();
+  MediaListGroup createEmptyInstance() => MediaListGroup._();
   @$core.pragma('dart2js:noInline')
-  static MediaListGroup getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MediaListGroup>(create);
+  static MediaListGroup getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MediaListGroup>(
+          MediaListGroup.$_createMessage);
   static MediaListGroup? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -172,7 +179,7 @@ class MediaListCollection extends $pb.GeneratedMessage {
     $core.bool? hasNextChunk,
     $core.Iterable<MediaListGroup>? lists,
   }) {
-    final result = create();
+    final result = MediaListCollection._();
     if (hasNextChunk != null) result.hasNextChunk = hasNextChunk;
     if (lists != null) result.lists.addAll(lists);
     return result;
@@ -182,18 +189,18 @@ class MediaListCollection extends $pb.GeneratedMessage {
 
   factory MediaListCollection.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaListCollection()..mergeFromBuffer(data, registry);
   factory MediaListCollection.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaListCollection()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaListCollection',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaListCollection.$_createMessage)
     ..aOB(1, _omitFieldNames ? '' : 'hasNextChunk')
     ..pPM<MediaListGroup>(2, _omitFieldNames ? '' : 'lists',
-        subBuilder: MediaListGroup.create)
+        subBuilder: MediaListGroup.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -207,12 +214,16 @@ class MediaListCollection extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use MediaListCollection() / MediaListCollection.new instead')
   static MediaListCollection create() => MediaListCollection._();
+  static $pb.GeneratedMessage $_createMessage() => MediaListCollection._();
   @$core.override
-  MediaListCollection createEmptyInstance() => create();
+  MediaListCollection createEmptyInstance() => MediaListCollection._();
   @$core.pragma('dart2js:noInline')
   static MediaListCollection getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MediaListCollection>(create);
+      $pb.GeneratedMessage.$_defaultFor<MediaListCollection>(
+          MediaListCollection.$_createMessage);
   static MediaListCollection? _defaultInstance;
 
   @$pb.TagNumber(1)

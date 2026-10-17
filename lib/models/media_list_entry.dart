@@ -28,6 +28,15 @@ class MediaListEntry {
   /// Date the user completed watching
   final FuzzyDate? completedAt;
 
+  /// Whether the entry is visible only to the authenticated user
+  final bool private;
+
+  /// Whether the entry is hidden from non-custom status lists
+  final bool hiddenFromStatusLists;
+
+  /// Personal user notes for the entry
+  final String notes;
+
   /// Creates a media list entry
   const MediaListEntry({
     required this.id,
@@ -38,6 +47,9 @@ class MediaListEntry {
     required this.progressVolumes,
     this.startedAt,
     this.completedAt,
+    this.private = false,
+    this.hiddenFromStatusLists = false,
+    this.notes = '',
   });
 
   /// Creates a media list entry from a protobuf object
@@ -57,6 +69,9 @@ class MediaListEntry {
       completedAt: pbObj.hasCompletedAt()
           ? FuzzyDate.fromProtoNullable(pbObj.completedAt)
           : null,
+      private: pbObj.private,
+      hiddenFromStatusLists: pbObj.hiddenFromStatusLists,
+      notes: pbObj.notes,
     );
   }
 
@@ -68,6 +83,9 @@ class MediaListEntry {
       score: score,
       repeat: repeat,
       progressVolumes: progressVolumes,
+      private: private,
+      hiddenFromStatusLists: hiddenFromStatusLists,
+      notes: notes,
     );
     if (status != null) pbObj.status = status!.toProto();
     if (startedAt != null) pbObj.startedAt = startedAt!.toProto();
@@ -85,6 +103,9 @@ class MediaListEntry {
     int? progressVolumes,
     FuzzyDate? startedAt,
     FuzzyDate? completedAt,
+    bool? private,
+    bool? hiddenFromStatusLists,
+    String? notes,
   }) {
     return MediaListEntry(
       id: id ?? this.id,
@@ -95,6 +116,10 @@ class MediaListEntry {
       progressVolumes: progressVolumes ?? this.progressVolumes,
       startedAt: startedAt ?? this.startedAt,
       completedAt: completedAt ?? this.completedAt,
+      private: private ?? this.private,
+      hiddenFromStatusLists:
+          hiddenFromStatusLists ?? this.hiddenFromStatusLists,
+      notes: notes ?? this.notes,
     );
   }
 }

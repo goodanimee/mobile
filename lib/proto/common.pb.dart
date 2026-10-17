@@ -24,7 +24,7 @@ class FuzzyDate extends $pb.GeneratedMessage {
     $core.int? month,
     $core.int? year,
   }) {
-    final result = create();
+    final result = FuzzyDate._();
     if (day != null) result.day = day;
     if (month != null) result.month = month;
     if (year != null) result.year = year;
@@ -35,15 +35,15 @@ class FuzzyDate extends $pb.GeneratedMessage {
 
   factory FuzzyDate.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FuzzyDate()..mergeFromBuffer(data, registry);
   factory FuzzyDate.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FuzzyDate()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FuzzyDate',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FuzzyDate.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'day')
     ..aI(2, _omitFieldNames ? '' : 'month')
     ..aI(3, _omitFieldNames ? '' : 'year')
@@ -59,12 +59,14 @@ class FuzzyDate extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use FuzzyDate() / FuzzyDate.new instead')
   static FuzzyDate create() => FuzzyDate._();
+  static $pb.GeneratedMessage $_createMessage() => FuzzyDate._();
   @$core.override
-  FuzzyDate createEmptyInstance() => create();
+  FuzzyDate createEmptyInstance() => FuzzyDate._();
   @$core.pragma('dart2js:noInline')
-  static FuzzyDate getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FuzzyDate>(create);
+  static FuzzyDate getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FuzzyDate>(FuzzyDate.$_createMessage);
   static FuzzyDate? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -100,7 +102,7 @@ class PageInfo extends $pb.GeneratedMessage {
     $core.bool? hasNextPage,
     $core.int? currentPage,
   }) {
-    final result = create();
+    final result = PageInfo._();
     if (hasNextPage != null) result.hasNextPage = hasNextPage;
     if (currentPage != null) result.currentPage = currentPage;
     return result;
@@ -110,15 +112,15 @@ class PageInfo extends $pb.GeneratedMessage {
 
   factory PageInfo.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      PageInfo()..mergeFromBuffer(data, registry);
   factory PageInfo.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      PageInfo()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'PageInfo',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: PageInfo.$_createMessage)
     ..aOB(1, _omitFieldNames ? '' : 'hasNextPage')
     ..aI(2, _omitFieldNames ? '' : 'currentPage')
     ..hasRequiredFields = false;
@@ -133,12 +135,14 @@ class PageInfo extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use PageInfo() / PageInfo.new instead')
   static PageInfo create() => PageInfo._();
+  static $pb.GeneratedMessage $_createMessage() => PageInfo._();
   @$core.override
-  PageInfo createEmptyInstance() => create();
+  PageInfo createEmptyInstance() => PageInfo._();
   @$core.pragma('dart2js:noInline')
-  static PageInfo getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PageInfo>(create);
+  static PageInfo getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<PageInfo>(PageInfo.$_createMessage);
   static PageInfo? _defaultInstance;
 
   @$pb.TagNumber(1)

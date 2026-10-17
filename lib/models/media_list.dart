@@ -21,6 +21,9 @@ class MediaListEntryWithMedia extends MediaListEntry {
     required super.progressVolumes,
     super.startedAt,
     super.completedAt,
+    super.private,
+    super.hiddenFromStatusLists,
+    super.notes,
     required this.media,
   });
 
@@ -41,6 +44,9 @@ class MediaListEntryWithMedia extends MediaListEntry {
       completedAt: pbObj.entry.hasCompletedAt()
           ? FuzzyDate.fromProtoNullable(pbObj.entry.completedAt)
           : null,
+      private: pbObj.entry.private,
+      hiddenFromStatusLists: pbObj.entry.hiddenFromStatusLists,
+      notes: pbObj.entry.notes,
       media: MediaMin.fromProto(pbObj.media),
     );
   }
@@ -65,6 +71,9 @@ class MediaListEntryWithMedia extends MediaListEntry {
     int? progressVolumes,
     FuzzyDate? startedAt,
     FuzzyDate? completedAt,
+    bool? private,
+    bool? hiddenFromStatusLists,
+    String? notes,
     MediaMin? media,
   }) {
     return MediaListEntryWithMedia(
@@ -76,6 +85,10 @@ class MediaListEntryWithMedia extends MediaListEntry {
       progressVolumes: progressVolumes ?? this.progressVolumes,
       startedAt: startedAt ?? this.startedAt,
       completedAt: completedAt ?? this.completedAt,
+      private: private ?? this.private,
+      hiddenFromStatusLists:
+          hiddenFromStatusLists ?? this.hiddenFromStatusLists,
+      notes: notes ?? this.notes,
       media: media ?? this.media,
     );
   }

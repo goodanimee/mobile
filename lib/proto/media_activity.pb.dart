@@ -28,7 +28,7 @@ class ListActivity extends $pb.GeneratedMessage {
     $core.String? status,
     $0.Viewer? user,
   }) {
-    final result = create();
+    final result = ListActivity._();
     if (id != null) result.id = id;
     if (createdAt != null) result.createdAt = createdAt;
     if (isLiked != null) result.isLiked = isLiked;
@@ -43,15 +43,15 @@ class ListActivity extends $pb.GeneratedMessage {
 
   factory ListActivity.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ListActivity()..mergeFromBuffer(data, registry);
   factory ListActivity.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ListActivity()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ListActivity',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ListActivity.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
     ..aI(2, _omitFieldNames ? '' : 'createdAt')
     ..aOB(3, _omitFieldNames ? '' : 'isLiked')
@@ -59,7 +59,7 @@ class ListActivity extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'progress')
     ..aOS(6, _omitFieldNames ? '' : 'status')
     ..aOM<$0.Viewer>(7, _omitFieldNames ? '' : 'user',
-        subBuilder: $0.Viewer.create)
+        subBuilder: $0.Viewer.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -73,12 +73,15 @@ class ListActivity extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use ListActivity() / ListActivity.new instead')
   static ListActivity create() => ListActivity._();
+  static $pb.GeneratedMessage $_createMessage() => ListActivity._();
   @$core.override
-  ListActivity createEmptyInstance() => create();
+  ListActivity createEmptyInstance() => ListActivity._();
   @$core.pragma('dart2js:noInline')
-  static ListActivity getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ListActivity>(create);
+  static ListActivity getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ListActivity>(
+          ListActivity.$_createMessage);
   static ListActivity? _defaultInstance;
 
   @$pb.TagNumber(1)

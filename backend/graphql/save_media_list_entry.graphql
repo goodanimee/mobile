@@ -7,6 +7,9 @@ mutation SaveMediaListEntry(
   $completedAt: FuzzyDateInput
   $score: Float
   $repeat: Int
+  $private: Boolean
+  $hiddenFromStatusLists: Boolean
+  $notes: String
 ) {
   SaveMediaListEntry(
     mediaId: $mediaId
@@ -17,6 +20,9 @@ mutation SaveMediaListEntry(
     startedAt: $startedAt
     completedAt: $completedAt
     score: $score
+    private: $private
+    hiddenFromStatusLists: $hiddenFromStatusLists
+    notes: $notes
   ) {
     id
     status
@@ -24,6 +30,9 @@ mutation SaveMediaListEntry(
     progressVolumes
     score(format: POINT_10_DECIMAL)
     repeat
+    private
+    hiddenFromStatusLists
+    notes
     startedAt {
       day
       month

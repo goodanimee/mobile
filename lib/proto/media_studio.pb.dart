@@ -24,7 +24,7 @@ class StudioMin extends $pb.GeneratedMessage {
     $core.int? id,
     $core.String? name,
   }) {
-    final result = create();
+    final result = StudioMin._();
     if (id != null) result.id = id;
     if (name != null) result.name = name;
     return result;
@@ -34,15 +34,15 @@ class StudioMin extends $pb.GeneratedMessage {
 
   factory StudioMin.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StudioMin()..mergeFromBuffer(data, registry);
   factory StudioMin.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StudioMin()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StudioMin',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StudioMin.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..hasRequiredFields = false;
@@ -57,12 +57,14 @@ class StudioMin extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StudioMin() / StudioMin.new instead')
   static StudioMin create() => StudioMin._();
+  static $pb.GeneratedMessage $_createMessage() => StudioMin._();
   @$core.override
-  StudioMin createEmptyInstance() => create();
+  StudioMin createEmptyInstance() => StudioMin._();
   @$core.pragma('dart2js:noInline')
-  static StudioMin getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StudioMin>(create);
+  static StudioMin getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<StudioMin>(StudioMin.$_createMessage);
   static StudioMin? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -89,7 +91,7 @@ class StudioEdge extends $pb.GeneratedMessage {
     $core.bool? isMain,
     StudioMin? node,
   }) {
-    final result = create();
+    final result = StudioEdge._();
     if (isMain != null) result.isMain = isMain;
     if (node != null) result.node = node;
     return result;
@@ -99,18 +101,18 @@ class StudioEdge extends $pb.GeneratedMessage {
 
   factory StudioEdge.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StudioEdge()..mergeFromBuffer(data, registry);
   factory StudioEdge.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StudioEdge()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StudioEdge',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StudioEdge.$_createMessage)
     ..aOB(1, _omitFieldNames ? '' : 'isMain')
     ..aOM<StudioMin>(2, _omitFieldNames ? '' : 'node',
-        subBuilder: StudioMin.create)
+        subBuilder: StudioMin.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -123,12 +125,14 @@ class StudioEdge extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StudioEdge() / StudioEdge.new instead')
   static StudioEdge create() => StudioEdge._();
+  static $pb.GeneratedMessage $_createMessage() => StudioEdge._();
   @$core.override
-  StudioEdge createEmptyInstance() => create();
+  StudioEdge createEmptyInstance() => StudioEdge._();
   @$core.pragma('dart2js:noInline')
   static StudioEdge getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StudioEdge>(create);
+      $pb.GeneratedMessage.$_defaultFor<StudioEdge>(StudioEdge.$_createMessage);
   static StudioEdge? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -156,7 +160,7 @@ class StudioConnection extends $pb.GeneratedMessage {
   factory StudioConnection({
     $core.Iterable<StudioEdge>? edges,
   }) {
-    final result = create();
+    final result = StudioConnection._();
     if (edges != null) result.edges.addAll(edges);
     return result;
   }
@@ -165,17 +169,17 @@ class StudioConnection extends $pb.GeneratedMessage {
 
   factory StudioConnection.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StudioConnection()..mergeFromBuffer(data, registry);
   factory StudioConnection.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StudioConnection()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StudioConnection',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StudioConnection.$_createMessage)
     ..pPM<StudioEdge>(1, _omitFieldNames ? '' : 'edges',
-        subBuilder: StudioEdge.create)
+        subBuilder: StudioEdge.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -189,12 +193,15 @@ class StudioConnection extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StudioConnection() / StudioConnection.new instead')
   static StudioConnection create() => StudioConnection._();
+  static $pb.GeneratedMessage $_createMessage() => StudioConnection._();
   @$core.override
-  StudioConnection createEmptyInstance() => create();
+  StudioConnection createEmptyInstance() => StudioConnection._();
   @$core.pragma('dart2js:noInline')
-  static StudioConnection getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StudioConnection>(create);
+  static StudioConnection getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StudioConnection>(
+          StudioConnection.$_createMessage);
   static StudioConnection? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -209,7 +216,7 @@ class Studio extends $pb.GeneratedMessage {
     $core.bool? isFavourite,
     StudioMediaConnection? media,
   }) {
-    final result = create();
+    final result = Studio._();
     if (id != null) result.id = id;
     if (name != null) result.name = name;
     if (favourites != null) result.favourites = favourites;
@@ -222,21 +229,21 @@ class Studio extends $pb.GeneratedMessage {
 
   factory Studio.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      Studio()..mergeFromBuffer(data, registry);
   factory Studio.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      Studio()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Studio',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: Studio.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aI(3, _omitFieldNames ? '' : 'favourites')
     ..aOB(4, _omitFieldNames ? '' : 'isFavourite')
     ..aOM<StudioMediaConnection>(5, _omitFieldNames ? '' : 'media',
-        subBuilder: StudioMediaConnection.create)
+        subBuilder: StudioMediaConnection.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -249,12 +256,14 @@ class Studio extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use Studio() / Studio.new instead')
   static Studio create() => Studio._();
+  static $pb.GeneratedMessage $_createMessage() => Studio._();
   @$core.override
-  Studio createEmptyInstance() => create();
+  Studio createEmptyInstance() => Studio._();
   @$core.pragma('dart2js:noInline')
-  static Studio getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Studio>(create);
+  static Studio getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Studio>(Studio.$_createMessage);
   static Studio? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -310,7 +319,7 @@ class StudioMediaConnection extends $pb.GeneratedMessage {
     $0.PageInfo? pageInfo,
     $core.Iterable<$1.MediaMin>? nodes,
   }) {
-    final result = create();
+    final result = StudioMediaConnection._();
     if (pageInfo != null) result.pageInfo = pageInfo;
     if (nodes != null) result.nodes.addAll(nodes);
     return result;
@@ -320,19 +329,19 @@ class StudioMediaConnection extends $pb.GeneratedMessage {
 
   factory StudioMediaConnection.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StudioMediaConnection()..mergeFromBuffer(data, registry);
   factory StudioMediaConnection.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StudioMediaConnection()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StudioMediaConnection',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StudioMediaConnection.$_createMessage)
     ..aOM<$0.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $0.PageInfo.create)
+        subBuilder: $0.PageInfo.$_createMessage)
     ..pPM<$1.MediaMin>(2, _omitFieldNames ? '' : 'nodes',
-        subBuilder: $1.MediaMin.create)
+        subBuilder: $1.MediaMin.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -347,12 +356,16 @@ class StudioMediaConnection extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use StudioMediaConnection() / StudioMediaConnection.new instead')
   static StudioMediaConnection create() => StudioMediaConnection._();
+  static $pb.GeneratedMessage $_createMessage() => StudioMediaConnection._();
   @$core.override
-  StudioMediaConnection createEmptyInstance() => create();
+  StudioMediaConnection createEmptyInstance() => StudioMediaConnection._();
   @$core.pragma('dart2js:noInline')
   static StudioMediaConnection getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StudioMediaConnection>(create);
+      $pb.GeneratedMessage.$_defaultFor<StudioMediaConnection>(
+          StudioMediaConnection.$_createMessage);
   static StudioMediaConnection? _defaultInstance;
 
   @$pb.TagNumber(1)

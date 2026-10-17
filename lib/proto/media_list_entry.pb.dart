@@ -28,8 +28,11 @@ class MediaListEntry extends $pb.GeneratedMessage {
     $0.FuzzyDate? startedAt,
     $0.FuzzyDate? completedAt,
     $core.int? progressVolumes,
+    $core.bool? private,
+    $core.bool? hiddenFromStatusLists,
+    $core.String? notes,
   }) {
-    final result = create();
+    final result = MediaListEntry._();
     if (id != null) result.id = id;
     if (status != null) result.status = status;
     if (progress != null) result.progress = progress;
@@ -38,6 +41,10 @@ class MediaListEntry extends $pb.GeneratedMessage {
     if (startedAt != null) result.startedAt = startedAt;
     if (completedAt != null) result.completedAt = completedAt;
     if (progressVolumes != null) result.progressVolumes = progressVolumes;
+    if (private != null) result.private = private;
+    if (hiddenFromStatusLists != null)
+      result.hiddenFromStatusLists = hiddenFromStatusLists;
+    if (notes != null) result.notes = notes;
     return result;
   }
 
@@ -45,15 +52,15 @@ class MediaListEntry extends $pb.GeneratedMessage {
 
   factory MediaListEntry.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaListEntry()..mergeFromBuffer(data, registry);
   factory MediaListEntry.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaListEntry()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaListEntry',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaListEntry.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
     ..aE<$0.MediaListStatus>(2, _omitFieldNames ? '' : 'status',
         enumValues: $0.MediaListStatus.values)
@@ -61,10 +68,13 @@ class MediaListEntry extends $pb.GeneratedMessage {
     ..aD(4, _omitFieldNames ? '' : 'score')
     ..aI(5, _omitFieldNames ? '' : 'repeat')
     ..aOM<$0.FuzzyDate>(6, _omitFieldNames ? '' : 'startedAt',
-        subBuilder: $0.FuzzyDate.create)
+        subBuilder: $0.FuzzyDate.$_createMessage)
     ..aOM<$0.FuzzyDate>(7, _omitFieldNames ? '' : 'completedAt',
-        subBuilder: $0.FuzzyDate.create)
+        subBuilder: $0.FuzzyDate.$_createMessage)
     ..aI(8, _omitFieldNames ? '' : 'progressVolumes')
+    ..aOB(9, _omitFieldNames ? '' : 'private')
+    ..aOB(10, _omitFieldNames ? '' : 'hiddenFromStatusLists')
+    ..aOS(11, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -78,12 +88,15 @@ class MediaListEntry extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use MediaListEntry() / MediaListEntry.new instead')
   static MediaListEntry create() => MediaListEntry._();
+  static $pb.GeneratedMessage $_createMessage() => MediaListEntry._();
   @$core.override
-  MediaListEntry createEmptyInstance() => create();
+  MediaListEntry createEmptyInstance() => MediaListEntry._();
   @$core.pragma('dart2js:noInline')
-  static MediaListEntry getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MediaListEntry>(create);
+  static MediaListEntry getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MediaListEntry>(
+          MediaListEntry.$_createMessage);
   static MediaListEntry? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -161,6 +174,33 @@ class MediaListEntry extends $pb.GeneratedMessage {
   $core.bool hasProgressVolumes() => $_has(7);
   @$pb.TagNumber(8)
   void clearProgressVolumes() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.bool get private => $_getBF(8);
+  @$pb.TagNumber(9)
+  set private($core.bool value) => $_setBool(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasPrivate() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearPrivate() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.bool get hiddenFromStatusLists => $_getBF(9);
+  @$pb.TagNumber(10)
+  set hiddenFromStatusLists($core.bool value) => $_setBool(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasHiddenFromStatusLists() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearHiddenFromStatusLists() => $_clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.String get notes => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set notes($core.String value) => $_setString(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasNotes() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearNotes() => $_clearField(11);
 }
 
 const $core.bool _omitFieldNames =

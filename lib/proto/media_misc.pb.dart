@@ -22,7 +22,7 @@ class Trailer extends $pb.GeneratedMessage {
     $core.String? site,
     $core.String? thumbnail,
   }) {
-    final result = create();
+    final result = Trailer._();
     if (id != null) result.id = id;
     if (site != null) result.site = site;
     if (thumbnail != null) result.thumbnail = thumbnail;
@@ -33,15 +33,15 @@ class Trailer extends $pb.GeneratedMessage {
 
   factory Trailer.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      Trailer()..mergeFromBuffer(data, registry);
   factory Trailer.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      Trailer()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Trailer',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: Trailer.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'id')
     ..aOS(2, _omitFieldNames ? '' : 'site')
     ..aOS(3, _omitFieldNames ? '' : 'thumbnail')
@@ -57,12 +57,14 @@ class Trailer extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use Trailer() / Trailer.new instead')
   static Trailer create() => Trailer._();
+  static $pb.GeneratedMessage $_createMessage() => Trailer._();
   @$core.override
-  Trailer createEmptyInstance() => create();
+  Trailer createEmptyInstance() => Trailer._();
   @$core.pragma('dart2js:noInline')
-  static Trailer getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Trailer>(create);
+  static Trailer getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Trailer>(Trailer.$_createMessage);
   static Trailer? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -101,7 +103,7 @@ class MediaTag extends $pb.GeneratedMessage {
     $core.String? name,
     $core.int? rank,
   }) {
-    final result = create();
+    final result = MediaTag._();
     if (id != null) result.id = id;
     if (isGeneralSpoiler != null) result.isGeneralSpoiler = isGeneralSpoiler;
     if (isMediaSpoiler != null) result.isMediaSpoiler = isMediaSpoiler;
@@ -114,15 +116,15 @@ class MediaTag extends $pb.GeneratedMessage {
 
   factory MediaTag.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaTag()..mergeFromBuffer(data, registry);
   factory MediaTag.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaTag()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaTag',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaTag.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
     ..aOB(2, _omitFieldNames ? '' : 'isGeneralSpoiler')
     ..aOB(3, _omitFieldNames ? '' : 'isMediaSpoiler')
@@ -140,12 +142,14 @@ class MediaTag extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use MediaTag() / MediaTag.new instead')
   static MediaTag create() => MediaTag._();
+  static $pb.GeneratedMessage $_createMessage() => MediaTag._();
   @$core.override
-  MediaTag createEmptyInstance() => create();
+  MediaTag createEmptyInstance() => MediaTag._();
   @$core.pragma('dart2js:noInline')
-  static MediaTag getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MediaTag>(create);
+  static MediaTag getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MediaTag>(MediaTag.$_createMessage);
   static MediaTag? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -200,7 +204,7 @@ class ExternalLink extends $pb.GeneratedMessage {
     $core.String? site,
     $core.String? url,
   }) {
-    final result = create();
+    final result = ExternalLink._();
     if (language != null) result.language = language;
     if (site != null) result.site = site;
     if (url != null) result.url = url;
@@ -211,15 +215,15 @@ class ExternalLink extends $pb.GeneratedMessage {
 
   factory ExternalLink.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ExternalLink()..mergeFromBuffer(data, registry);
   factory ExternalLink.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ExternalLink()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ExternalLink',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ExternalLink.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'language')
     ..aOS(2, _omitFieldNames ? '' : 'site')
     ..aOS(3, _omitFieldNames ? '' : 'url')
@@ -236,12 +240,15 @@ class ExternalLink extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use ExternalLink() / ExternalLink.new instead')
   static ExternalLink create() => ExternalLink._();
+  static $pb.GeneratedMessage $_createMessage() => ExternalLink._();
   @$core.override
-  ExternalLink createEmptyInstance() => create();
+  ExternalLink createEmptyInstance() => ExternalLink._();
   @$core.pragma('dart2js:noInline')
-  static ExternalLink getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ExternalLink>(create);
+  static ExternalLink getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ExternalLink>(
+          ExternalLink.$_createMessage);
   static ExternalLink? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -278,7 +285,7 @@ class AiringSchedule extends $pb.GeneratedMessage {
     $core.int? episode,
     $core.int? timeUntilAiring,
   }) {
-    final result = create();
+    final result = AiringSchedule._();
     if (airingAt != null) result.airingAt = airingAt;
     if (episode != null) result.episode = episode;
     if (timeUntilAiring != null) result.timeUntilAiring = timeUntilAiring;
@@ -289,15 +296,15 @@ class AiringSchedule extends $pb.GeneratedMessage {
 
   factory AiringSchedule.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      AiringSchedule()..mergeFromBuffer(data, registry);
   factory AiringSchedule.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      AiringSchedule()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'AiringSchedule',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: AiringSchedule.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'airingAt')
     ..aI(2, _omitFieldNames ? '' : 'episode')
     ..aI(3, _omitFieldNames ? '' : 'timeUntilAiring')
@@ -314,12 +321,15 @@ class AiringSchedule extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use AiringSchedule() / AiringSchedule.new instead')
   static AiringSchedule create() => AiringSchedule._();
+  static $pb.GeneratedMessage $_createMessage() => AiringSchedule._();
   @$core.override
-  AiringSchedule createEmptyInstance() => create();
+  AiringSchedule createEmptyInstance() => AiringSchedule._();
   @$core.pragma('dart2js:noInline')
-  static AiringSchedule getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<AiringSchedule>(create);
+  static AiringSchedule getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AiringSchedule>(
+          AiringSchedule.$_createMessage);
   static AiringSchedule? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -356,7 +366,7 @@ class StreamingEpisode extends $pb.GeneratedMessage {
     $core.String? title,
     $core.String? url,
   }) {
-    final result = create();
+    final result = StreamingEpisode._();
     if (thumbnail != null) result.thumbnail = thumbnail;
     if (title != null) result.title = title;
     if (url != null) result.url = url;
@@ -367,15 +377,15 @@ class StreamingEpisode extends $pb.GeneratedMessage {
 
   factory StreamingEpisode.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StreamingEpisode()..mergeFromBuffer(data, registry);
   factory StreamingEpisode.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StreamingEpisode()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StreamingEpisode',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StreamingEpisode.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'thumbnail')
     ..aOS(2, _omitFieldNames ? '' : 'title')
     ..aOS(3, _omitFieldNames ? '' : 'url')
@@ -392,12 +402,15 @@ class StreamingEpisode extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StreamingEpisode() / StreamingEpisode.new instead')
   static StreamingEpisode create() => StreamingEpisode._();
+  static $pb.GeneratedMessage $_createMessage() => StreamingEpisode._();
   @$core.override
-  StreamingEpisode createEmptyInstance() => create();
+  StreamingEpisode createEmptyInstance() => StreamingEpisode._();
   @$core.pragma('dart2js:noInline')
-  static StreamingEpisode getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StreamingEpisode>(create);
+  static StreamingEpisode getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<StreamingEpisode>(
+          StreamingEpisode.$_createMessage);
   static StreamingEpisode? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -436,7 +449,7 @@ class MediaRank extends $pb.GeneratedMessage {
     $core.String? season,
     $core.int? year,
   }) {
-    final result = create();
+    final result = MediaRank._();
     if (allTime != null) result.allTime = allTime;
     if (rank != null) result.rank = rank;
     if (type != null) result.type = type;
@@ -449,15 +462,15 @@ class MediaRank extends $pb.GeneratedMessage {
 
   factory MediaRank.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaRank()..mergeFromBuffer(data, registry);
   factory MediaRank.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaRank()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaRank',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaRank.$_createMessage)
     ..aOB(1, _omitFieldNames ? '' : 'allTime')
     ..aI(2, _omitFieldNames ? '' : 'rank')
     ..aOS(3, _omitFieldNames ? '' : 'type')
@@ -475,12 +488,14 @@ class MediaRank extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use MediaRank() / MediaRank.new instead')
   static MediaRank create() => MediaRank._();
+  static $pb.GeneratedMessage $_createMessage() => MediaRank._();
   @$core.override
-  MediaRank createEmptyInstance() => create();
+  MediaRank createEmptyInstance() => MediaRank._();
   @$core.pragma('dart2js:noInline')
-  static MediaRank getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MediaRank>(create);
+  static MediaRank getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MediaRank>(MediaRank.$_createMessage);
   static MediaRank? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -534,7 +549,7 @@ class ScoreDistribution extends $pb.GeneratedMessage {
     $core.int? amount,
     $core.int? score,
   }) {
-    final result = create();
+    final result = ScoreDistribution._();
     if (amount != null) result.amount = amount;
     if (score != null) result.score = score;
     return result;
@@ -544,15 +559,15 @@ class ScoreDistribution extends $pb.GeneratedMessage {
 
   factory ScoreDistribution.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ScoreDistribution()..mergeFromBuffer(data, registry);
   factory ScoreDistribution.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ScoreDistribution()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ScoreDistribution',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ScoreDistribution.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'amount')
     ..aI(2, _omitFieldNames ? '' : 'score')
     ..hasRequiredFields = false;
@@ -568,12 +583,15 @@ class ScoreDistribution extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use ScoreDistribution() / ScoreDistribution.new instead')
   static ScoreDistribution create() => ScoreDistribution._();
+  static $pb.GeneratedMessage $_createMessage() => ScoreDistribution._();
   @$core.override
-  ScoreDistribution createEmptyInstance() => create();
+  ScoreDistribution createEmptyInstance() => ScoreDistribution._();
   @$core.pragma('dart2js:noInline')
-  static ScoreDistribution getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ScoreDistribution>(create);
+  static ScoreDistribution getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ScoreDistribution>(
+          ScoreDistribution.$_createMessage);
   static ScoreDistribution? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -600,7 +618,7 @@ class StatusDistribution extends $pb.GeneratedMessage {
     $core.int? amount,
     $core.String? status,
   }) {
-    final result = create();
+    final result = StatusDistribution._();
     if (amount != null) result.amount = amount;
     if (status != null) result.status = status;
     return result;
@@ -610,15 +628,15 @@ class StatusDistribution extends $pb.GeneratedMessage {
 
   factory StatusDistribution.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      StatusDistribution()..mergeFromBuffer(data, registry);
   factory StatusDistribution.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      StatusDistribution()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'StatusDistribution',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: StatusDistribution.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'amount')
     ..aOS(2, _omitFieldNames ? '' : 'status')
     ..hasRequiredFields = false;
@@ -634,12 +652,15 @@ class StatusDistribution extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use StatusDistribution() / StatusDistribution.new instead')
   static StatusDistribution create() => StatusDistribution._();
+  static $pb.GeneratedMessage $_createMessage() => StatusDistribution._();
   @$core.override
-  StatusDistribution createEmptyInstance() => create();
+  StatusDistribution createEmptyInstance() => StatusDistribution._();
   @$core.pragma('dart2js:noInline')
   static StatusDistribution getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<StatusDistribution>(create);
+      $pb.GeneratedMessage.$_defaultFor<StatusDistribution>(
+          StatusDistribution.$_createMessage);
   static StatusDistribution? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -666,7 +687,7 @@ class MediaStats extends $pb.GeneratedMessage {
     $core.Iterable<ScoreDistribution>? scoreDistribution,
     $core.Iterable<StatusDistribution>? statusDistribution,
   }) {
-    final result = create();
+    final result = MediaStats._();
     if (scoreDistribution != null)
       result.scoreDistribution.addAll(scoreDistribution);
     if (statusDistribution != null)
@@ -678,19 +699,19 @@ class MediaStats extends $pb.GeneratedMessage {
 
   factory MediaStats.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaStats()..mergeFromBuffer(data, registry);
   factory MediaStats.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaStats()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaStats',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaStats.$_createMessage)
     ..pPM<ScoreDistribution>(1, _omitFieldNames ? '' : 'scoreDistribution',
-        subBuilder: ScoreDistribution.create)
+        subBuilder: ScoreDistribution.$_createMessage)
     ..pPM<StatusDistribution>(2, _omitFieldNames ? '' : 'statusDistribution',
-        subBuilder: StatusDistribution.create)
+        subBuilder: StatusDistribution.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -703,12 +724,14 @@ class MediaStats extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use MediaStats() / MediaStats.new instead')
   static MediaStats create() => MediaStats._();
+  static $pb.GeneratedMessage $_createMessage() => MediaStats._();
   @$core.override
-  MediaStats createEmptyInstance() => create();
+  MediaStats createEmptyInstance() => MediaStats._();
   @$core.pragma('dart2js:noInline')
   static MediaStats getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MediaStats>(create);
+      $pb.GeneratedMessage.$_defaultFor<MediaStats>(MediaStats.$_createMessage);
   static MediaStats? _defaultInstance;
 
   @$pb.TagNumber(1)

@@ -15,4 +15,7 @@ message MediaListEntry {
   FuzzyDate started_at = 6;
   FuzzyDate completed_at = 7;
   int32 progress_volumes = 8;
+  bool private = 9;
+  bool hidden_from_status_lists = 10;
+  string notes = 11;
 }

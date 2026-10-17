@@ -37,6 +37,9 @@ query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
         repeat
         status
         score(format: POINT_10_DECIMAL)
+        private
+        hiddenFromStatusLists
+        notes
         startedAt {
           day
           month

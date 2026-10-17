@@ -38,14 +38,21 @@ MediaListEntryWithMedia _createEntry({
   required int mediaId,
   required MediaListStatus status,
   int progress = 0,
+  double score = 8.0,
+  bool private = false,
+  bool hiddenFromStatusLists = false,
+  String notes = '',
 }) {
   return MediaListEntryWithMedia(
     id: id,
     status: status,
     progress: progress,
-    score: 8.0,
+    score: score,
     repeat: 0,
     progressVolumes: 0,
+    private: private,
+    hiddenFromStatusLists: hiddenFromStatusLists,
+    notes: notes,
     media: _createMedia(mediaId),
   );
 }
@@ -286,6 +293,129 @@ void main() {
       );
 
       expect(result.single.entries.map((e) => e.media.id), [20]);
+    });
+
+    test(
+      'removes entry from status list when hiddenFromStatusLists is true',
+      () async {
+        final entry1 = _createEntry(
+          id: 1,
+          mediaId: 10,
+          status: MediaListStatus.current,
+        );
+        final entry2 = _createEntry(
+          id: 2,
+          mediaId: 20,
+          status: MediaListStatus.current,
+        );
+        final initialLists = [
+          MediaList(
+            name: 'WATCHING',
+            status: MediaListStatus.current,
+            entries: [entry1, entry2],
+          ),
+        ];
+
+        final hiddenEntry = entry1.copyWith(hiddenFromStatusLists: true);
+        final result = await MediaListService.updateEntryInLists(
+          initialLists,
+          10,
+          MediaOptionsResult(entry: hiddenEntry),
+          'ANIME',
+        );
+
+        expect(result.single.entries.map((e) => e.media.id), [20]);
+      },
+    );
+
+    test(
+      'retains entry in status list when hiddenFromStatusLists is false',
+      () async {
+        final entry1 = _createEntry(
+          id: 1,
+          mediaId: 10,
+          status: MediaListStatus.current,
+        );
+        final initialLists = [
+          MediaList(
+            name: 'WATCHING',
+            status: MediaListStatus.current,
+            entries: [entry1],
+          ),
+        ];
+
+        final updatedEntry = entry1.copyWith(
+          hiddenFromStatusLists: false,
+          score: 9.5,
+        );
+        final result = await MediaListService.updateEntryInLists(
+          initialLists,
+          10,
+          MediaOptionsResult(entry: updatedEntry),
+          'ANIME',
+        );
+
+        expect(result.single.entries.length, 1);
+        expect(result.single.entries.single.score, 9.5);
+        expect(result.single.entries.single.hiddenFromStatusLists, isFalse);
+      },
+    );
+  });
+
+  group('MediaListService.buildSaveEntryRequest', () {
+    test(
+      'serializes core and precision fields into SaveMediaListEntryRequest',
+      () {
+        final req = MediaListService.buildSaveEntryRequest(
+          mediaId: 42,
+          status: MediaListStatus.current,
+          progress: 10,
+          score: 9.3,
+          startDate: DateTime(2024, 1, 15),
+          finishDate: DateTime(2024, 2, 20),
+          progressVolumes: 2,
+          repeat: 1,
+          private: true,
+          hiddenFromStatusLists: true,
+          notes: 'Top tier series',
+        );
+
+        expect(req.mediaId, 42);
+        expect(req.status, 'CURRENT');
+        expect(req.progress, 10);
+        expect(req.score, 9.3);
+        expect(req.hasStartedAt(), isTrue);
+        expect(req.startedAt.year, 2024);
+        expect(req.startedAt.month, 1);
+        expect(req.startedAt.day, 15);
+        expect(req.hasCompletedAt(), isTrue);
+        expect(req.completedAt.year, 2024);
+        expect(req.completedAt.month, 2);
+        expect(req.completedAt.day, 20);
+        expect(req.progressVolumes, 2);
+        expect(req.repeat, 1);
+        expect(req.private, isTrue);
+        expect(req.hiddenFromStatusLists, isTrue);
+        expect(req.notes, 'Top tier series');
+      },
+    );
+
+    test('serializes false and empty values when explicitly provided', () {
+      final req = MediaListService.buildSaveEntryRequest(
+        mediaId: 100,
+        private: false,
+        hiddenFromStatusLists: false,
+        notes: '',
+      );
+
+      expect(req.mediaId, 100);
+      expect(req.private, isFalse);
+      expect(req.hiddenFromStatusLists, isFalse);
+      expect(req.notes, '');
+      expect(req.hasStatus(), isFalse);
+      expect(req.hasScore(), isFalse);
+      expect(req.hasStartedAt(), isFalse);
+      expect(req.hasCompletedAt(), isFalse);
     });
   });
 }

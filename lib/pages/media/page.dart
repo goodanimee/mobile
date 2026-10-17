@@ -143,6 +143,10 @@ class _MediaPageState extends State<MediaPage> {
       progressVolumes: media.mediaListEntry?.progressVolumes ?? 0,
       startedAt: media.mediaListEntry?.startedAt,
       completedAt: media.mediaListEntry?.completedAt,
+      private: media.mediaListEntry?.private ?? false,
+      hiddenFromStatusLists:
+          media.mediaListEntry?.hiddenFromStatusLists ?? false,
+      notes: media.mediaListEntry?.notes ?? '',
       media: media,
     );
     final result = await showMediaOptions(context, typedEntry);
@@ -163,6 +167,9 @@ class _MediaPageState extends State<MediaPage> {
             progressVolumes: typedEntry.progressVolumes,
             startedAt: typedEntry.startedAt,
             completedAt: typedEntry.completedAt,
+            private: typedEntry.private,
+            hiddenFromStatusLists: typedEntry.hiddenFromStatusLists,
+            notes: typedEntry.notes,
           );
           _mediaData = media.copyWith(mediaListEntry: updatedEntry);
         }

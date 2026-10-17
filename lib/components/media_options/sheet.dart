@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../models/common.dart';
 import '../../models/media_list.dart';
@@ -8,6 +9,8 @@ import '../../utils/app_options.dart';
 import '../../utils/media_list_mutations.dart';
 import 'counter_editor.dart';
 import 'date_editor.dart';
+import 'entry_toggles.dart';
+import 'notes_editor.dart';
 import 'score_slider.dart';
 import 'status_selector.dart';
 
@@ -37,10 +40,15 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
   int? _maxProgress;
   int? _maxProgressVolumes;
   bool _isSaving = false;
+  bool _showAdvancedOptions = false;
+  bool _isAdvancedOptionsInTree = false;
+  double _scrollOffsetBeforeOpen = 0.0;
+  late final ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     _currentEntry = widget.entry;
     _initialEntry = widget.entry;
 
@@ -57,6 +65,66 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
           ? widget.entry.media.episodes
           : null;
       _maxProgressVolumes = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _toggleAdvancedOptions() {
+    if (!_showAdvancedOptions) {
+      _scrollOffsetBeforeOpen = _scrollController.hasClients
+          ? _scrollController.offset
+          : 0.0;
+      setState(() {
+        _showAdvancedOptions = true;
+        _isAdvancedOptionsInTree = true;
+      });
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: kAnimStandard,
+            curve: kCurveSymmetric,
+          );
+        }
+      });
+    } else {
+      setState(() {
+        _showAdvancedOptions = false;
+      });
+
+      final targetOffset = _scrollOffsetBeforeOpen.clamp(
+        0.0,
+        _scrollController.hasClients
+            ? _scrollController.position.maxScrollExtent
+            : 0.0,
+      );
+
+      if (_scrollController.hasClients &&
+          _scrollController.offset > targetOffset) {
+        _scrollController
+            .animateTo(
+              targetOffset,
+              duration: kAnimStandard,
+              curve: kCurveSymmetric,
+            )
+            .whenComplete(() {
+              if (mounted && !_showAdvancedOptions) {
+                setState(() {
+                  _isAdvancedOptionsInTree = false;
+                });
+              }
+            });
+      } else {
+        setState(() {
+          _isAdvancedOptionsInTree = false;
+        });
+      }
     }
   }
 
@@ -206,6 +274,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
             ),
             Expanded(
               child: SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   children: [
                     StatusSelector(
@@ -248,6 +317,68 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 4,
+                      ),
+                      child: InkWell(
+                        onTap: _toggleAdvancedOptions,
+                        borderRadius: BorderRadius.circular(10),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 4,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Advanced options',
+                                style: TextStyle(
+                                  color: _showAdvancedOptions
+                                      ? Colors.white
+                                      : textMuted,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              Icon(
+                                _showAdvancedOptions
+                                    ? LucideIcons.chevronUp
+                                    : LucideIcons.chevronDown,
+                                size: 16,
+                                color: _showAdvancedOptions
+                                    ? Colors.white
+                                    : textMuted,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (_isAdvancedOptionsInTree) ...[
+                      EntryToggles(
+                        isPrivate: _currentEntry.private,
+                        isHiddenFromStatusLists:
+                            _currentEntry.hiddenFromStatusLists,
+                        onPrivateChanged: (val) => setState(
+                          () =>
+                              _currentEntry = _currentEntry.updatePrivate(val),
+                        ),
+                        onHiddenFromStatusListsChanged: (val) => setState(
+                          () => _currentEntry = _currentEntry
+                              .updateHiddenFromStatusLists(val),
+                        ),
+                      ),
+                      NotesEditor(
+                        notes: _currentEntry.notes,
+                        onNotesChanged: (val) => setState(
+                          () => _currentEntry = _currentEntry.updateNotes(val),
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 24),
                   ],
                 ),
@@ -270,7 +401,11 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
         _currentEntry.startedAt != _initialEntry.startedAt ||
         _currentEntry.completedAt != _initialEntry.completedAt ||
         _currentEntry.progressVolumes != _initialEntry.progressVolumes ||
-        _currentEntry.repeat != _initialEntry.repeat;
+        _currentEntry.repeat != _initialEntry.repeat ||
+        _currentEntry.private != _initialEntry.private ||
+        _currentEntry.hiddenFromStatusLists !=
+            _initialEntry.hiddenFromStatusLists ||
+        _currentEntry.notes != _initialEntry.notes;
 
     final screenWidth = MediaQuery.of(context).size.width;
     final bool isSmallScreen = screenWidth < 360.0;
@@ -418,7 +553,11 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
         _currentEntry.startedAt != _initialEntry.startedAt ||
         _currentEntry.completedAt != _initialEntry.completedAt ||
         _currentEntry.progressVolumes != _initialEntry.progressVolumes ||
-        _currentEntry.repeat != _initialEntry.repeat;
+        _currentEntry.repeat != _initialEntry.repeat ||
+        _currentEntry.private != _initialEntry.private ||
+        _currentEntry.hiddenFromStatusLists !=
+            _initialEntry.hiddenFromStatusLists ||
+        _currentEntry.notes != _initialEntry.notes;
 
     if (!hasChanges) {
       Navigator.of(context).pop();
@@ -450,6 +589,17 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
             : null,
         repeat: _currentEntry.repeat != _initialEntry.repeat
             ? _currentEntry.repeat
+            : null,
+        private: _currentEntry.private != _initialEntry.private
+            ? _currentEntry.private
+            : null,
+        hiddenFromStatusLists:
+            _currentEntry.hiddenFromStatusLists !=
+                _initialEntry.hiddenFromStatusLists
+            ? _currentEntry.hiddenFromStatusLists
+            : null,
+        notes: _currentEntry.notes != _initialEntry.notes
+            ? _currentEntry.notes
             : null,
       );
 

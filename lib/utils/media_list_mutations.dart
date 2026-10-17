@@ -165,6 +165,42 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
     return copyWith(repeat: newRepeat);
   }
 
+  /// Clamps a score to [0.0, 10.0] and rounds to 1 decimal place
+  static double normalizeScore(double value) {
+    final clamped = value.clamp(0.0, 10.0);
+    return (clamped * 10).round() / 10.0;
+  }
+
+  /// Computes the next entry state when score is set to a specific value
+  MediaListEntryWithMedia updateScore(double newScore) {
+    return copyWith(score: normalizeScore(newScore));
+  }
+
+  /// Computes the next entry state when score is incremented by [step]
+  MediaListEntryWithMedia incrementScore([double step = 0.1]) {
+    return updateScore(score + step);
+  }
+
+  /// Computes the next entry state when score is decremented by [step]
+  MediaListEntryWithMedia decrementScore([double step = 0.1]) {
+    return updateScore(score - step);
+  }
+
+  /// Computes the next entry state when private visibility is changed
+  MediaListEntryWithMedia updatePrivate(bool isPrivate) {
+    return copyWith(private: isPrivate);
+  }
+
+  /// Computes the next entry state when status list visibility is changed
+  MediaListEntryWithMedia updateHiddenFromStatusLists(bool isHidden) {
+    return copyWith(hiddenFromStatusLists: isHidden);
+  }
+
+  /// Computes the next entry state when personal notes are changed
+  MediaListEntryWithMedia updateNotes(String newNotes) {
+    return copyWith(notes: newNotes);
+  }
+
   /// Applies date auto-fill rules based on the resulting status
   MediaListEntryWithMedia _applyDateRules() {
     final now = DateTime.now();
