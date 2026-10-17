@@ -8,6 +8,7 @@ import '../../components/loading_indicator.dart';
 import '../../components/update_dialog.dart';
 import '../../models/common.dart';
 import '../../services/auth_service.dart';
+import '../../services/deep_link_service.dart';
 import '../../services/media_list_controller.dart';
 import '../../services/update_service.dart';
 import '../../theme/theme.dart';
@@ -48,6 +49,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    DeepLinkService.instance.init(onAuthenticated: _handleAuthenticated);
     _loadTokenAndPreferences();
     AppNavigation.currentTab.addListener(_onTabChanged);
   }
@@ -76,6 +78,7 @@ class _HomePageState extends State<HomePage> {
         _isLoading = false;
       });
       if (token != null) {
+        DeepLinkService.instance.markReady();
         await _checkForUpdate();
       }
     }
@@ -100,11 +103,14 @@ class _HomePageState extends State<HomePage> {
 
   /// Updates state with a new auth token
   void _handleAuthenticated(String token) {
+    if (!mounted) return;
     setState(() => _token = token);
+    DeepLinkService.instance.markReady();
   }
 
   /// Resets state on sign out
   void _handleSignOut() {
+    DeepLinkService.instance.markUnauthenticated();
     MediaListController.resetAll();
     setState(() {
       _token = null;

@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,66 +5,16 @@ import 'package:mix/mix.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../components/button.dart';
-import '../../services/auth_service.dart';
 import '../../theme/theme.dart';
+import '../../utils/app_navigation.dart';
 
 /// A page for user authentication via AniList
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   /// Callback when authentication is successful
   final void Function(String token) onAuthenticated;
 
   /// Creates a login page
   const LoginPage({super.key, required this.onAuthenticated});
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-/// State for LoginPage
-class _LoginPageState extends State<LoginPage> {
-  late AppLinks _appLinks;
-  StreamSubscription<Uri>? _linkSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    _initDeepLinks();
-  }
-
-  @override
-  void dispose() {
-    _linkSubscription?.cancel();
-    super.dispose();
-  }
-
-  /// Initializes deep link listeners for OAuth callback
-  Future<void> _initDeepLinks() async {
-    _appLinks = AppLinks();
-
-    _linkSubscription = _appLinks.uriLinkStream.listen(
-      (uri) {
-        if (uri.scheme != 'org.goodanime.app' || uri.host != 'callback') return;
-
-        final params = uri.hasFragment
-            ? Uri.splitQueryString(uri.fragment)
-            : uri.queryParameters;
-
-        final token = params['access_token'] ?? params['code'];
-
-        if (token != null) {
-          final expiresIn = params['expires_in'] != null
-              ? int.tryParse(params['expires_in']!)
-              : null;
-
-          AuthService.saveToken(token, expiresInSeconds: expiresIn);
-          widget.onAuthenticated(token);
-        }
-      },
-      onError: (Object err) {
-        debugPrint('Deep Link Error: $err');
-      },
-    );
-  }
 
   /// Launches the AniList OAuth authorization page
   Future<void> _launchAnilistAuth() async {
@@ -76,11 +23,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch AniList login page.')),
-        );
-      }
+      AppNavigation.showSnackBar('Could not launch AniList login page.');
     }
   }
 

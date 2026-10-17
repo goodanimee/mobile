@@ -60,6 +60,7 @@ class _StudioPageState extends State<StudioPage> {
           _error = 'Failed to load studio: $e';
           _isLoading = false;
         });
+        AppNavigation.showSnackBar('Failed to load studio details.');
       }
     }
   }
