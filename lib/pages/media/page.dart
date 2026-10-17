@@ -94,6 +94,7 @@ class _MediaPageState extends State<MediaPage> {
           _error = 'Failed to load details: $e';
           _isLoading = false;
         });
+        AppNavigation.showSnackBar('Failed to load media details.');
       }
     }
   }

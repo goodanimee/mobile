@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../theme/theme.dart';
+import '../utils/app_navigation.dart';
+
+final _markdownLinkPattern = RegExp(r'\[([^\]]+)\]\(([^)\s]+)\)');
 
 const _blockElements = {'p', 'div', 'h1', 'h2', 'h3', 'ul', 'ol', 'li'};
 const _nestedBlocksOrImages = {
@@ -103,6 +105,50 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
     return text;
   }
 
+  InlineSpan _buildTextSpanWithMarkdownLinks(
+    String text,
+    TextStyle style, {
+    GestureRecognizer? recognizer,
+  }) {
+    if (recognizer != null || !_markdownLinkPattern.hasMatch(text)) {
+      return TextSpan(text: text, style: style, recognizer: recognizer);
+    }
+
+    final spans = <InlineSpan>[];
+    int lastEnd = 0;
+
+    for (final match in _markdownLinkPattern.allMatches(text)) {
+      if (match.start > lastEnd) {
+        spans.add(
+          TextSpan(text: text.substring(lastEnd, match.start), style: style),
+        );
+      }
+
+      final label = match.group(1)!;
+      final url = match.group(2)!;
+      final tapRecognizer = TapGestureRecognizer()
+        ..onTap = () async {
+          await AppNavigation.handleLinkTap(context, url);
+        };
+      _recognizers.add(tapRecognizer);
+
+      spans.add(
+        TextSpan(
+          text: label,
+          style: style.copyWith(color: borderColor),
+          recognizer: tapRecognizer,
+        ),
+      );
+      lastEnd = match.end;
+    }
+
+    if (lastEnd < text.length) {
+      spans.add(TextSpan(text: text.substring(lastEnd), style: style));
+    }
+
+    return TextSpan(children: spans, style: style);
+  }
+
   InlineSpan _buildInlineSpan(
     dom.Node node,
     TextStyle parentStyle, {
@@ -110,7 +156,11 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
   }) {
     if (node.nodeType == dom.Node.TEXT_NODE) {
       final text = _processTextNode(node);
-      return TextSpan(text: text, style: parentStyle, recognizer: recognizer);
+      return _buildTextSpanWithMarkdownLinks(
+        text,
+        parentStyle,
+        recognizer: recognizer,
+      );
     }
 
     if (node.nodeType == dom.Node.ELEMENT_NODE && node is dom.Element) {
@@ -131,10 +181,7 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
         if (href != null && href.isNotEmpty) {
           final tapRecognizer = TapGestureRecognizer()
             ..onTap = () async {
-              final uri = Uri.tryParse(href);
-              if (uri != null) {
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
-              }
+              await AppNavigation.handleLinkTap(context, href);
             };
           _recognizers.add(tapRecognizer);
           currentRecognizer = tapRecognizer;
@@ -359,7 +406,7 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
           }
         }
 
-        currentSpans.add(TextSpan(text: text, style: baseStyle));
+        currentSpans.add(_buildTextSpanWithMarkdownLinks(text, baseStyle));
       }
     }
 

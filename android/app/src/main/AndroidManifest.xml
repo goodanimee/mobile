@@ -18,6 +18,10 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <meta-data
+              android:name="flutter_deeplinking_enabled"
+              android:value="false"
+              />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -29,6 +33,21 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "org.goodanime.app://callback" -->
                 <data android:scheme="org.goodanime.app" android:host="callback" />
+            </intent-filter>
+            <!-- Deep linking for AniList entity URLs -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="anilist.co" />
+                <data android:host="www.anilist.co" />
+                <data android:pathPrefix="/anime" />
+                <data android:pathPrefix="/manga" />
+                <data android:pathPrefix="/character" />
+                <data android:pathPrefix="/staff" />
+                <data android:pathPrefix="/studio" />
             </intent-filter>
         </activity>
         <meta-data

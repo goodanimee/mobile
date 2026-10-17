@@ -128,6 +128,7 @@ class _CharacterPageState extends State<CharacterPage> {
           _error = 'Failed to load character details: $e';
           _isLoading = false;
         });
+        AppNavigation.showSnackBar('Failed to load character details.');
       }
     }
   }

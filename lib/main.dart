@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'pages/home/page.dart';
 import 'theme/theme.dart';
+import 'utils/app_navigation.dart';
 
 /// Application entry point
 Future<void> main() async {
@@ -31,6 +32,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GoodAnime',
       debugShowCheckedModeBanner: false,
+      navigatorKey: AppNavigation.navigatorKey,
+      scaffoldMessengerKey: AppNavigation.scaffoldMessengerKey,
       theme: ThemeData(
         scaffoldBackgroundColor: bgColor,
         colorScheme: const ColorScheme.dark(surface: bgColor),

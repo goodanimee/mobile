@@ -13,6 +13,7 @@ import '../../proto/api.pb.dart';
 import '../../services/genre_service.dart';
 import '../../services/search_service.dart';
 import '../../theme/theme.dart';
+import '../../utils/anilist_url_parser.dart';
 import '../../utils/app_navigation.dart';
 import 'utils/search_request_builder.dart';
 import 'widgets/common/active_dropdown.dart';
@@ -268,12 +269,31 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   }
 
   void _onSearchChanged() {
-    final hasText = _searchController.text.isNotEmpty;
+    final text = _searchController.text;
+    final hasText = text.isNotEmpty;
     if (hasText != _hasSearchText) {
       setState(() {
         _hasSearchText = hasText;
       });
     }
+
+    final target = AnilistUrlParser.parse(text);
+    if (target != null) {
+      _debounceTimer?.cancel();
+      _searchController.clear();
+      _searchFocusNode.unfocus();
+      AppNavigation.openAnilistTarget(target, context: context);
+      return;
+    }
+
+    if (AnilistUrlParser.isAnilistEntityPath(text)) {
+      _debounceTimer?.cancel();
+      _searchController.clear();
+      _searchFocusNode.unfocus();
+      AppNavigation.showSnackBar('Invalid AniList link.');
+      return;
+    }
+
     _onSearchInputChanged();
   }
 

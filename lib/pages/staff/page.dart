@@ -84,6 +84,7 @@ class _StaffPageState extends State<StaffPage> {
           _error = 'Failed to load staff details: $e';
           _isLoading = false;
         });
+        AppNavigation.showSnackBar('Failed to load staff details.');
       }
     }
   }
