@@ -87,7 +87,7 @@ class StickyHeader extends StatelessWidget {
               ),
               Positioned.fill(
                 left: 72,
-                right: 16,
+                right: 120,
                 child: AnimatedOpacity(
                   opacity: showStickyBar ? 1.0 : 0.0,
                   duration: kAnimFast,
