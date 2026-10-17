@@ -58,7 +58,6 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
       )._applyDateRules();
     }
 
-    nextProgress = newProgress;
     if (nextProgress == 0) {
       nextProgressVolumes = 0;
     }
@@ -111,8 +110,6 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
         status: nextStatus,
       )._applyDateRules();
     }
-
-    nextProgressVolumes = newVolumes;
 
     final isCompleted =
         maxProgressVolumes != null && newVolumes >= maxProgressVolumes;
