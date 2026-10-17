@@ -1,4 +1,2 @@
 -keep class kotlin.** { *; }
 -keep interface kotlin.** { *; }
--keep class io.flutter.plugins.sharedpreferences.** { *; }
--keep class dev.flutter.pigeon.** { *; }
