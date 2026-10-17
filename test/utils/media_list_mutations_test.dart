@@ -47,6 +47,9 @@ MediaListEntryWithMedia _createEntry({
   int progressVolumes = 0,
   FuzzyDate? startedAt,
   FuzzyDate? completedAt,
+  bool private = false,
+  bool hiddenFromStatusLists = false,
+  String notes = '',
   MediaMin? media,
 }) {
   return MediaListEntryWithMedia(
@@ -58,6 +61,9 @@ MediaListEntryWithMedia _createEntry({
     progressVolumes: progressVolumes,
     startedAt: startedAt,
     completedAt: completedAt,
+    private: private,
+    hiddenFromStatusLists: hiddenFromStatusLists,
+    notes: notes,
     media: media ?? _createMedia(),
   );
 }
@@ -347,6 +353,130 @@ void main() {
       final updated = entry.updateRepeat(4);
 
       expect(updated.repeat, 4);
+    });
+  });
+
+  group('MediaListEntryMutation.normalizeScore', () {
+    test('clamps scores below 0.0 to 0.0', () {
+      expect(MediaListEntryMutation.normalizeScore(-1.5), 0.0);
+      expect(MediaListEntryMutation.normalizeScore(-0.01), 0.0);
+    });
+
+    test('clamps scores above 10.0 to 10.0', () {
+      expect(MediaListEntryMutation.normalizeScore(10.01), 10.0);
+      expect(MediaListEntryMutation.normalizeScore(15.2), 10.0);
+    });
+
+    test(
+      'rounds to single decimal place eliminating IEEE 754 precision drift',
+      () {
+        expect(MediaListEntryMutation.normalizeScore(0.1 + 0.2), 0.3);
+        expect(MediaListEntryMutation.normalizeScore(0.7 + 0.1), 0.8);
+        expect(MediaListEntryMutation.normalizeScore(8.66), 8.7);
+        expect(MediaListEntryMutation.normalizeScore(8.64), 8.6);
+      },
+    );
+
+    test('leaves valid 1-decimal scores unchanged', () {
+      expect(MediaListEntryMutation.normalizeScore(0.0), 0.0);
+      expect(MediaListEntryMutation.normalizeScore(7.5), 7.5);
+      expect(MediaListEntryMutation.normalizeScore(10.0), 10.0);
+    });
+  });
+
+  group('MediaListEntryMutation score adjustments', () {
+    test('updateScore sets and normalizes the score', () {
+      final entry = _createEntry(score: 5.0);
+
+      final updated = entry.updateScore(8.74);
+
+      expect(updated.score, 8.7);
+    });
+
+    test('incrementScore increments by 0.1 and clamps at 10.0', () {
+      final entry = _createEntry(score: 9.9);
+
+      final next = entry.incrementScore();
+      expect(next.score, 10.0);
+
+      final clamped = next.incrementScore();
+      expect(clamped.score, 10.0);
+    });
+
+    test('decrementScore decrements by 0.1 and clamps at 0.0', () {
+      final entry = _createEntry(score: 0.1);
+
+      final next = entry.decrementScore();
+      expect(next.score, 0.0);
+
+      final clamped = next.decrementScore();
+      expect(clamped.score, 0.0);
+    });
+
+    test(
+      '100-step walk from 0.0 to 10.0 and back in 0.1 increments has no float drift',
+      () {
+        var entry = _createEntry();
+
+        for (var i = 1; i <= 100; i++) {
+          entry = entry.incrementScore();
+          final expected = (i / 10.0 * 10).round() / 10.0;
+          expect(entry.score, expected);
+        }
+        expect(entry.score, 10.0);
+
+        for (var i = 99; i >= 0; i--) {
+          entry = entry.decrementScore();
+          final expected = (i / 10.0 * 10).round() / 10.0;
+          expect(entry.score, expected);
+        }
+        expect(entry.score, 0.0);
+      },
+    );
+
+    test('supports custom step increments and decrements', () {
+      final entry = _createEntry(score: 5.0);
+
+      final incremented = entry.incrementScore(0.5);
+      expect(incremented.score, 5.5);
+
+      final decremented = entry.decrementScore(1.2);
+      expect(decremented.score, 3.8);
+    });
+  });
+
+  group('MediaListEntryMutation visibility and notes', () {
+    test('updatePrivate updates the private flag', () {
+      final entry = _createEntry();
+
+      final updated = entry.updatePrivate(true);
+      expect(updated.private, isTrue);
+
+      final reverted = updated.updatePrivate(false);
+      expect(reverted.private, isFalse);
+    });
+
+    test(
+      'updateHiddenFromStatusLists updates the hiddenFromStatusLists flag',
+      () {
+        final entry = _createEntry();
+
+        final updated = entry.updateHiddenFromStatusLists(true);
+        expect(updated.hiddenFromStatusLists, isTrue);
+
+        final reverted = updated.updateHiddenFromStatusLists(false);
+        expect(reverted.hiddenFromStatusLists, isFalse);
+      },
+    );
+
+    test('updateNotes updates the notes string', () {
+      final entry = _createEntry();
+
+      final updated = entry.updateNotes('Masterpiece of an anime!');
+      expect(updated.notes, 'Masterpiece of an anime!');
+
+      final cleared = updated.updateNotes('');
+      expect(cleared.notes, '');
     });
   });
 }
