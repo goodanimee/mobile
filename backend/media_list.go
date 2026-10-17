@@ -83,6 +83,15 @@ func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 	if req.Repeat != nil {
 		variables["repeat"] = *req.Repeat
 	}
+	if req.Private != nil {
+		variables["private"] = *req.Private
+	}
+	if req.HiddenFromStatusLists != nil {
+		variables["hiddenFromStatusLists"] = *req.HiddenFromStatusLists
+	}
+	if req.Notes != nil {
+		variables["notes"] = *req.Notes
+	}
 
 	data, err := executeGraphQL[models.SaveMediaListEntryDTO](tk, saveMediaListEntryMutation, variables)
 	if err != nil {

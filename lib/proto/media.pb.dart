@@ -56,7 +56,7 @@ class Media extends $pb.GeneratedMessage {
     $9.ReviewConnection? reviews,
     $core.int? seasonYear,
   }) {
-    final result = create();
+    final result = Media._();
     if (base != null) result.base = base;
     if (description != null) result.description = description;
     if (bannerImage != null) result.bannerImage = bannerImage;
@@ -91,17 +91,17 @@ class Media extends $pb.GeneratedMessage {
 
   factory Media.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      Media()..mergeFromBuffer(data, registry);
   factory Media.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      Media()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Media',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: Media.$_createMessage)
     ..aOM<$0.MediaMin>(1, _omitFieldNames ? '' : 'base',
-        subBuilder: $0.MediaMin.create)
+        subBuilder: $0.MediaMin.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'description')
     ..aOS(3, _omitFieldNames ? '' : 'bannerImage')
     ..aOS(4, _omitFieldNames ? '' : 'status')
@@ -109,39 +109,39 @@ class Media extends $pb.GeneratedMessage {
     ..aI(6, _omitFieldNames ? '' : 'popularity')
     ..aOS(7, _omitFieldNames ? '' : 'season')
     ..aOM<$1.Trailer>(9, _omitFieldNames ? '' : 'trailer',
-        subBuilder: $1.Trailer.create)
+        subBuilder: $1.Trailer.$_createMessage)
     ..aOM<$2.MediaListEntry>(10, _omitFieldNames ? '' : 'mediaListEntry',
-        subBuilder: $2.MediaListEntry.create)
+        subBuilder: $2.MediaListEntry.$_createMessage)
     ..aOM<$3.StudioConnection>(11, _omitFieldNames ? '' : 'studios',
-        subBuilder: $3.StudioConnection.create)
+        subBuilder: $3.StudioConnection.$_createMessage)
     ..pPM<$1.MediaTag>(12, _omitFieldNames ? '' : 'tags',
-        subBuilder: $1.MediaTag.create)
+        subBuilder: $1.MediaTag.$_createMessage)
     ..pPM<$1.ExternalLink>(13, _omitFieldNames ? '' : 'externalLinks',
-        subBuilder: $1.ExternalLink.create)
+        subBuilder: $1.ExternalLink.$_createMessage)
     ..pPM<$1.StreamingEpisode>(14, _omitFieldNames ? '' : 'streamingEpisodes',
-        subBuilder: $1.StreamingEpisode.create)
+        subBuilder: $1.StreamingEpisode.$_createMessage)
     ..aOM<$4.StaffConnection>(15, _omitFieldNames ? '' : 'staff',
-        subBuilder: $4.StaffConnection.create)
+        subBuilder: $4.StaffConnection.$_createMessage)
     ..aOM<$1.AiringSchedule>(16, _omitFieldNames ? '' : 'nextAiringEpisode',
-        subBuilder: $1.AiringSchedule.create)
+        subBuilder: $1.AiringSchedule.$_createMessage)
     ..aOM<$5.CharacterConnection>(17, _omitFieldNames ? '' : 'characters',
-        subBuilder: $5.CharacterConnection.create)
+        subBuilder: $5.CharacterConnection.$_createMessage)
     ..aOM<$6.MediaConnection>(18, _omitFieldNames ? '' : 'relations',
-        subBuilder: $6.MediaConnection.create)
+        subBuilder: $6.MediaConnection.$_createMessage)
     ..aOM<$7.RecommendationConnection>(
         19, _omitFieldNames ? '' : 'recommendations',
-        subBuilder: $7.RecommendationConnection.create)
+        subBuilder: $7.RecommendationConnection.$_createMessage)
     ..pPM<$1.MediaRank>(20, _omitFieldNames ? '' : 'rankings',
-        subBuilder: $1.MediaRank.create)
+        subBuilder: $1.MediaRank.$_createMessage)
     ..aOM<$1.MediaStats>(21, _omitFieldNames ? '' : 'stats',
-        subBuilder: $1.MediaStats.create)
+        subBuilder: $1.MediaStats.$_createMessage)
     ..aOM<$8.MediaTrendConnection>(22, _omitFieldNames ? '' : 'trends',
-        subBuilder: $8.MediaTrendConnection.create)
+        subBuilder: $8.MediaTrendConnection.$_createMessage)
     ..aI(23, _omitFieldNames ? '' : 'meanScore')
     ..aI(24, _omitFieldNames ? '' : 'favourites')
     ..pPS(25, _omitFieldNames ? '' : 'synonyms')
     ..aOM<$9.ReviewConnection>(26, _omitFieldNames ? '' : 'reviews',
-        subBuilder: $9.ReviewConnection.create)
+        subBuilder: $9.ReviewConnection.$_createMessage)
     ..aI(27, _omitFieldNames ? '' : 'seasonYear')
     ..hasRequiredFields = false;
 
@@ -155,12 +155,14 @@ class Media extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use Media() / Media.new instead')
   static Media create() => Media._();
+  static $pb.GeneratedMessage $_createMessage() => Media._();
   @$core.override
-  Media createEmptyInstance() => create();
+  Media createEmptyInstance() => Media._();
   @$core.pragma('dart2js:noInline')
-  static Media getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Media>(create);
+  static Media getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Media>(Media.$_createMessage);
   static Media? _defaultInstance;
 
   @$pb.TagNumber(1)

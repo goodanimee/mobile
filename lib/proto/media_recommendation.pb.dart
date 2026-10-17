@@ -24,7 +24,7 @@ class Recommendation extends $pb.GeneratedMessage {
     $core.int? rating,
     $0.MediaMin? mediaRecommendation,
   }) {
-    final result = create();
+    final result = Recommendation._();
     if (rating != null) result.rating = rating;
     if (mediaRecommendation != null)
       result.mediaRecommendation = mediaRecommendation;
@@ -35,18 +35,18 @@ class Recommendation extends $pb.GeneratedMessage {
 
   factory Recommendation.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      Recommendation()..mergeFromBuffer(data, registry);
   factory Recommendation.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      Recommendation()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Recommendation',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: Recommendation.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'rating')
     ..aOM<$0.MediaMin>(2, _omitFieldNames ? '' : 'mediaRecommendation',
-        subBuilder: $0.MediaMin.create)
+        subBuilder: $0.MediaMin.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -60,12 +60,15 @@ class Recommendation extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use Recommendation() / Recommendation.new instead')
   static Recommendation create() => Recommendation._();
+  static $pb.GeneratedMessage $_createMessage() => Recommendation._();
   @$core.override
-  Recommendation createEmptyInstance() => create();
+  Recommendation createEmptyInstance() => Recommendation._();
   @$core.pragma('dart2js:noInline')
-  static Recommendation getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<Recommendation>(create);
+  static Recommendation getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Recommendation>(
+          Recommendation.$_createMessage);
   static Recommendation? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -93,7 +96,7 @@ class RecommendationEdge extends $pb.GeneratedMessage {
   factory RecommendationEdge({
     Recommendation? node,
   }) {
-    final result = create();
+    final result = RecommendationEdge._();
     if (node != null) result.node = node;
     return result;
   }
@@ -102,17 +105,17 @@ class RecommendationEdge extends $pb.GeneratedMessage {
 
   factory RecommendationEdge.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      RecommendationEdge()..mergeFromBuffer(data, registry);
   factory RecommendationEdge.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      RecommendationEdge()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'RecommendationEdge',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: RecommendationEdge.$_createMessage)
     ..aOM<Recommendation>(1, _omitFieldNames ? '' : 'node',
-        subBuilder: Recommendation.create)
+        subBuilder: Recommendation.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -126,12 +129,15 @@ class RecommendationEdge extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use RecommendationEdge() / RecommendationEdge.new instead')
   static RecommendationEdge create() => RecommendationEdge._();
+  static $pb.GeneratedMessage $_createMessage() => RecommendationEdge._();
   @$core.override
-  RecommendationEdge createEmptyInstance() => create();
+  RecommendationEdge createEmptyInstance() => RecommendationEdge._();
   @$core.pragma('dart2js:noInline')
   static RecommendationEdge getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<RecommendationEdge>(create);
+      $pb.GeneratedMessage.$_defaultFor<RecommendationEdge>(
+          RecommendationEdge.$_createMessage);
   static RecommendationEdge? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -151,7 +157,7 @@ class RecommendationConnection extends $pb.GeneratedMessage {
     $1.PageInfo? pageInfo,
     $core.Iterable<RecommendationEdge>? edges,
   }) {
-    final result = create();
+    final result = RecommendationConnection._();
     if (pageInfo != null) result.pageInfo = pageInfo;
     if (edges != null) result.edges.addAll(edges);
     return result;
@@ -161,19 +167,19 @@ class RecommendationConnection extends $pb.GeneratedMessage {
 
   factory RecommendationConnection.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      RecommendationConnection()..mergeFromBuffer(data, registry);
   factory RecommendationConnection.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      RecommendationConnection()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'RecommendationConnection',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: RecommendationConnection.$_createMessage)
     ..aOM<$1.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $1.PageInfo.create)
+        subBuilder: $1.PageInfo.$_createMessage)
     ..pPM<RecommendationEdge>(2, _omitFieldNames ? '' : 'edges',
-        subBuilder: RecommendationEdge.create)
+        subBuilder: RecommendationEdge.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -188,12 +194,17 @@ class RecommendationConnection extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use RecommendationConnection() / RecommendationConnection.new instead')
   static RecommendationConnection create() => RecommendationConnection._();
+  static $pb.GeneratedMessage $_createMessage() => RecommendationConnection._();
   @$core.override
-  RecommendationConnection createEmptyInstance() => create();
+  RecommendationConnection createEmptyInstance() =>
+      RecommendationConnection._();
   @$core.pragma('dart2js:noInline')
   static RecommendationConnection getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<RecommendationConnection>(create);
+      $pb.GeneratedMessage.$_defaultFor<RecommendationConnection>(
+          RecommendationConnection.$_createMessage);
   static RecommendationConnection? _defaultInstance;
 
   @$pb.TagNumber(1)

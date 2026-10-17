@@ -93,6 +93,7 @@ class MediaListService {
     };
 
     for (final entry in allEntries) {
+      if (entry.hiddenFromStatusLists) continue;
       final status = entry.status ?? MediaListStatus.current;
       final displayStatus = status == MediaListStatus.repeating
           ? MediaListStatus.current
@@ -141,7 +142,8 @@ class MediaListService {
     MediaOptionsResult result,
     String mediaType,
   ) async {
-    if (result.deleted) {
+    if (result.deleted ||
+        (result.entry != null && result.entry!.hiddenFromStatusLists)) {
       final updatedLists = currentLists.map((section) {
         final entries = List<MediaListEntryWithMedia>.from(section.entries);
         entries.removeWhere((e) => e.media.id == mediaId);
@@ -243,8 +245,8 @@ class MediaListService {
     return updatedLists;
   }
 
-  /// Saves or updates an media list entry.
-  static Future<MediaListEntry> saveEntry({
+  /// Builds a protobuf request for saving or updating a media list entry.
+  static SaveMediaListEntryRequest buildSaveEntryRequest({
     required int mediaId,
     MediaListStatus? status,
     int? progress,
@@ -253,8 +255,10 @@ class MediaListService {
     DateTime? finishDate,
     int? progressVolumes,
     int? repeat,
-  }) async {
-    final token = await AuthService.getRawToken() ?? '';
+    bool? private,
+    bool? hiddenFromStatusLists,
+    String? notes,
+  }) {
     final req = SaveMediaListEntryRequest(mediaId: mediaId);
 
     if (status != null) req.status = status.toString();
@@ -262,6 +266,11 @@ class MediaListService {
     if (score != null) req.score = score;
     if (progressVolumes != null) req.progressVolumes = progressVolumes;
     if (repeat != null) req.repeat = repeat;
+    if (private != null) req.private = private;
+    if (hiddenFromStatusLists != null) {
+      req.hiddenFromStatusLists = hiddenFromStatusLists;
+    }
+    if (notes != null) req.notes = notes;
 
     if (startDate != null) {
       req.startedAt = FuzzyDateInput(
@@ -277,6 +286,38 @@ class MediaListService {
         day: finishDate.day,
       );
     }
+
+    return req;
+  }
+
+  /// Saves or updates an media list entry.
+  static Future<MediaListEntry> saveEntry({
+    required int mediaId,
+    MediaListStatus? status,
+    int? progress,
+    double? score,
+    DateTime? startDate,
+    DateTime? finishDate,
+    int? progressVolumes,
+    int? repeat,
+    bool? private,
+    bool? hiddenFromStatusLists,
+    String? notes,
+  }) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final req = buildSaveEntryRequest(
+      mediaId: mediaId,
+      status: status,
+      progress: progress,
+      score: score,
+      startDate: startDate,
+      finishDate: finishDate,
+      progressVolumes: progressVolumes,
+      repeat: repeat,
+      private: private,
+      hiddenFromStatusLists: hiddenFromStatusLists,
+      notes: notes,
+    );
 
     return MediaListApi.saveMediaListEntry(req, token);
   }

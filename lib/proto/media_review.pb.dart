@@ -33,7 +33,7 @@ class ReviewNode extends $pb.GeneratedMessage {
     $0.Viewer? user,
     $core.String? body,
   }) {
-    final result = create();
+    final result = ReviewNode._();
     if (id != null) result.id = id;
     if (score != null) result.score = score;
     if (rating != null) result.rating = rating;
@@ -49,15 +49,15 @@ class ReviewNode extends $pb.GeneratedMessage {
 
   factory ReviewNode.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ReviewNode()..mergeFromBuffer(data, registry);
   factory ReviewNode.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ReviewNode()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ReviewNode',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ReviewNode.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
     ..aI(2, _omitFieldNames ? '' : 'score')
     ..aI(3, _omitFieldNames ? '' : 'rating')
@@ -66,7 +66,7 @@ class ReviewNode extends $pb.GeneratedMessage {
     ..aE<ReviewUserRating>(6, _omitFieldNames ? '' : 'userRating',
         enumValues: ReviewUserRating.values)
     ..aOM<$0.Viewer>(7, _omitFieldNames ? '' : 'user',
-        subBuilder: $0.Viewer.create)
+        subBuilder: $0.Viewer.$_createMessage)
     ..aOS(8, _omitFieldNames ? '' : 'body')
     ..hasRequiredFields = false;
 
@@ -80,12 +80,14 @@ class ReviewNode extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use ReviewNode() / ReviewNode.new instead')
   static ReviewNode create() => ReviewNode._();
+  static $pb.GeneratedMessage $_createMessage() => ReviewNode._();
   @$core.override
-  ReviewNode createEmptyInstance() => create();
+  ReviewNode createEmptyInstance() => ReviewNode._();
   @$core.pragma('dart2js:noInline')
   static ReviewNode getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ReviewNode>(create);
+      $pb.GeneratedMessage.$_defaultFor<ReviewNode>(ReviewNode.$_createMessage);
   static ReviewNode? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -168,7 +170,7 @@ class ReviewConnection extends $pb.GeneratedMessage {
     $1.PageInfo? pageInfo,
     $core.Iterable<ReviewNode>? nodes,
   }) {
-    final result = create();
+    final result = ReviewConnection._();
     if (pageInfo != null) result.pageInfo = pageInfo;
     if (nodes != null) result.nodes.addAll(nodes);
     return result;
@@ -178,19 +180,19 @@ class ReviewConnection extends $pb.GeneratedMessage {
 
   factory ReviewConnection.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ReviewConnection()..mergeFromBuffer(data, registry);
   factory ReviewConnection.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ReviewConnection()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ReviewConnection',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ReviewConnection.$_createMessage)
     ..aOM<$1.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $1.PageInfo.create)
+        subBuilder: $1.PageInfo.$_createMessage)
     ..pPM<ReviewNode>(2, _omitFieldNames ? '' : 'nodes',
-        subBuilder: ReviewNode.create)
+        subBuilder: ReviewNode.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -204,12 +206,15 @@ class ReviewConnection extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use ReviewConnection() / ReviewConnection.new instead')
   static ReviewConnection create() => ReviewConnection._();
+  static $pb.GeneratedMessage $_createMessage() => ReviewConnection._();
   @$core.override
-  ReviewConnection createEmptyInstance() => create();
+  ReviewConnection createEmptyInstance() => ReviewConnection._();
   @$core.pragma('dart2js:noInline')
-  static ReviewConnection getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ReviewConnection>(create);
+  static ReviewConnection getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReviewConnection>(
+          ReviewConnection.$_createMessage);
   static ReviewConnection? _defaultInstance;
 
   @$pb.TagNumber(1)

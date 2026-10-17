@@ -23,7 +23,7 @@ class MediaTrend extends $pb.GeneratedMessage {
     $core.int? inProgress,
     $core.int? popularity,
   }) {
-    final result = create();
+    final result = MediaTrend._();
     if (averageScore != null) result.averageScore = averageScore;
     if (date != null) result.date = date;
     if (inProgress != null) result.inProgress = inProgress;
@@ -35,15 +35,15 @@ class MediaTrend extends $pb.GeneratedMessage {
 
   factory MediaTrend.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaTrend()..mergeFromBuffer(data, registry);
   factory MediaTrend.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaTrend()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaTrend',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaTrend.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'averageScore')
     ..aI(2, _omitFieldNames ? '' : 'date')
     ..aI(3, _omitFieldNames ? '' : 'inProgress')
@@ -60,12 +60,14 @@ class MediaTrend extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use MediaTrend() / MediaTrend.new instead')
   static MediaTrend create() => MediaTrend._();
+  static $pb.GeneratedMessage $_createMessage() => MediaTrend._();
   @$core.override
-  MediaTrend createEmptyInstance() => create();
+  MediaTrend createEmptyInstance() => MediaTrend._();
   @$core.pragma('dart2js:noInline')
   static MediaTrend getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MediaTrend>(create);
+      $pb.GeneratedMessage.$_defaultFor<MediaTrend>(MediaTrend.$_createMessage);
   static MediaTrend? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -109,7 +111,7 @@ class MediaTrendConnection extends $pb.GeneratedMessage {
   factory MediaTrendConnection({
     $core.Iterable<MediaTrend>? nodes,
   }) {
-    final result = create();
+    final result = MediaTrendConnection._();
     if (nodes != null) result.nodes.addAll(nodes);
     return result;
   }
@@ -118,17 +120,17 @@ class MediaTrendConnection extends $pb.GeneratedMessage {
 
   factory MediaTrendConnection.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaTrendConnection()..mergeFromBuffer(data, registry);
   factory MediaTrendConnection.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaTrendConnection()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaTrendConnection',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaTrendConnection.$_createMessage)
     ..pPM<MediaTrend>(1, _omitFieldNames ? '' : 'nodes',
-        subBuilder: MediaTrend.create)
+        subBuilder: MediaTrend.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -142,12 +144,16 @@ class MediaTrendConnection extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use MediaTrendConnection() / MediaTrendConnection.new instead')
   static MediaTrendConnection create() => MediaTrendConnection._();
+  static $pb.GeneratedMessage $_createMessage() => MediaTrendConnection._();
   @$core.override
-  MediaTrendConnection createEmptyInstance() => create();
+  MediaTrendConnection createEmptyInstance() => MediaTrendConnection._();
   @$core.pragma('dart2js:noInline')
   static MediaTrendConnection getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MediaTrendConnection>(create);
+      $pb.GeneratedMessage.$_defaultFor<MediaTrendConnection>(
+          MediaTrendConnection.$_createMessage);
   static MediaTrendConnection? _defaultInstance;
 
   @$pb.TagNumber(1)

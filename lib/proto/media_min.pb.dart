@@ -23,7 +23,7 @@ class Title extends $pb.GeneratedMessage {
     $core.String? romaji,
     $core.String? userPreferred,
   }) {
-    final result = create();
+    final result = Title._();
     if (english != null) result.english = english;
     if (native != null) result.native = native;
     if (romaji != null) result.romaji = romaji;
@@ -35,15 +35,15 @@ class Title extends $pb.GeneratedMessage {
 
   factory Title.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      Title()..mergeFromBuffer(data, registry);
   factory Title.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      Title()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'Title',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: Title.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'english')
     ..aOS(2, _omitFieldNames ? '' : 'native')
     ..aOS(3, _omitFieldNames ? '' : 'romaji')
@@ -60,12 +60,14 @@ class Title extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use Title() / Title.new instead')
   static Title create() => Title._();
+  static $pb.GeneratedMessage $_createMessage() => Title._();
   @$core.override
-  Title createEmptyInstance() => create();
+  Title createEmptyInstance() => Title._();
   @$core.pragma('dart2js:noInline')
-  static Title getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Title>(create);
+  static Title getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<Title>(Title.$_createMessage);
   static Title? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -112,7 +114,7 @@ class CoverImage extends $pb.GeneratedMessage {
     $core.String? extraLarge,
     $core.String? color,
   }) {
-    final result = create();
+    final result = CoverImage._();
     if (medium != null) result.medium = medium;
     if (large != null) result.large = large;
     if (extraLarge != null) result.extraLarge = extraLarge;
@@ -124,15 +126,15 @@ class CoverImage extends $pb.GeneratedMessage {
 
   factory CoverImage.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      CoverImage()..mergeFromBuffer(data, registry);
   factory CoverImage.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      CoverImage()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'CoverImage',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: CoverImage.$_createMessage)
     ..aOS(1, _omitFieldNames ? '' : 'medium')
     ..aOS(2, _omitFieldNames ? '' : 'large')
     ..aOS(3, _omitFieldNames ? '' : 'extraLarge')
@@ -149,12 +151,14 @@ class CoverImage extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use CoverImage() / CoverImage.new instead')
   static CoverImage create() => CoverImage._();
+  static $pb.GeneratedMessage $_createMessage() => CoverImage._();
   @$core.override
-  CoverImage createEmptyInstance() => create();
+  CoverImage createEmptyInstance() => CoverImage._();
   @$core.pragma('dart2js:noInline')
   static CoverImage getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<CoverImage>(create);
+      $pb.GeneratedMessage.$_defaultFor<CoverImage>(CoverImage.$_createMessage);
   static CoverImage? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -210,7 +214,7 @@ class MediaMin extends $pb.GeneratedMessage {
     $core.String? type,
     $core.int? startYear,
   }) {
-    final result = create();
+    final result = MediaMin._();
     if (id != null) result.id = id;
     if (title != null) result.title = title;
     if (averageScore != null) result.averageScore = averageScore;
@@ -231,20 +235,21 @@ class MediaMin extends $pb.GeneratedMessage {
 
   factory MediaMin.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      MediaMin()..mergeFromBuffer(data, registry);
   factory MediaMin.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      MediaMin()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'MediaMin',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: MediaMin.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'id')
-    ..aOM<Title>(2, _omitFieldNames ? '' : 'title', subBuilder: Title.create)
+    ..aOM<Title>(2, _omitFieldNames ? '' : 'title',
+        subBuilder: Title.$_createMessage)
     ..aI(3, _omitFieldNames ? '' : 'averageScore')
     ..aOM<CoverImage>(4, _omitFieldNames ? '' : 'coverImage',
-        subBuilder: CoverImage.create)
+        subBuilder: CoverImage.$_createMessage)
     ..aI(5, _omitFieldNames ? '' : 'episodes')
     ..aOS(6, _omitFieldNames ? '' : 'format')
     ..aOB(7, _omitFieldNames ? '' : 'isAdult')
@@ -266,12 +271,14 @@ class MediaMin extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use MediaMin() / MediaMin.new instead')
   static MediaMin create() => MediaMin._();
+  static $pb.GeneratedMessage $_createMessage() => MediaMin._();
   @$core.override
-  MediaMin createEmptyInstance() => create();
+  MediaMin createEmptyInstance() => MediaMin._();
   @$core.pragma('dart2js:noInline')
-  static MediaMin getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MediaMin>(create);
+  static MediaMin getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MediaMin>(MediaMin.$_createMessage);
   static MediaMin? _defaultInstance;
 
   @$pb.TagNumber(1)

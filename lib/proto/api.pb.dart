@@ -35,7 +35,7 @@ class FetchMediaListRequest extends $pb.GeneratedMessage {
     $core.String? type,
     $core.Iterable<$core.String>? sort,
   }) {
-    final result = create();
+    final result = FetchMediaListRequest._();
     if (userId != null) result.userId = userId;
     if (type != null) result.type = type;
     if (sort != null) result.sort.addAll(sort);
@@ -46,15 +46,15 @@ class FetchMediaListRequest extends $pb.GeneratedMessage {
 
   factory FetchMediaListRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaListRequest()..mergeFromBuffer(data, registry);
   factory FetchMediaListRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaListRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaListRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaListRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'type')
     ..pPS(3, _omitFieldNames ? '' : 'sort')
@@ -72,12 +72,16 @@ class FetchMediaListRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaListRequest() / FetchMediaListRequest.new instead')
   static FetchMediaListRequest create() => FetchMediaListRequest._();
+  static $pb.GeneratedMessage $_createMessage() => FetchMediaListRequest._();
   @$core.override
-  FetchMediaListRequest createEmptyInstance() => create();
+  FetchMediaListRequest createEmptyInstance() => FetchMediaListRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaListRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaListRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaListRequest>(
+          FetchMediaListRequest.$_createMessage);
   static FetchMediaListRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -107,7 +111,7 @@ class FetchMediaListResponse extends $pb.GeneratedMessage {
     $0.MediaListCollection? collection,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchMediaListResponse._();
     if (collection != null) result.collection = collection;
     if (error != null) result.error = error;
     return result;
@@ -117,17 +121,17 @@ class FetchMediaListResponse extends $pb.GeneratedMessage {
 
   factory FetchMediaListResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaListResponse()..mergeFromBuffer(data, registry);
   factory FetchMediaListResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaListResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaListResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaListResponse.$_createMessage)
     ..aOM<$0.MediaListCollection>(1, _omitFieldNames ? '' : 'collection',
-        subBuilder: $0.MediaListCollection.create)
+        subBuilder: $0.MediaListCollection.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -143,12 +147,16 @@ class FetchMediaListResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaListResponse() / FetchMediaListResponse.new instead')
   static FetchMediaListResponse create() => FetchMediaListResponse._();
+  static $pb.GeneratedMessage $_createMessage() => FetchMediaListResponse._();
   @$core.override
-  FetchMediaListResponse createEmptyInstance() => create();
+  FetchMediaListResponse createEmptyInstance() => FetchMediaListResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaListResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaListResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaListResponse>(
+          FetchMediaListResponse.$_createMessage);
   static FetchMediaListResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -177,7 +185,7 @@ class FetchViewerResponse extends $pb.GeneratedMessage {
     $1.Viewer? viewer,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchViewerResponse._();
     if (viewer != null) result.viewer = viewer;
     if (error != null) result.error = error;
     return result;
@@ -187,17 +195,17 @@ class FetchViewerResponse extends $pb.GeneratedMessage {
 
   factory FetchViewerResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchViewerResponse()..mergeFromBuffer(data, registry);
   factory FetchViewerResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchViewerResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchViewerResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchViewerResponse.$_createMessage)
     ..aOM<$1.Viewer>(1, _omitFieldNames ? '' : 'viewer',
-        subBuilder: $1.Viewer.create)
+        subBuilder: $1.Viewer.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -212,12 +220,16 @@ class FetchViewerResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use FetchViewerResponse() / FetchViewerResponse.new instead')
   static FetchViewerResponse create() => FetchViewerResponse._();
+  static $pb.GeneratedMessage $_createMessage() => FetchViewerResponse._();
   @$core.override
-  FetchViewerResponse createEmptyInstance() => create();
+  FetchViewerResponse createEmptyInstance() => FetchViewerResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchViewerResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchViewerResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchViewerResponse>(
+          FetchViewerResponse.$_createMessage);
   static FetchViewerResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -247,7 +259,7 @@ class FuzzyDateInput extends $pb.GeneratedMessage {
     $core.int? month,
     $core.int? day,
   }) {
-    final result = create();
+    final result = FuzzyDateInput._();
     if (year != null) result.year = year;
     if (month != null) result.month = month;
     if (day != null) result.day = day;
@@ -258,15 +270,15 @@ class FuzzyDateInput extends $pb.GeneratedMessage {
 
   factory FuzzyDateInput.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FuzzyDateInput()..mergeFromBuffer(data, registry);
   factory FuzzyDateInput.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FuzzyDateInput()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FuzzyDateInput',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FuzzyDateInput.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'year')
     ..aI(2, _omitFieldNames ? '' : 'month')
     ..aI(3, _omitFieldNames ? '' : 'day')
@@ -283,12 +295,15 @@ class FuzzyDateInput extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use FuzzyDateInput() / FuzzyDateInput.new instead')
   static FuzzyDateInput create() => FuzzyDateInput._();
+  static $pb.GeneratedMessage $_createMessage() => FuzzyDateInput._();
   @$core.override
-  FuzzyDateInput createEmptyInstance() => create();
+  FuzzyDateInput createEmptyInstance() => FuzzyDateInput._();
   @$core.pragma('dart2js:noInline')
-  static FuzzyDateInput getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FuzzyDateInput>(create);
+  static FuzzyDateInput getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FuzzyDateInput>(
+          FuzzyDateInput.$_createMessage);
   static FuzzyDateInput? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -329,8 +344,11 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
     FuzzyDateInput? completedAt,
     $core.int? progressVolumes,
     $core.int? repeat,
+    $core.bool? private,
+    $core.bool? hiddenFromStatusLists,
+    $core.String? notes,
   }) {
-    final result = create();
+    final result = SaveMediaListEntryRequest._();
     if (mediaId != null) result.mediaId = mediaId;
     if (progress != null) result.progress = progress;
     if (status != null) result.status = status;
@@ -339,6 +357,10 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
     if (completedAt != null) result.completedAt = completedAt;
     if (progressVolumes != null) result.progressVolumes = progressVolumes;
     if (repeat != null) result.repeat = repeat;
+    if (private != null) result.private = private;
+    if (hiddenFromStatusLists != null)
+      result.hiddenFromStatusLists = hiddenFromStatusLists;
+    if (notes != null) result.notes = notes;
     return result;
   }
 
@@ -346,25 +368,28 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
 
   factory SaveMediaListEntryRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      SaveMediaListEntryRequest()..mergeFromBuffer(data, registry);
   factory SaveMediaListEntryRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      SaveMediaListEntryRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'SaveMediaListEntryRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: SaveMediaListEntryRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'mediaId')
     ..aI(2, _omitFieldNames ? '' : 'progress')
     ..aOS(3, _omitFieldNames ? '' : 'status')
     ..aD(4, _omitFieldNames ? '' : 'score')
     ..aOM<FuzzyDateInput>(5, _omitFieldNames ? '' : 'startedAt',
-        subBuilder: FuzzyDateInput.create)
+        subBuilder: FuzzyDateInput.$_createMessage)
     ..aOM<FuzzyDateInput>(6, _omitFieldNames ? '' : 'completedAt',
-        subBuilder: FuzzyDateInput.create)
+        subBuilder: FuzzyDateInput.$_createMessage)
     ..aI(7, _omitFieldNames ? '' : 'progressVolumes')
     ..aI(8, _omitFieldNames ? '' : 'repeat')
+    ..aOB(9, _omitFieldNames ? '' : 'private')
+    ..aOB(10, _omitFieldNames ? '' : 'hiddenFromStatusLists')
+    ..aOS(11, _omitFieldNames ? '' : 'notes')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -379,12 +404,18 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use SaveMediaListEntryRequest() / SaveMediaListEntryRequest.new instead')
   static SaveMediaListEntryRequest create() => SaveMediaListEntryRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      SaveMediaListEntryRequest._();
   @$core.override
-  SaveMediaListEntryRequest createEmptyInstance() => create();
+  SaveMediaListEntryRequest createEmptyInstance() =>
+      SaveMediaListEntryRequest._();
   @$core.pragma('dart2js:noInline')
   static SaveMediaListEntryRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SaveMediaListEntryRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<SaveMediaListEntryRequest>(
+          SaveMediaListEntryRequest.$_createMessage);
   static SaveMediaListEntryRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -462,6 +493,33 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
   $core.bool hasRepeat() => $_has(7);
   @$pb.TagNumber(8)
   void clearRepeat() => $_clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.bool get private => $_getBF(8);
+  @$pb.TagNumber(9)
+  set private($core.bool value) => $_setBool(8, value);
+  @$pb.TagNumber(9)
+  $core.bool hasPrivate() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearPrivate() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.bool get hiddenFromStatusLists => $_getBF(9);
+  @$pb.TagNumber(10)
+  set hiddenFromStatusLists($core.bool value) => $_setBool(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasHiddenFromStatusLists() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearHiddenFromStatusLists() => $_clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.String get notes => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set notes($core.String value) => $_setString(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasNotes() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearNotes() => $_clearField(11);
 }
 
 class SaveMediaListEntryResponse extends $pb.GeneratedMessage {
@@ -469,7 +527,7 @@ class SaveMediaListEntryResponse extends $pb.GeneratedMessage {
     $2.MediaListEntry? entry,
     $core.String? error,
   }) {
-    final result = create();
+    final result = SaveMediaListEntryResponse._();
     if (entry != null) result.entry = entry;
     if (error != null) result.error = error;
     return result;
@@ -479,17 +537,17 @@ class SaveMediaListEntryResponse extends $pb.GeneratedMessage {
 
   factory SaveMediaListEntryResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      SaveMediaListEntryResponse()..mergeFromBuffer(data, registry);
   factory SaveMediaListEntryResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      SaveMediaListEntryResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'SaveMediaListEntryResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: SaveMediaListEntryResponse.$_createMessage)
     ..aOM<$2.MediaListEntry>(1, _omitFieldNames ? '' : 'entry',
-        subBuilder: $2.MediaListEntry.create)
+        subBuilder: $2.MediaListEntry.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -506,12 +564,18 @@ class SaveMediaListEntryResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use SaveMediaListEntryResponse() / SaveMediaListEntryResponse.new instead')
   static SaveMediaListEntryResponse create() => SaveMediaListEntryResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      SaveMediaListEntryResponse._();
   @$core.override
-  SaveMediaListEntryResponse createEmptyInstance() => create();
+  SaveMediaListEntryResponse createEmptyInstance() =>
+      SaveMediaListEntryResponse._();
   @$core.pragma('dart2js:noInline')
   static SaveMediaListEntryResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<SaveMediaListEntryResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<SaveMediaListEntryResponse>(
+          SaveMediaListEntryResponse.$_createMessage);
   static SaveMediaListEntryResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -539,7 +603,7 @@ class FetchMediaDetailsRequest extends $pb.GeneratedMessage {
   factory FetchMediaDetailsRequest({
     $core.int? mediaId,
   }) {
-    final result = create();
+    final result = FetchMediaDetailsRequest._();
     if (mediaId != null) result.mediaId = mediaId;
     return result;
   }
@@ -548,15 +612,15 @@ class FetchMediaDetailsRequest extends $pb.GeneratedMessage {
 
   factory FetchMediaDetailsRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaDetailsRequest()..mergeFromBuffer(data, registry);
   factory FetchMediaDetailsRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaDetailsRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaDetailsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaDetailsRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'mediaId')
     ..hasRequiredFields = false;
 
@@ -572,12 +636,17 @@ class FetchMediaDetailsRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaDetailsRequest() / FetchMediaDetailsRequest.new instead')
   static FetchMediaDetailsRequest create() => FetchMediaDetailsRequest._();
+  static $pb.GeneratedMessage $_createMessage() => FetchMediaDetailsRequest._();
   @$core.override
-  FetchMediaDetailsRequest createEmptyInstance() => create();
+  FetchMediaDetailsRequest createEmptyInstance() =>
+      FetchMediaDetailsRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaDetailsRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaDetailsRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaDetailsRequest>(
+          FetchMediaDetailsRequest.$_createMessage);
   static FetchMediaDetailsRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -595,7 +664,7 @@ class FetchMediaDetailsResponse extends $pb.GeneratedMessage {
     $3.Media? media,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchMediaDetailsResponse._();
     if (media != null) result.media = media;
     if (error != null) result.error = error;
     return result;
@@ -605,17 +674,17 @@ class FetchMediaDetailsResponse extends $pb.GeneratedMessage {
 
   factory FetchMediaDetailsResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaDetailsResponse()..mergeFromBuffer(data, registry);
   factory FetchMediaDetailsResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaDetailsResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaDetailsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaDetailsResponse.$_createMessage)
     ..aOM<$3.Media>(1, _omitFieldNames ? '' : 'media',
-        subBuilder: $3.Media.create)
+        subBuilder: $3.Media.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -631,12 +700,18 @@ class FetchMediaDetailsResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaDetailsResponse() / FetchMediaDetailsResponse.new instead')
   static FetchMediaDetailsResponse create() => FetchMediaDetailsResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchMediaDetailsResponse._();
   @$core.override
-  FetchMediaDetailsResponse createEmptyInstance() => create();
+  FetchMediaDetailsResponse createEmptyInstance() =>
+      FetchMediaDetailsResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaDetailsResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaDetailsResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaDetailsResponse>(
+          FetchMediaDetailsResponse.$_createMessage);
   static FetchMediaDetailsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -666,7 +741,7 @@ class FetchMediaStaffRequest extends $pb.GeneratedMessage {
     $core.int? page,
     $core.int? perPage,
   }) {
-    final result = create();
+    final result = FetchMediaStaffRequest._();
     if (mediaId != null) result.mediaId = mediaId;
     if (page != null) result.page = page;
     if (perPage != null) result.perPage = perPage;
@@ -677,15 +752,15 @@ class FetchMediaStaffRequest extends $pb.GeneratedMessage {
 
   factory FetchMediaStaffRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaStaffRequest()..mergeFromBuffer(data, registry);
   factory FetchMediaStaffRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaStaffRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaStaffRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaStaffRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'mediaId')
     ..aI(2, _omitFieldNames ? '' : 'page')
     ..aI(3, _omitFieldNames ? '' : 'perPage')
@@ -703,12 +778,16 @@ class FetchMediaStaffRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaStaffRequest() / FetchMediaStaffRequest.new instead')
   static FetchMediaStaffRequest create() => FetchMediaStaffRequest._();
+  static $pb.GeneratedMessage $_createMessage() => FetchMediaStaffRequest._();
   @$core.override
-  FetchMediaStaffRequest createEmptyInstance() => create();
+  FetchMediaStaffRequest createEmptyInstance() => FetchMediaStaffRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaStaffRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaStaffRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaStaffRequest>(
+          FetchMediaStaffRequest.$_createMessage);
   static FetchMediaStaffRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -744,7 +823,7 @@ class FetchMediaStaffResponse extends $pb.GeneratedMessage {
     $3.Media? media,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchMediaStaffResponse._();
     if (media != null) result.media = media;
     if (error != null) result.error = error;
     return result;
@@ -754,17 +833,17 @@ class FetchMediaStaffResponse extends $pb.GeneratedMessage {
 
   factory FetchMediaStaffResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaStaffResponse()..mergeFromBuffer(data, registry);
   factory FetchMediaStaffResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaStaffResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaStaffResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaStaffResponse.$_createMessage)
     ..aOM<$3.Media>(1, _omitFieldNames ? '' : 'media',
-        subBuilder: $3.Media.create)
+        subBuilder: $3.Media.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -780,12 +859,16 @@ class FetchMediaStaffResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaStaffResponse() / FetchMediaStaffResponse.new instead')
   static FetchMediaStaffResponse create() => FetchMediaStaffResponse._();
+  static $pb.GeneratedMessage $_createMessage() => FetchMediaStaffResponse._();
   @$core.override
-  FetchMediaStaffResponse createEmptyInstance() => create();
+  FetchMediaStaffResponse createEmptyInstance() => FetchMediaStaffResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaStaffResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaStaffResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaStaffResponse>(
+          FetchMediaStaffResponse.$_createMessage);
   static FetchMediaStaffResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -815,7 +898,7 @@ class FetchMediaCharactersRequest extends $pb.GeneratedMessage {
     $core.int? page,
     $core.int? perPage,
   }) {
-    final result = create();
+    final result = FetchMediaCharactersRequest._();
     if (mediaId != null) result.mediaId = mediaId;
     if (page != null) result.page = page;
     if (perPage != null) result.perPage = perPage;
@@ -826,15 +909,15 @@ class FetchMediaCharactersRequest extends $pb.GeneratedMessage {
 
   factory FetchMediaCharactersRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaCharactersRequest()..mergeFromBuffer(data, registry);
   factory FetchMediaCharactersRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaCharactersRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaCharactersRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaCharactersRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'mediaId')
     ..aI(2, _omitFieldNames ? '' : 'page')
     ..aI(3, _omitFieldNames ? '' : 'perPage')
@@ -853,13 +936,19 @@ class FetchMediaCharactersRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaCharactersRequest() / FetchMediaCharactersRequest.new instead')
   static FetchMediaCharactersRequest create() =>
       FetchMediaCharactersRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchMediaCharactersRequest._();
   @$core.override
-  FetchMediaCharactersRequest createEmptyInstance() => create();
+  FetchMediaCharactersRequest createEmptyInstance() =>
+      FetchMediaCharactersRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaCharactersRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaCharactersRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaCharactersRequest>(
+          FetchMediaCharactersRequest.$_createMessage);
   static FetchMediaCharactersRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -895,7 +984,7 @@ class FetchMediaCharactersResponse extends $pb.GeneratedMessage {
     $3.Media? media,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchMediaCharactersResponse._();
     if (media != null) result.media = media;
     if (error != null) result.error = error;
     return result;
@@ -905,17 +994,17 @@ class FetchMediaCharactersResponse extends $pb.GeneratedMessage {
 
   factory FetchMediaCharactersResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaCharactersResponse()..mergeFromBuffer(data, registry);
   factory FetchMediaCharactersResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaCharactersResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaCharactersResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaCharactersResponse.$_createMessage)
     ..aOM<$3.Media>(1, _omitFieldNames ? '' : 'media',
-        subBuilder: $3.Media.create)
+        subBuilder: $3.Media.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -932,13 +1021,19 @@ class FetchMediaCharactersResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaCharactersResponse() / FetchMediaCharactersResponse.new instead')
   static FetchMediaCharactersResponse create() =>
       FetchMediaCharactersResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchMediaCharactersResponse._();
   @$core.override
-  FetchMediaCharactersResponse createEmptyInstance() => create();
+  FetchMediaCharactersResponse createEmptyInstance() =>
+      FetchMediaCharactersResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaCharactersResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaCharactersResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaCharactersResponse>(
+          FetchMediaCharactersResponse.$_createMessage);
   static FetchMediaCharactersResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -968,7 +1063,7 @@ class FetchMediaRecommendationsRequest extends $pb.GeneratedMessage {
     $core.int? page,
     $core.int? perPage,
   }) {
-    final result = create();
+    final result = FetchMediaRecommendationsRequest._();
     if (mediaId != null) result.mediaId = mediaId;
     if (page != null) result.page = page;
     if (perPage != null) result.perPage = perPage;
@@ -980,15 +1075,15 @@ class FetchMediaRecommendationsRequest extends $pb.GeneratedMessage {
   factory FetchMediaRecommendationsRequest.fromBuffer(
           $core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaRecommendationsRequest()..mergeFromBuffer(data, registry);
   factory FetchMediaRecommendationsRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaRecommendationsRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaRecommendationsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaRecommendationsRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'mediaId')
     ..aI(2, _omitFieldNames ? '' : 'page')
     ..aI(3, _omitFieldNames ? '' : 'perPage')
@@ -1007,14 +1102,19 @@ class FetchMediaRecommendationsRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaRecommendationsRequest() / FetchMediaRecommendationsRequest.new instead')
   static FetchMediaRecommendationsRequest create() =>
       FetchMediaRecommendationsRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchMediaRecommendationsRequest._();
   @$core.override
-  FetchMediaRecommendationsRequest createEmptyInstance() => create();
+  FetchMediaRecommendationsRequest createEmptyInstance() =>
+      FetchMediaRecommendationsRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaRecommendationsRequest getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<FetchMediaRecommendationsRequest>(
-          create);
+          FetchMediaRecommendationsRequest.$_createMessage);
   static FetchMediaRecommendationsRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1050,7 +1150,7 @@ class FetchMediaRecommendationsResponse extends $pb.GeneratedMessage {
     $3.Media? media,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchMediaRecommendationsResponse._();
     if (media != null) result.media = media;
     if (error != null) result.error = error;
     return result;
@@ -1061,17 +1161,17 @@ class FetchMediaRecommendationsResponse extends $pb.GeneratedMessage {
   factory FetchMediaRecommendationsResponse.fromBuffer(
           $core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaRecommendationsResponse()..mergeFromBuffer(data, registry);
   factory FetchMediaRecommendationsResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaRecommendationsResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaRecommendationsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaRecommendationsResponse.$_createMessage)
     ..aOM<$3.Media>(1, _omitFieldNames ? '' : 'media',
-        subBuilder: $3.Media.create)
+        subBuilder: $3.Media.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -1088,14 +1188,19 @@ class FetchMediaRecommendationsResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaRecommendationsResponse() / FetchMediaRecommendationsResponse.new instead')
   static FetchMediaRecommendationsResponse create() =>
       FetchMediaRecommendationsResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchMediaRecommendationsResponse._();
   @$core.override
-  FetchMediaRecommendationsResponse createEmptyInstance() => create();
+  FetchMediaRecommendationsResponse createEmptyInstance() =>
+      FetchMediaRecommendationsResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaRecommendationsResponse getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<FetchMediaRecommendationsResponse>(
-          create);
+          FetchMediaRecommendationsResponse.$_createMessage);
   static FetchMediaRecommendationsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1123,7 +1228,7 @@ class ToggleFavouriteAnimeRequest extends $pb.GeneratedMessage {
   factory ToggleFavouriteAnimeRequest({
     $core.int? animeId,
   }) {
-    final result = create();
+    final result = ToggleFavouriteAnimeRequest._();
     if (animeId != null) result.animeId = animeId;
     return result;
   }
@@ -1132,15 +1237,15 @@ class ToggleFavouriteAnimeRequest extends $pb.GeneratedMessage {
 
   factory ToggleFavouriteAnimeRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleFavouriteAnimeRequest()..mergeFromBuffer(data, registry);
   factory ToggleFavouriteAnimeRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleFavouriteAnimeRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleFavouriteAnimeRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleFavouriteAnimeRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'animeId')
     ..hasRequiredFields = false;
 
@@ -1157,13 +1262,19 @@ class ToggleFavouriteAnimeRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleFavouriteAnimeRequest() / ToggleFavouriteAnimeRequest.new instead')
   static ToggleFavouriteAnimeRequest create() =>
       ToggleFavouriteAnimeRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleFavouriteAnimeRequest._();
   @$core.override
-  ToggleFavouriteAnimeRequest createEmptyInstance() => create();
+  ToggleFavouriteAnimeRequest createEmptyInstance() =>
+      ToggleFavouriteAnimeRequest._();
   @$core.pragma('dart2js:noInline')
   static ToggleFavouriteAnimeRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteAnimeRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteAnimeRequest>(
+          ToggleFavouriteAnimeRequest.$_createMessage);
   static ToggleFavouriteAnimeRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1182,7 +1293,7 @@ class ToggleFavouriteAnimeResponse extends $pb.GeneratedMessage {
     $core.bool? isFavourite,
     $core.String? error,
   }) {
-    final result = create();
+    final result = ToggleFavouriteAnimeResponse._();
     if (animeId != null) result.animeId = animeId;
     if (isFavourite != null) result.isFavourite = isFavourite;
     if (error != null) result.error = error;
@@ -1193,15 +1304,15 @@ class ToggleFavouriteAnimeResponse extends $pb.GeneratedMessage {
 
   factory ToggleFavouriteAnimeResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleFavouriteAnimeResponse()..mergeFromBuffer(data, registry);
   factory ToggleFavouriteAnimeResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleFavouriteAnimeResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleFavouriteAnimeResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleFavouriteAnimeResponse.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'animeId')
     ..aOB(2, _omitFieldNames ? '' : 'isFavourite')
     ..aOS(3, _omitFieldNames ? '' : 'error')
@@ -1220,13 +1331,19 @@ class ToggleFavouriteAnimeResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleFavouriteAnimeResponse() / ToggleFavouriteAnimeResponse.new instead')
   static ToggleFavouriteAnimeResponse create() =>
       ToggleFavouriteAnimeResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleFavouriteAnimeResponse._();
   @$core.override
-  ToggleFavouriteAnimeResponse createEmptyInstance() => create();
+  ToggleFavouriteAnimeResponse createEmptyInstance() =>
+      ToggleFavouriteAnimeResponse._();
   @$core.pragma('dart2js:noInline')
   static ToggleFavouriteAnimeResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteAnimeResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteAnimeResponse>(
+          ToggleFavouriteAnimeResponse.$_createMessage);
   static ToggleFavouriteAnimeResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1261,7 +1378,7 @@ class ToggleFavouriteMangaRequest extends $pb.GeneratedMessage {
   factory ToggleFavouriteMangaRequest({
     $core.int? mangaId,
   }) {
-    final result = create();
+    final result = ToggleFavouriteMangaRequest._();
     if (mangaId != null) result.mangaId = mangaId;
     return result;
   }
@@ -1270,15 +1387,15 @@ class ToggleFavouriteMangaRequest extends $pb.GeneratedMessage {
 
   factory ToggleFavouriteMangaRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleFavouriteMangaRequest()..mergeFromBuffer(data, registry);
   factory ToggleFavouriteMangaRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleFavouriteMangaRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleFavouriteMangaRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleFavouriteMangaRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'mangaId')
     ..hasRequiredFields = false;
 
@@ -1295,13 +1412,19 @@ class ToggleFavouriteMangaRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleFavouriteMangaRequest() / ToggleFavouriteMangaRequest.new instead')
   static ToggleFavouriteMangaRequest create() =>
       ToggleFavouriteMangaRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleFavouriteMangaRequest._();
   @$core.override
-  ToggleFavouriteMangaRequest createEmptyInstance() => create();
+  ToggleFavouriteMangaRequest createEmptyInstance() =>
+      ToggleFavouriteMangaRequest._();
   @$core.pragma('dart2js:noInline')
   static ToggleFavouriteMangaRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteMangaRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteMangaRequest>(
+          ToggleFavouriteMangaRequest.$_createMessage);
   static ToggleFavouriteMangaRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1320,7 +1443,7 @@ class ToggleFavouriteMangaResponse extends $pb.GeneratedMessage {
     $core.bool? isFavourite,
     $core.String? error,
   }) {
-    final result = create();
+    final result = ToggleFavouriteMangaResponse._();
     if (mangaId != null) result.mangaId = mangaId;
     if (isFavourite != null) result.isFavourite = isFavourite;
     if (error != null) result.error = error;
@@ -1331,15 +1454,15 @@ class ToggleFavouriteMangaResponse extends $pb.GeneratedMessage {
 
   factory ToggleFavouriteMangaResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleFavouriteMangaResponse()..mergeFromBuffer(data, registry);
   factory ToggleFavouriteMangaResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleFavouriteMangaResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleFavouriteMangaResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleFavouriteMangaResponse.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'mangaId')
     ..aOB(2, _omitFieldNames ? '' : 'isFavourite')
     ..aOS(3, _omitFieldNames ? '' : 'error')
@@ -1358,13 +1481,19 @@ class ToggleFavouriteMangaResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleFavouriteMangaResponse() / ToggleFavouriteMangaResponse.new instead')
   static ToggleFavouriteMangaResponse create() =>
       ToggleFavouriteMangaResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleFavouriteMangaResponse._();
   @$core.override
-  ToggleFavouriteMangaResponse createEmptyInstance() => create();
+  ToggleFavouriteMangaResponse createEmptyInstance() =>
+      ToggleFavouriteMangaResponse._();
   @$core.pragma('dart2js:noInline')
   static ToggleFavouriteMangaResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteMangaResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteMangaResponse>(
+          ToggleFavouriteMangaResponse.$_createMessage);
   static ToggleFavouriteMangaResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1399,7 +1528,7 @@ class ToggleActivityLikeRequest extends $pb.GeneratedMessage {
   factory ToggleActivityLikeRequest({
     $core.int? activityId,
   }) {
-    final result = create();
+    final result = ToggleActivityLikeRequest._();
     if (activityId != null) result.activityId = activityId;
     return result;
   }
@@ -1408,15 +1537,15 @@ class ToggleActivityLikeRequest extends $pb.GeneratedMessage {
 
   factory ToggleActivityLikeRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleActivityLikeRequest()..mergeFromBuffer(data, registry);
   factory ToggleActivityLikeRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleActivityLikeRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleActivityLikeRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleActivityLikeRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'activityId')
     ..hasRequiredFields = false;
 
@@ -1432,12 +1561,18 @@ class ToggleActivityLikeRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleActivityLikeRequest() / ToggleActivityLikeRequest.new instead')
   static ToggleActivityLikeRequest create() => ToggleActivityLikeRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleActivityLikeRequest._();
   @$core.override
-  ToggleActivityLikeRequest createEmptyInstance() => create();
+  ToggleActivityLikeRequest createEmptyInstance() =>
+      ToggleActivityLikeRequest._();
   @$core.pragma('dart2js:noInline')
   static ToggleActivityLikeRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ToggleActivityLikeRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<ToggleActivityLikeRequest>(
+          ToggleActivityLikeRequest.$_createMessage);
   static ToggleActivityLikeRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1456,7 +1591,7 @@ class ToggleActivityLikeResponse extends $pb.GeneratedMessage {
     $core.Iterable<$core.int>? likedUserIds,
     $core.String? error,
   }) {
-    final result = create();
+    final result = ToggleActivityLikeResponse._();
     if (activityId != null) result.activityId = activityId;
     if (likedUserIds != null) result.likedUserIds.addAll(likedUserIds);
     if (error != null) result.error = error;
@@ -1467,15 +1602,15 @@ class ToggleActivityLikeResponse extends $pb.GeneratedMessage {
 
   factory ToggleActivityLikeResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleActivityLikeResponse()..mergeFromBuffer(data, registry);
   factory ToggleActivityLikeResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleActivityLikeResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleActivityLikeResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleActivityLikeResponse.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'activityId')
     ..p<$core.int>(2, _omitFieldNames ? '' : 'likedUserIds', $pb.PbFieldType.K3)
     ..aOS(3, _omitFieldNames ? '' : 'error')
@@ -1494,12 +1629,18 @@ class ToggleActivityLikeResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleActivityLikeResponse() / ToggleActivityLikeResponse.new instead')
   static ToggleActivityLikeResponse create() => ToggleActivityLikeResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleActivityLikeResponse._();
   @$core.override
-  ToggleActivityLikeResponse createEmptyInstance() => create();
+  ToggleActivityLikeResponse createEmptyInstance() =>
+      ToggleActivityLikeResponse._();
   @$core.pragma('dart2js:noInline')
   static ToggleActivityLikeResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ToggleActivityLikeResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<ToggleActivityLikeResponse>(
+          ToggleActivityLikeResponse.$_createMessage);
   static ToggleActivityLikeResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1528,7 +1669,7 @@ class DeleteMediaListEntryRequest extends $pb.GeneratedMessage {
   factory DeleteMediaListEntryRequest({
     $core.int? entryId,
   }) {
-    final result = create();
+    final result = DeleteMediaListEntryRequest._();
     if (entryId != null) result.entryId = entryId;
     return result;
   }
@@ -1537,15 +1678,15 @@ class DeleteMediaListEntryRequest extends $pb.GeneratedMessage {
 
   factory DeleteMediaListEntryRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      DeleteMediaListEntryRequest()..mergeFromBuffer(data, registry);
   factory DeleteMediaListEntryRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      DeleteMediaListEntryRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'DeleteMediaListEntryRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: DeleteMediaListEntryRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'entryId')
     ..hasRequiredFields = false;
 
@@ -1562,13 +1703,19 @@ class DeleteMediaListEntryRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use DeleteMediaListEntryRequest() / DeleteMediaListEntryRequest.new instead')
   static DeleteMediaListEntryRequest create() =>
       DeleteMediaListEntryRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      DeleteMediaListEntryRequest._();
   @$core.override
-  DeleteMediaListEntryRequest createEmptyInstance() => create();
+  DeleteMediaListEntryRequest createEmptyInstance() =>
+      DeleteMediaListEntryRequest._();
   @$core.pragma('dart2js:noInline')
   static DeleteMediaListEntryRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<DeleteMediaListEntryRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<DeleteMediaListEntryRequest>(
+          DeleteMediaListEntryRequest.$_createMessage);
   static DeleteMediaListEntryRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1587,7 +1734,7 @@ class DeleteMediaListEntryResponse extends $pb.GeneratedMessage {
     $core.bool? deleted,
     $core.String? error,
   }) {
-    final result = create();
+    final result = DeleteMediaListEntryResponse._();
     if (entryId != null) result.entryId = entryId;
     if (deleted != null) result.deleted = deleted;
     if (error != null) result.error = error;
@@ -1598,15 +1745,15 @@ class DeleteMediaListEntryResponse extends $pb.GeneratedMessage {
 
   factory DeleteMediaListEntryResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      DeleteMediaListEntryResponse()..mergeFromBuffer(data, registry);
   factory DeleteMediaListEntryResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      DeleteMediaListEntryResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'DeleteMediaListEntryResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: DeleteMediaListEntryResponse.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'entryId')
     ..aOB(2, _omitFieldNames ? '' : 'deleted')
     ..aOS(3, _omitFieldNames ? '' : 'error')
@@ -1625,13 +1772,19 @@ class DeleteMediaListEntryResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use DeleteMediaListEntryResponse() / DeleteMediaListEntryResponse.new instead')
   static DeleteMediaListEntryResponse create() =>
       DeleteMediaListEntryResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      DeleteMediaListEntryResponse._();
   @$core.override
-  DeleteMediaListEntryResponse createEmptyInstance() => create();
+  DeleteMediaListEntryResponse createEmptyInstance() =>
+      DeleteMediaListEntryResponse._();
   @$core.pragma('dart2js:noInline')
   static DeleteMediaListEntryResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<DeleteMediaListEntryResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<DeleteMediaListEntryResponse>(
+          DeleteMediaListEntryResponse.$_createMessage);
   static DeleteMediaListEntryResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1668,7 +1821,7 @@ class FetchMediaReviewsRequest extends $pb.GeneratedMessage {
     $core.int? page,
     $core.int? perPage,
   }) {
-    final result = create();
+    final result = FetchMediaReviewsRequest._();
     if (mediaId != null) result.mediaId = mediaId;
     if (page != null) result.page = page;
     if (perPage != null) result.perPage = perPage;
@@ -1679,15 +1832,15 @@ class FetchMediaReviewsRequest extends $pb.GeneratedMessage {
 
   factory FetchMediaReviewsRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaReviewsRequest()..mergeFromBuffer(data, registry);
   factory FetchMediaReviewsRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaReviewsRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaReviewsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaReviewsRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'mediaId')
     ..aI(2, _omitFieldNames ? '' : 'page')
     ..aI(3, _omitFieldNames ? '' : 'perPage')
@@ -1705,12 +1858,17 @@ class FetchMediaReviewsRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaReviewsRequest() / FetchMediaReviewsRequest.new instead')
   static FetchMediaReviewsRequest create() => FetchMediaReviewsRequest._();
+  static $pb.GeneratedMessage $_createMessage() => FetchMediaReviewsRequest._();
   @$core.override
-  FetchMediaReviewsRequest createEmptyInstance() => create();
+  FetchMediaReviewsRequest createEmptyInstance() =>
+      FetchMediaReviewsRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaReviewsRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaReviewsRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaReviewsRequest>(
+          FetchMediaReviewsRequest.$_createMessage);
   static FetchMediaReviewsRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1746,7 +1904,7 @@ class FetchMediaReviewsResponse extends $pb.GeneratedMessage {
     $3.Media? media,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchMediaReviewsResponse._();
     if (media != null) result.media = media;
     if (error != null) result.error = error;
     return result;
@@ -1756,17 +1914,17 @@ class FetchMediaReviewsResponse extends $pb.GeneratedMessage {
 
   factory FetchMediaReviewsResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaReviewsResponse()..mergeFromBuffer(data, registry);
   factory FetchMediaReviewsResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaReviewsResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaReviewsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaReviewsResponse.$_createMessage)
     ..aOM<$3.Media>(1, _omitFieldNames ? '' : 'media',
-        subBuilder: $3.Media.create)
+        subBuilder: $3.Media.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -1782,12 +1940,18 @@ class FetchMediaReviewsResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaReviewsResponse() / FetchMediaReviewsResponse.new instead')
   static FetchMediaReviewsResponse create() => FetchMediaReviewsResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchMediaReviewsResponse._();
   @$core.override
-  FetchMediaReviewsResponse createEmptyInstance() => create();
+  FetchMediaReviewsResponse createEmptyInstance() =>
+      FetchMediaReviewsResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaReviewsResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaReviewsResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaReviewsResponse>(
+          FetchMediaReviewsResponse.$_createMessage);
   static FetchMediaReviewsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1816,7 +1980,7 @@ class RateReviewRequest extends $pb.GeneratedMessage {
     $core.int? reviewId,
     $4.ReviewUserRating? rating,
   }) {
-    final result = create();
+    final result = RateReviewRequest._();
     if (reviewId != null) result.reviewId = reviewId;
     if (rating != null) result.rating = rating;
     return result;
@@ -1826,15 +1990,15 @@ class RateReviewRequest extends $pb.GeneratedMessage {
 
   factory RateReviewRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      RateReviewRequest()..mergeFromBuffer(data, registry);
   factory RateReviewRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      RateReviewRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'RateReviewRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: RateReviewRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'reviewId')
     ..aE<$4.ReviewUserRating>(2, _omitFieldNames ? '' : 'rating',
         enumValues: $4.ReviewUserRating.values)
@@ -1851,12 +2015,15 @@ class RateReviewRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use RateReviewRequest() / RateReviewRequest.new instead')
   static RateReviewRequest create() => RateReviewRequest._();
+  static $pb.GeneratedMessage $_createMessage() => RateReviewRequest._();
   @$core.override
-  RateReviewRequest createEmptyInstance() => create();
+  RateReviewRequest createEmptyInstance() => RateReviewRequest._();
   @$core.pragma('dart2js:noInline')
-  static RateReviewRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<RateReviewRequest>(create);
+  static RateReviewRequest getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RateReviewRequest>(
+          RateReviewRequest.$_createMessage);
   static RateReviewRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1883,7 +2050,7 @@ class RateReviewResponse extends $pb.GeneratedMessage {
     $4.ReviewNode? review,
     $core.String? error,
   }) {
-    final result = create();
+    final result = RateReviewResponse._();
     if (review != null) result.review = review;
     if (error != null) result.error = error;
     return result;
@@ -1893,17 +2060,17 @@ class RateReviewResponse extends $pb.GeneratedMessage {
 
   factory RateReviewResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      RateReviewResponse()..mergeFromBuffer(data, registry);
   factory RateReviewResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      RateReviewResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'RateReviewResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: RateReviewResponse.$_createMessage)
     ..aOM<$4.ReviewNode>(1, _omitFieldNames ? '' : 'review',
-        subBuilder: $4.ReviewNode.create)
+        subBuilder: $4.ReviewNode.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -1918,12 +2085,15 @@ class RateReviewResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use RateReviewResponse() / RateReviewResponse.new instead')
   static RateReviewResponse create() => RateReviewResponse._();
+  static $pb.GeneratedMessage $_createMessage() => RateReviewResponse._();
   @$core.override
-  RateReviewResponse createEmptyInstance() => create();
+  RateReviewResponse createEmptyInstance() => RateReviewResponse._();
   @$core.pragma('dart2js:noInline')
   static RateReviewResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<RateReviewResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<RateReviewResponse>(
+          RateReviewResponse.$_createMessage);
   static RateReviewResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1953,7 +2123,7 @@ class FetchMediaActivitiesRequest extends $pb.GeneratedMessage {
     $core.int? page,
     $core.int? perPage,
   }) {
-    final result = create();
+    final result = FetchMediaActivitiesRequest._();
     if (mediaId != null) result.mediaId = mediaId;
     if (page != null) result.page = page;
     if (perPage != null) result.perPage = perPage;
@@ -1964,15 +2134,15 @@ class FetchMediaActivitiesRequest extends $pb.GeneratedMessage {
 
   factory FetchMediaActivitiesRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaActivitiesRequest()..mergeFromBuffer(data, registry);
   factory FetchMediaActivitiesRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaActivitiesRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaActivitiesRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaActivitiesRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'mediaId')
     ..aI(2, _omitFieldNames ? '' : 'page')
     ..aI(3, _omitFieldNames ? '' : 'perPage')
@@ -1991,13 +2161,19 @@ class FetchMediaActivitiesRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaActivitiesRequest() / FetchMediaActivitiesRequest.new instead')
   static FetchMediaActivitiesRequest create() =>
       FetchMediaActivitiesRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchMediaActivitiesRequest._();
   @$core.override
-  FetchMediaActivitiesRequest createEmptyInstance() => create();
+  FetchMediaActivitiesRequest createEmptyInstance() =>
+      FetchMediaActivitiesRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaActivitiesRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaActivitiesRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaActivitiesRequest>(
+          FetchMediaActivitiesRequest.$_createMessage);
   static FetchMediaActivitiesRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2034,7 +2210,7 @@ class FetchMediaActivitiesResponse extends $pb.GeneratedMessage {
     $core.Iterable<$6.ListActivity>? activities,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchMediaActivitiesResponse._();
     if (pageInfo != null) result.pageInfo = pageInfo;
     if (activities != null) result.activities.addAll(activities);
     if (error != null) result.error = error;
@@ -2045,19 +2221,19 @@ class FetchMediaActivitiesResponse extends $pb.GeneratedMessage {
 
   factory FetchMediaActivitiesResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaActivitiesResponse()..mergeFromBuffer(data, registry);
   factory FetchMediaActivitiesResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaActivitiesResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaActivitiesResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaActivitiesResponse.$_createMessage)
     ..aOM<$5.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $5.PageInfo.create)
+        subBuilder: $5.PageInfo.$_createMessage)
     ..pPM<$6.ListActivity>(2, _omitFieldNames ? '' : 'activities',
-        subBuilder: $6.ListActivity.create)
+        subBuilder: $6.ListActivity.$_createMessage)
     ..aOS(3, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -2074,13 +2250,19 @@ class FetchMediaActivitiesResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaActivitiesResponse() / FetchMediaActivitiesResponse.new instead')
   static FetchMediaActivitiesResponse create() =>
       FetchMediaActivitiesResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchMediaActivitiesResponse._();
   @$core.override
-  FetchMediaActivitiesResponse createEmptyInstance() => create();
+  FetchMediaActivitiesResponse createEmptyInstance() =>
+      FetchMediaActivitiesResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaActivitiesResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaActivitiesResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaActivitiesResponse>(
+          FetchMediaActivitiesResponse.$_createMessage);
   static FetchMediaActivitiesResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2112,7 +2294,7 @@ class FetchStudioDetailsRequest extends $pb.GeneratedMessage {
     $core.int? studioId,
     $core.int? page,
   }) {
-    final result = create();
+    final result = FetchStudioDetailsRequest._();
     if (studioId != null) result.studioId = studioId;
     if (page != null) result.page = page;
     return result;
@@ -2122,15 +2304,15 @@ class FetchStudioDetailsRequest extends $pb.GeneratedMessage {
 
   factory FetchStudioDetailsRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchStudioDetailsRequest()..mergeFromBuffer(data, registry);
   factory FetchStudioDetailsRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchStudioDetailsRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchStudioDetailsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchStudioDetailsRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'studioId')
     ..aI(2, _omitFieldNames ? '' : 'page')
     ..hasRequiredFields = false;
@@ -2147,12 +2329,18 @@ class FetchStudioDetailsRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchStudioDetailsRequest() / FetchStudioDetailsRequest.new instead')
   static FetchStudioDetailsRequest create() => FetchStudioDetailsRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchStudioDetailsRequest._();
   @$core.override
-  FetchStudioDetailsRequest createEmptyInstance() => create();
+  FetchStudioDetailsRequest createEmptyInstance() =>
+      FetchStudioDetailsRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchStudioDetailsRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchStudioDetailsRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchStudioDetailsRequest>(
+          FetchStudioDetailsRequest.$_createMessage);
   static FetchStudioDetailsRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2179,7 +2367,7 @@ class FetchStudioDetailsResponse extends $pb.GeneratedMessage {
     $7.Studio? studio,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchStudioDetailsResponse._();
     if (studio != null) result.studio = studio;
     if (error != null) result.error = error;
     return result;
@@ -2189,17 +2377,17 @@ class FetchStudioDetailsResponse extends $pb.GeneratedMessage {
 
   factory FetchStudioDetailsResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchStudioDetailsResponse()..mergeFromBuffer(data, registry);
   factory FetchStudioDetailsResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchStudioDetailsResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchStudioDetailsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchStudioDetailsResponse.$_createMessage)
     ..aOM<$7.Studio>(1, _omitFieldNames ? '' : 'studio',
-        subBuilder: $7.Studio.create)
+        subBuilder: $7.Studio.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -2216,12 +2404,18 @@ class FetchStudioDetailsResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchStudioDetailsResponse() / FetchStudioDetailsResponse.new instead')
   static FetchStudioDetailsResponse create() => FetchStudioDetailsResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchStudioDetailsResponse._();
   @$core.override
-  FetchStudioDetailsResponse createEmptyInstance() => create();
+  FetchStudioDetailsResponse createEmptyInstance() =>
+      FetchStudioDetailsResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchStudioDetailsResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchStudioDetailsResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchStudioDetailsResponse>(
+          FetchStudioDetailsResponse.$_createMessage);
   static FetchStudioDetailsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2249,7 +2443,7 @@ class ToggleFavouriteStudioRequest extends $pb.GeneratedMessage {
   factory ToggleFavouriteStudioRequest({
     $core.int? studioId,
   }) {
-    final result = create();
+    final result = ToggleFavouriteStudioRequest._();
     if (studioId != null) result.studioId = studioId;
     return result;
   }
@@ -2258,15 +2452,15 @@ class ToggleFavouriteStudioRequest extends $pb.GeneratedMessage {
 
   factory ToggleFavouriteStudioRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleFavouriteStudioRequest()..mergeFromBuffer(data, registry);
   factory ToggleFavouriteStudioRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleFavouriteStudioRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleFavouriteStudioRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleFavouriteStudioRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'studioId')
     ..hasRequiredFields = false;
 
@@ -2283,13 +2477,19 @@ class ToggleFavouriteStudioRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleFavouriteStudioRequest() / ToggleFavouriteStudioRequest.new instead')
   static ToggleFavouriteStudioRequest create() =>
       ToggleFavouriteStudioRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleFavouriteStudioRequest._();
   @$core.override
-  ToggleFavouriteStudioRequest createEmptyInstance() => create();
+  ToggleFavouriteStudioRequest createEmptyInstance() =>
+      ToggleFavouriteStudioRequest._();
   @$core.pragma('dart2js:noInline')
   static ToggleFavouriteStudioRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStudioRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStudioRequest>(
+          ToggleFavouriteStudioRequest.$_createMessage);
   static ToggleFavouriteStudioRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2307,7 +2507,7 @@ class ToggleFavouriteStudioResponse extends $pb.GeneratedMessage {
     $core.int? studioId,
     $core.String? error,
   }) {
-    final result = create();
+    final result = ToggleFavouriteStudioResponse._();
     if (studioId != null) result.studioId = studioId;
     if (error != null) result.error = error;
     return result;
@@ -2317,15 +2517,15 @@ class ToggleFavouriteStudioResponse extends $pb.GeneratedMessage {
 
   factory ToggleFavouriteStudioResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleFavouriteStudioResponse()..mergeFromBuffer(data, registry);
   factory ToggleFavouriteStudioResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleFavouriteStudioResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleFavouriteStudioResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleFavouriteStudioResponse.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'studioId')
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
@@ -2343,13 +2543,19 @@ class ToggleFavouriteStudioResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleFavouriteStudioResponse() / ToggleFavouriteStudioResponse.new instead')
   static ToggleFavouriteStudioResponse create() =>
       ToggleFavouriteStudioResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleFavouriteStudioResponse._();
   @$core.override
-  ToggleFavouriteStudioResponse createEmptyInstance() => create();
+  ToggleFavouriteStudioResponse createEmptyInstance() =>
+      ToggleFavouriteStudioResponse._();
   @$core.pragma('dart2js:noInline')
   static ToggleFavouriteStudioResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStudioResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStudioResponse>(
+          ToggleFavouriteStudioResponse.$_createMessage);
   static ToggleFavouriteStudioResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2377,7 +2583,7 @@ class FetchStaffDetailsRequest extends $pb.GeneratedMessage {
     $core.int? characterMediaPage,
     $core.int? staffMediaPage,
   }) {
-    final result = create();
+    final result = FetchStaffDetailsRequest._();
     if (staffId != null) result.staffId = staffId;
     if (characterMediaPage != null)
       result.characterMediaPage = characterMediaPage;
@@ -2389,15 +2595,15 @@ class FetchStaffDetailsRequest extends $pb.GeneratedMessage {
 
   factory FetchStaffDetailsRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchStaffDetailsRequest()..mergeFromBuffer(data, registry);
   factory FetchStaffDetailsRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchStaffDetailsRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchStaffDetailsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchStaffDetailsRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'staffId')
     ..aI(2, _omitFieldNames ? '' : 'characterMediaPage')
     ..aI(3, _omitFieldNames ? '' : 'staffMediaPage')
@@ -2415,12 +2621,17 @@ class FetchStaffDetailsRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchStaffDetailsRequest() / FetchStaffDetailsRequest.new instead')
   static FetchStaffDetailsRequest create() => FetchStaffDetailsRequest._();
+  static $pb.GeneratedMessage $_createMessage() => FetchStaffDetailsRequest._();
   @$core.override
-  FetchStaffDetailsRequest createEmptyInstance() => create();
+  FetchStaffDetailsRequest createEmptyInstance() =>
+      FetchStaffDetailsRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchStaffDetailsRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchStaffDetailsRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchStaffDetailsRequest>(
+          FetchStaffDetailsRequest.$_createMessage);
   static FetchStaffDetailsRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2456,7 +2667,7 @@ class FetchStaffDetailsResponse extends $pb.GeneratedMessage {
     $8.Staff? staff,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchStaffDetailsResponse._();
     if (staff != null) result.staff = staff;
     if (error != null) result.error = error;
     return result;
@@ -2466,17 +2677,17 @@ class FetchStaffDetailsResponse extends $pb.GeneratedMessage {
 
   factory FetchStaffDetailsResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchStaffDetailsResponse()..mergeFromBuffer(data, registry);
   factory FetchStaffDetailsResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchStaffDetailsResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchStaffDetailsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchStaffDetailsResponse.$_createMessage)
     ..aOM<$8.Staff>(1, _omitFieldNames ? '' : 'staff',
-        subBuilder: $8.Staff.create)
+        subBuilder: $8.Staff.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -2492,12 +2703,18 @@ class FetchStaffDetailsResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchStaffDetailsResponse() / FetchStaffDetailsResponse.new instead')
   static FetchStaffDetailsResponse create() => FetchStaffDetailsResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchStaffDetailsResponse._();
   @$core.override
-  FetchStaffDetailsResponse createEmptyInstance() => create();
+  FetchStaffDetailsResponse createEmptyInstance() =>
+      FetchStaffDetailsResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchStaffDetailsResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchStaffDetailsResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchStaffDetailsResponse>(
+          FetchStaffDetailsResponse.$_createMessage);
   static FetchStaffDetailsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2525,7 +2742,7 @@ class ToggleFavouriteStaffRequest extends $pb.GeneratedMessage {
   factory ToggleFavouriteStaffRequest({
     $core.int? staffId,
   }) {
-    final result = create();
+    final result = ToggleFavouriteStaffRequest._();
     if (staffId != null) result.staffId = staffId;
     return result;
   }
@@ -2534,15 +2751,15 @@ class ToggleFavouriteStaffRequest extends $pb.GeneratedMessage {
 
   factory ToggleFavouriteStaffRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleFavouriteStaffRequest()..mergeFromBuffer(data, registry);
   factory ToggleFavouriteStaffRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleFavouriteStaffRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleFavouriteStaffRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleFavouriteStaffRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'staffId')
     ..hasRequiredFields = false;
 
@@ -2559,13 +2776,19 @@ class ToggleFavouriteStaffRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleFavouriteStaffRequest() / ToggleFavouriteStaffRequest.new instead')
   static ToggleFavouriteStaffRequest create() =>
       ToggleFavouriteStaffRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleFavouriteStaffRequest._();
   @$core.override
-  ToggleFavouriteStaffRequest createEmptyInstance() => create();
+  ToggleFavouriteStaffRequest createEmptyInstance() =>
+      ToggleFavouriteStaffRequest._();
   @$core.pragma('dart2js:noInline')
   static ToggleFavouriteStaffRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStaffRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStaffRequest>(
+          ToggleFavouriteStaffRequest.$_createMessage);
   static ToggleFavouriteStaffRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2583,7 +2806,7 @@ class ToggleFavouriteStaffResponse extends $pb.GeneratedMessage {
     $core.int? staffId,
     $core.String? error,
   }) {
-    final result = create();
+    final result = ToggleFavouriteStaffResponse._();
     if (staffId != null) result.staffId = staffId;
     if (error != null) result.error = error;
     return result;
@@ -2593,15 +2816,15 @@ class ToggleFavouriteStaffResponse extends $pb.GeneratedMessage {
 
   factory ToggleFavouriteStaffResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleFavouriteStaffResponse()..mergeFromBuffer(data, registry);
   factory ToggleFavouriteStaffResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleFavouriteStaffResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleFavouriteStaffResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleFavouriteStaffResponse.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'staffId')
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
@@ -2619,13 +2842,19 @@ class ToggleFavouriteStaffResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleFavouriteStaffResponse() / ToggleFavouriteStaffResponse.new instead')
   static ToggleFavouriteStaffResponse create() =>
       ToggleFavouriteStaffResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleFavouriteStaffResponse._();
   @$core.override
-  ToggleFavouriteStaffResponse createEmptyInstance() => create();
+  ToggleFavouriteStaffResponse createEmptyInstance() =>
+      ToggleFavouriteStaffResponse._();
   @$core.pragma('dart2js:noInline')
   static ToggleFavouriteStaffResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStaffResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteStaffResponse>(
+          ToggleFavouriteStaffResponse.$_createMessage);
   static ToggleFavouriteStaffResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2652,7 +2881,7 @@ class FetchGenresResponse extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? genres,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchGenresResponse._();
     if (genres != null) result.genres.addAll(genres);
     if (error != null) result.error = error;
     return result;
@@ -2662,15 +2891,15 @@ class FetchGenresResponse extends $pb.GeneratedMessage {
 
   factory FetchGenresResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchGenresResponse()..mergeFromBuffer(data, registry);
   factory FetchGenresResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchGenresResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchGenresResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchGenresResponse.$_createMessage)
     ..pPS(1, _omitFieldNames ? '' : 'genres')
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
@@ -2686,12 +2915,16 @@ class FetchGenresResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use FetchGenresResponse() / FetchGenresResponse.new instead')
   static FetchGenresResponse create() => FetchGenresResponse._();
+  static $pb.GeneratedMessage $_createMessage() => FetchGenresResponse._();
   @$core.override
-  FetchGenresResponse createEmptyInstance() => create();
+  FetchGenresResponse createEmptyInstance() => FetchGenresResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchGenresResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchGenresResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchGenresResponse>(
+          FetchGenresResponse.$_createMessage);
   static FetchGenresResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2712,7 +2945,7 @@ class FetchTagsResponse extends $pb.GeneratedMessage {
     $core.Iterable<$9.MediaTag>? tags,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchTagsResponse._();
     if (tags != null) result.tags.addAll(tags);
     if (error != null) result.error = error;
     return result;
@@ -2722,17 +2955,17 @@ class FetchTagsResponse extends $pb.GeneratedMessage {
 
   factory FetchTagsResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchTagsResponse()..mergeFromBuffer(data, registry);
   factory FetchTagsResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchTagsResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchTagsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchTagsResponse.$_createMessage)
     ..pPM<$9.MediaTag>(1, _omitFieldNames ? '' : 'tags',
-        subBuilder: $9.MediaTag.create)
+        subBuilder: $9.MediaTag.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -2747,12 +2980,15 @@ class FetchTagsResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use FetchTagsResponse() / FetchTagsResponse.new instead')
   static FetchTagsResponse create() => FetchTagsResponse._();
+  static $pb.GeneratedMessage $_createMessage() => FetchTagsResponse._();
   @$core.override
-  FetchTagsResponse createEmptyInstance() => create();
+  FetchTagsResponse createEmptyInstance() => FetchTagsResponse._();
   @$core.pragma('dart2js:noInline')
-  static FetchTagsResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchTagsResponse>(create);
+  static FetchTagsResponse getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FetchTagsResponse>(
+          FetchTagsResponse.$_createMessage);
   static FetchTagsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -2806,7 +3042,7 @@ class FetchMediaSearchRequest extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? tagNotIn,
     $core.int? minimumTagRank,
   }) {
-    final result = create();
+    final result = FetchMediaSearchRequest._();
     if (page != null) result.page = page;
     if (query != null) result.query = query;
     if (sort != null) result.sort.addAll(sort);
@@ -2849,15 +3085,15 @@ class FetchMediaSearchRequest extends $pb.GeneratedMessage {
 
   factory FetchMediaSearchRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaSearchRequest()..mergeFromBuffer(data, registry);
   factory FetchMediaSearchRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaSearchRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaSearchRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaSearchRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'page')
     ..aOS(2, _omitFieldNames ? '' : 'query')
     ..pPS(3, _omitFieldNames ? '' : 'sort')
@@ -2907,12 +3143,16 @@ class FetchMediaSearchRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaSearchRequest() / FetchMediaSearchRequest.new instead')
   static FetchMediaSearchRequest create() => FetchMediaSearchRequest._();
+  static $pb.GeneratedMessage $_createMessage() => FetchMediaSearchRequest._();
   @$core.override
-  FetchMediaSearchRequest createEmptyInstance() => create();
+  FetchMediaSearchRequest createEmptyInstance() => FetchMediaSearchRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaSearchRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaSearchRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaSearchRequest>(
+          FetchMediaSearchRequest.$_createMessage);
   static FetchMediaSearchRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3195,7 +3435,7 @@ class FetchMediaSearchResponse extends $pb.GeneratedMessage {
     $5.PageInfo? pageInfo,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchMediaSearchResponse._();
     if (media != null) result.media.addAll(media);
     if (pageInfo != null) result.pageInfo = pageInfo;
     if (error != null) result.error = error;
@@ -3206,19 +3446,19 @@ class FetchMediaSearchResponse extends $pb.GeneratedMessage {
 
   factory FetchMediaSearchResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchMediaSearchResponse()..mergeFromBuffer(data, registry);
   factory FetchMediaSearchResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchMediaSearchResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchMediaSearchResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchMediaSearchResponse.$_createMessage)
     ..pPM<$10.MediaMin>(1, _omitFieldNames ? '' : 'media',
-        subBuilder: $10.MediaMin.create)
+        subBuilder: $10.MediaMin.$_createMessage)
     ..aOM<$5.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $5.PageInfo.create)
+        subBuilder: $5.PageInfo.$_createMessage)
     ..aOS(3, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -3234,12 +3474,17 @@ class FetchMediaSearchResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchMediaSearchResponse() / FetchMediaSearchResponse.new instead')
   static FetchMediaSearchResponse create() => FetchMediaSearchResponse._();
+  static $pb.GeneratedMessage $_createMessage() => FetchMediaSearchResponse._();
   @$core.override
-  FetchMediaSearchResponse createEmptyInstance() => create();
+  FetchMediaSearchResponse createEmptyInstance() =>
+      FetchMediaSearchResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchMediaSearchResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchMediaSearchResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchMediaSearchResponse>(
+          FetchMediaSearchResponse.$_createMessage);
   static FetchMediaSearchResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3272,7 +3517,7 @@ class FetchStudioSearchRequest extends $pb.GeneratedMessage {
     $core.String? query,
     $core.Iterable<$core.String>? sort,
   }) {
-    final result = create();
+    final result = FetchStudioSearchRequest._();
     if (page != null) result.page = page;
     if (query != null) result.query = query;
     if (sort != null) result.sort.addAll(sort);
@@ -3283,15 +3528,15 @@ class FetchStudioSearchRequest extends $pb.GeneratedMessage {
 
   factory FetchStudioSearchRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchStudioSearchRequest()..mergeFromBuffer(data, registry);
   factory FetchStudioSearchRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchStudioSearchRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchStudioSearchRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchStudioSearchRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'page')
     ..aOS(2, _omitFieldNames ? '' : 'query')
     ..pPS(3, _omitFieldNames ? '' : 'sort')
@@ -3309,12 +3554,17 @@ class FetchStudioSearchRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchStudioSearchRequest() / FetchStudioSearchRequest.new instead')
   static FetchStudioSearchRequest create() => FetchStudioSearchRequest._();
+  static $pb.GeneratedMessage $_createMessage() => FetchStudioSearchRequest._();
   @$core.override
-  FetchStudioSearchRequest createEmptyInstance() => create();
+  FetchStudioSearchRequest createEmptyInstance() =>
+      FetchStudioSearchRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchStudioSearchRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchStudioSearchRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchStudioSearchRequest>(
+          FetchStudioSearchRequest.$_createMessage);
   static FetchStudioSearchRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3345,7 +3595,7 @@ class FetchStudioSearchResponse extends $pb.GeneratedMessage {
     $5.PageInfo? pageInfo,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchStudioSearchResponse._();
     if (studios != null) result.studios.addAll(studios);
     if (pageInfo != null) result.pageInfo = pageInfo;
     if (error != null) result.error = error;
@@ -3356,19 +3606,19 @@ class FetchStudioSearchResponse extends $pb.GeneratedMessage {
 
   factory FetchStudioSearchResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchStudioSearchResponse()..mergeFromBuffer(data, registry);
   factory FetchStudioSearchResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchStudioSearchResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchStudioSearchResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchStudioSearchResponse.$_createMessage)
     ..pPM<$7.Studio>(1, _omitFieldNames ? '' : 'studios',
-        subBuilder: $7.Studio.create)
+        subBuilder: $7.Studio.$_createMessage)
     ..aOM<$5.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $5.PageInfo.create)
+        subBuilder: $5.PageInfo.$_createMessage)
     ..aOS(3, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -3384,12 +3634,18 @@ class FetchStudioSearchResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchStudioSearchResponse() / FetchStudioSearchResponse.new instead')
   static FetchStudioSearchResponse create() => FetchStudioSearchResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchStudioSearchResponse._();
   @$core.override
-  FetchStudioSearchResponse createEmptyInstance() => create();
+  FetchStudioSearchResponse createEmptyInstance() =>
+      FetchStudioSearchResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchStudioSearchResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchStudioSearchResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchStudioSearchResponse>(
+          FetchStudioSearchResponse.$_createMessage);
   static FetchStudioSearchResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3421,7 +3677,7 @@ class FetchCharacterDetailsRequest extends $pb.GeneratedMessage {
     $core.int? characterId,
     $core.int? page,
   }) {
-    final result = create();
+    final result = FetchCharacterDetailsRequest._();
     if (characterId != null) result.characterId = characterId;
     if (page != null) result.page = page;
     return result;
@@ -3431,15 +3687,15 @@ class FetchCharacterDetailsRequest extends $pb.GeneratedMessage {
 
   factory FetchCharacterDetailsRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchCharacterDetailsRequest()..mergeFromBuffer(data, registry);
   factory FetchCharacterDetailsRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchCharacterDetailsRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchCharacterDetailsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchCharacterDetailsRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'characterId')
     ..aI(2, _omitFieldNames ? '' : 'page')
     ..hasRequiredFields = false;
@@ -3457,13 +3713,19 @@ class FetchCharacterDetailsRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchCharacterDetailsRequest() / FetchCharacterDetailsRequest.new instead')
   static FetchCharacterDetailsRequest create() =>
       FetchCharacterDetailsRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchCharacterDetailsRequest._();
   @$core.override
-  FetchCharacterDetailsRequest createEmptyInstance() => create();
+  FetchCharacterDetailsRequest createEmptyInstance() =>
+      FetchCharacterDetailsRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchCharacterDetailsRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchCharacterDetailsRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchCharacterDetailsRequest>(
+          FetchCharacterDetailsRequest.$_createMessage);
   static FetchCharacterDetailsRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3490,7 +3752,7 @@ class FetchCharacterDetailsResponse extends $pb.GeneratedMessage {
     $11.Character? character,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchCharacterDetailsResponse._();
     if (character != null) result.character = character;
     if (error != null) result.error = error;
     return result;
@@ -3500,17 +3762,17 @@ class FetchCharacterDetailsResponse extends $pb.GeneratedMessage {
 
   factory FetchCharacterDetailsResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchCharacterDetailsResponse()..mergeFromBuffer(data, registry);
   factory FetchCharacterDetailsResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchCharacterDetailsResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchCharacterDetailsResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchCharacterDetailsResponse.$_createMessage)
     ..aOM<$11.Character>(1, _omitFieldNames ? '' : 'character',
-        subBuilder: $11.Character.create)
+        subBuilder: $11.Character.$_createMessage)
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -3527,13 +3789,19 @@ class FetchCharacterDetailsResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchCharacterDetailsResponse() / FetchCharacterDetailsResponse.new instead')
   static FetchCharacterDetailsResponse create() =>
       FetchCharacterDetailsResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchCharacterDetailsResponse._();
   @$core.override
-  FetchCharacterDetailsResponse createEmptyInstance() => create();
+  FetchCharacterDetailsResponse createEmptyInstance() =>
+      FetchCharacterDetailsResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchCharacterDetailsResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchCharacterDetailsResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchCharacterDetailsResponse>(
+          FetchCharacterDetailsResponse.$_createMessage);
   static FetchCharacterDetailsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3561,7 +3829,7 @@ class ToggleFavouriteCharacterRequest extends $pb.GeneratedMessage {
   factory ToggleFavouriteCharacterRequest({
     $core.int? characterId,
   }) {
-    final result = create();
+    final result = ToggleFavouriteCharacterRequest._();
     if (characterId != null) result.characterId = characterId;
     return result;
   }
@@ -3570,15 +3838,15 @@ class ToggleFavouriteCharacterRequest extends $pb.GeneratedMessage {
 
   factory ToggleFavouriteCharacterRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleFavouriteCharacterRequest()..mergeFromBuffer(data, registry);
   factory ToggleFavouriteCharacterRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleFavouriteCharacterRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleFavouriteCharacterRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleFavouriteCharacterRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'characterId')
     ..hasRequiredFields = false;
 
@@ -3595,14 +3863,19 @@ class ToggleFavouriteCharacterRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleFavouriteCharacterRequest() / ToggleFavouriteCharacterRequest.new instead')
   static ToggleFavouriteCharacterRequest create() =>
       ToggleFavouriteCharacterRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleFavouriteCharacterRequest._();
   @$core.override
-  ToggleFavouriteCharacterRequest createEmptyInstance() => create();
+  ToggleFavouriteCharacterRequest createEmptyInstance() =>
+      ToggleFavouriteCharacterRequest._();
   @$core.pragma('dart2js:noInline')
   static ToggleFavouriteCharacterRequest getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteCharacterRequest>(
-          create);
+          ToggleFavouriteCharacterRequest.$_createMessage);
   static ToggleFavouriteCharacterRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3620,7 +3893,7 @@ class ToggleFavouriteCharacterResponse extends $pb.GeneratedMessage {
     $core.int? characterId,
     $core.String? error,
   }) {
-    final result = create();
+    final result = ToggleFavouriteCharacterResponse._();
     if (characterId != null) result.characterId = characterId;
     if (error != null) result.error = error;
     return result;
@@ -3631,15 +3904,15 @@ class ToggleFavouriteCharacterResponse extends $pb.GeneratedMessage {
   factory ToggleFavouriteCharacterResponse.fromBuffer(
           $core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      ToggleFavouriteCharacterResponse()..mergeFromBuffer(data, registry);
   factory ToggleFavouriteCharacterResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      ToggleFavouriteCharacterResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'ToggleFavouriteCharacterResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: ToggleFavouriteCharacterResponse.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'characterId')
     ..aOS(2, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
@@ -3657,14 +3930,19 @@ class ToggleFavouriteCharacterResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ToggleFavouriteCharacterResponse() / ToggleFavouriteCharacterResponse.new instead')
   static ToggleFavouriteCharacterResponse create() =>
       ToggleFavouriteCharacterResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ToggleFavouriteCharacterResponse._();
   @$core.override
-  ToggleFavouriteCharacterResponse createEmptyInstance() => create();
+  ToggleFavouriteCharacterResponse createEmptyInstance() =>
+      ToggleFavouriteCharacterResponse._();
   @$core.pragma('dart2js:noInline')
   static ToggleFavouriteCharacterResponse getDefault() => _defaultInstance ??=
       $pb.GeneratedMessage.$_defaultFor<ToggleFavouriteCharacterResponse>(
-          create);
+          ToggleFavouriteCharacterResponse.$_createMessage);
   static ToggleFavouriteCharacterResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3693,7 +3971,7 @@ class FetchCharacterSearchRequest extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? sort,
     $core.bool? isBirthday,
   }) {
-    final result = create();
+    final result = FetchCharacterSearchRequest._();
     if (page != null) result.page = page;
     if (query != null) result.query = query;
     if (sort != null) result.sort.addAll(sort);
@@ -3705,15 +3983,15 @@ class FetchCharacterSearchRequest extends $pb.GeneratedMessage {
 
   factory FetchCharacterSearchRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchCharacterSearchRequest()..mergeFromBuffer(data, registry);
   factory FetchCharacterSearchRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchCharacterSearchRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchCharacterSearchRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchCharacterSearchRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'page')
     ..aOS(2, _omitFieldNames ? '' : 'query')
     ..pPS(3, _omitFieldNames ? '' : 'sort')
@@ -3733,13 +4011,19 @@ class FetchCharacterSearchRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchCharacterSearchRequest() / FetchCharacterSearchRequest.new instead')
   static FetchCharacterSearchRequest create() =>
       FetchCharacterSearchRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchCharacterSearchRequest._();
   @$core.override
-  FetchCharacterSearchRequest createEmptyInstance() => create();
+  FetchCharacterSearchRequest createEmptyInstance() =>
+      FetchCharacterSearchRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchCharacterSearchRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchCharacterSearchRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchCharacterSearchRequest>(
+          FetchCharacterSearchRequest.$_createMessage);
   static FetchCharacterSearchRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3779,7 +4063,7 @@ class FetchCharacterSearchResponse extends $pb.GeneratedMessage {
     $5.PageInfo? pageInfo,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchCharacterSearchResponse._();
     if (characters != null) result.characters.addAll(characters);
     if (pageInfo != null) result.pageInfo = pageInfo;
     if (error != null) result.error = error;
@@ -3790,19 +4074,19 @@ class FetchCharacterSearchResponse extends $pb.GeneratedMessage {
 
   factory FetchCharacterSearchResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchCharacterSearchResponse()..mergeFromBuffer(data, registry);
   factory FetchCharacterSearchResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchCharacterSearchResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchCharacterSearchResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchCharacterSearchResponse.$_createMessage)
     ..pPM<$11.Character>(1, _omitFieldNames ? '' : 'characters',
-        subBuilder: $11.Character.create)
+        subBuilder: $11.Character.$_createMessage)
     ..aOM<$5.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $5.PageInfo.create)
+        subBuilder: $5.PageInfo.$_createMessage)
     ..aOS(3, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -3819,13 +4103,19 @@ class FetchCharacterSearchResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchCharacterSearchResponse() / FetchCharacterSearchResponse.new instead')
   static FetchCharacterSearchResponse create() =>
       FetchCharacterSearchResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FetchCharacterSearchResponse._();
   @$core.override
-  FetchCharacterSearchResponse createEmptyInstance() => create();
+  FetchCharacterSearchResponse createEmptyInstance() =>
+      FetchCharacterSearchResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchCharacterSearchResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchCharacterSearchResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchCharacterSearchResponse>(
+          FetchCharacterSearchResponse.$_createMessage);
   static FetchCharacterSearchResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3859,7 +4149,7 @@ class FetchStaffSearchRequest extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? sort,
     $core.bool? isBirthday,
   }) {
-    final result = create();
+    final result = FetchStaffSearchRequest._();
     if (page != null) result.page = page;
     if (query != null) result.query = query;
     if (sort != null) result.sort.addAll(sort);
@@ -3871,15 +4161,15 @@ class FetchStaffSearchRequest extends $pb.GeneratedMessage {
 
   factory FetchStaffSearchRequest.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchStaffSearchRequest()..mergeFromBuffer(data, registry);
   factory FetchStaffSearchRequest.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchStaffSearchRequest()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchStaffSearchRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchStaffSearchRequest.$_createMessage)
     ..aI(1, _omitFieldNames ? '' : 'page')
     ..aOS(2, _omitFieldNames ? '' : 'query')
     ..pPS(3, _omitFieldNames ? '' : 'sort')
@@ -3898,12 +4188,16 @@ class FetchStaffSearchRequest extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchStaffSearchRequest() / FetchStaffSearchRequest.new instead')
   static FetchStaffSearchRequest create() => FetchStaffSearchRequest._();
+  static $pb.GeneratedMessage $_createMessage() => FetchStaffSearchRequest._();
   @$core.override
-  FetchStaffSearchRequest createEmptyInstance() => create();
+  FetchStaffSearchRequest createEmptyInstance() => FetchStaffSearchRequest._();
   @$core.pragma('dart2js:noInline')
   static FetchStaffSearchRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchStaffSearchRequest>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchStaffSearchRequest>(
+          FetchStaffSearchRequest.$_createMessage);
   static FetchStaffSearchRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -3943,7 +4237,7 @@ class FetchStaffSearchResponse extends $pb.GeneratedMessage {
     $5.PageInfo? pageInfo,
     $core.String? error,
   }) {
-    final result = create();
+    final result = FetchStaffSearchResponse._();
     if (staff != null) result.staff.addAll(staff);
     if (pageInfo != null) result.pageInfo = pageInfo;
     if (error != null) result.error = error;
@@ -3954,19 +4248,19 @@ class FetchStaffSearchResponse extends $pb.GeneratedMessage {
 
   factory FetchStaffSearchResponse.fromBuffer($core.List<$core.int> data,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(data, registry);
+      FetchStaffSearchResponse()..mergeFromBuffer(data, registry);
   factory FetchStaffSearchResponse.fromJson($core.String json,
           [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(json, registry);
+      FetchStaffSearchResponse()..mergeFromJson(json, registry);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       _omitMessageNames ? '' : 'FetchStaffSearchResponse',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
-      createEmptyInstance: create)
+      createEmptyInstance: FetchStaffSearchResponse.$_createMessage)
     ..pPM<$8.Staff>(1, _omitFieldNames ? '' : 'staff',
-        subBuilder: $8.Staff.create)
+        subBuilder: $8.Staff.$_createMessage)
     ..aOM<$5.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
-        subBuilder: $5.PageInfo.create)
+        subBuilder: $5.PageInfo.$_createMessage)
     ..aOS(3, _omitFieldNames ? '' : 'error')
     ..hasRequiredFields = false;
 
@@ -3982,12 +4276,17 @@ class FetchStaffSearchResponse extends $pb.GeneratedMessage {
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchStaffSearchResponse() / FetchStaffSearchResponse.new instead')
   static FetchStaffSearchResponse create() => FetchStaffSearchResponse._();
+  static $pb.GeneratedMessage $_createMessage() => FetchStaffSearchResponse._();
   @$core.override
-  FetchStaffSearchResponse createEmptyInstance() => create();
+  FetchStaffSearchResponse createEmptyInstance() =>
+      FetchStaffSearchResponse._();
   @$core.pragma('dart2js:noInline')
   static FetchStaffSearchResponse getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FetchStaffSearchResponse>(create);
+      $pb.GeneratedMessage.$_defaultFor<FetchStaffSearchResponse>(
+          FetchStaffSearchResponse.$_createMessage);
   static FetchStaffSearchResponse? _defaultInstance;
 
   @$pb.TagNumber(1)

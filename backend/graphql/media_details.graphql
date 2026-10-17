@@ -123,6 +123,9 @@ fragment MediaListEntryFields on MediaList {
   progressVolumes
   repeat
   score(format: POINT_10_DECIMAL)
+  private
+  hiddenFromStatusLists
+  notes
   startedAt {
     ...FuzzyDateFields
   }

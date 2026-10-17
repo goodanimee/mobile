@@ -9,27 +9,33 @@ func (e *MediaListEntry) ToProto() *pb.MediaListEntry {
 	}
 
 	return &pb.MediaListEntry{
-		Id:              e.ID,
-		Status:          e.Status.ToProto(),
-		Progress:        e.Progress,
-		Score:           e.Score,
-		Repeat:          e.Repeat,
-		StartedAt:       e.StartedAt.ToProto(),
-		CompletedAt:     e.CompletedAt.ToProto(),
-		ProgressVolumes: e.ProgressVolumes,
+		Id:                    e.ID,
+		Status:                e.Status.ToProto(),
+		Progress:              e.Progress,
+		Score:                 e.Score,
+		Repeat:                e.Repeat,
+		StartedAt:             e.StartedAt.ToProto(),
+		CompletedAt:           e.CompletedAt.ToProto(),
+		ProgressVolumes:       e.ProgressVolumes,
+		Private:               e.Private,
+		HiddenFromStatusLists: e.HiddenFromStatusLists,
+		Notes:                 e.Notes,
 	}
 }
 
 // MediaListEntry represents a media list entry
 type MediaListEntry struct {
-	ID              int32            `json:"id"`
-	Status          *MediaListStatus `json:"status"`
-	Progress        int32            `json:"progress"`
-	Score           float64          `json:"score"`
-	Repeat          int32            `json:"repeat"`
-	StartedAt       FuzzyDate        `json:"startedAt"`
-	CompletedAt     FuzzyDate        `json:"completedAt"`
-	ProgressVolumes int32            `json:"progressVolumes"`
+	ID                    int32            `json:"id"`
+	Status                *MediaListStatus `json:"status"`
+	Progress              int32            `json:"progress"`
+	Score                 float64          `json:"score"`
+	Repeat                int32            `json:"repeat"`
+	StartedAt             FuzzyDate        `json:"startedAt"`
+	CompletedAt           FuzzyDate        `json:"completedAt"`
+	ProgressVolumes       int32            `json:"progressVolumes"`
+	Private               bool             `json:"private"`
+	HiddenFromStatusLists bool             `json:"hiddenFromStatusLists"`
+	Notes                 string           `json:"notes"`
 }
 
 // SaveMediaListEntryDTO represents the DTO for saving a list entry
