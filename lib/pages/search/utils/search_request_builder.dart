@@ -189,3 +189,94 @@ String? _mapSortOption(String sortBy) {
       return null;
   }
 }
+
+/// Builds a [FetchStudioSearchRequest] from search and sort states.
+FetchStudioSearchRequest buildStudioSearchRequest({
+  required int page,
+  required String query,
+  required String sortBy,
+}) {
+  final req = FetchStudioSearchRequest(page: page);
+  if (query.isNotEmpty) {
+    req.query = query;
+  }
+  final mappedSort = mapStudioSortOption(sortBy);
+  if (mappedSort != null) {
+    req.sort.add(mappedSort);
+  }
+  return req;
+}
+
+/// Builds a [FetchCharacterSearchRequest] from search, filter, and sort states.
+FetchCharacterSearchRequest buildCharacterSearchRequest({
+  required int page,
+  required String query,
+  required String sortBy,
+  bool? isBirthday,
+}) {
+  final req = FetchCharacterSearchRequest(page: page);
+  if (query.isNotEmpty) {
+    req.query = query;
+  }
+  if (isBirthday != null) {
+    req.isBirthday = isBirthday;
+  }
+  final mappedSort = mapEntitySortOption(sortBy, hasQuery: query.isNotEmpty);
+  if (mappedSort != null) {
+    req.sort.add(mappedSort);
+  }
+  return req;
+}
+
+/// Builds a [FetchStaffSearchRequest] from search, filter, and sort states.
+FetchStaffSearchRequest buildStaffSearchRequest({
+  required int page,
+  required String query,
+  required String sortBy,
+  bool? isBirthday,
+}) {
+  final req = FetchStaffSearchRequest(page: page);
+  if (query.isNotEmpty) {
+    req.query = query;
+  }
+  if (isBirthday != null) {
+    req.isBirthday = isBirthday;
+  }
+  final mappedSort = mapEntitySortOption(sortBy, hasQuery: query.isNotEmpty);
+  if (mappedSort != null) {
+    req.sort.add(mappedSort);
+  }
+  return req;
+}
+
+/// Maps a studio sort key to its AniList GraphQL enum string.
+String? mapStudioSortOption(String sortBy) {
+  switch (sortBy) {
+    case 'name':
+      return 'NAME';
+    case 'name_desc':
+      return 'NAME_DESC';
+    case 'favourites':
+      return 'FAVOURITES';
+    case 'favourites_desc':
+      return 'FAVOURITES_DESC';
+    case 'search_match':
+    default:
+      return null;
+  }
+}
+
+/// Maps a character or staff sort key to its AniList GraphQL enum string.
+String? mapEntitySortOption(String sortBy, {required bool hasQuery}) {
+  switch (sortBy) {
+    case 'favourites_desc':
+      return 'FAVOURITES_DESC';
+    case 'search_match':
+      if (hasQuery) {
+        return 'SEARCH_MATCH';
+      }
+      return 'FAVOURITES_DESC';
+    default:
+      return null;
+  }
+}

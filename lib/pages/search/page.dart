@@ -9,7 +9,6 @@ import '../../models/media_min.dart';
 import '../../models/media_misc.dart';
 import '../../models/media_staff.dart';
 import '../../models/media_studio.dart';
-import '../../proto/api.pb.dart';
 import '../../services/genre_service.dart';
 import '../../services/search_service.dart';
 import '../../theme/theme.dart';
@@ -316,14 +315,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     }
     try {
       if (_searchType == 'STUDIO') {
-        final req = FetchStudioSearchRequest(page: 1);
-        if (_searchController.text.isNotEmpty) {
-          req.query = _searchController.text;
-        }
-        final mappedSort = _mapStudioSortOption(_sortBy);
-        if (mappedSort != null) {
-          req.sort.add(mappedSort);
-        }
+        final req = buildStudioSearchRequest(
+          page: 1,
+          query: _searchController.text,
+          sortBy: _sortBy,
+        );
         final result = await SearchService.searchStudios(req);
         if (mounted) {
           setState(() {
@@ -335,17 +331,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           });
         }
       } else if (_searchType == 'CHARACTER') {
-        final req = FetchCharacterSearchRequest(page: 1);
-        if (_searchController.text.isNotEmpty) {
-          req.query = _searchController.text;
-        }
-        if (_isBirthday != null) {
-          req.isBirthday = _isBirthday!;
-        }
-        final mappedSort = _mapEntitySortOption(_sortBy);
-        if (mappedSort != null) {
-          req.sort.add(mappedSort);
-        }
+        final req = buildCharacterSearchRequest(
+          page: 1,
+          query: _searchController.text,
+          sortBy: _sortBy,
+          isBirthday: _isBirthday,
+        );
         final result = await SearchService.searchCharacters(req);
         if (mounted) {
           setState(() {
@@ -357,17 +348,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           });
         }
       } else if (_searchType == 'STAFF') {
-        final req = FetchStaffSearchRequest(page: 1);
-        if (_searchController.text.isNotEmpty) {
-          req.query = _searchController.text;
-        }
-        if (_isBirthday != null) {
-          req.isBirthday = _isBirthday!;
-        }
-        final mappedSort = _mapEntitySortOption(_sortBy);
-        if (mappedSort != null) {
-          req.sort.add(mappedSort);
-        }
+        final req = buildStaffSearchRequest(
+          page: 1,
+          query: _searchController.text,
+          sortBy: _sortBy,
+          isBirthday: _isBirthday,
+        );
         final result = await SearchService.searchStaff(req);
         if (mounted) {
           setState(() {
@@ -436,14 +422,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     });
     try {
       if (_searchType == 'STUDIO') {
-        final req = FetchStudioSearchRequest(page: _currentPage + 1);
-        if (_searchController.text.isNotEmpty) {
-          req.query = _searchController.text;
-        }
-        final mappedSort = _mapStudioSortOption(_sortBy);
-        if (mappedSort != null) {
-          req.sort.add(mappedSort);
-        }
+        final req = buildStudioSearchRequest(
+          page: _currentPage + 1,
+          query: _searchController.text,
+          sortBy: _sortBy,
+        );
         final result = await SearchService.searchStudios(req);
         if (mounted) {
           setState(() {
@@ -454,17 +437,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           });
         }
       } else if (_searchType == 'CHARACTER') {
-        final req = FetchCharacterSearchRequest(page: _currentPage + 1);
-        if (_searchController.text.isNotEmpty) {
-          req.query = _searchController.text;
-        }
-        if (_isBirthday != null) {
-          req.isBirthday = _isBirthday!;
-        }
-        final mappedSort = _mapEntitySortOption(_sortBy);
-        if (mappedSort != null) {
-          req.sort.add(mappedSort);
-        }
+        final req = buildCharacterSearchRequest(
+          page: _currentPage + 1,
+          query: _searchController.text,
+          sortBy: _sortBy,
+          isBirthday: _isBirthday,
+        );
         final result = await SearchService.searchCharacters(req);
         if (mounted) {
           setState(() {
@@ -475,17 +453,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           });
         }
       } else if (_searchType == 'STAFF') {
-        final req = FetchStaffSearchRequest(page: _currentPage + 1);
-        if (_searchController.text.isNotEmpty) {
-          req.query = _searchController.text;
-        }
-        if (_isBirthday != null) {
-          req.isBirthday = _isBirthday!;
-        }
-        final mappedSort = _mapEntitySortOption(_sortBy);
-        if (mappedSort != null) {
-          req.sort.add(mappedSort);
-        }
+        final req = buildStaffSearchRequest(
+          page: _currentPage + 1,
+          query: _searchController.text,
+          sortBy: _sortBy,
+          isBirthday: _isBirthday,
+        );
         final result = await SearchService.searchStaff(req);
         if (mounted) {
           setState(() {
@@ -535,36 +508,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           _isSearchingMore = false;
         });
       }
-    }
-  }
-
-  String? _mapStudioSortOption(String sortBy) {
-    switch (sortBy) {
-      case 'name':
-        return 'NAME';
-      case 'name_desc':
-        return 'NAME_DESC';
-      case 'favourites':
-        return 'FAVOURITES';
-      case 'favourites_desc':
-        return 'FAVOURITES_DESC';
-      case 'search_match':
-      default:
-        return null;
-    }
-  }
-
-  String? _mapEntitySortOption(String sortBy) {
-    switch (sortBy) {
-      case 'favourites_desc':
-        return 'FAVOURITES_DESC';
-      case 'search_match':
-        if (_searchController.text.isNotEmpty) {
-          return 'SEARCH_MATCH';
-        }
-        return 'FAVOURITES_DESC';
-      default:
-        return null;
     }
   }
 

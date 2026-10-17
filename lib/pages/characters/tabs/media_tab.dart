@@ -42,18 +42,7 @@ class CharacterMediaTab extends StatelessWidget {
       );
     }
 
-    final grouped = <String, List<CharacterMediaEdge>>{};
-    for (final edge in edges) {
-      if (edge.node == null) continue;
-      final year = edge.node!.startYear?.toString() ?? 'TBA';
-      grouped.putIfAbsent(year, () => []).add(edge);
-    }
-
-    final flatList = <dynamic>[];
-    grouped.forEach((year, items) {
-      flatList.add(year);
-      flatList.addAll(items);
-    });
+    final flatList = flattenCharacterMediaByYear(edges);
 
     if (flatList.isEmpty) {
       return Padding(
@@ -107,7 +96,7 @@ class CharacterMediaTab extends StatelessWidget {
             ? media.title.romaji
             : 'Unknown';
 
-        final role = _formatRole(edge.characterRole);
+        final role = formatCharacterRole(edge.characterRole);
         final format = media.format.replaceAll('_', ' ');
 
         final colorHex = media.coverImage.color;
@@ -116,7 +105,10 @@ class CharacterMediaTab extends StatelessWidget {
           fallback: Colors.transparent,
         );
 
-        final va = _resolveVoiceActor(edge.voiceActors, selectedLanguage);
+        final va = resolveCharacterVoiceActor(
+          edge.voiceActors,
+          selectedLanguage,
+        );
         final hasVa = va != null;
 
         final formatText = role.isNotEmpty && format.isNotEmpty
@@ -154,31 +146,86 @@ class CharacterMediaTab extends StatelessWidget {
       },
     );
   }
+}
 
-  StaffMin? _resolveVoiceActor(List<StaffMin> voiceActors, String language) {
-    if (voiceActors.isEmpty) return null;
-    for (final va in voiceActors) {
-      if (va.languageV2?.toLowerCase() == language.toLowerCase()) {
-        return va;
-      }
-    }
-    if (voiceActors.length == 1 && voiceActors.first.languageV2 == null) {
-      return voiceActors.first;
-    }
-    return null;
+/// Groups character media appearances by release year and orders entries by role priority.
+Map<String, List<CharacterMediaEdge>> groupCharacterMediaByYear(
+  List<CharacterMediaEdge> edges,
+) {
+  final grouped = <String, List<CharacterMediaEdge>>{};
+  for (final edge in edges) {
+    if (edge.node == null) continue;
+    final year = edge.node!.startYear?.toString() ?? 'TBA';
+    grouped.putIfAbsent(year, () => []).add(edge);
   }
 
-  String _formatRole(String? role) {
-    if (role == null || role.isEmpty) return '';
-    switch (role.toUpperCase()) {
-      case 'MAIN':
-        return 'Main';
-      case 'SUPPORTING':
-        return 'Supporting';
-      case 'BACKGROUND':
-        return 'Background';
-      default:
-        return role[0].toUpperCase() + role.substring(1).toLowerCase();
+  for (final entry in grouped.entries) {
+    final indexed = entry.value.asMap().entries.toList();
+    indexed.sort((a, b) {
+      final pA = characterRolePriority(a.value.characterRole);
+      final pB = characterRolePriority(b.value.characterRole);
+      if (pA != pB) return pA.compareTo(pB);
+      return a.key.compareTo(b.key);
+    });
+    grouped[entry.key] = indexed.map((e) => e.value).toList();
+  }
+
+  return grouped;
+}
+
+/// Flattens grouped character media appearances into alternating year headers and edges.
+List<Object> flattenCharacterMediaByYear(List<CharacterMediaEdge> edges) {
+  final grouped = groupCharacterMediaByYear(edges);
+  final flatList = <Object>[];
+  grouped.forEach((year, items) {
+    flatList.add(year);
+    flatList.addAll(items);
+  });
+  return flatList;
+}
+
+/// Returns numeric sort priority for a character role (`MAIN` < `SUPPORTING` < `BACKGROUND`).
+int characterRolePriority(String? role) {
+  switch (role?.toUpperCase()) {
+    case 'MAIN':
+      return 0;
+    case 'SUPPORTING':
+      return 1;
+    case 'BACKGROUND':
+      return 2;
+    default:
+      return 3;
+  }
+}
+
+/// Resolves the matching voice actor for [language] from [voiceActors].
+StaffMin? resolveCharacterVoiceActor(
+  List<StaffMin> voiceActors,
+  String language,
+) {
+  if (voiceActors.isEmpty) return null;
+  for (final va in voiceActors) {
+    if (va.languageV2?.toLowerCase() == language.toLowerCase()) {
+      return va;
     }
+  }
+  if (voiceActors.length == 1 && voiceActors.first.languageV2 == null) {
+    return voiceActors.first;
+  }
+  return null;
+}
+
+/// Formats a raw AniList character role enum into display text.
+String formatCharacterRole(String? role) {
+  if (role == null || role.isEmpty) return '';
+  switch (role.toUpperCase()) {
+    case 'MAIN':
+      return 'Main';
+    case 'SUPPORTING':
+      return 'Supporting';
+    case 'BACKGROUND':
+      return 'Background';
+    default:
+      return role[0].toUpperCase() + role.substring(1).toLowerCase();
   }
 }
