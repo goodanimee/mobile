@@ -48,4 +48,19 @@ class MediaListApi {
     if (response.error.isNotEmpty) throw Exception(response.error);
     return response;
   }
+
+  /// Updates user custom lists on AniList
+  static Future<UpdateCustomListsResponse> updateCustomLists(
+    UpdateCustomListsRequest request,
+    String token,
+  ) async {
+    final bytes = await FfiCore.executeProtoCall(
+      'UpdateCustomLists',
+      request.writeToBuffer(),
+      token,
+    );
+    final response = UpdateCustomListsResponse.fromBuffer(bytes);
+    if (response.error.isNotEmpty) throw Exception(response.error);
+    return response;
+  }
 }
