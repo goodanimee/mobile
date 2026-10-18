@@ -55,21 +55,14 @@ void main() {
       () async {
         await service.init();
 
-        // Successfully add with whitespace trimming
         final added = await service.addCustomList('ANIME', '   Favorites   ');
         expect(added, isTrue);
         expect(service.getCustomLists('ANIME'), ['Favorites']);
 
-        // Reject empty or whitespace-only
         expect(await service.addCustomList('ANIME', '   '), isFalse);
-
-        // Reject case-insensitive duplicate
         expect(await service.addCustomList('ANIME', 'favorites'), isFalse);
-
-        // Verify segregation between media types
         expect(service.getCustomLists('MANGA'), isEmpty);
 
-        // Verify persistence
         final prefs = await SharedPreferences.getInstance();
         expect(prefs.getStringList(CustomListService.keyAnimeCustomLists), [
           'Favorites',

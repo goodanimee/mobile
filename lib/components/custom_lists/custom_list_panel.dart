@@ -15,16 +15,12 @@ class CustomListPanel extends StatefulWidget {
   /// Optional height to match the vertical quick navigation bar
   final double? height;
 
-  /// Optional callback when close is requested
-  final VoidCallback? onClose;
-
   /// Creates a custom list management panel
   const CustomListPanel({
     super.key,
     required this.mediaType,
     this.width,
     this.height,
-    this.onClose,
   });
 
   @override
@@ -75,6 +71,8 @@ class _CustomListPanelState extends State<CustomListPanel> {
       text,
     );
 
+    if (!mounted) return;
+
     if (!success) {
       setState(() => _errorMessage = 'List already exists');
       return;
@@ -120,18 +118,23 @@ class _CustomListPanelState extends State<CustomListPanel> {
       ),
     );
 
+    if (!mounted) return;
+
     if (confirmed == true) {
       await CustomListService.instance.deleteCustomList(widget.mediaType, name);
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  double _resolveDefaultWidth() {
     final screenWidth = MediaQuery.of(context).size.width;
-    final defaultWidth = (screenWidth < 486.0)
+    return (screenWidth < 486.0)
         ? (360.0 * (screenWidth / 486.0)).clamp(200.0, 360.0)
         : 360.0;
-    final panelWidth = widget.width ?? defaultWidth;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final panelWidth = widget.width ?? _resolveDefaultWidth();
     final panelHeight = widget.height;
 
     return ListenableBuilder(
@@ -244,7 +247,6 @@ class _CustomListPanelState extends State<CustomListPanel> {
                 : MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 14,
@@ -284,8 +286,6 @@ class _CustomListPanelState extends State<CustomListPanel> {
                 ),
               ),
               const Divider(height: 1, thickness: 1, color: cardBorderColor),
-
-              // Inline Add Input
               if (_isAdding) ...[
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -372,8 +372,6 @@ class _CustomListPanelState extends State<CustomListPanel> {
                 ),
                 const Divider(height: 1, thickness: 1, color: cardBorderColor),
               ],
-
-              // Custom Lists Content
               content,
             ],
           ),

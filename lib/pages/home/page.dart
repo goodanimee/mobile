@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:goodanime/utils/app_navigation.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -50,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    CustomListService.instance.init();
+    unawaited(CustomListService.instance.init());
     DeepLinkService.instance.init(onAuthenticated: _handleAuthenticated);
     _loadTokenAndPreferences();
     AppNavigation.currentTab.addListener(_onTabChanged);
@@ -179,7 +181,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  /// Builds the main home page widget
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(body: AppLoadingIndicator());

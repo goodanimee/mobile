@@ -90,7 +90,7 @@ class CustomListService extends ChangeNotifier {
   /// Adds a custom list for the specified [mediaType].
   ///
   /// Trims whitespace and prevents duplicate entries (case-insensitive).
-  /// Returns 	rue if added, alse if invalid or duplicate.
+  /// Returns true if added, false if invalid or duplicate.
   Future<bool> addCustomList(String mediaType, String name) async {
     final trimmed = name.trim();
     if (trimmed.isEmpty) return false;

@@ -167,7 +167,6 @@ class _FloatingNavState extends State<FloatingNav>
   }
 
   @override
-  /// Builds the floating navigation component
   Widget build(BuildContext context) {
     final double gap = getResponsiveSize(context, _gap);
     final navBarWidth = _getNavBarTargetWidth();
