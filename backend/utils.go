@@ -97,9 +97,12 @@ func decodeRequest(reqPtr *C.uint8_t, reqLen C.int, req proto.Message) error {
 func marshalAndReturn(msg proto.Message, outLen *C.int) *C.uint8_t {
 	data, err := proto.Marshal(msg)
 	if err != nil {
-		*outLen = 0
+		*outLen = -1
 		return nil
 	}
 	*outLen = C.int(len(data))
+	if len(data) == 0 {
+		return (*C.uint8_t)(C.malloc(1))
+	}
 	return (*C.uint8_t)(C.CBytes(data))
 }

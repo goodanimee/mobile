@@ -155,8 +155,13 @@ func UpdateCustomLists(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
+	lists := req.CustomLists
+	if lists == nil {
+		lists = []string{}
+	}
+
 	variables := map[string]any{
-		"customLists": req.CustomLists,
+		"customLists": lists,
 	}
 
 	mutation := updateAnimeCustomListsMutation

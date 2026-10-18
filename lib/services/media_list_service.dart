@@ -66,6 +66,12 @@ class MediaListService {
     );
   }
 
+  /// Saves the user media lists to local disk cache.
+  static Future<void> saveListsToCache(
+    List<MediaList> lists,
+    String mediaType,
+  ) => _saveListToDiskCache(lists, mediaType);
+
   /// Fetches fresh user media lists from the network.
   static Future<List<MediaList>> _fetchNetworkLists(
     int userId,

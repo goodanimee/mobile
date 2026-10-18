@@ -51,8 +51,15 @@ class FfiCore {
     try {
       final ptr = fn(outLenPtr);
       final len = outLenPtr.value;
-      if (ptr == ffi.nullptr || len == 0) {
+      if (len < 0 || (ptr == ffi.nullptr && len > 0)) {
         throw Exception('Backend returned empty response');
+      }
+
+      if (len == 0) {
+        if (ptr != ffi.nullptr) {
+          _freeBuffer(ptr);
+        }
+        return Uint8List(0);
       }
 
       final bytes = Uint8List.fromList(ptr.asTypedList(len));

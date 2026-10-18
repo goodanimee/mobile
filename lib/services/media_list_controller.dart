@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -95,6 +97,7 @@ class MediaListController extends ChangeNotifier {
       );
       _activeStatus = defaultList.status;
     }
+    unawaited(MediaListService.saveListsToCache(_lists, mediaType));
     notifyListeners();
   }
 
@@ -105,6 +108,7 @@ class MediaListController extends ChangeNotifier {
       _lists.add(
         MediaList(name: listName, isCustomList: true, entries: const []),
       );
+      unawaited(MediaListService.saveListsToCache(_lists, mediaType));
       notifyListeners();
     }
   }

@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:goodanime/proto/api.pb.dart';
 import 'package:goodanime/services/custom_list_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -91,6 +94,33 @@ void main() {
       final notFound = await service.deleteCustomList('ANIME', 'nonexistent');
       expect(notFound, isFalse);
     });
+
+    test(
+      'deleteCustomList successfully deletes the last remaining custom list',
+      () async {
+        await service.init();
+        await service.setCustomLists('ANIME', ['OnlyList']);
+
+        final deleted = await service.deleteCustomList('ANIME', 'OnlyList');
+        expect(deleted, isTrue);
+        expect(service.getCustomLists('ANIME'), isEmpty);
+        final prefs = await SharedPreferences.getInstance();
+        expect(
+          prefs.getStringList(CustomListService.keyAnimeCustomLists),
+          isEmpty,
+        );
+      },
+    );
+
+    test(
+      'UpdateCustomListsResponse parses 0-byte buffer as empty lists without error',
+      () {
+        final response = UpdateCustomListsResponse.fromBuffer(Uint8List(0));
+        expect(response.error, isEmpty);
+        expect(response.animeCustomLists, isEmpty);
+        expect(response.mangaCustomLists, isEmpty);
+      },
+    );
 
     test('reset clears all in-memory lists and states', () async {
       await service.init();
