@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../api/user_api.dart';
+import '../models/user_profile.dart';
 import '../models/viewer.dart';
 import '../proto/viewer.pb.dart' as pb;
 import 'auth_service.dart';
@@ -52,6 +53,30 @@ class UserService {
     } catch (e) {
       return null;
     }
+  }
+
+  /// Fetches a user profile by [userId] or [username].
+  static Future<UserProfile?> getUserProfile({
+    int? userId,
+    String? username,
+  }) async {
+    try {
+      final token = await AuthService.getRawToken() ?? '';
+      return await UserApi.getUserProfile(
+        userId: userId,
+        username: username,
+        token: token,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Toggles follow status for [userId].
+  static Future<bool> toggleFollow(int userId) async {
+    final token = await AuthService.getValidToken();
+    final res = await UserApi.toggleFollow(userId, token);
+    return res.isFollowing;
   }
 
   /// Clears user cache.
