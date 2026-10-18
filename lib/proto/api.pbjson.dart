@@ -1402,3 +1402,67 @@ final $typed_data.Uint8List updateCustomListsResponseDescriptor = $convert.base6
     'ChlVcGRhdGVDdXN0b21MaXN0c1Jlc3BvbnNlEhQKBWVycm9yGAEgASgJUgVlcnJvchIsChJhbm'
     'ltZV9jdXN0b21fbGlzdHMYAiADKAlSEGFuaW1lQ3VzdG9tTGlzdHMSLAoSbWFuZ2FfY3VzdG9t'
     'X2xpc3RzGAMgAygJUhBtYW5nYUN1c3RvbUxpc3Rz');
+
+@$core.Deprecated('Use getUserProfileRequestDescriptor instead')
+const GetUserProfileRequest$json = {
+  '1': 'GetUserProfileRequest',
+  '2': [
+    {'1': 'user_id', '3': 1, '4': 1, '5': 5, '10': 'userId'},
+    {'1': 'username', '3': 2, '4': 1, '5': 9, '10': 'username'},
+  ],
+};
+
+/// Descriptor for `GetUserProfileRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserProfileRequestDescriptor = $convert.base64Decode(
+    'ChVHZXRVc2VyUHJvZmlsZVJlcXVlc3QSFwoHdXNlcl9pZBgBIAEoBVIGdXNlcklkEhoKCHVzZX'
+    'JuYW1lGAIgASgJUgh1c2VybmFtZQ==');
+
+@$core.Deprecated('Use getUserProfileResponseDescriptor instead')
+const GetUserProfileResponse$json = {
+  '1': 'GetUserProfileResponse',
+  '2': [
+    {
+      '1': 'profile',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.UserProfile',
+      '10': 'profile'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `GetUserProfileResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserProfileResponseDescriptor =
+    $convert.base64Decode(
+        'ChZHZXRVc2VyUHJvZmlsZVJlc3BvbnNlEjAKB3Byb2ZpbGUYASABKAsyFi5nb29kYW5pbWUuVX'
+        'NlclByb2ZpbGVSB3Byb2ZpbGUSFAoFZXJyb3IYAiABKAlSBWVycm9y');
+
+@$core.Deprecated('Use toggleFollowRequestDescriptor instead')
+const ToggleFollowRequest$json = {
+  '1': 'ToggleFollowRequest',
+  '2': [
+    {'1': 'user_id', '3': 1, '4': 1, '5': 5, '10': 'userId'},
+  ],
+};
+
+/// Descriptor for `ToggleFollowRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFollowRequestDescriptor =
+    $convert.base64Decode(
+        'ChNUb2dnbGVGb2xsb3dSZXF1ZXN0EhcKB3VzZXJfaWQYASABKAVSBnVzZXJJZA==');
+
+@$core.Deprecated('Use toggleFollowResponseDescriptor instead')
+const ToggleFollowResponse$json = {
+  '1': 'ToggleFollowResponse',
+  '2': [
+    {'1': 'user_id', '3': 1, '4': 1, '5': 5, '10': 'userId'},
+    {'1': 'is_following', '3': 2, '4': 1, '5': 8, '10': 'isFollowing'},
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `ToggleFollowResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleFollowResponseDescriptor = $convert.base64Decode(
+    'ChRUb2dnbGVGb2xsb3dSZXNwb25zZRIXCgd1c2VyX2lkGAEgASgFUgZ1c2VySWQSIQoMaXNfZm'
+    '9sbG93aW5nGAIgASgIUgtpc0ZvbGxvd2luZxIUCgVlcnJvchgDIAEoCVIFZXJyb3I=');

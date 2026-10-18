@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package goodanime;
+
+option go_package = "goodanime/backend/proto";
+
+message UserAvatar {
+  string large = 1;
+  string medium = 2;
+}
+
+message UserProfile {
+  int32 id = 1;
+  string name = 2;
+  string about = 3;
+  UserAvatar avatar = 4;
+  string banner_image = 5;
+  bool is_following = 6;
+  bool is_follower = 7;
+  int32 created_at = 8;
+  int32 followers_count = 9;
+  int32 following_count = 10;
+}

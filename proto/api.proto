@@ -14,6 +14,7 @@ import "media_review.proto";
 import "media_staff.proto";
 import "media_studio.proto";
 import "viewer.proto";
+import "user.proto";
 
 option go_package = "goodanime/backend/proto";
 
@@ -338,3 +339,24 @@ message UpdateCustomListsResponse {
   repeated string anime_custom_lists = 2;
   repeated string manga_custom_lists = 3;
 }
+
+message GetUserProfileRequest {
+  int32 user_id = 1;
+  string username = 2;
+}
+
+message GetUserProfileResponse {
+  UserProfile profile = 1;
+  string error = 2;
+}
+
+message ToggleFollowRequest {
+  int32 user_id = 1;
+}
+
+message ToggleFollowResponse {
+  int32 user_id = 1;
+  bool is_following = 2;
+  string error = 3;
+}
+
