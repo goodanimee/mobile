@@ -1,0 +1,15 @@
+query GetUserProfileByName($name: String!) {
+  User(name: $name) {
+    id
+    name
+    about(asHtml: true)
+    avatar {
+      large
+      medium
+    }
+    bannerImage
+    isFollowing
+    isFollower
+    createdAt
+  }
+}

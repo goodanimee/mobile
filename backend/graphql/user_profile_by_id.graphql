@@ -1,0 +1,31 @@
+query GetUserProfileById($id: Int!) {
+  User(id: $id) {
+    id
+    name
+    about(asHtml: true)
+    avatar {
+      large
+      medium
+    }
+    bannerImage
+    isFollowing
+    isFollower
+    createdAt
+  }
+  followers: Page(page: 1, perPage: 1) {
+    pageInfo {
+      total
+    }
+    followers(userId: $id) {
+      id
+    }
+  }
+  following: Page(page: 1, perPage: 1) {
+    pageInfo {
+      total
+    }
+    following(userId: $id) {
+      id
+    }
+  }
+}
