@@ -145,10 +145,22 @@ class CustomListService extends ChangeNotifier {
           mediaType: isManga ? 'MANGA' : 'ANIME',
           customLists: updated,
         );
-        await MediaListApi.updateCustomLists(req, token);
+        final response = await MediaListApi.updateCustomLists(req, token);
+        if (isManga) {
+          if (response.mangaCustomLists.isNotEmpty) {
+            _mangaCustomLists = List.from(response.mangaCustomLists);
+            await prefs.setStringList(keyMangaCustomLists, _mangaCustomLists);
+          }
+        } else {
+          if (response.animeCustomLists.isNotEmpty) {
+            _animeCustomLists = List.from(response.animeCustomLists);
+            await prefs.setStringList(keyAnimeCustomLists, _animeCustomLists);
+          }
+        }
+        await UserService.clearCache();
       }
       return true;
-    } catch (_) {
+    } catch (e) {
       if (isManga) {
         _mangaCustomLists = previousLists;
       } else {
@@ -159,7 +171,8 @@ class CustomListService extends ChangeNotifier {
         previousLists,
       );
       notifyListeners();
-      AppNavigation.showSnackBar('Failed to sync custom list with AniList');
+      final msg = e.toString().replaceFirst('Exception: ', '');
+      AppNavigation.showSnackBar('Failed to sync custom list: $msg');
       return false;
     }
   }
@@ -198,10 +211,18 @@ class CustomListService extends ChangeNotifier {
           mediaType: isManga ? 'MANGA' : 'ANIME',
           customLists: updated,
         );
-        await MediaListApi.updateCustomLists(req, token);
+        final response = await MediaListApi.updateCustomLists(req, token);
+        if (isManga) {
+          _mangaCustomLists = List.from(response.mangaCustomLists);
+          await prefs.setStringList(keyMangaCustomLists, _mangaCustomLists);
+        } else {
+          _animeCustomLists = List.from(response.animeCustomLists);
+          await prefs.setStringList(keyAnimeCustomLists, _animeCustomLists);
+        }
+        await UserService.clearCache();
       }
       return true;
-    } catch (_) {
+    } catch (e) {
       if (isManga) {
         _mangaCustomLists = previousLists;
       } else {
@@ -212,7 +233,8 @@ class CustomListService extends ChangeNotifier {
         previousLists,
       );
       notifyListeners();
-      AppNavigation.showSnackBar('Failed to sync list deletion with AniList');
+      final msg = e.toString().replaceFirst('Exception: ', '');
+      AppNavigation.showSnackBar('Failed to sync list deletion: $msg');
       return false;
     }
   }

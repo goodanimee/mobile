@@ -22,8 +22,11 @@ var saveMediaListEntryMutation string
 //go:embed graphql/delete_list_entry.graphql
 var deleteMediaListEntryMutation string
 
-//go:embed graphql/update_custom_lists.graphql
-var updateCustomListsMutation string
+//go:embed graphql/update_anime_custom_lists.graphql
+var updateAnimeCustomListsMutation string
+
+//go:embed graphql/update_manga_custom_lists.graphql
+var updateMangaCustomListsMutation string
 
 // FetchMediaList returns authenticated user's media (ANIME or MANGA) list
 //
@@ -145,17 +148,16 @@ func UpdateCustomLists(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 		return marshalAndReturn(pbResponse, outLen)
 	}
 
-	variables := map[string]any{}
-	listOptions := map[string]any{
+	variables := map[string]any{
 		"customLists": req.CustomLists,
 	}
+
+	mutation := updateAnimeCustomListsMutation
 	if req.MediaType == "MANGA" {
-		variables["mangaListOptions"] = listOptions
-	} else {
-		variables["animeListOptions"] = listOptions
+		mutation = updateMangaCustomListsMutation
 	}
 
-	data, err := executeGraphQL[models.UpdateUserDTO](tk, updateCustomListsMutation, variables)
+	data, err := executeGraphQL[models.UpdateUserDTO](tk, mutation, variables)
 	if err != nil {
 		pbResponse.Error = err.Error()
 		return marshalAndReturn(pbResponse, outLen)
