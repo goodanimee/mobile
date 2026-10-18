@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../services/custom_list_service.dart';
 import '../theme/theme.dart';
+import 'custom_lists/custom_list_panel.dart';
 
 /// Represents a section in the quick navigation menu
 class QuickNavSection {
@@ -89,6 +91,9 @@ class FloatingNav extends StatefulWidget {
   /// Callback when expansion state changes
   final void Function(bool expanded)? onExpandChanged;
 
+  /// Media type ('ANIME' or 'MANGA') if custom list management is enabled on this tab
+  final String? mediaType;
+
   /// Creates a floating navigation bar
   const FloatingNav({
     super.key,
@@ -98,6 +103,7 @@ class FloatingNav extends StatefulWidget {
     this.isGridMode,
     this.onToggleGridMode,
     this.onExpandChanged,
+    this.mediaType,
   });
 
   @override
@@ -121,10 +127,16 @@ class _FloatingNavState extends State<FloatingNav>
       parent: _controller,
       curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
     );
+    CustomListService.instance.addListener(_onCustomListServiceChanged);
+  }
+
+  void _onCustomListServiceChanged() {
+    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
+    CustomListService.instance.removeListener(_onCustomListServiceChanged);
     _controller.dispose();
     super.dispose();
   }
@@ -136,11 +148,31 @@ class _FloatingNavState extends State<FloatingNav>
     widget.onExpandChanged?.call(_expanded);
   }
 
-  @override
+  double _getNavBarTargetWidth() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return (screenWidth < 486.0)
+        ? (_navBarWidth * (screenWidth / 486.0)).clamp(200.0, _navBarWidth)
+        : _navBarWidth;
+  }
+
+  double _getQuickNavTotalHeight() {
+    final sections = widget.quickNavSections ?? [];
+    final double fabSize = getResponsiveSize(context, _fabSize);
+    final bool showCustomListButton = widget.mediaType != null;
+    final double dividerHeight = showCustomListButton ? 9.0 : 0.0;
+    final double extraButtonHeight = showCustomListButton ? fabSize : 0.0;
+    return sections.length.toDouble() * fabSize +
+        dividerHeight +
+        extraButtonHeight;
+  }
+
   @override
   /// Builds the floating navigation component
   Widget build(BuildContext context) {
     final double gap = getResponsiveSize(context, _gap);
+    final navBarWidth = _getNavBarTargetWidth();
+    final quickNavHeight = _getQuickNavTotalHeight();
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, _) {
@@ -157,7 +189,38 @@ class _FloatingNavState extends State<FloatingNav>
               SizedBox(height: gap),
             ],
             if (_widthFactor.value > 0.0 && hasQuickNav) ...[
-              _buildQuickNavBar(),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  AnimatedSwitcher(
+                    duration: kAnimStandard,
+                    switchInCurve: kCurveEnter,
+                    switchOutCurve: kCurveExit,
+                    transitionBuilder: (child, animation) => FadeTransition(
+                      opacity: animation,
+                      child: SizeTransition(
+                        sizeFactor: animation,
+                        axis: Axis.horizontal,
+                        child: child,
+                      ),
+                    ),
+                    child:
+                        (widget.mediaType != null &&
+                            CustomListService.instance.isPanelOpen)
+                        ? Padding(
+                            padding: EdgeInsets.only(right: gap),
+                            child: CustomListPanel(
+                              mediaType: widget.mediaType!,
+                              width: navBarWidth,
+                              height: quickNavHeight,
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+                  _buildQuickNavBar(),
+                ],
+              ),
               SizedBox(height: gap),
             ],
             Row(
@@ -236,10 +299,7 @@ class _FloatingNavState extends State<FloatingNav>
 
   /// Builds the expanded horizontal navigation bar
   Widget _buildNavBar() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final targetWidth = (screenWidth < 486.0)
-        ? (_navBarWidth * (screenWidth / 486.0)).clamp(200.0, _navBarWidth)
-        : _navBarWidth;
+    final targetWidth = _getNavBarTargetWidth();
     final double fabSize = getResponsiveSize(context, _fabSize);
     final double iconSize = getResponsiveSize(context, 22.0);
 
@@ -298,8 +358,10 @@ class _FloatingNavState extends State<FloatingNav>
   Widget _buildQuickNavBar() {
     final sections = widget.quickNavSections!;
     final double fabSize = getResponsiveSize(context, _fabSize);
-    final double totalHeight = sections.length.toDouble() * fabSize;
+    final bool showCustomListButton = widget.mediaType != null;
+    final double totalHeight = _getQuickNavTotalHeight();
     final double iconSize = getResponsiveSize(context, 20.0);
+    final isPanelOpen = CustomListService.instance.isPanelOpen;
 
     return Container(
       width: fabSize,
@@ -315,31 +377,62 @@ class _FloatingNavState extends State<FloatingNav>
             alignment: Alignment.topCenter,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: sections.map((section) {
-                return Tooltip(
-                  message: section.label,
-                  child: GestureDetector(
-                    onTap: () {
-                      section.onTap();
-                      _toggle();
-                    },
-                    behavior: HitTestBehavior.opaque,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 8,
+              children: [
+                ...sections.map((section) {
+                  return Tooltip(
+                    message: section.label,
+                    child: GestureDetector(
+                      onTap: () {
+                        section.onTap();
+                        _toggle();
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        child: Icon(
+                          section.icon,
+                          size: iconSize,
+                          color: section.isSelected
+                              ? borderColor
+                              : Colors.white.withValues(alpha: 0.8),
+                        ),
                       ),
-                      child: Icon(
-                        section.icon,
-                        size: iconSize,
-                        color: section.isSelected
-                            ? borderColor
-                            : Colors.white.withValues(alpha: 0.8),
+                    ),
+                  );
+                }),
+                if (showCustomListButton) ...[
+                  Container(
+                    height: 1,
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    color: cardBorderColor,
+                  ),
+                  Tooltip(
+                    message: 'Custom Lists',
+                    child: GestureDetector(
+                      onTap: () {
+                        CustomListService.instance.togglePanel();
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        child: Icon(
+                          LucideIcons.settings,
+                          size: iconSize,
+                          color: isPanelOpen
+                              ? borderColor
+                              : Colors.white.withValues(alpha: 0.8),
+                        ),
                       ),
                     ),
                   ),
-                );
-              }).toList(),
+                ],
+              ],
             ),
           ),
         ),

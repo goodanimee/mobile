@@ -8,6 +8,7 @@ import '../../components/loading_indicator.dart';
 import '../../components/update_dialog.dart';
 import '../../models/common.dart';
 import '../../services/auth_service.dart';
+import '../../services/custom_list_service.dart';
 import '../../services/deep_link_service.dart';
 import '../../services/media_list_controller.dart';
 import '../../services/update_service.dart';
@@ -49,6 +50,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    CustomListService.instance.init();
     DeepLinkService.instance.init(onAuthenticated: _handleAuthenticated);
     _loadTokenAndPreferences();
     AppNavigation.currentTab.addListener(_onTabChanged);
@@ -112,6 +114,7 @@ class _HomePageState extends State<HomePage> {
   void _handleSignOut() {
     DeepLinkService.instance.markUnauthenticated();
     MediaListController.resetAll();
+    CustomListService.instance.reset();
     setState(() {
       _token = null;
       _navIndex = 1;
@@ -213,6 +216,9 @@ class _HomePageState extends State<HomePage> {
                   onToggleGridMode: (_navIndex == 1 || _navIndex == 2)
                       ? _toggleGridMode
                       : null,
+                  mediaType: _navIndex == 1
+                      ? 'ANIME'
+                      : (_navIndex == 2 ? 'MANGA' : null),
                 ),
               ),
             ],
