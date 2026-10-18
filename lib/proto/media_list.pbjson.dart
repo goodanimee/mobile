@@ -67,6 +67,7 @@ const MediaListGroup$json = {
       '6': '.goodanime.MediaListEntryWithMedia',
       '10': 'entries'
     },
+    {'1': 'is_custom_list', '3': 4, '4': 1, '5': 8, '10': 'isCustomList'},
   ],
   '8': [
     {'1': '_status'},
@@ -77,8 +78,8 @@ const MediaListGroup$json = {
 final $typed_data.Uint8List mediaListGroupDescriptor = $convert.base64Decode(
     'Cg5NZWRpYUxpc3RHcm91cBISCgRuYW1lGAEgASgJUgRuYW1lEjcKBnN0YXR1cxgCIAEoDjIaLm'
     'dvb2RhbmltZS5NZWRpYUxpc3RTdGF0dXNIAFIGc3RhdHVziAEBEjwKB2VudHJpZXMYAyADKAsy'
-    'Ii5nb29kYW5pbWUuTWVkaWFMaXN0RW50cnlXaXRoTWVkaWFSB2VudHJpZXNCCQoHX3N0YXR1cw'
-    '==');
+    'Ii5nb29kYW5pbWUuTWVkaWFMaXN0RW50cnlXaXRoTWVkaWFSB2VudHJpZXMSJAoOaXNfY3VzdG'
+    '9tX2xpc3QYBCABKAhSDGlzQ3VzdG9tTGlzdEIJCgdfc3RhdHVz');
 
 @$core.Deprecated('Use mediaListCollectionDescriptor instead')
 const MediaListCollection$json = {

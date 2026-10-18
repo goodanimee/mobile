@@ -9,6 +9,7 @@ mutation SaveMediaListEntry(
   $repeat: Int
   $private: Boolean
   $hiddenFromStatusLists: Boolean
+  $customLists: [String]
   $notes: String
 ) {
   SaveMediaListEntry(
@@ -22,6 +23,7 @@ mutation SaveMediaListEntry(
     score: $score
     private: $private
     hiddenFromStatusLists: $hiddenFromStatusLists
+    customLists: $customLists
     notes: $notes
   ) {
     id
@@ -32,6 +34,7 @@ mutation SaveMediaListEntry(
     repeat
     private
     hiddenFromStatusLists
+    customLists
     notes
     startedAt {
       day

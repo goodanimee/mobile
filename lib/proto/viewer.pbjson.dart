@@ -42,6 +42,20 @@ const Viewer$json = {
       '6': '.goodanime.ViewerAvatar',
       '10': 'avatar'
     },
+    {
+      '1': 'anime_custom_lists',
+      '3': 5,
+      '4': 3,
+      '5': 9,
+      '10': 'animeCustomLists'
+    },
+    {
+      '1': 'manga_custom_lists',
+      '3': 6,
+      '4': 3,
+      '5': 9,
+      '10': 'mangaCustomLists'
+    },
   ],
 };
 
@@ -49,4 +63,5 @@ const Viewer$json = {
 final $typed_data.Uint8List viewerDescriptor = $convert.base64Decode(
     'CgZWaWV3ZXISDgoCaWQYASABKAVSAmlkEhIKBG5hbWUYAiABKAlSBG5hbWUSHQoKY3JlYXRlZF'
     '9hdBgDIAEoBVIJY3JlYXRlZEF0Ei8KBmF2YXRhchgEIAEoCzIXLmdvb2RhbmltZS5WaWV3ZXJB'
-    'dmF0YXJSBmF2YXRhcg==');
+    'dmF0YXJSBmF2YXRhchIsChJhbmltZV9jdXN0b21fbGlzdHMYBSADKAlSEGFuaW1lQ3VzdG9tTG'
+    'lzdHMSLAoSbWFuZ2FfY3VzdG9tX2xpc3RzGAYgAygJUhBtYW5nYUN1c3RvbUxpc3Rz');

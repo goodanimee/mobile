@@ -93,6 +93,18 @@ final $typed_data.Uint8List fuzzyDateInputDescriptor = $convert.base64Decode(
     'VIAVIFbW9udGiIAQESFQoDZGF5GAMgASgFSAJSA2RheYgBAUIHCgVfeWVhckIICgZfbW9udGhC'
     'BgoEX2RheQ==');
 
+@$core.Deprecated('Use customListsInputDescriptor instead')
+const CustomListsInput$json = {
+  '1': 'CustomListsInput',
+  '2': [
+    {'1': 'custom_lists', '3': 1, '4': 3, '5': 9, '10': 'customLists'},
+  ],
+};
+
+/// Descriptor for `CustomListsInput`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List customListsInputDescriptor = $convert.base64Decode(
+    'ChBDdXN0b21MaXN0c0lucHV0EiEKDGN1c3RvbV9saXN0cxgBIAMoCVILY3VzdG9tTGlzdHM=');
+
 @$core.Deprecated('Use saveMediaListEntryRequestDescriptor instead')
 const SaveMediaListEntryRequest$json = {
   '1': 'SaveMediaListEntryRequest',
@@ -158,6 +170,16 @@ const SaveMediaListEntryRequest$json = {
       '17': true
     },
     {'1': 'notes', '3': 11, '4': 1, '5': 9, '9': 9, '10': 'notes', '17': true},
+    {
+      '1': 'custom_lists',
+      '3': 12,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.CustomListsInput',
+      '9': 10,
+      '10': 'customLists',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_progress'},
@@ -170,6 +192,7 @@ const SaveMediaListEntryRequest$json = {
     {'1': '_private'},
     {'1': '_hidden_from_status_lists'},
     {'1': '_notes'},
+    {'1': '_custom_lists'},
   ],
 };
 
@@ -183,10 +206,11 @@ final $typed_data.Uint8List saveMediaListEntryRequestDescriptor = $convert.base6
     'Byb2dyZXNzX3ZvbHVtZXMYByABKAVIBVIPcHJvZ3Jlc3NWb2x1bWVziAEBEhsKBnJlcGVhdBgI'
     'IAEoBUgGUgZyZXBlYXSIAQESHQoHcHJpdmF0ZRgJIAEoCEgHUgdwcml2YXRliAEBEjwKGGhpZG'
     'Rlbl9mcm9tX3N0YXR1c19saXN0cxgKIAEoCEgIUhVoaWRkZW5Gcm9tU3RhdHVzTGlzdHOIAQES'
-    'GQoFbm90ZXMYCyABKAlICVIFbm90ZXOIAQFCCwoJX3Byb2dyZXNzQgkKB19zdGF0dXNCCAoGX3'
-    'Njb3JlQg0KC19zdGFydGVkX2F0Qg8KDV9jb21wbGV0ZWRfYXRCEwoRX3Byb2dyZXNzX3ZvbHVt'
-    'ZXNCCQoHX3JlcGVhdEIKCghfcHJpdmF0ZUIbChlfaGlkZGVuX2Zyb21fc3RhdHVzX2xpc3RzQg'
-    'gKBl9ub3Rlcw==');
+    'GQoFbm90ZXMYCyABKAlICVIFbm90ZXOIAQESQwoMY3VzdG9tX2xpc3RzGAwgASgLMhsuZ29vZG'
+    'FuaW1lLkN1c3RvbUxpc3RzSW5wdXRIClILY3VzdG9tTGlzdHOIAQFCCwoJX3Byb2dyZXNzQgkK'
+    'B19zdGF0dXNCCAoGX3Njb3JlQg0KC19zdGFydGVkX2F0Qg8KDV9jb21wbGV0ZWRfYXRCEwoRX3'
+    'Byb2dyZXNzX3ZvbHVtZXNCCQoHX3JlcGVhdEIKCghfcHJpdmF0ZUIbChlfaGlkZGVuX2Zyb21f'
+    'c3RhdHVzX2xpc3RzQggKBl9ub3Rlc0IPCg1fY3VzdG9tX2xpc3Rz');
 
 @$core.Deprecated('Use saveMediaListEntryResponseDescriptor instead')
 const SaveMediaListEntryResponse$json = {
@@ -1335,3 +1359,46 @@ final $typed_data.Uint8List fetchStaffSearchResponseDescriptor = $convert.base64
     'ChhGZXRjaFN0YWZmU2VhcmNoUmVzcG9uc2USJgoFc3RhZmYYASADKAsyEC5nb29kYW5pbWUuU3'
     'RhZmZSBXN0YWZmEjAKCXBhZ2VfaW5mbxgCIAEoCzITLmdvb2RhbmltZS5QYWdlSW5mb1IIcGFn'
     'ZUluZm8SFAoFZXJyb3IYAyABKAlSBWVycm9y');
+
+@$core.Deprecated('Use updateCustomListsRequestDescriptor instead')
+const UpdateCustomListsRequest$json = {
+  '1': 'UpdateCustomListsRequest',
+  '2': [
+    {'1': 'media_type', '3': 1, '4': 1, '5': 9, '10': 'mediaType'},
+    {'1': 'custom_lists', '3': 2, '4': 3, '5': 9, '10': 'customLists'},
+  ],
+};
+
+/// Descriptor for `UpdateCustomListsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateCustomListsRequestDescriptor =
+    $convert.base64Decode(
+        'ChhVcGRhdGVDdXN0b21MaXN0c1JlcXVlc3QSHQoKbWVkaWFfdHlwZRgBIAEoCVIJbWVkaWFUeX'
+        'BlEiEKDGN1c3RvbV9saXN0cxgCIAMoCVILY3VzdG9tTGlzdHM=');
+
+@$core.Deprecated('Use updateCustomListsResponseDescriptor instead')
+const UpdateCustomListsResponse$json = {
+  '1': 'UpdateCustomListsResponse',
+  '2': [
+    {'1': 'error', '3': 1, '4': 1, '5': 9, '10': 'error'},
+    {
+      '1': 'anime_custom_lists',
+      '3': 2,
+      '4': 3,
+      '5': 9,
+      '10': 'animeCustomLists'
+    },
+    {
+      '1': 'manga_custom_lists',
+      '3': 3,
+      '4': 3,
+      '5': 9,
+      '10': 'mangaCustomLists'
+    },
+  ],
+};
+
+/// Descriptor for `UpdateCustomListsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateCustomListsResponseDescriptor = $convert.base64Decode(
+    'ChlVcGRhdGVDdXN0b21MaXN0c1Jlc3BvbnNlEhQKBWVycm9yGAEgASgJUgVlcnJvchIsChJhbm'
+    'ltZV9jdXN0b21fbGlzdHMYAiADKAlSEGFuaW1lQ3VzdG9tTGlzdHMSLAoSbWFuZ2FfY3VzdG9t'
+    'X2xpc3RzGAMgAygJUhBtYW5nYUN1c3RvbUxpc3Rz');

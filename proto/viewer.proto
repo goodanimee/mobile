@@ -13,4 +13,6 @@ message Viewer {
   string name = 2;
   int32 created_at = 3;
   ViewerAvatar avatar = 4;
+  repeated string anime_custom_lists = 5;
+  repeated string manga_custom_lists = 6;
 }

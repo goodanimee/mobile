@@ -17,6 +17,7 @@ message MediaListGroup {
   string name = 1;
   optional MediaListStatus status = 2;
   repeated MediaListEntryWithMedia entries = 3;
+  bool is_custom_list = 4;
 }
 
 message MediaListCollection {

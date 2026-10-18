@@ -66,13 +66,15 @@ func (x *ViewerAvatar) GetMedium() string {
 }
 
 type Viewer struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	CreatedAt     int32                  `protobuf:"varint,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	Avatar        *ViewerAvatar          `protobuf:"bytes,4,opt,name=avatar,proto3" json:"avatar,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Id               int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name             string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	CreatedAt        int32                  `protobuf:"varint,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Avatar           *ViewerAvatar          `protobuf:"bytes,4,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	AnimeCustomLists []string               `protobuf:"bytes,5,rep,name=anime_custom_lists,json=animeCustomLists,proto3" json:"anime_custom_lists,omitempty"`
+	MangaCustomLists []string               `protobuf:"bytes,6,rep,name=manga_custom_lists,json=mangaCustomLists,proto3" json:"manga_custom_lists,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *Viewer) Reset() {
@@ -133,19 +135,35 @@ func (x *Viewer) GetAvatar() *ViewerAvatar {
 	return nil
 }
 
+func (x *Viewer) GetAnimeCustomLists() []string {
+	if x != nil {
+		return x.AnimeCustomLists
+	}
+	return nil
+}
+
+func (x *Viewer) GetMangaCustomLists() []string {
+	if x != nil {
+		return x.MangaCustomLists
+	}
+	return nil
+}
+
 var File_viewer_proto protoreflect.FileDescriptor
 
 const file_viewer_proto_rawDesc = "" +
 	"\n" +
 	"\fviewer.proto\x12\tgoodanime\"&\n" +
 	"\fViewerAvatar\x12\x16\n" +
-	"\x06medium\x18\x01 \x01(\tR\x06medium\"|\n" +
+	"\x06medium\x18\x01 \x01(\tR\x06medium\"\xd8\x01\n" +
 	"\x06Viewer\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\x03 \x01(\x05R\tcreatedAt\x12/\n" +
-	"\x06avatar\x18\x04 \x01(\v2\x17.goodanime.ViewerAvatarR\x06avatarB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x06avatar\x18\x04 \x01(\v2\x17.goodanime.ViewerAvatarR\x06avatar\x12,\n" +
+	"\x12anime_custom_lists\x18\x05 \x03(\tR\x10animeCustomLists\x12,\n" +
+	"\x12manga_custom_lists\x18\x06 \x03(\tR\x10mangaCustomListsB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_viewer_proto_rawDescOnce sync.Once

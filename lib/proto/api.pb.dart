@@ -334,6 +334,57 @@ class FuzzyDateInput extends $pb.GeneratedMessage {
   void clearDay() => $_clearField(3);
 }
 
+class CustomListsInput extends $pb.GeneratedMessage {
+  factory CustomListsInput({
+    $core.Iterable<$core.String>? customLists,
+  }) {
+    final result = CustomListsInput._();
+    if (customLists != null) result.customLists.addAll(customLists);
+    return result;
+  }
+
+  CustomListsInput._();
+
+  factory CustomListsInput.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CustomListsInput()..mergeFromBuffer(data, registry);
+  factory CustomListsInput.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CustomListsInput()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CustomListsInput',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: CustomListsInput.$_createMessage)
+    ..pPS(1, _omitFieldNames ? '' : 'customLists')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CustomListsInput clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CustomListsInput copyWith(void Function(CustomListsInput) updates) =>
+      super.copyWith((message) => updates(message as CustomListsInput))
+          as CustomListsInput;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use CustomListsInput() / CustomListsInput.new instead')
+  static CustomListsInput create() => CustomListsInput._();
+  static $pb.GeneratedMessage $_createMessage() => CustomListsInput._();
+  @$core.override
+  CustomListsInput createEmptyInstance() => CustomListsInput._();
+  @$core.pragma('dart2js:noInline')
+  static CustomListsInput getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CustomListsInput>(
+          CustomListsInput.$_createMessage);
+  static CustomListsInput? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$core.String> get customLists => $_getList(0);
+}
+
 class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
   factory SaveMediaListEntryRequest({
     $core.int? mediaId,
@@ -347,6 +398,7 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
     $core.bool? private,
     $core.bool? hiddenFromStatusLists,
     $core.String? notes,
+    CustomListsInput? customLists,
   }) {
     final result = SaveMediaListEntryRequest._();
     if (mediaId != null) result.mediaId = mediaId;
@@ -361,6 +413,7 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
     if (hiddenFromStatusLists != null)
       result.hiddenFromStatusLists = hiddenFromStatusLists;
     if (notes != null) result.notes = notes;
+    if (customLists != null) result.customLists = customLists;
     return result;
   }
 
@@ -390,6 +443,8 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
     ..aOB(9, _omitFieldNames ? '' : 'private')
     ..aOB(10, _omitFieldNames ? '' : 'hiddenFromStatusLists')
     ..aOS(11, _omitFieldNames ? '' : 'notes')
+    ..aOM<CustomListsInput>(12, _omitFieldNames ? '' : 'customLists',
+        subBuilder: CustomListsInput.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -520,6 +575,17 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
   $core.bool hasNotes() => $_has(10);
   @$pb.TagNumber(11)
   void clearNotes() => $_clearField(11);
+
+  @$pb.TagNumber(12)
+  CustomListsInput get customLists => $_getN(11);
+  @$pb.TagNumber(12)
+  set customLists(CustomListsInput value) => $_setField(12, value);
+  @$pb.TagNumber(12)
+  $core.bool hasCustomLists() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearCustomLists() => $_clearField(12);
+  @$pb.TagNumber(12)
+  CustomListsInput ensureCustomLists() => $_ensure(11);
 }
 
 class SaveMediaListEntryResponse extends $pb.GeneratedMessage {
@@ -4311,6 +4377,147 @@ class FetchStaffSearchResponse extends $pb.GeneratedMessage {
   $core.bool hasError() => $_has(2);
   @$pb.TagNumber(3)
   void clearError() => $_clearField(3);
+}
+
+class UpdateCustomListsRequest extends $pb.GeneratedMessage {
+  factory UpdateCustomListsRequest({
+    $core.String? mediaType,
+    $core.Iterable<$core.String>? customLists,
+  }) {
+    final result = UpdateCustomListsRequest._();
+    if (mediaType != null) result.mediaType = mediaType;
+    if (customLists != null) result.customLists.addAll(customLists);
+    return result;
+  }
+
+  UpdateCustomListsRequest._();
+
+  factory UpdateCustomListsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UpdateCustomListsRequest()..mergeFromBuffer(data, registry);
+  factory UpdateCustomListsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UpdateCustomListsRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateCustomListsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: UpdateCustomListsRequest.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'mediaType')
+    ..pPS(2, _omitFieldNames ? '' : 'customLists')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateCustomListsRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateCustomListsRequest copyWith(
+          void Function(UpdateCustomListsRequest) updates) =>
+      super.copyWith((message) => updates(message as UpdateCustomListsRequest))
+          as UpdateCustomListsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use UpdateCustomListsRequest() / UpdateCustomListsRequest.new instead')
+  static UpdateCustomListsRequest create() => UpdateCustomListsRequest._();
+  static $pb.GeneratedMessage $_createMessage() => UpdateCustomListsRequest._();
+  @$core.override
+  UpdateCustomListsRequest createEmptyInstance() =>
+      UpdateCustomListsRequest._();
+  @$core.pragma('dart2js:noInline')
+  static UpdateCustomListsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateCustomListsRequest>(
+          UpdateCustomListsRequest.$_createMessage);
+  static UpdateCustomListsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get mediaType => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set mediaType($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasMediaType() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMediaType() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $pb.PbList<$core.String> get customLists => $_getList(1);
+}
+
+class UpdateCustomListsResponse extends $pb.GeneratedMessage {
+  factory UpdateCustomListsResponse({
+    $core.String? error,
+    $core.Iterable<$core.String>? animeCustomLists,
+    $core.Iterable<$core.String>? mangaCustomLists,
+  }) {
+    final result = UpdateCustomListsResponse._();
+    if (error != null) result.error = error;
+    if (animeCustomLists != null)
+      result.animeCustomLists.addAll(animeCustomLists);
+    if (mangaCustomLists != null)
+      result.mangaCustomLists.addAll(mangaCustomLists);
+    return result;
+  }
+
+  UpdateCustomListsResponse._();
+
+  factory UpdateCustomListsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UpdateCustomListsResponse()..mergeFromBuffer(data, registry);
+  factory UpdateCustomListsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UpdateCustomListsResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateCustomListsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: UpdateCustomListsResponse.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'error')
+    ..pPS(2, _omitFieldNames ? '' : 'animeCustomLists')
+    ..pPS(3, _omitFieldNames ? '' : 'mangaCustomLists')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateCustomListsResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateCustomListsResponse copyWith(
+          void Function(UpdateCustomListsResponse) updates) =>
+      super.copyWith((message) => updates(message as UpdateCustomListsResponse))
+          as UpdateCustomListsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use UpdateCustomListsResponse() / UpdateCustomListsResponse.new instead')
+  static UpdateCustomListsResponse create() => UpdateCustomListsResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      UpdateCustomListsResponse._();
+  @$core.override
+  UpdateCustomListsResponse createEmptyInstance() =>
+      UpdateCustomListsResponse._();
+  @$core.pragma('dart2js:noInline')
+  static UpdateCustomListsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateCustomListsResponse>(
+          UpdateCustomListsResponse.$_createMessage);
+  static UpdateCustomListsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get error => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set error($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasError() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearError() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $pb.PbList<$core.String> get animeCustomLists => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$core.String> get mangaCustomLists => $_getList(2);
 }
 
 const $core.bool _omitFieldNames =

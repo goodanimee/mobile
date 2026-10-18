@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:goodanime/utils/app_navigation.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -8,6 +10,7 @@ import '../../components/loading_indicator.dart';
 import '../../components/update_dialog.dart';
 import '../../models/common.dart';
 import '../../services/auth_service.dart';
+import '../../services/custom_list_service.dart';
 import '../../services/deep_link_service.dart';
 import '../../services/media_list_controller.dart';
 import '../../services/update_service.dart';
@@ -49,6 +52,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    unawaited(CustomListService.instance.init());
     DeepLinkService.instance.init(onAuthenticated: _handleAuthenticated);
     _loadTokenAndPreferences();
     AppNavigation.currentTab.addListener(_onTabChanged);
@@ -56,6 +60,9 @@ class _HomePageState extends State<HomePage> {
 
   void _onTabChanged() {
     if (mounted && _navIndex != AppNavigation.currentTab.value) {
+      if (CustomListService.instance.isPanelOpen) {
+        unawaited(CustomListService.instance.setPanelOpen(false));
+      }
       setState(() => _navIndex = AppNavigation.currentTab.value);
     }
   }
@@ -79,6 +86,7 @@ class _HomePageState extends State<HomePage> {
       });
       if (token != null) {
         DeepLinkService.instance.markReady();
+        unawaited(CustomListService.instance.syncFromRemote());
         await _checkForUpdate();
       }
     }
@@ -106,12 +114,14 @@ class _HomePageState extends State<HomePage> {
     if (!mounted) return;
     setState(() => _token = token);
     DeepLinkService.instance.markReady();
+    unawaited(CustomListService.instance.syncFromRemote());
   }
 
   /// Resets state on sign out
   void _handleSignOut() {
     DeepLinkService.instance.markUnauthenticated();
     MediaListController.resetAll();
+    CustomListService.instance.reset();
     setState(() {
       _token = null;
       _navIndex = 1;
@@ -121,7 +131,7 @@ class _HomePageState extends State<HomePage> {
   /// Updates the quick navigation sections based on visible list categories
   void _handleSectionsChanged(
     List<MediaListStatus> statuses,
-    MediaListStatus activeStatus,
+    MediaListStatus? activeStatus,
     void Function(MediaListStatus) scrollTo,
   ) {
     if (!mounted) return;
@@ -176,7 +186,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  /// Builds the main home page widget
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(body: AppLoadingIndicator());
@@ -213,6 +222,9 @@ class _HomePageState extends State<HomePage> {
                   onToggleGridMode: (_navIndex == 1 || _navIndex == 2)
                       ? _toggleGridMode
                       : null,
+                  mediaType: _navIndex == 1
+                      ? 'ANIME'
+                      : (_navIndex == 2 ? 'MANGA' : null),
                 ),
               ),
             ],

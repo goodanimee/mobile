@@ -34,6 +34,9 @@ class MediaListEntry {
   /// Whether the entry is hidden from non-custom status lists
   final bool hiddenFromStatusLists;
 
+  /// Custom lists this entry belongs to
+  final List<String> customLists;
+
   /// Personal user notes for the entry
   final String notes;
 
@@ -49,6 +52,7 @@ class MediaListEntry {
     this.completedAt,
     this.private = false,
     this.hiddenFromStatusLists = false,
+    this.customLists = const [],
     this.notes = '',
   });
 
@@ -71,6 +75,7 @@ class MediaListEntry {
           : null,
       private: pbObj.private,
       hiddenFromStatusLists: pbObj.hiddenFromStatusLists,
+      customLists: List<String>.unmodifiable(pbObj.customLists),
       notes: pbObj.notes,
     );
   }
@@ -85,6 +90,7 @@ class MediaListEntry {
       progressVolumes: progressVolumes,
       private: private,
       hiddenFromStatusLists: hiddenFromStatusLists,
+      customLists: customLists,
       notes: notes,
     );
     if (status != null) pbObj.status = status!.toProto();
@@ -105,6 +111,7 @@ class MediaListEntry {
     FuzzyDate? completedAt,
     bool? private,
     bool? hiddenFromStatusLists,
+    List<String>? customLists,
     String? notes,
   }) {
     return MediaListEntry(
@@ -119,6 +126,7 @@ class MediaListEntry {
       private: private ?? this.private,
       hiddenFromStatusLists:
           hiddenFromStatusLists ?? this.hiddenFromStatusLists,
+      customLists: customLists ?? this.customLists,
       notes: notes ?? this.notes,
     );
   }

@@ -201,6 +201,11 @@ extension MediaListEntryMutation on MediaListEntryWithMedia {
     return copyWith(notes: newNotes);
   }
 
+  /// Computes the next entry state when custom lists are changed
+  MediaListEntryWithMedia updateCustomLists(List<String> newCustomLists) {
+    return copyWith(customLists: newCustomLists);
+  }
+
   /// Applies date auto-fill rules based on the resulting status
   MediaListEntryWithMedia _applyDateRules() {
     final now = DateTime.now();

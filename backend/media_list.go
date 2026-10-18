@@ -22,6 +22,12 @@ var saveMediaListEntryMutation string
 //go:embed graphql/delete_list_entry.graphql
 var deleteMediaListEntryMutation string
 
+//go:embed graphql/update_anime_custom_lists.graphql
+var updateAnimeCustomListsMutation string
+
+//go:embed graphql/update_manga_custom_lists.graphql
+var updateMangaCustomListsMutation string
+
 // FetchMediaList returns authenticated user's media (ANIME or MANGA) list
 //
 //export FetchMediaList
@@ -92,6 +98,13 @@ func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 	if req.Notes != nil {
 		variables["notes"] = *req.Notes
 	}
+	if req.CustomLists != nil {
+		lists := req.CustomLists.CustomLists
+		if lists == nil {
+			lists = []string{}
+		}
+		variables["customLists"] = lists
+	}
 
 	data, err := executeGraphQL[models.SaveMediaListEntryDTO](tk, saveMediaListEntryMutation, variables)
 	if err != nil {
@@ -126,5 +139,50 @@ func DeleteMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 
 	pbResponse.EntryId = req.GetEntryId()
 	pbResponse.Deleted = data.DeleteMediaListEntry.Deleted
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// UpdateCustomLists updates custom lists on AniList
+//
+//export UpdateCustomLists
+func UpdateCustomLists(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.UpdateCustomListsResponse{}
+
+	var req pb.UpdateCustomListsRequest
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	lists := req.CustomLists
+	if lists == nil {
+		lists = []string{}
+	}
+
+	variables := map[string]any{
+		"customLists": lists,
+	}
+
+	mutation := updateAnimeCustomListsMutation
+	if req.MediaType == "MANGA" {
+		mutation = updateMangaCustomListsMutation
+	}
+
+	data, err := executeGraphQL[models.UpdateUserDTO](tk, mutation, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	if data.UpdateUser.MediaListOptions != nil {
+		if data.UpdateUser.MediaListOptions.AnimeList != nil {
+			pbResponse.AnimeCustomLists = data.UpdateUser.MediaListOptions.AnimeList.CustomLists
+		}
+		if data.UpdateUser.MediaListOptions.MangaList != nil {
+			pbResponse.MangaCustomLists = data.UpdateUser.MediaListOptions.MangaList.CustomLists
+		}
+	}
+
 	return marshalAndReturn(pbResponse, outLen)
 }

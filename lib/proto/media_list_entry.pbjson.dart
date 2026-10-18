@@ -59,6 +59,7 @@ const MediaListEntry$json = {
       '10': 'hiddenFromStatusLists'
     },
     {'1': 'notes', '3': 11, '4': 1, '5': 9, '10': 'notes'},
+    {'1': 'custom_lists', '3': 12, '4': 3, '5': 9, '10': 'customLists'},
   ],
   '8': [
     {'1': '_status'},
@@ -74,4 +75,5 @@ final $typed_data.Uint8List mediaListEntryDescriptor = $convert.base64Decode(
     'bXBsZXRlZF9hdBgHIAEoCzIULmdvb2RhbmltZS5GdXp6eURhdGVSC2NvbXBsZXRlZEF0EikKEH'
     'Byb2dyZXNzX3ZvbHVtZXMYCCABKAVSD3Byb2dyZXNzVm9sdW1lcxIYCgdwcml2YXRlGAkgASgI'
     'Ugdwcml2YXRlEjcKGGhpZGRlbl9mcm9tX3N0YXR1c19saXN0cxgKIAEoCFIVaGlkZGVuRnJvbV'
-    'N0YXR1c0xpc3RzEhQKBW5vdGVzGAsgASgJUgVub3Rlc0IJCgdfc3RhdHVz');
+    'N0YXR1c0xpc3RzEhQKBW5vdGVzGAsgASgJUgVub3RlcxIhCgxjdXN0b21fbGlzdHMYDCADKAlS'
+    'C2N1c3RvbUxpc3RzQgkKB19zdGF0dXM=');

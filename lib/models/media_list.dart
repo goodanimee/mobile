@@ -23,6 +23,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
     super.completedAt,
     super.private,
     super.hiddenFromStatusLists,
+    super.customLists,
     super.notes,
     required this.media,
   });
@@ -46,6 +47,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
           : null,
       private: pbObj.entry.private,
       hiddenFromStatusLists: pbObj.entry.hiddenFromStatusLists,
+      customLists: List<String>.unmodifiable(pbObj.entry.customLists),
       notes: pbObj.entry.notes,
       media: MediaMin.fromProto(pbObj.media),
     );
@@ -73,6 +75,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
     FuzzyDate? completedAt,
     bool? private,
     bool? hiddenFromStatusLists,
+    List<String>? customLists,
     String? notes,
     MediaMin? media,
   }) {
@@ -88,6 +91,7 @@ class MediaListEntryWithMedia extends MediaListEntry {
       private: private ?? this.private,
       hiddenFromStatusLists:
           hiddenFromStatusLists ?? this.hiddenFromStatusLists,
+      customLists: customLists ?? this.customLists,
       notes: notes ?? this.notes,
       media: media ?? this.media,
     );
@@ -99,6 +103,9 @@ class MediaList {
   /// List name
   final String name;
 
+  /// Whether the list is a custom list
+  final bool isCustomList;
+
   /// List status
   final MediaListStatus? status;
 
@@ -106,12 +113,18 @@ class MediaList {
   final List<MediaListEntryWithMedia> entries;
 
   /// Creates a media list
-  const MediaList({required this.name, this.status, required this.entries});
+  const MediaList({
+    required this.name,
+    this.isCustomList = false,
+    this.status,
+    required this.entries,
+  });
 
   /// Creates a media list from a protobuf object
   factory MediaList.fromProto(pb.MediaListGroup pbObj) {
     return MediaList(
       name: pbObj.name,
+      isCustomList: pbObj.isCustomList,
       status: pbObj.hasStatus()
           ? MediaListStatus.fromProto(pbObj.status)
           : null,
@@ -123,6 +136,7 @@ class MediaList {
   pb.MediaListGroup toProto() {
     final pbObj = pb.MediaListGroup(
       name: name,
+      isCustomList: isCustomList,
       entries: entries.map((e) => e.toProto() as pb.MediaListEntryWithMedia),
     );
     if (status != null) pbObj.status = status!.toProto();

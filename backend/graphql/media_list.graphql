@@ -2,6 +2,7 @@ query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
   MediaListCollection(userId: $userId, type: $type, sort: $sort) {
     lists {
       name
+      isCustomList
       status
       entries {
         id
@@ -39,6 +40,7 @@ query MediaList($userId: Int, $type: MediaType, $sort: [MediaListSort]) {
         score(format: POINT_10_DECIMAL)
         private
         hiddenFromStatusLists
+        customLists
         notes
         startedAt {
           day

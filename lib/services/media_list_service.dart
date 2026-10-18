@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,7 @@ import '../proto/api.pb.dart';
 import '../proto/media_list.pb.dart' as pb_list;
 import '../utils/app_options.dart';
 import 'auth_service.dart';
+import 'custom_list_service.dart';
 
 /// Service for managing user media lists and caches.
 class MediaListService {
@@ -64,25 +66,57 @@ class MediaListService {
     );
   }
 
+  /// Saves the user media lists to local disk cache.
+  static Future<void> saveListsToCache(
+    List<MediaList> lists,
+    String mediaType,
+  ) => _saveListToDiskCache(lists, mediaType);
+
   /// Fetches fresh user media lists from the network.
   static Future<List<MediaList>> _fetchNetworkLists(
     int userId,
     String mediaType,
   ) async {
-    final token = await AuthService.getRawToken() ?? '';
-    final response = await MediaListApi.fetchMediaList(
-      userId,
-      token,
-      mediaType,
-    );
-    final rawLists = response.lists;
+    String token = '';
+    try {
+      token = await AuthService.getValidToken();
+    } on AuthExpiredException {
+      token = '';
+    } catch (_) {
+      token = await AuthService.getRawToken() ?? '';
+    }
 
-    final allEntries = <MediaListEntryWithMedia>[];
-    for (final list in rawLists) {
-      for (final entry in list.entries) {
-        allEntries.add(entry);
+    MediaListCollection response;
+    try {
+      response = await MediaListApi.fetchMediaList(userId, token, mediaType);
+    } catch (e) {
+      if (token.isNotEmpty && e.toString().contains('Invalid token')) {
+        await AuthService.clearToken();
+        response = await MediaListApi.fetchMediaList(userId, '', mediaType);
+      } else {
+        rethrow;
       }
     }
+    final rawLists = response.lists;
+    final customListNames = rawLists
+        .where((l) => l.isCustomList || l.status == null)
+        .map((l) => l.name)
+        .where((name) => name.isNotEmpty)
+        .toList();
+
+    if (customListNames.isNotEmpty) {
+      final existing = CustomListService.instance.getCustomLists(mediaType);
+      final merged = {...existing, ...customListNames}.toList();
+      unawaited(CustomListService.instance.setCustomLists(mediaType, merged));
+    }
+
+    final Map<int, MediaListEntryWithMedia> uniqueEntries = {};
+    for (final list in rawLists) {
+      for (final entry in list.entries) {
+        uniqueEntries[entry.media.id] = entry;
+      }
+    }
+    final allEntries = uniqueEntries.values.toList();
 
     final Map<MediaListStatus, List<MediaListEntryWithMedia>> grouped = {
       MediaListStatus.current: [],
@@ -131,6 +165,41 @@ class MediaListService {
       }
     }
 
+    final allCustomListNames = {
+      ...CustomListService.instance.getCustomLists(mediaType),
+      ...customListNames,
+    }.toList();
+
+    for (final customName in allCustomListNames) {
+      final rawList = rawLists
+          .where(
+            (l) => (l.isCustomList || l.status == null) && l.name == customName,
+          )
+          .firstOrNull;
+
+      final customEntries = <MediaListEntryWithMedia>[];
+      final seenMediaIds = <int>{};
+
+      if (rawList != null) {
+        for (final entry in rawList.entries) {
+          if (seenMediaIds.add(entry.media.id)) {
+            customEntries.add(entry);
+          }
+        }
+      }
+
+      for (final entry in allEntries) {
+        if (entry.customLists.contains(customName) &&
+            seenMediaIds.add(entry.media.id)) {
+          customEntries.add(entry);
+        }
+      }
+
+      processedLists.add(
+        MediaList(name: customName, isCustomList: true, entries: customEntries),
+      );
+    }
+
     await _saveListToDiskCache(processedLists, mediaType);
     return processedLists;
   }
@@ -142,13 +211,13 @@ class MediaListService {
     MediaOptionsResult result,
     String mediaType,
   ) async {
-    if (result.deleted ||
-        (result.entry != null && result.entry!.hiddenFromStatusLists)) {
+    if (result.deleted) {
       final updatedLists = currentLists.map((section) {
         final entries = List<MediaListEntryWithMedia>.from(section.entries);
         entries.removeWhere((e) => e.media.id == mediaId);
         return MediaList(
           name: section.name,
+          isCustomList: section.isCustomList,
           status: section.status,
           entries: entries,
         );
@@ -170,10 +239,40 @@ class MediaListService {
 
     MediaListEntryWithMedia? movedEntry;
     final MediaListStatus? targetStatus = result.entry!.status;
+    final isHiddenFromStatusLists = result.entry!.hiddenFromStatusLists;
 
     final updatedLists = currentLists.map((section) {
       final entries = List<MediaListEntryWithMedia>.from(section.entries);
       final idx = entries.indexWhere((e) => e.media.id == mediaId);
+
+      if (section.isCustomList) {
+        final inCustomList = result.entry!.customLists.contains(section.name);
+        if (inCustomList) {
+          if (idx != -1) {
+            entries[idx] = result.entry!;
+          } else {
+            entries.add(result.entry!);
+          }
+        } else if (idx != -1) {
+          entries.removeAt(idx);
+        }
+        return MediaList(
+          name: section.name,
+          isCustomList: true,
+          status: section.status,
+          entries: entries,
+        );
+      }
+
+      if (isHiddenFromStatusLists) {
+        if (idx != -1) entries.removeAt(idx);
+        return MediaList(
+          name: section.name,
+          isCustomList: section.isCustomList,
+          status: section.status,
+          entries: entries,
+        );
+      }
 
       if (idx == -1) {
         return section;
@@ -199,12 +298,15 @@ class MediaListService {
 
       return MediaList(
         name: section.name,
+        isCustomList: section.isCustomList,
         status: section.status,
         entries: entries,
       );
     }).toList();
 
-    if (movedEntry != null && targetStatus != null) {
+    if (!isHiddenFromStatusLists &&
+        movedEntry != null &&
+        targetStatus != null) {
       final targetSectionStatus = targetStatus == MediaListStatus.repeating
           ? MediaListStatus.current
           : targetStatus;
@@ -217,6 +319,7 @@ class MediaListService {
           ..add(movedEntry!);
         updatedLists[targetIdx] = MediaList(
           name: section.name,
+          isCustomList: section.isCustomList,
           status: section.status,
           entries: entries,
         );
@@ -240,6 +343,21 @@ class MediaListService {
       }
     }
 
+    for (final customName in result.entry!.customLists) {
+      final exists = updatedLists.any(
+        (s) => s.isCustomList && s.name == customName,
+      );
+      if (!exists) {
+        updatedLists.add(
+          MediaList(
+            name: customName,
+            isCustomList: true,
+            entries: [result.entry!],
+          ),
+        );
+      }
+    }
+
     await _saveListToDiskCache(updatedLists, mediaType);
 
     return updatedLists;
@@ -257,6 +375,7 @@ class MediaListService {
     int? repeat,
     bool? private,
     bool? hiddenFromStatusLists,
+    List<String>? customLists,
     String? notes,
   }) {
     final req = SaveMediaListEntryRequest(mediaId: mediaId);
@@ -269,6 +388,9 @@ class MediaListService {
     if (private != null) req.private = private;
     if (hiddenFromStatusLists != null) {
       req.hiddenFromStatusLists = hiddenFromStatusLists;
+    }
+    if (customLists != null) {
+      req.customLists = CustomListsInput(customLists: customLists);
     }
     if (notes != null) req.notes = notes;
 
@@ -302,6 +424,7 @@ class MediaListService {
     int? repeat,
     bool? private,
     bool? hiddenFromStatusLists,
+    List<String>? customLists,
     String? notes,
   }) async {
     final token = await AuthService.getRawToken() ?? '';
@@ -316,6 +439,7 @@ class MediaListService {
       repeat: repeat,
       private: private,
       hiddenFromStatusLists: hiddenFromStatusLists,
+      customLists: customLists,
       notes: notes,
     );
 

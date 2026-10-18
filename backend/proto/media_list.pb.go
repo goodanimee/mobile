@@ -78,6 +78,7 @@ type MediaListGroup struct {
 	Name          string                     `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Status        *MediaListStatus           `protobuf:"varint,2,opt,name=status,proto3,enum=goodanime.MediaListStatus,oneof" json:"status,omitempty"`
 	Entries       []*MediaListEntryWithMedia `protobuf:"bytes,3,rep,name=entries,proto3" json:"entries,omitempty"`
+	IsCustomList  bool                       `protobuf:"varint,4,opt,name=is_custom_list,json=isCustomList,proto3" json:"is_custom_list,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -131,6 +132,13 @@ func (x *MediaListGroup) GetEntries() []*MediaListEntryWithMedia {
 		return x.Entries
 	}
 	return nil
+}
+
+func (x *MediaListGroup) GetIsCustomList() bool {
+	if x != nil {
+		return x.IsCustomList
+	}
+	return false
 }
 
 type MediaListCollection struct {
@@ -192,11 +200,12 @@ const file_media_list_proto_rawDesc = "" +
 	"\x10media_list.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\"u\n" +
 	"\x17MediaListEntryWithMedia\x12/\n" +
 	"\x05entry\x18\x01 \x01(\v2\x19.goodanime.MediaListEntryR\x05entry\x12)\n" +
-	"\x05media\x18\x02 \x01(\v2\x13.goodanime.MediaMinR\x05media\"\xa6\x01\n" +
+	"\x05media\x18\x02 \x01(\v2\x13.goodanime.MediaMinR\x05media\"\xcc\x01\n" +
 	"\x0eMediaListGroup\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x127\n" +
 	"\x06status\x18\x02 \x01(\x0e2\x1a.goodanime.MediaListStatusH\x00R\x06status\x88\x01\x01\x12<\n" +
-	"\aentries\x18\x03 \x03(\v2\".goodanime.MediaListEntryWithMediaR\aentriesB\t\n" +
+	"\aentries\x18\x03 \x03(\v2\".goodanime.MediaListEntryWithMediaR\aentries\x12$\n" +
+	"\x0eis_custom_list\x18\x04 \x01(\bR\fisCustomListB\t\n" +
 	"\a_status\"l\n" +
 	"\x13MediaListCollection\x12$\n" +
 	"\x0ehas_next_chunk\x18\x01 \x01(\bR\fhasNextChunk\x12/\n" +

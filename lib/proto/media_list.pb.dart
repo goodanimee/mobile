@@ -102,11 +102,13 @@ class MediaListGroup extends $pb.GeneratedMessage {
     $core.String? name,
     $2.MediaListStatus? status,
     $core.Iterable<MediaListEntryWithMedia>? entries,
+    $core.bool? isCustomList,
   }) {
     final result = MediaListGroup._();
     if (name != null) result.name = name;
     if (status != null) result.status = status;
     if (entries != null) result.entries.addAll(entries);
+    if (isCustomList != null) result.isCustomList = isCustomList;
     return result;
   }
 
@@ -128,6 +130,7 @@ class MediaListGroup extends $pb.GeneratedMessage {
         enumValues: $2.MediaListStatus.values)
     ..pPM<MediaListEntryWithMedia>(3, _omitFieldNames ? '' : 'entries',
         subBuilder: MediaListEntryWithMedia.$_createMessage)
+    ..aOB(4, _omitFieldNames ? '' : 'isCustomList')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -172,6 +175,15 @@ class MediaListGroup extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(3)
   $pb.PbList<MediaListEntryWithMedia> get entries => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $core.bool get isCustomList => $_getBF(3);
+  @$pb.TagNumber(4)
+  set isCustomList($core.bool value) => $_setBool(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasIsCustomList() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearIsCustomList() => $_clearField(4);
 }
 
 class MediaListCollection extends $pb.GeneratedMessage {

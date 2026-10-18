@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -8,6 +9,7 @@ import '../../theme/theme.dart';
 import '../../utils/app_options.dart';
 import '../../utils/media_list_mutations.dart';
 import 'counter_editor.dart';
+import 'custom_list_selector.dart';
 import 'date_editor.dart';
 import 'entry_toggles.dart';
 import 'notes_editor.dart';
@@ -372,6 +374,15 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
                               .updateHiddenFromStatusLists(val),
                         ),
                       ),
+                      CustomListSelector(
+                        mediaType: widget.entry.media.type,
+                        selectedCustomLists: _currentEntry.customLists,
+                        onCustomListsChanged: (lists) => setState(
+                          () => _currentEntry = _currentEntry.updateCustomLists(
+                            lists,
+                          ),
+                        ),
+                      ),
                       NotesEditor(
                         notes: _currentEntry.notes,
                         onNotesChanged: (val) => setState(
@@ -394,6 +405,10 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
   /// Builds the save and cancel buttons
   Widget _buildActionButtons() {
     final bool hasEntryId = widget.entry.id > 0;
+    final bool customListsChanged = !setEquals(
+      _currentEntry.customLists.toSet(),
+      _initialEntry.customLists.toSet(),
+    );
     final bool hasChanges =
         _currentEntry.status != _initialEntry.status ||
         _currentEntry.progress != _initialEntry.progress ||
@@ -405,6 +420,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
         _currentEntry.private != _initialEntry.private ||
         _currentEntry.hiddenFromStatusLists !=
             _initialEntry.hiddenFromStatusLists ||
+        customListsChanged ||
         _currentEntry.notes != _initialEntry.notes;
 
     final screenWidth = MediaQuery.of(context).size.width;
@@ -546,6 +562,10 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
     final mediaId = widget.entry.media.id;
     if (mediaId <= 0) return;
 
+    final bool customListsChanged = !setEquals(
+      _currentEntry.customLists.toSet(),
+      _initialEntry.customLists.toSet(),
+    );
     final bool hasChanges =
         _currentEntry.status != _initialEntry.status ||
         _currentEntry.progress != _initialEntry.progress ||
@@ -557,6 +577,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
         _currentEntry.private != _initialEntry.private ||
         _currentEntry.hiddenFromStatusLists !=
             _initialEntry.hiddenFromStatusLists ||
+        customListsChanged ||
         _currentEntry.notes != _initialEntry.notes;
 
     if (!hasChanges) {
@@ -598,6 +619,7 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
                 _initialEntry.hiddenFromStatusLists
             ? _currentEntry.hiddenFromStatusLists
             : null,
+        customLists: customListsChanged ? _currentEntry.customLists : null,
         notes: _currentEntry.notes != _initialEntry.notes
             ? _currentEntry.notes
             : null,
@@ -605,7 +627,14 @@ class _MediaOptionsSheetState extends State<MediaOptionsSheet> {
 
       if (mounted) {
         Navigator.of(context).pop(
-          MediaOptionsResult(entry: _currentEntry.copyWith(id: response.id)),
+          MediaOptionsResult(
+            entry: _currentEntry.copyWith(
+              id: response.id,
+              customLists: response.customLists.isNotEmpty
+                  ? response.customLists
+                  : _currentEntry.customLists,
+            ),
+          ),
         );
       }
     } catch (e) {

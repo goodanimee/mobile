@@ -417,5 +417,31 @@ void main() {
       expect(req.hasStartedAt(), isFalse);
       expect(req.hasCompletedAt(), isFalse);
     });
+
+    test('serializes customLists when provided', () {
+      final req = MediaListService.buildSaveEntryRequest(
+        mediaId: 42,
+        customLists: ['Favorites', 'Special'],
+      );
+
+      expect(req.hasCustomLists(), isTrue);
+      expect(req.customLists.customLists, ['Favorites', 'Special']);
+    });
+
+    test('serializes empty customLists when provided', () {
+      final req = MediaListService.buildSaveEntryRequest(
+        mediaId: 42,
+        customLists: [],
+      );
+
+      expect(req.hasCustomLists(), isTrue);
+      expect(req.customLists.customLists, isEmpty);
+    });
+
+    test('omits customLists when null', () {
+      final req = MediaListService.buildSaveEntryRequest(mediaId: 42);
+
+      expect(req.hasCustomLists(), isFalse);
+    });
   });
 }
