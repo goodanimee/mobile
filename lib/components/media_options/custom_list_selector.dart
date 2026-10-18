@@ -322,7 +322,10 @@ class _CustomListSelectorState extends State<CustomListSelector> {
                     color: cardBorderColor,
                   ),
                 ],
-                content,
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 180.0),
+                  child: SingleChildScrollView(child: content),
+                ),
               ],
             ),
           ),

@@ -123,6 +123,13 @@ class _FloatingNavState extends State<FloatingNav>
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: _duration);
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.dismissed) {
+        if (CustomListService.instance.isPanelOpen) {
+          CustomListService.instance.setPanelOpen(false);
+        }
+      }
+    });
     _widthFactor = CurvedAnimation(parent: _controller, curve: kCurveSymmetric);
     _iconsFade = CurvedAnimation(
       parent: _controller,
@@ -210,10 +217,27 @@ class _FloatingNavState extends State<FloatingNav>
                             CustomListService.instance.isPanelOpen)
                         ? Padding(
                             padding: EdgeInsets.only(right: gap),
-                            child: CustomListPanel(
-                              mediaType: widget.mediaType!,
-                              width: navBarWidth,
-                              height: quickNavHeight,
+                            child: SizedBox(
+                              width: navBarWidth * _widthFactor.value,
+                              height: quickNavHeight * _widthFactor.value,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: Opacity(
+                                  opacity: _iconsFade.value,
+                                  child: OverflowBox(
+                                    minWidth: navBarWidth,
+                                    maxWidth: navBarWidth,
+                                    minHeight: quickNavHeight,
+                                    maxHeight: quickNavHeight,
+                                    alignment: Alignment.bottomRight,
+                                    child: CustomListPanel(
+                                      mediaType: widget.mediaType!,
+                                      width: navBarWidth,
+                                      height: quickNavHeight,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           )
                         : const SizedBox.shrink(),
@@ -326,9 +350,6 @@ class _FloatingNavState extends State<FloatingNav>
                     message: item.label,
                     child: GestureDetector(
                       onTap: () {
-                        if (CustomListService.instance.isPanelOpen) {
-                          CustomListService.instance.setPanelOpen(false);
-                        }
                         widget.onTap(i);
                         _toggle();
                       },
@@ -386,9 +407,6 @@ class _FloatingNavState extends State<FloatingNav>
                     message: section.label,
                     child: GestureDetector(
                       onTap: () {
-                        if (CustomListService.instance.isPanelOpen) {
-                          CustomListService.instance.setPanelOpen(false);
-                        }
                         section.onTap();
                         _toggle();
                       },
