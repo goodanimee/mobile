@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
   /// Updates the quick navigation sections based on visible list categories
   void _handleSectionsChanged(
     List<MediaListStatus> statuses,
-    MediaListStatus activeStatus,
+    MediaListStatus? activeStatus,
     void Function(MediaListStatus) scrollTo,
   ) {
     if (!mounted) return;

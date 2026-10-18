@@ -71,12 +71,26 @@ class MediaListService {
     int userId,
     String mediaType,
   ) async {
-    final token = await AuthService.getRawToken() ?? '';
-    final response = await MediaListApi.fetchMediaList(
-      userId,
-      token,
-      mediaType,
-    );
+    String token = '';
+    try {
+      token = await AuthService.getValidToken();
+    } on AuthExpiredException {
+      token = '';
+    } catch (_) {
+      token = await AuthService.getRawToken() ?? '';
+    }
+
+    MediaListCollection response;
+    try {
+      response = await MediaListApi.fetchMediaList(userId, token, mediaType);
+    } catch (e) {
+      if (token.isNotEmpty && e.toString().contains('Invalid token')) {
+        await AuthService.clearToken();
+        response = await MediaListApi.fetchMediaList(userId, '', mediaType);
+      } else {
+        rethrow;
+      }
+    }
     final rawLists = response.lists;
     final customListNames = rawLists
         .where((l) => l.isCustomList || l.status == null)
@@ -90,12 +104,13 @@ class MediaListService {
       unawaited(CustomListService.instance.setCustomLists(mediaType, merged));
     }
 
-    final allEntries = <MediaListEntryWithMedia>[];
+    final Map<int, MediaListEntryWithMedia> uniqueEntries = {};
     for (final list in rawLists) {
       for (final entry in list.entries) {
-        allEntries.add(entry);
+        uniqueEntries[entry.media.id] = entry;
       }
     }
+    final allEntries = uniqueEntries.values.toList();
 
     final Map<MediaListStatus, List<MediaListEntryWithMedia>> grouped = {
       MediaListStatus.current: [],
@@ -144,6 +159,41 @@ class MediaListService {
       }
     }
 
+    final allCustomListNames = {
+      ...CustomListService.instance.getCustomLists(mediaType),
+      ...customListNames,
+    }.toList();
+
+    for (final customName in allCustomListNames) {
+      final rawList = rawLists
+          .where(
+            (l) => (l.isCustomList || l.status == null) && l.name == customName,
+          )
+          .firstOrNull;
+
+      final customEntries = <MediaListEntryWithMedia>[];
+      final seenMediaIds = <int>{};
+
+      if (rawList != null) {
+        for (final entry in rawList.entries) {
+          if (seenMediaIds.add(entry.media.id)) {
+            customEntries.add(entry);
+          }
+        }
+      }
+
+      for (final entry in allEntries) {
+        if (entry.customLists.contains(customName) &&
+            seenMediaIds.add(entry.media.id)) {
+          customEntries.add(entry);
+        }
+      }
+
+      processedLists.add(
+        MediaList(name: customName, isCustomList: true, entries: customEntries),
+      );
+    }
+
     await _saveListToDiskCache(processedLists, mediaType);
     return processedLists;
   }
@@ -155,8 +205,7 @@ class MediaListService {
     MediaOptionsResult result,
     String mediaType,
   ) async {
-    if (result.deleted ||
-        (result.entry != null && result.entry!.hiddenFromStatusLists)) {
+    if (result.deleted) {
       final updatedLists = currentLists.map((section) {
         final entries = List<MediaListEntryWithMedia>.from(section.entries);
         entries.removeWhere((e) => e.media.id == mediaId);
@@ -184,10 +233,40 @@ class MediaListService {
 
     MediaListEntryWithMedia? movedEntry;
     final MediaListStatus? targetStatus = result.entry!.status;
+    final isHiddenFromStatusLists = result.entry!.hiddenFromStatusLists;
 
     final updatedLists = currentLists.map((section) {
       final entries = List<MediaListEntryWithMedia>.from(section.entries);
       final idx = entries.indexWhere((e) => e.media.id == mediaId);
+
+      if (section.isCustomList) {
+        final inCustomList = result.entry!.customLists.contains(section.name);
+        if (inCustomList) {
+          if (idx != -1) {
+            entries[idx] = result.entry!;
+          } else {
+            entries.add(result.entry!);
+          }
+        } else if (idx != -1) {
+          entries.removeAt(idx);
+        }
+        return MediaList(
+          name: section.name,
+          isCustomList: true,
+          status: section.status,
+          entries: entries,
+        );
+      }
+
+      if (isHiddenFromStatusLists) {
+        if (idx != -1) entries.removeAt(idx);
+        return MediaList(
+          name: section.name,
+          isCustomList: section.isCustomList,
+          status: section.status,
+          entries: entries,
+        );
+      }
 
       if (idx == -1) {
         return section;
@@ -219,7 +298,9 @@ class MediaListService {
       );
     }).toList();
 
-    if (movedEntry != null && targetStatus != null) {
+    if (!isHiddenFromStatusLists &&
+        movedEntry != null &&
+        targetStatus != null) {
       final targetSectionStatus = targetStatus == MediaListStatus.repeating
           ? MediaListStatus.current
           : targetStatus;
@@ -253,6 +334,21 @@ class MediaListService {
         } else {
           updatedLists.insert(insertAt, newSection);
         }
+      }
+    }
+
+    for (final customName in result.entry!.customLists) {
+      final exists = updatedLists.any(
+        (s) => s.isCustomList && s.name == customName,
+      );
+      if (!exists) {
+        updatedLists.add(
+          MediaList(
+            name: customName,
+            isCustomList: true,
+            entries: [result.entry!],
+          ),
+        );
       }
     }
 

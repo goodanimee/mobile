@@ -28,7 +28,7 @@ class MediaListTab extends StatefulWidget {
   /// Callback when the list of categories changes.
   final void Function(
     List<MediaListStatus> statuses,
-    MediaListStatus activeStatus,
+    MediaListStatus? activeStatus,
     void Function(MediaListStatus) scrollTo,
   )?
   onSectionsChanged;
@@ -138,16 +138,20 @@ class _MediaListTabState extends State<MediaListTab>
       if (!mounted) return;
       widget.onSectionsChanged?.call(
         _controller.lists
-            .map((l) => l.status ?? MediaListStatus.current)
+            .where((l) => !l.isCustomList && l.status != null)
+            .map((l) => l.status!)
             .toList(),
-        _controller.activeStatus ?? MediaListStatus.current,
+        _controller.activeStatus,
         _selectSection,
       );
     });
   }
 
   void _selectSection(MediaListStatus status) {
-    if (_controller.activeStatus == status) return;
+    if (_controller.activeStatus == status &&
+        _controller.activeCustomList == null) {
+      return;
+    }
     _controller.setActiveStatus(status);
     _notifySections();
     if (_scrollController.hasClients) {
@@ -242,10 +246,18 @@ class _MediaListTabState extends State<MediaListTab>
       return AppErrorView(message: 'No $typeLabel lists found.');
     }
 
-    final activeList = _controller.lists.firstWhere(
-      (l) => l.status == _controller.activeStatus,
-      orElse: () => _controller.lists.first,
-    );
+    final activeList = _controller.activeCustomList != null
+        ? _controller.lists.firstWhere(
+            (l) => l.isCustomList && l.name == _controller.activeCustomList,
+            orElse: () => _controller.lists.firstWhere(
+              (l) => !l.isCustomList,
+              orElse: () => _controller.lists.first,
+            ),
+          )
+        : _controller.lists.firstWhere(
+            (l) => l.status == _controller.activeStatus,
+            orElse: () => _controller.lists.first,
+          );
     final activeName = activeList.name;
     final activeEntries = activeList.entries;
     final sortedEntries = List<MediaListEntryWithMedia>.from(activeEntries);

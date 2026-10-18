@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../services/custom_list_service.dart';
+import '../services/media_list_controller.dart';
 import '../theme/theme.dart';
 import 'custom_lists/custom_list_panel.dart';
 
@@ -152,7 +153,19 @@ class _FloatingNavState extends State<FloatingNav>
   /// Toggles the expansion state
   void _toggle() {
     setState(() => _expanded = !_expanded);
-    _expanded ? _controller.forward() : _controller.reverse();
+    if (_expanded) {
+      if (widget.mediaType != null) {
+        final isCustomListActive =
+            MediaListController.forType(widget.mediaType!).activeCustomList !=
+            null;
+        if (isCustomListActive) {
+          CustomListService.instance.setPanelOpen(true);
+        }
+      }
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
     widget.onExpandChanged?.call(_expanded);
   }
 
@@ -234,6 +247,12 @@ class _FloatingNavState extends State<FloatingNav>
                                       mediaType: widget.mediaType!,
                                       width: navBarWidth,
                                       height: quickNavHeight,
+                                      onSelectList: (name) {
+                                        MediaListController.forType(
+                                          widget.mediaType!,
+                                        ).setActiveCustomList(name);
+                                        _toggle();
+                                      },
                                     ),
                                   ),
                                 ),
@@ -445,12 +464,24 @@ class _FloatingNavState extends State<FloatingNav>
                           horizontal: 8,
                           vertical: 8,
                         ),
-                        child: Icon(
-                          LucideIcons.folderCog,
-                          size: iconSize,
-                          color: isPanelOpen
-                              ? borderColor
-                              : Colors.white.withValues(alpha: 0.8),
+                        child: ListenableBuilder(
+                          listenable: MediaListController.forType(
+                            widget.mediaType!,
+                          ),
+                          builder: (context, _) {
+                            final isCustomListActive =
+                                MediaListController.forType(
+                                  widget.mediaType!,
+                                ).activeCustomList !=
+                                null;
+                            return Icon(
+                              LucideIcons.folderCog,
+                              size: iconSize,
+                              color: (isPanelOpen || isCustomListActive)
+                                  ? borderColor
+                                  : Colors.white.withValues(alpha: 0.8),
+                            );
+                          },
                         ),
                       ),
                     ),

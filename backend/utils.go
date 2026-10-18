@@ -37,6 +37,8 @@ func rawGraphqlRequest(token, query string, variables map[string]any) ([]byte, e
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", "Goodanime/1.0")
 	if token != "" {
 		req.Header.Set("Authorization", "Bearer "+token)
 	}
@@ -50,6 +52,14 @@ func rawGraphqlRequest(token, query string, variables map[string]any) ([]byte, e
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response: %w", err)
+	}
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		var apiResp models.GraphQLResponse[any]
+		if err := json.Unmarshal(respBody, &apiResp); err == nil && len(apiResp.Errors) > 0 {
+			return nil, fmt.Errorf("%s", apiResp.Errors[0].Message)
+		}
+		return nil, fmt.Errorf("HTTP error %d: %s", resp.StatusCode, http.StatusText(resp.StatusCode))
 	}
 
 	return respBody, nil

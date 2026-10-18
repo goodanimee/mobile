@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../services/custom_list_service.dart';
+import '../../services/media_list_controller.dart';
 import '../../theme/theme.dart';
 
 /// Selector component for managing and assigning media entries to custom lists.
@@ -77,6 +78,8 @@ class _CustomListSelectorState extends State<CustomListSelector> {
       setState(() => _errorMessage = 'List already exists');
       return;
     }
+
+    MediaListController.forType(widget.mediaType).addCustomList(text);
 
     final updated = List<String>.from(widget.selectedCustomLists);
     if (!updated.contains(text)) {

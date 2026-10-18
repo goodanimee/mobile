@@ -40,6 +40,7 @@ class MediaListController extends ChangeNotifier {
   List<MediaList> _lists = [];
   String? _error;
   MediaListStatus? _activeStatus;
+  String? _activeCustomList;
   bool _needsRefresh = false;
   bool _hasFetchedThisSession = false;
 
@@ -55,6 +56,9 @@ class MediaListController extends ChangeNotifier {
   /// The active status category filter.
   MediaListStatus? get activeStatus => _activeStatus;
 
+  /// The active custom list name filter.
+  String? get activeCustomList => _activeCustomList;
+
   /// Whether the cached list data needs a refresh.
   bool get needsRefresh => _needsRefresh;
 
@@ -66,9 +70,43 @@ class MediaListController extends ChangeNotifier {
 
   /// Sets the active section status category.
   void setActiveStatus(MediaListStatus status) {
-    if (_activeStatus == status) return;
+    if (_activeStatus == status && _activeCustomList == null) return;
     _activeStatus = status;
+    _activeCustomList = null;
     notifyListeners();
+  }
+
+  /// Sets the active custom list filter.
+  void setActiveCustomList(String listName) {
+    if (_activeCustomList == listName) return;
+    _activeCustomList = listName;
+    _activeStatus = null;
+    notifyListeners();
+  }
+
+  /// Removes a custom list and resets to default status if currently active.
+  void removeCustomList(String listName) {
+    _lists.removeWhere((l) => l.isCustomList && l.name == listName);
+    if (_activeCustomList == listName) {
+      _activeCustomList = null;
+      final defaultList = _lists.firstWhere(
+        (l) => !l.isCustomList,
+        orElse: () => _lists.first,
+      );
+      _activeStatus = defaultList.status;
+    }
+    notifyListeners();
+  }
+
+  /// Adds a new empty custom list to the controller.
+  void addCustomList(String listName) {
+    final exists = _lists.any((l) => l.isCustomList && l.name == listName);
+    if (!exists) {
+      _lists.add(
+        MediaList(name: listName, isCustomList: true, entries: const []),
+      );
+      notifyListeners();
+    }
   }
 
   /// Fetches media lists for the authenticated user.
@@ -123,10 +161,24 @@ class MediaListController extends ChangeNotifier {
     _isLoading = false;
     _error = null;
 
-    if (_activeStatus == null && newLists.isNotEmpty) {
+    if (_activeCustomList != null) {
+      final exists = newLists.any(
+        (l) => l.isCustomList && l.name == _activeCustomList,
+      );
+      if (!exists) {
+        _activeCustomList = null;
+      }
+    }
+
+    if (_activeCustomList == null &&
+        _activeStatus == null &&
+        newLists.isNotEmpty) {
       final firstNonEmpty = newLists.firstWhere(
-        (l) => l.entries.isNotEmpty,
-        orElse: () => newLists.first,
+        (l) => !l.isCustomList && l.entries.isNotEmpty,
+        orElse: () => newLists.firstWhere(
+          (l) => !l.isCustomList,
+          orElse: () => newLists.first,
+        ),
       );
       _activeStatus = firstNonEmpty.status;
     }
@@ -151,6 +203,7 @@ class MediaListController extends ChangeNotifier {
     _lists = [];
     _error = null;
     _activeStatus = null;
+    _activeCustomList = null;
     _needsRefresh = false;
     _hasFetchedThisSession = false;
     notifyListeners();

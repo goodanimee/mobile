@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../services/custom_list_service.dart';
+import '../../services/media_list_controller.dart';
 import '../../theme/theme.dart';
 
 /// Expandable management panel for creating, viewing, and deleting custom lists
@@ -15,12 +16,16 @@ class CustomListPanel extends StatefulWidget {
   /// Optional height to match the vertical quick navigation bar
   final double? height;
 
+  /// Optional callback invoked when a custom list is selected
+  final void Function(String name)? onSelectList;
+
   /// Creates a custom list management panel
   const CustomListPanel({
     super.key,
     required this.mediaType,
     this.width,
     this.height,
+    this.onSelectList,
   });
 
   @override
@@ -78,6 +83,8 @@ class _CustomListPanelState extends State<CustomListPanel> {
       return;
     }
 
+    MediaListController.forType(widget.mediaType).addCustomList(text);
+
     setState(() {
       _isAdding = false;
       _errorMessage = null;
@@ -86,7 +93,13 @@ class _CustomListPanelState extends State<CustomListPanel> {
   }
 
   Future<void> _deleteList(String name) async {
-    await CustomListService.instance.deleteCustomList(widget.mediaType, name);
+    final success = await CustomListService.instance.deleteCustomList(
+      widget.mediaType,
+      name,
+    );
+    if (success) {
+      MediaListController.forType(widget.mediaType).removeCustomList(name);
+    }
   }
 
   double _resolveDefaultWidth() {
@@ -101,12 +114,15 @@ class _CustomListPanelState extends State<CustomListPanel> {
     final panelWidth = widget.width ?? _resolveDefaultWidth();
     final panelHeight = widget.height;
 
+    final controller = MediaListController.forType(widget.mediaType);
+
     return ListenableBuilder(
-      listenable: CustomListService.instance,
+      listenable: Listenable.merge([CustomListService.instance, controller]),
       builder: (context, _) {
         final lists = CustomListService.instance.getCustomLists(
           widget.mediaType,
         );
+        final activeCustomList = controller.activeCustomList;
 
         Widget content = lists.isEmpty
             ? Center(
@@ -164,53 +180,71 @@ class _CustomListPanelState extends State<CustomListPanel> {
                 ),
               )
             : ListView.separated(
-                padding: const EdgeInsets.symmetric(vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                 itemCount: lists.length,
-                separatorBuilder: (context, index) => const Divider(
-                  height: 1,
-                  thickness: 0.5,
-                  color: cardBorderColor,
-                ),
+                separatorBuilder: (context, index) => const SizedBox(height: 2),
                 itemBuilder: (context, index) {
                   final listName = lists[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 10,
+                  final isSelected = activeCustomList == listName;
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? borderColor.withValues(alpha: 0.15)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(8),
+                      border: isSelected
+                          ? Border.all(
+                              color: borderColor.withValues(alpha: 0.35),
+                            )
+                          : null,
                     ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          LucideIcons.list,
-                          size: 16,
-                          color: textSecondary,
+                    child: InkWell(
+                      onTap: () => widget.onSelectList?.call(listName),
+                      borderRadius: BorderRadius.circular(8),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 8,
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            listName,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: textPrimary,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => _deleteList(listName),
-                          behavior: HitTestBehavior.opaque,
-                          child: Padding(
-                            padding: const EdgeInsets.all(4),
-                            child: Icon(
-                              LucideIcons.trash2,
+                        child: Row(
+                          children: [
+                            Icon(
+                              LucideIcons.list,
                               size: 16,
-                              color: Colors.redAccent.withValues(alpha: 0.8),
+                              color: isSelected ? borderColor : textSecondary,
                             ),
-                          ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                listName,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: isSelected
+                                      ? FontWeight.w600
+                                      : FontWeight.w500,
+                                  color: isSelected ? borderColor : textPrimary,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => _deleteList(listName),
+                              behavior: HitTestBehavior.opaque,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: Icon(
+                                  LucideIcons.trash2,
+                                  size: 16,
+                                  color: Colors.redAccent.withValues(
+                                    alpha: 0.8,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   );
                 },
