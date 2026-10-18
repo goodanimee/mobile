@@ -1335,3 +1335,46 @@ final $typed_data.Uint8List fetchStaffSearchResponseDescriptor = $convert.base64
     'ChhGZXRjaFN0YWZmU2VhcmNoUmVzcG9uc2USJgoFc3RhZmYYASADKAsyEC5nb29kYW5pbWUuU3'
     'RhZmZSBXN0YWZmEjAKCXBhZ2VfaW5mbxgCIAEoCzITLmdvb2RhbmltZS5QYWdlSW5mb1IIcGFn'
     'ZUluZm8SFAoFZXJyb3IYAyABKAlSBWVycm9y');
+
+@$core.Deprecated('Use updateCustomListsRequestDescriptor instead')
+const UpdateCustomListsRequest$json = {
+  '1': 'UpdateCustomListsRequest',
+  '2': [
+    {'1': 'media_type', '3': 1, '4': 1, '5': 9, '10': 'mediaType'},
+    {'1': 'custom_lists', '3': 2, '4': 3, '5': 9, '10': 'customLists'},
+  ],
+};
+
+/// Descriptor for `UpdateCustomListsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateCustomListsRequestDescriptor =
+    $convert.base64Decode(
+        'ChhVcGRhdGVDdXN0b21MaXN0c1JlcXVlc3QSHQoKbWVkaWFfdHlwZRgBIAEoCVIJbWVkaWFUeX'
+        'BlEiEKDGN1c3RvbV9saXN0cxgCIAMoCVILY3VzdG9tTGlzdHM=');
+
+@$core.Deprecated('Use updateCustomListsResponseDescriptor instead')
+const UpdateCustomListsResponse$json = {
+  '1': 'UpdateCustomListsResponse',
+  '2': [
+    {'1': 'error', '3': 1, '4': 1, '5': 9, '10': 'error'},
+    {
+      '1': 'anime_custom_lists',
+      '3': 2,
+      '4': 3,
+      '5': 9,
+      '10': 'animeCustomLists'
+    },
+    {
+      '1': 'manga_custom_lists',
+      '3': 3,
+      '4': 3,
+      '5': 9,
+      '10': 'mangaCustomLists'
+    },
+  ],
+};
+
+/// Descriptor for `UpdateCustomListsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateCustomListsResponseDescriptor = $convert.base64Decode(
+    'ChlVcGRhdGVDdXN0b21MaXN0c1Jlc3BvbnNlEhQKBWVycm9yGAEgASgJUgVlcnJvchIsChJhbm'
+    'ltZV9jdXN0b21fbGlzdHMYAiADKAlSEGFuaW1lQ3VzdG9tTGlzdHMSLAoSbWFuZ2FfY3VzdG9t'
+    'X2xpc3RzGAMgAygJUhBtYW5nYUN1c3RvbUxpc3Rz');

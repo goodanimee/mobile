@@ -323,3 +323,13 @@ message FetchStaffSearchResponse {
   string error = 3;
 }
 
+message UpdateCustomListsRequest {
+  string media_type = 1;
+  repeated string custom_lists = 2;
+}
+
+message UpdateCustomListsResponse {
+  string error = 1;
+  repeated string anime_custom_lists = 2;
+  repeated string manga_custom_lists = 3;
+}

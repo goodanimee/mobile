@@ -79,12 +79,18 @@ class Viewer extends $pb.GeneratedMessage {
     $core.String? name,
     $core.int? createdAt,
     ViewerAvatar? avatar,
+    $core.Iterable<$core.String>? animeCustomLists,
+    $core.Iterable<$core.String>? mangaCustomLists,
   }) {
     final result = Viewer._();
     if (id != null) result.id = id;
     if (name != null) result.name = name;
     if (createdAt != null) result.createdAt = createdAt;
     if (avatar != null) result.avatar = avatar;
+    if (animeCustomLists != null)
+      result.animeCustomLists.addAll(animeCustomLists);
+    if (mangaCustomLists != null)
+      result.mangaCustomLists.addAll(mangaCustomLists);
     return result;
   }
 
@@ -106,6 +112,8 @@ class Viewer extends $pb.GeneratedMessage {
     ..aI(3, _omitFieldNames ? '' : 'createdAt')
     ..aOM<ViewerAvatar>(4, _omitFieldNames ? '' : 'avatar',
         subBuilder: ViewerAvatar.$_createMessage)
+    ..pPS(5, _omitFieldNames ? '' : 'animeCustomLists')
+    ..pPS(6, _omitFieldNames ? '' : 'mangaCustomLists')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -165,6 +173,12 @@ class Viewer extends $pb.GeneratedMessage {
   void clearAvatar() => $_clearField(4);
   @$pb.TagNumber(4)
   ViewerAvatar ensureAvatar() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  $pb.PbList<$core.String> get animeCustomLists => $_getList(4);
+
+  @$pb.TagNumber(6)
+  $pb.PbList<$core.String> get mangaCustomLists => $_getList(5);
 }
 
 const $core.bool _omitFieldNames =
