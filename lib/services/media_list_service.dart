@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,7 @@ import '../proto/api.pb.dart';
 import '../proto/media_list.pb.dart' as pb_list;
 import '../utils/app_options.dart';
 import 'auth_service.dart';
+import 'custom_list_service.dart';
 
 /// Service for managing user media lists and caches.
 class MediaListService {
@@ -76,6 +78,17 @@ class MediaListService {
       mediaType,
     );
     final rawLists = response.lists;
+    final customListNames = rawLists
+        .where((l) => l.status == null)
+        .map((l) => l.name)
+        .where((name) => name.isNotEmpty)
+        .toList();
+
+    if (customListNames.isNotEmpty) {
+      final existing = CustomListService.instance.getCustomLists(mediaType);
+      final merged = {...existing, ...customListNames}.toList();
+      unawaited(CustomListService.instance.setCustomLists(mediaType, merged));
+    }
 
     final allEntries = <MediaListEntryWithMedia>[];
     for (final list in rawLists) {

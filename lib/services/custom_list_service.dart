@@ -50,12 +50,12 @@ class CustomListService extends ChangeNotifier {
   }
 
   /// Synchronizes custom lists from AniList viewer settings.
-  Future<void> syncFromRemote() async {
+  Future<void> syncFromRemote({bool forceRefresh = true}) async {
     try {
       final token = await AuthService.getRawToken();
       if (token == null || token.isEmpty) return;
 
-      final viewer = await UserService.getViewer();
+      final viewer = await UserService.getViewer(forceRefresh: forceRefresh);
       if (viewer == null) return;
 
       final prefs = await SharedPreferences.getInstance();
@@ -65,6 +65,29 @@ class CustomListService extends ChangeNotifier {
       await prefs.setStringList(keyMangaCustomLists, _mangaCustomLists);
       notifyListeners();
     } catch (_) {}
+  }
+
+  /// Sets the custom lists for the given [mediaType] and persists them.
+  Future<void> setCustomLists(String mediaType, List<String> lists) async {
+    final isManga = mediaType.toUpperCase() == 'MANGA';
+    final sanitized = lists
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toSet()
+        .toList();
+
+    if (isManga) {
+      _mangaCustomLists = sanitized;
+    } else {
+      _animeCustomLists = sanitized;
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(
+      isManga ? keyMangaCustomLists : keyAnimeCustomLists,
+      sanitized,
+    );
+    notifyListeners();
   }
 
   /// Sets whether the custom list management drawer is open and persists the state.

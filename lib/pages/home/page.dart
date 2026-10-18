@@ -86,6 +86,7 @@ class _HomePageState extends State<HomePage> {
       });
       if (token != null) {
         DeepLinkService.instance.markReady();
+        unawaited(CustomListService.instance.syncFromRemote());
         await _checkForUpdate();
       }
     }
