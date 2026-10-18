@@ -125,6 +125,7 @@ fragment MediaListEntryFields on MediaList {
   score(format: POINT_10_DECIMAL)
   private
   hiddenFromStatusLists
+  customLists
   notes
   startedAt {
     ...FuzzyDateFields

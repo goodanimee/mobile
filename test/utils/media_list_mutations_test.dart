@@ -478,5 +478,15 @@ void main() {
       final cleared = updated.updateNotes('');
       expect(cleared.notes, '');
     });
+
+    test('updateCustomLists updates the customLists list', () {
+      final entry = _createEntry();
+
+      final updated = entry.updateCustomLists(['Favorites', 'Tier S']);
+      expect(updated.customLists, ['Favorites', 'Tier S']);
+
+      final cleared = updated.updateCustomLists([]);
+      expect(cleared.customLists, isEmpty);
+    });
   });
 }

@@ -117,13 +117,47 @@ class _CustomListPanelState extends State<CustomListPanel> {
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Icon(LucideIcons.folder, size: 28, color: textMuted),
-                      SizedBox(height: 8),
-                      Text(
+                    children: [
+                      const Icon(
+                        LucideIcons.folder,
+                        size: 28,
+                        color: textMuted,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
                         'No custom lists yet',
                         style: TextStyle(fontSize: 12, color: textMuted),
                         textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      InkWell(
+                        onTap: _startAdding,
+                        borderRadius: BorderRadius.circular(8),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(
+                                LucideIcons.plus,
+                                size: 14,
+                                color: borderColor,
+                              ),
+                              SizedBox(width: 6),
+                              Text(
+                                'Create a custom list',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: borderColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -141,14 +175,14 @@ class _CustomListPanelState extends State<CustomListPanel> {
                   final listName = lists[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
+                      horizontal: 14,
+                      vertical: 10,
                     ),
                     child: Row(
                       children: [
                         const Icon(
                           LucideIcons.list,
-                          size: 14,
+                          size: 16,
                           color: textSecondary,
                         ),
                         const SizedBox(width: 8),
@@ -156,7 +190,8 @@ class _CustomListPanelState extends State<CustomListPanel> {
                           child: Text(
                             listName,
                             style: const TextStyle(
-                              fontSize: 13,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
                               color: textPrimary,
                             ),
                             maxLines: 1,
@@ -170,7 +205,7 @@ class _CustomListPanelState extends State<CustomListPanel> {
                             padding: const EdgeInsets.all(4),
                             child: Icon(
                               LucideIcons.trash2,
-                              size: 14,
+                              size: 16,
                               color: Colors.redAccent.withValues(alpha: 0.8),
                             ),
                           ),

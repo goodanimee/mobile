@@ -146,6 +146,7 @@ class _MediaPageState extends State<MediaPage> {
       private: media.mediaListEntry?.private ?? false,
       hiddenFromStatusLists:
           media.mediaListEntry?.hiddenFromStatusLists ?? false,
+      customLists: media.mediaListEntry?.customLists ?? const [],
       notes: media.mediaListEntry?.notes ?? '',
       media: media,
     );
@@ -169,6 +170,7 @@ class _MediaPageState extends State<MediaPage> {
             completedAt: typedEntry.completedAt,
             private: typedEntry.private,
             hiddenFromStatusLists: typedEntry.hiddenFromStatusLists,
+            customLists: typedEntry.customLists,
             notes: typedEntry.notes,
           );
           _mediaData = media.copyWith(mediaListEntry: updatedEntry);

@@ -162,6 +162,7 @@ class MediaListService {
         entries.removeWhere((e) => e.media.id == mediaId);
         return MediaList(
           name: section.name,
+          isCustomList: section.isCustomList,
           status: section.status,
           entries: entries,
         );
@@ -212,6 +213,7 @@ class MediaListService {
 
       return MediaList(
         name: section.name,
+        isCustomList: section.isCustomList,
         status: section.status,
         entries: entries,
       );
@@ -230,6 +232,7 @@ class MediaListService {
           ..add(movedEntry!);
         updatedLists[targetIdx] = MediaList(
           name: section.name,
+          isCustomList: section.isCustomList,
           status: section.status,
           entries: entries,
         );
