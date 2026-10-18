@@ -22,6 +22,9 @@ var saveMediaListEntryMutation string
 //go:embed graphql/delete_list_entry.graphql
 var deleteMediaListEntryMutation string
 
+//go:embed graphql/update_custom_lists.graphql
+var updateCustomListsMutation string
+
 // FetchMediaList returns authenticated user's media (ANIME or MANGA) list
 //
 //export FetchMediaList
@@ -126,5 +129,46 @@ func DeleteMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen
 
 	pbResponse.EntryId = req.GetEntryId()
 	pbResponse.Deleted = data.DeleteMediaListEntry.Deleted
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// UpdateCustomLists updates custom lists on AniList
+//
+//export UpdateCustomLists
+func UpdateCustomLists(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.UpdateCustomListsResponse{}
+
+	var req pb.UpdateCustomListsRequest
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]any{}
+	listOptions := map[string]any{
+		"customLists": req.CustomLists,
+	}
+	if req.MediaType == "MANGA" {
+		variables["mangaListOptions"] = listOptions
+	} else {
+		variables["animeListOptions"] = listOptions
+	}
+
+	data, err := executeGraphQL[models.UpdateUserDTO](tk, updateCustomListsMutation, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	if data.UpdateUser.MediaListOptions != nil {
+		if data.UpdateUser.MediaListOptions.AnimeList != nil {
+			pbResponse.AnimeCustomLists = data.UpdateUser.MediaListOptions.AnimeList.CustomLists
+		}
+		if data.UpdateUser.MediaListOptions.MangaList != nil {
+			pbResponse.MangaCustomLists = data.UpdateUser.MediaListOptions.MangaList.CustomLists
+		}
+	}
+
 	return marshalAndReturn(pbResponse, outLen)
 }
