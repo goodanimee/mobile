@@ -18,4 +18,5 @@ message MediaListEntry {
   bool private = 9;
   bool hidden_from_status_lists = 10;
   string notes = 11;
+  repeated string custom_lists = 12;
 }

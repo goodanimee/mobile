@@ -334,6 +334,57 @@ class FuzzyDateInput extends $pb.GeneratedMessage {
   void clearDay() => $_clearField(3);
 }
 
+class CustomListsInput extends $pb.GeneratedMessage {
+  factory CustomListsInput({
+    $core.Iterable<$core.String>? customLists,
+  }) {
+    final result = CustomListsInput._();
+    if (customLists != null) result.customLists.addAll(customLists);
+    return result;
+  }
+
+  CustomListsInput._();
+
+  factory CustomListsInput.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CustomListsInput()..mergeFromBuffer(data, registry);
+  factory CustomListsInput.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      CustomListsInput()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CustomListsInput',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: CustomListsInput.$_createMessage)
+    ..pPS(1, _omitFieldNames ? '' : 'customLists')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CustomListsInput clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CustomListsInput copyWith(void Function(CustomListsInput) updates) =>
+      super.copyWith((message) => updates(message as CustomListsInput))
+          as CustomListsInput;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use CustomListsInput() / CustomListsInput.new instead')
+  static CustomListsInput create() => CustomListsInput._();
+  static $pb.GeneratedMessage $_createMessage() => CustomListsInput._();
+  @$core.override
+  CustomListsInput createEmptyInstance() => CustomListsInput._();
+  @$core.pragma('dart2js:noInline')
+  static CustomListsInput getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CustomListsInput>(
+          CustomListsInput.$_createMessage);
+  static CustomListsInput? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$core.String> get customLists => $_getList(0);
+}
+
 class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
   factory SaveMediaListEntryRequest({
     $core.int? mediaId,
@@ -347,6 +398,7 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
     $core.bool? private,
     $core.bool? hiddenFromStatusLists,
     $core.String? notes,
+    CustomListsInput? customLists,
   }) {
     final result = SaveMediaListEntryRequest._();
     if (mediaId != null) result.mediaId = mediaId;
@@ -361,6 +413,7 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
     if (hiddenFromStatusLists != null)
       result.hiddenFromStatusLists = hiddenFromStatusLists;
     if (notes != null) result.notes = notes;
+    if (customLists != null) result.customLists = customLists;
     return result;
   }
 
@@ -390,6 +443,8 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
     ..aOB(9, _omitFieldNames ? '' : 'private')
     ..aOB(10, _omitFieldNames ? '' : 'hiddenFromStatusLists')
     ..aOS(11, _omitFieldNames ? '' : 'notes')
+    ..aOM<CustomListsInput>(12, _omitFieldNames ? '' : 'customLists',
+        subBuilder: CustomListsInput.$_createMessage)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -520,6 +575,17 @@ class SaveMediaListEntryRequest extends $pb.GeneratedMessage {
   $core.bool hasNotes() => $_has(10);
   @$pb.TagNumber(11)
   void clearNotes() => $_clearField(11);
+
+  @$pb.TagNumber(12)
+  CustomListsInput get customLists => $_getN(11);
+  @$pb.TagNumber(12)
+  set customLists(CustomListsInput value) => $_setField(12, value);
+  @$pb.TagNumber(12)
+  $core.bool hasCustomLists() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearCustomLists() => $_clearField(12);
+  @$pb.TagNumber(12)
+  CustomListsInput ensureCustomLists() => $_ensure(11);
 }
 
 class SaveMediaListEntryResponse extends $pb.GeneratedMessage {

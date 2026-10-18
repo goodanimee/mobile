@@ -245,6 +245,50 @@ func (x *FuzzyDateInput) GetDay() int32 {
 	return 0
 }
 
+type CustomListsInput struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CustomLists   []string               `protobuf:"bytes,1,rep,name=custom_lists,json=customLists,proto3" json:"custom_lists,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CustomListsInput) Reset() {
+	*x = CustomListsInput{}
+	mi := &file_api_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CustomListsInput) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CustomListsInput) ProtoMessage() {}
+
+func (x *CustomListsInput) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CustomListsInput.ProtoReflect.Descriptor instead.
+func (*CustomListsInput) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *CustomListsInput) GetCustomLists() []string {
+	if x != nil {
+		return x.CustomLists
+	}
+	return nil
+}
+
 type SaveMediaListEntryRequest struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
 	MediaId               int32                  `protobuf:"varint,1,opt,name=media_id,json=mediaId,proto3" json:"media_id,omitempty"`
@@ -258,13 +302,14 @@ type SaveMediaListEntryRequest struct {
 	Private               *bool                  `protobuf:"varint,9,opt,name=private,proto3,oneof" json:"private,omitempty"`
 	HiddenFromStatusLists *bool                  `protobuf:"varint,10,opt,name=hidden_from_status_lists,json=hiddenFromStatusLists,proto3,oneof" json:"hidden_from_status_lists,omitempty"`
 	Notes                 *string                `protobuf:"bytes,11,opt,name=notes,proto3,oneof" json:"notes,omitempty"`
+	CustomLists           *CustomListsInput      `protobuf:"bytes,12,opt,name=custom_lists,json=customLists,proto3,oneof" json:"custom_lists,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
 
 func (x *SaveMediaListEntryRequest) Reset() {
 	*x = SaveMediaListEntryRequest{}
-	mi := &file_api_proto_msgTypes[4]
+	mi := &file_api_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -276,7 +321,7 @@ func (x *SaveMediaListEntryRequest) String() string {
 func (*SaveMediaListEntryRequest) ProtoMessage() {}
 
 func (x *SaveMediaListEntryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[4]
+	mi := &file_api_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -289,7 +334,7 @@ func (x *SaveMediaListEntryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SaveMediaListEntryRequest.ProtoReflect.Descriptor instead.
 func (*SaveMediaListEntryRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{4}
+	return file_api_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *SaveMediaListEntryRequest) GetMediaId() int32 {
@@ -369,6 +414,13 @@ func (x *SaveMediaListEntryRequest) GetNotes() string {
 	return ""
 }
 
+func (x *SaveMediaListEntryRequest) GetCustomLists() *CustomListsInput {
+	if x != nil {
+		return x.CustomLists
+	}
+	return nil
+}
+
 type SaveMediaListEntryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Entry         *MediaListEntry        `protobuf:"bytes,1,opt,name=entry,proto3" json:"entry,omitempty"`
@@ -379,7 +431,7 @@ type SaveMediaListEntryResponse struct {
 
 func (x *SaveMediaListEntryResponse) Reset() {
 	*x = SaveMediaListEntryResponse{}
-	mi := &file_api_proto_msgTypes[5]
+	mi := &file_api_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -391,7 +443,7 @@ func (x *SaveMediaListEntryResponse) String() string {
 func (*SaveMediaListEntryResponse) ProtoMessage() {}
 
 func (x *SaveMediaListEntryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[5]
+	mi := &file_api_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -404,7 +456,7 @@ func (x *SaveMediaListEntryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SaveMediaListEntryResponse.ProtoReflect.Descriptor instead.
 func (*SaveMediaListEntryResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{5}
+	return file_api_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *SaveMediaListEntryResponse) GetEntry() *MediaListEntry {
@@ -430,7 +482,7 @@ type FetchMediaDetailsRequest struct {
 
 func (x *FetchMediaDetailsRequest) Reset() {
 	*x = FetchMediaDetailsRequest{}
-	mi := &file_api_proto_msgTypes[6]
+	mi := &file_api_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -442,7 +494,7 @@ func (x *FetchMediaDetailsRequest) String() string {
 func (*FetchMediaDetailsRequest) ProtoMessage() {}
 
 func (x *FetchMediaDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[6]
+	mi := &file_api_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -455,7 +507,7 @@ func (x *FetchMediaDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaDetailsRequest.ProtoReflect.Descriptor instead.
 func (*FetchMediaDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{6}
+	return file_api_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *FetchMediaDetailsRequest) GetMediaId() int32 {
@@ -475,7 +527,7 @@ type FetchMediaDetailsResponse struct {
 
 func (x *FetchMediaDetailsResponse) Reset() {
 	*x = FetchMediaDetailsResponse{}
-	mi := &file_api_proto_msgTypes[7]
+	mi := &file_api_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -487,7 +539,7 @@ func (x *FetchMediaDetailsResponse) String() string {
 func (*FetchMediaDetailsResponse) ProtoMessage() {}
 
 func (x *FetchMediaDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[7]
+	mi := &file_api_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -500,7 +552,7 @@ func (x *FetchMediaDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaDetailsResponse.ProtoReflect.Descriptor instead.
 func (*FetchMediaDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{7}
+	return file_api_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *FetchMediaDetailsResponse) GetMedia() *Media {
@@ -528,7 +580,7 @@ type FetchMediaStaffRequest struct {
 
 func (x *FetchMediaStaffRequest) Reset() {
 	*x = FetchMediaStaffRequest{}
-	mi := &file_api_proto_msgTypes[8]
+	mi := &file_api_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -540,7 +592,7 @@ func (x *FetchMediaStaffRequest) String() string {
 func (*FetchMediaStaffRequest) ProtoMessage() {}
 
 func (x *FetchMediaStaffRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[8]
+	mi := &file_api_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -553,7 +605,7 @@ func (x *FetchMediaStaffRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaStaffRequest.ProtoReflect.Descriptor instead.
 func (*FetchMediaStaffRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{8}
+	return file_api_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *FetchMediaStaffRequest) GetMediaId() int32 {
@@ -587,7 +639,7 @@ type FetchMediaStaffResponse struct {
 
 func (x *FetchMediaStaffResponse) Reset() {
 	*x = FetchMediaStaffResponse{}
-	mi := &file_api_proto_msgTypes[9]
+	mi := &file_api_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -599,7 +651,7 @@ func (x *FetchMediaStaffResponse) String() string {
 func (*FetchMediaStaffResponse) ProtoMessage() {}
 
 func (x *FetchMediaStaffResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[9]
+	mi := &file_api_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -612,7 +664,7 @@ func (x *FetchMediaStaffResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaStaffResponse.ProtoReflect.Descriptor instead.
 func (*FetchMediaStaffResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{9}
+	return file_api_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *FetchMediaStaffResponse) GetMedia() *Media {
@@ -640,7 +692,7 @@ type FetchMediaCharactersRequest struct {
 
 func (x *FetchMediaCharactersRequest) Reset() {
 	*x = FetchMediaCharactersRequest{}
-	mi := &file_api_proto_msgTypes[10]
+	mi := &file_api_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -652,7 +704,7 @@ func (x *FetchMediaCharactersRequest) String() string {
 func (*FetchMediaCharactersRequest) ProtoMessage() {}
 
 func (x *FetchMediaCharactersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[10]
+	mi := &file_api_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -665,7 +717,7 @@ func (x *FetchMediaCharactersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaCharactersRequest.ProtoReflect.Descriptor instead.
 func (*FetchMediaCharactersRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{10}
+	return file_api_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *FetchMediaCharactersRequest) GetMediaId() int32 {
@@ -699,7 +751,7 @@ type FetchMediaCharactersResponse struct {
 
 func (x *FetchMediaCharactersResponse) Reset() {
 	*x = FetchMediaCharactersResponse{}
-	mi := &file_api_proto_msgTypes[11]
+	mi := &file_api_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -711,7 +763,7 @@ func (x *FetchMediaCharactersResponse) String() string {
 func (*FetchMediaCharactersResponse) ProtoMessage() {}
 
 func (x *FetchMediaCharactersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[11]
+	mi := &file_api_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -724,7 +776,7 @@ func (x *FetchMediaCharactersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaCharactersResponse.ProtoReflect.Descriptor instead.
 func (*FetchMediaCharactersResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{11}
+	return file_api_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *FetchMediaCharactersResponse) GetMedia() *Media {
@@ -752,7 +804,7 @@ type FetchMediaRecommendationsRequest struct {
 
 func (x *FetchMediaRecommendationsRequest) Reset() {
 	*x = FetchMediaRecommendationsRequest{}
-	mi := &file_api_proto_msgTypes[12]
+	mi := &file_api_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -764,7 +816,7 @@ func (x *FetchMediaRecommendationsRequest) String() string {
 func (*FetchMediaRecommendationsRequest) ProtoMessage() {}
 
 func (x *FetchMediaRecommendationsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[12]
+	mi := &file_api_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -777,7 +829,7 @@ func (x *FetchMediaRecommendationsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaRecommendationsRequest.ProtoReflect.Descriptor instead.
 func (*FetchMediaRecommendationsRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{12}
+	return file_api_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *FetchMediaRecommendationsRequest) GetMediaId() int32 {
@@ -811,7 +863,7 @@ type FetchMediaRecommendationsResponse struct {
 
 func (x *FetchMediaRecommendationsResponse) Reset() {
 	*x = FetchMediaRecommendationsResponse{}
-	mi := &file_api_proto_msgTypes[13]
+	mi := &file_api_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -823,7 +875,7 @@ func (x *FetchMediaRecommendationsResponse) String() string {
 func (*FetchMediaRecommendationsResponse) ProtoMessage() {}
 
 func (x *FetchMediaRecommendationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[13]
+	mi := &file_api_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -836,7 +888,7 @@ func (x *FetchMediaRecommendationsResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use FetchMediaRecommendationsResponse.ProtoReflect.Descriptor instead.
 func (*FetchMediaRecommendationsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{13}
+	return file_api_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *FetchMediaRecommendationsResponse) GetMedia() *Media {
@@ -862,7 +914,7 @@ type ToggleFavouriteAnimeRequest struct {
 
 func (x *ToggleFavouriteAnimeRequest) Reset() {
 	*x = ToggleFavouriteAnimeRequest{}
-	mi := &file_api_proto_msgTypes[14]
+	mi := &file_api_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -874,7 +926,7 @@ func (x *ToggleFavouriteAnimeRequest) String() string {
 func (*ToggleFavouriteAnimeRequest) ProtoMessage() {}
 
 func (x *ToggleFavouriteAnimeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[14]
+	mi := &file_api_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -887,7 +939,7 @@ func (x *ToggleFavouriteAnimeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleFavouriteAnimeRequest.ProtoReflect.Descriptor instead.
 func (*ToggleFavouriteAnimeRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{14}
+	return file_api_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ToggleFavouriteAnimeRequest) GetAnimeId() int32 {
@@ -908,7 +960,7 @@ type ToggleFavouriteAnimeResponse struct {
 
 func (x *ToggleFavouriteAnimeResponse) Reset() {
 	*x = ToggleFavouriteAnimeResponse{}
-	mi := &file_api_proto_msgTypes[15]
+	mi := &file_api_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -920,7 +972,7 @@ func (x *ToggleFavouriteAnimeResponse) String() string {
 func (*ToggleFavouriteAnimeResponse) ProtoMessage() {}
 
 func (x *ToggleFavouriteAnimeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[15]
+	mi := &file_api_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -933,7 +985,7 @@ func (x *ToggleFavouriteAnimeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleFavouriteAnimeResponse.ProtoReflect.Descriptor instead.
 func (*ToggleFavouriteAnimeResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{15}
+	return file_api_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ToggleFavouriteAnimeResponse) GetAnimeId() int32 {
@@ -966,7 +1018,7 @@ type ToggleFavouriteMangaRequest struct {
 
 func (x *ToggleFavouriteMangaRequest) Reset() {
 	*x = ToggleFavouriteMangaRequest{}
-	mi := &file_api_proto_msgTypes[16]
+	mi := &file_api_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -978,7 +1030,7 @@ func (x *ToggleFavouriteMangaRequest) String() string {
 func (*ToggleFavouriteMangaRequest) ProtoMessage() {}
 
 func (x *ToggleFavouriteMangaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[16]
+	mi := &file_api_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -991,7 +1043,7 @@ func (x *ToggleFavouriteMangaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleFavouriteMangaRequest.ProtoReflect.Descriptor instead.
 func (*ToggleFavouriteMangaRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{16}
+	return file_api_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ToggleFavouriteMangaRequest) GetMangaId() int32 {
@@ -1012,7 +1064,7 @@ type ToggleFavouriteMangaResponse struct {
 
 func (x *ToggleFavouriteMangaResponse) Reset() {
 	*x = ToggleFavouriteMangaResponse{}
-	mi := &file_api_proto_msgTypes[17]
+	mi := &file_api_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1024,7 +1076,7 @@ func (x *ToggleFavouriteMangaResponse) String() string {
 func (*ToggleFavouriteMangaResponse) ProtoMessage() {}
 
 func (x *ToggleFavouriteMangaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[17]
+	mi := &file_api_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1037,7 +1089,7 @@ func (x *ToggleFavouriteMangaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleFavouriteMangaResponse.ProtoReflect.Descriptor instead.
 func (*ToggleFavouriteMangaResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{17}
+	return file_api_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ToggleFavouriteMangaResponse) GetMangaId() int32 {
@@ -1070,7 +1122,7 @@ type ToggleActivityLikeRequest struct {
 
 func (x *ToggleActivityLikeRequest) Reset() {
 	*x = ToggleActivityLikeRequest{}
-	mi := &file_api_proto_msgTypes[18]
+	mi := &file_api_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1082,7 +1134,7 @@ func (x *ToggleActivityLikeRequest) String() string {
 func (*ToggleActivityLikeRequest) ProtoMessage() {}
 
 func (x *ToggleActivityLikeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[18]
+	mi := &file_api_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1095,7 +1147,7 @@ func (x *ToggleActivityLikeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleActivityLikeRequest.ProtoReflect.Descriptor instead.
 func (*ToggleActivityLikeRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{18}
+	return file_api_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ToggleActivityLikeRequest) GetActivityId() int32 {
@@ -1116,7 +1168,7 @@ type ToggleActivityLikeResponse struct {
 
 func (x *ToggleActivityLikeResponse) Reset() {
 	*x = ToggleActivityLikeResponse{}
-	mi := &file_api_proto_msgTypes[19]
+	mi := &file_api_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1128,7 +1180,7 @@ func (x *ToggleActivityLikeResponse) String() string {
 func (*ToggleActivityLikeResponse) ProtoMessage() {}
 
 func (x *ToggleActivityLikeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[19]
+	mi := &file_api_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1141,7 +1193,7 @@ func (x *ToggleActivityLikeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleActivityLikeResponse.ProtoReflect.Descriptor instead.
 func (*ToggleActivityLikeResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{19}
+	return file_api_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ToggleActivityLikeResponse) GetActivityId() int32 {
@@ -1174,7 +1226,7 @@ type DeleteMediaListEntryRequest struct {
 
 func (x *DeleteMediaListEntryRequest) Reset() {
 	*x = DeleteMediaListEntryRequest{}
-	mi := &file_api_proto_msgTypes[20]
+	mi := &file_api_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1186,7 +1238,7 @@ func (x *DeleteMediaListEntryRequest) String() string {
 func (*DeleteMediaListEntryRequest) ProtoMessage() {}
 
 func (x *DeleteMediaListEntryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[20]
+	mi := &file_api_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1199,7 +1251,7 @@ func (x *DeleteMediaListEntryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMediaListEntryRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMediaListEntryRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{20}
+	return file_api_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *DeleteMediaListEntryRequest) GetEntryId() int32 {
@@ -1220,7 +1272,7 @@ type DeleteMediaListEntryResponse struct {
 
 func (x *DeleteMediaListEntryResponse) Reset() {
 	*x = DeleteMediaListEntryResponse{}
-	mi := &file_api_proto_msgTypes[21]
+	mi := &file_api_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1232,7 +1284,7 @@ func (x *DeleteMediaListEntryResponse) String() string {
 func (*DeleteMediaListEntryResponse) ProtoMessage() {}
 
 func (x *DeleteMediaListEntryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[21]
+	mi := &file_api_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1245,7 +1297,7 @@ func (x *DeleteMediaListEntryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMediaListEntryResponse.ProtoReflect.Descriptor instead.
 func (*DeleteMediaListEntryResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{21}
+	return file_api_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *DeleteMediaListEntryResponse) GetEntryId() int32 {
@@ -1280,7 +1332,7 @@ type FetchMediaReviewsRequest struct {
 
 func (x *FetchMediaReviewsRequest) Reset() {
 	*x = FetchMediaReviewsRequest{}
-	mi := &file_api_proto_msgTypes[22]
+	mi := &file_api_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1292,7 +1344,7 @@ func (x *FetchMediaReviewsRequest) String() string {
 func (*FetchMediaReviewsRequest) ProtoMessage() {}
 
 func (x *FetchMediaReviewsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[22]
+	mi := &file_api_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1305,7 +1357,7 @@ func (x *FetchMediaReviewsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaReviewsRequest.ProtoReflect.Descriptor instead.
 func (*FetchMediaReviewsRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{22}
+	return file_api_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *FetchMediaReviewsRequest) GetMediaId() int32 {
@@ -1339,7 +1391,7 @@ type FetchMediaReviewsResponse struct {
 
 func (x *FetchMediaReviewsResponse) Reset() {
 	*x = FetchMediaReviewsResponse{}
-	mi := &file_api_proto_msgTypes[23]
+	mi := &file_api_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1351,7 +1403,7 @@ func (x *FetchMediaReviewsResponse) String() string {
 func (*FetchMediaReviewsResponse) ProtoMessage() {}
 
 func (x *FetchMediaReviewsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[23]
+	mi := &file_api_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1364,7 +1416,7 @@ func (x *FetchMediaReviewsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaReviewsResponse.ProtoReflect.Descriptor instead.
 func (*FetchMediaReviewsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{23}
+	return file_api_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *FetchMediaReviewsResponse) GetMedia() *Media {
@@ -1391,7 +1443,7 @@ type RateReviewRequest struct {
 
 func (x *RateReviewRequest) Reset() {
 	*x = RateReviewRequest{}
-	mi := &file_api_proto_msgTypes[24]
+	mi := &file_api_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1403,7 +1455,7 @@ func (x *RateReviewRequest) String() string {
 func (*RateReviewRequest) ProtoMessage() {}
 
 func (x *RateReviewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[24]
+	mi := &file_api_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1416,7 +1468,7 @@ func (x *RateReviewRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RateReviewRequest.ProtoReflect.Descriptor instead.
 func (*RateReviewRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{24}
+	return file_api_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *RateReviewRequest) GetReviewId() int32 {
@@ -1443,7 +1495,7 @@ type RateReviewResponse struct {
 
 func (x *RateReviewResponse) Reset() {
 	*x = RateReviewResponse{}
-	mi := &file_api_proto_msgTypes[25]
+	mi := &file_api_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1455,7 +1507,7 @@ func (x *RateReviewResponse) String() string {
 func (*RateReviewResponse) ProtoMessage() {}
 
 func (x *RateReviewResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[25]
+	mi := &file_api_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1468,7 +1520,7 @@ func (x *RateReviewResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RateReviewResponse.ProtoReflect.Descriptor instead.
 func (*RateReviewResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{25}
+	return file_api_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *RateReviewResponse) GetReview() *ReviewNode {
@@ -1496,7 +1548,7 @@ type FetchMediaActivitiesRequest struct {
 
 func (x *FetchMediaActivitiesRequest) Reset() {
 	*x = FetchMediaActivitiesRequest{}
-	mi := &file_api_proto_msgTypes[26]
+	mi := &file_api_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1508,7 +1560,7 @@ func (x *FetchMediaActivitiesRequest) String() string {
 func (*FetchMediaActivitiesRequest) ProtoMessage() {}
 
 func (x *FetchMediaActivitiesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[26]
+	mi := &file_api_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1521,7 +1573,7 @@ func (x *FetchMediaActivitiesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaActivitiesRequest.ProtoReflect.Descriptor instead.
 func (*FetchMediaActivitiesRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{26}
+	return file_api_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *FetchMediaActivitiesRequest) GetMediaId() int32 {
@@ -1556,7 +1608,7 @@ type FetchMediaActivitiesResponse struct {
 
 func (x *FetchMediaActivitiesResponse) Reset() {
 	*x = FetchMediaActivitiesResponse{}
-	mi := &file_api_proto_msgTypes[27]
+	mi := &file_api_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1568,7 +1620,7 @@ func (x *FetchMediaActivitiesResponse) String() string {
 func (*FetchMediaActivitiesResponse) ProtoMessage() {}
 
 func (x *FetchMediaActivitiesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[27]
+	mi := &file_api_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1581,7 +1633,7 @@ func (x *FetchMediaActivitiesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaActivitiesResponse.ProtoReflect.Descriptor instead.
 func (*FetchMediaActivitiesResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{27}
+	return file_api_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *FetchMediaActivitiesResponse) GetPageInfo() *PageInfo {
@@ -1615,7 +1667,7 @@ type FetchStudioDetailsRequest struct {
 
 func (x *FetchStudioDetailsRequest) Reset() {
 	*x = FetchStudioDetailsRequest{}
-	mi := &file_api_proto_msgTypes[28]
+	mi := &file_api_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1627,7 +1679,7 @@ func (x *FetchStudioDetailsRequest) String() string {
 func (*FetchStudioDetailsRequest) ProtoMessage() {}
 
 func (x *FetchStudioDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[28]
+	mi := &file_api_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1640,7 +1692,7 @@ func (x *FetchStudioDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchStudioDetailsRequest.ProtoReflect.Descriptor instead.
 func (*FetchStudioDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{28}
+	return file_api_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *FetchStudioDetailsRequest) GetStudioId() int32 {
@@ -1667,7 +1719,7 @@ type FetchStudioDetailsResponse struct {
 
 func (x *FetchStudioDetailsResponse) Reset() {
 	*x = FetchStudioDetailsResponse{}
-	mi := &file_api_proto_msgTypes[29]
+	mi := &file_api_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1679,7 +1731,7 @@ func (x *FetchStudioDetailsResponse) String() string {
 func (*FetchStudioDetailsResponse) ProtoMessage() {}
 
 func (x *FetchStudioDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[29]
+	mi := &file_api_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1692,7 +1744,7 @@ func (x *FetchStudioDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchStudioDetailsResponse.ProtoReflect.Descriptor instead.
 func (*FetchStudioDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{29}
+	return file_api_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *FetchStudioDetailsResponse) GetStudio() *Studio {
@@ -1718,7 +1770,7 @@ type ToggleFavouriteStudioRequest struct {
 
 func (x *ToggleFavouriteStudioRequest) Reset() {
 	*x = ToggleFavouriteStudioRequest{}
-	mi := &file_api_proto_msgTypes[30]
+	mi := &file_api_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1730,7 +1782,7 @@ func (x *ToggleFavouriteStudioRequest) String() string {
 func (*ToggleFavouriteStudioRequest) ProtoMessage() {}
 
 func (x *ToggleFavouriteStudioRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[30]
+	mi := &file_api_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1743,7 +1795,7 @@ func (x *ToggleFavouriteStudioRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleFavouriteStudioRequest.ProtoReflect.Descriptor instead.
 func (*ToggleFavouriteStudioRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{30}
+	return file_api_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ToggleFavouriteStudioRequest) GetStudioId() int32 {
@@ -1763,7 +1815,7 @@ type ToggleFavouriteStudioResponse struct {
 
 func (x *ToggleFavouriteStudioResponse) Reset() {
 	*x = ToggleFavouriteStudioResponse{}
-	mi := &file_api_proto_msgTypes[31]
+	mi := &file_api_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1775,7 +1827,7 @@ func (x *ToggleFavouriteStudioResponse) String() string {
 func (*ToggleFavouriteStudioResponse) ProtoMessage() {}
 
 func (x *ToggleFavouriteStudioResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[31]
+	mi := &file_api_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1788,7 +1840,7 @@ func (x *ToggleFavouriteStudioResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleFavouriteStudioResponse.ProtoReflect.Descriptor instead.
 func (*ToggleFavouriteStudioResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{31}
+	return file_api_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *ToggleFavouriteStudioResponse) GetStudioId() int32 {
@@ -1816,7 +1868,7 @@ type FetchStaffDetailsRequest struct {
 
 func (x *FetchStaffDetailsRequest) Reset() {
 	*x = FetchStaffDetailsRequest{}
-	mi := &file_api_proto_msgTypes[32]
+	mi := &file_api_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1828,7 +1880,7 @@ func (x *FetchStaffDetailsRequest) String() string {
 func (*FetchStaffDetailsRequest) ProtoMessage() {}
 
 func (x *FetchStaffDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[32]
+	mi := &file_api_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1841,7 +1893,7 @@ func (x *FetchStaffDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchStaffDetailsRequest.ProtoReflect.Descriptor instead.
 func (*FetchStaffDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{32}
+	return file_api_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *FetchStaffDetailsRequest) GetStaffId() int32 {
@@ -1875,7 +1927,7 @@ type FetchStaffDetailsResponse struct {
 
 func (x *FetchStaffDetailsResponse) Reset() {
 	*x = FetchStaffDetailsResponse{}
-	mi := &file_api_proto_msgTypes[33]
+	mi := &file_api_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1887,7 +1939,7 @@ func (x *FetchStaffDetailsResponse) String() string {
 func (*FetchStaffDetailsResponse) ProtoMessage() {}
 
 func (x *FetchStaffDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[33]
+	mi := &file_api_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1900,7 +1952,7 @@ func (x *FetchStaffDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchStaffDetailsResponse.ProtoReflect.Descriptor instead.
 func (*FetchStaffDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{33}
+	return file_api_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *FetchStaffDetailsResponse) GetStaff() *Staff {
@@ -1926,7 +1978,7 @@ type ToggleFavouriteStaffRequest struct {
 
 func (x *ToggleFavouriteStaffRequest) Reset() {
 	*x = ToggleFavouriteStaffRequest{}
-	mi := &file_api_proto_msgTypes[34]
+	mi := &file_api_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1938,7 +1990,7 @@ func (x *ToggleFavouriteStaffRequest) String() string {
 func (*ToggleFavouriteStaffRequest) ProtoMessage() {}
 
 func (x *ToggleFavouriteStaffRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[34]
+	mi := &file_api_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1951,7 +2003,7 @@ func (x *ToggleFavouriteStaffRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleFavouriteStaffRequest.ProtoReflect.Descriptor instead.
 func (*ToggleFavouriteStaffRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{34}
+	return file_api_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *ToggleFavouriteStaffRequest) GetStaffId() int32 {
@@ -1971,7 +2023,7 @@ type ToggleFavouriteStaffResponse struct {
 
 func (x *ToggleFavouriteStaffResponse) Reset() {
 	*x = ToggleFavouriteStaffResponse{}
-	mi := &file_api_proto_msgTypes[35]
+	mi := &file_api_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1983,7 +2035,7 @@ func (x *ToggleFavouriteStaffResponse) String() string {
 func (*ToggleFavouriteStaffResponse) ProtoMessage() {}
 
 func (x *ToggleFavouriteStaffResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[35]
+	mi := &file_api_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1996,7 +2048,7 @@ func (x *ToggleFavouriteStaffResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleFavouriteStaffResponse.ProtoReflect.Descriptor instead.
 func (*ToggleFavouriteStaffResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{35}
+	return file_api_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *ToggleFavouriteStaffResponse) GetStaffId() int32 {
@@ -2023,7 +2075,7 @@ type FetchGenresResponse struct {
 
 func (x *FetchGenresResponse) Reset() {
 	*x = FetchGenresResponse{}
-	mi := &file_api_proto_msgTypes[36]
+	mi := &file_api_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2035,7 +2087,7 @@ func (x *FetchGenresResponse) String() string {
 func (*FetchGenresResponse) ProtoMessage() {}
 
 func (x *FetchGenresResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[36]
+	mi := &file_api_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2048,7 +2100,7 @@ func (x *FetchGenresResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchGenresResponse.ProtoReflect.Descriptor instead.
 func (*FetchGenresResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{36}
+	return file_api_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *FetchGenresResponse) GetGenres() []string {
@@ -2075,7 +2127,7 @@ type FetchTagsResponse struct {
 
 func (x *FetchTagsResponse) Reset() {
 	*x = FetchTagsResponse{}
-	mi := &file_api_proto_msgTypes[37]
+	mi := &file_api_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2087,7 +2139,7 @@ func (x *FetchTagsResponse) String() string {
 func (*FetchTagsResponse) ProtoMessage() {}
 
 func (x *FetchTagsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[37]
+	mi := &file_api_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2100,7 +2152,7 @@ func (x *FetchTagsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchTagsResponse.ProtoReflect.Descriptor instead.
 func (*FetchTagsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{37}
+	return file_api_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *FetchTagsResponse) GetTags() []*MediaTag {
@@ -2160,7 +2212,7 @@ type FetchMediaSearchRequest struct {
 
 func (x *FetchMediaSearchRequest) Reset() {
 	*x = FetchMediaSearchRequest{}
-	mi := &file_api_proto_msgTypes[38]
+	mi := &file_api_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2172,7 +2224,7 @@ func (x *FetchMediaSearchRequest) String() string {
 func (*FetchMediaSearchRequest) ProtoMessage() {}
 
 func (x *FetchMediaSearchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[38]
+	mi := &file_api_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2185,7 +2237,7 @@ func (x *FetchMediaSearchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaSearchRequest.ProtoReflect.Descriptor instead.
 func (*FetchMediaSearchRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{38}
+	return file_api_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *FetchMediaSearchRequest) GetPage() int32 {
@@ -2444,7 +2496,7 @@ type FetchMediaSearchResponse struct {
 
 func (x *FetchMediaSearchResponse) Reset() {
 	*x = FetchMediaSearchResponse{}
-	mi := &file_api_proto_msgTypes[39]
+	mi := &file_api_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2456,7 +2508,7 @@ func (x *FetchMediaSearchResponse) String() string {
 func (*FetchMediaSearchResponse) ProtoMessage() {}
 
 func (x *FetchMediaSearchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[39]
+	mi := &file_api_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2469,7 +2521,7 @@ func (x *FetchMediaSearchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchMediaSearchResponse.ProtoReflect.Descriptor instead.
 func (*FetchMediaSearchResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{39}
+	return file_api_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *FetchMediaSearchResponse) GetMedia() []*MediaMin {
@@ -2504,7 +2556,7 @@ type FetchStudioSearchRequest struct {
 
 func (x *FetchStudioSearchRequest) Reset() {
 	*x = FetchStudioSearchRequest{}
-	mi := &file_api_proto_msgTypes[40]
+	mi := &file_api_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2516,7 +2568,7 @@ func (x *FetchStudioSearchRequest) String() string {
 func (*FetchStudioSearchRequest) ProtoMessage() {}
 
 func (x *FetchStudioSearchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[40]
+	mi := &file_api_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2529,7 +2581,7 @@ func (x *FetchStudioSearchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchStudioSearchRequest.ProtoReflect.Descriptor instead.
 func (*FetchStudioSearchRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{40}
+	return file_api_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *FetchStudioSearchRequest) GetPage() int32 {
@@ -2564,7 +2616,7 @@ type FetchStudioSearchResponse struct {
 
 func (x *FetchStudioSearchResponse) Reset() {
 	*x = FetchStudioSearchResponse{}
-	mi := &file_api_proto_msgTypes[41]
+	mi := &file_api_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2576,7 +2628,7 @@ func (x *FetchStudioSearchResponse) String() string {
 func (*FetchStudioSearchResponse) ProtoMessage() {}
 
 func (x *FetchStudioSearchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[41]
+	mi := &file_api_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2589,7 +2641,7 @@ func (x *FetchStudioSearchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchStudioSearchResponse.ProtoReflect.Descriptor instead.
 func (*FetchStudioSearchResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{41}
+	return file_api_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *FetchStudioSearchResponse) GetStudios() []*Studio {
@@ -2623,7 +2675,7 @@ type FetchCharacterDetailsRequest struct {
 
 func (x *FetchCharacterDetailsRequest) Reset() {
 	*x = FetchCharacterDetailsRequest{}
-	mi := &file_api_proto_msgTypes[42]
+	mi := &file_api_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2635,7 +2687,7 @@ func (x *FetchCharacterDetailsRequest) String() string {
 func (*FetchCharacterDetailsRequest) ProtoMessage() {}
 
 func (x *FetchCharacterDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[42]
+	mi := &file_api_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2648,7 +2700,7 @@ func (x *FetchCharacterDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchCharacterDetailsRequest.ProtoReflect.Descriptor instead.
 func (*FetchCharacterDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{42}
+	return file_api_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *FetchCharacterDetailsRequest) GetCharacterId() int32 {
@@ -2675,7 +2727,7 @@ type FetchCharacterDetailsResponse struct {
 
 func (x *FetchCharacterDetailsResponse) Reset() {
 	*x = FetchCharacterDetailsResponse{}
-	mi := &file_api_proto_msgTypes[43]
+	mi := &file_api_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2687,7 +2739,7 @@ func (x *FetchCharacterDetailsResponse) String() string {
 func (*FetchCharacterDetailsResponse) ProtoMessage() {}
 
 func (x *FetchCharacterDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[43]
+	mi := &file_api_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2700,7 +2752,7 @@ func (x *FetchCharacterDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchCharacterDetailsResponse.ProtoReflect.Descriptor instead.
 func (*FetchCharacterDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{43}
+	return file_api_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *FetchCharacterDetailsResponse) GetCharacter() *Character {
@@ -2726,7 +2778,7 @@ type ToggleFavouriteCharacterRequest struct {
 
 func (x *ToggleFavouriteCharacterRequest) Reset() {
 	*x = ToggleFavouriteCharacterRequest{}
-	mi := &file_api_proto_msgTypes[44]
+	mi := &file_api_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2738,7 +2790,7 @@ func (x *ToggleFavouriteCharacterRequest) String() string {
 func (*ToggleFavouriteCharacterRequest) ProtoMessage() {}
 
 func (x *ToggleFavouriteCharacterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[44]
+	mi := &file_api_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2751,7 +2803,7 @@ func (x *ToggleFavouriteCharacterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleFavouriteCharacterRequest.ProtoReflect.Descriptor instead.
 func (*ToggleFavouriteCharacterRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{44}
+	return file_api_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *ToggleFavouriteCharacterRequest) GetCharacterId() int32 {
@@ -2771,7 +2823,7 @@ type ToggleFavouriteCharacterResponse struct {
 
 func (x *ToggleFavouriteCharacterResponse) Reset() {
 	*x = ToggleFavouriteCharacterResponse{}
-	mi := &file_api_proto_msgTypes[45]
+	mi := &file_api_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2783,7 +2835,7 @@ func (x *ToggleFavouriteCharacterResponse) String() string {
 func (*ToggleFavouriteCharacterResponse) ProtoMessage() {}
 
 func (x *ToggleFavouriteCharacterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[45]
+	mi := &file_api_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2796,7 +2848,7 @@ func (x *ToggleFavouriteCharacterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleFavouriteCharacterResponse.ProtoReflect.Descriptor instead.
 func (*ToggleFavouriteCharacterResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{45}
+	return file_api_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *ToggleFavouriteCharacterResponse) GetCharacterId() int32 {
@@ -2825,7 +2877,7 @@ type FetchCharacterSearchRequest struct {
 
 func (x *FetchCharacterSearchRequest) Reset() {
 	*x = FetchCharacterSearchRequest{}
-	mi := &file_api_proto_msgTypes[46]
+	mi := &file_api_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2837,7 +2889,7 @@ func (x *FetchCharacterSearchRequest) String() string {
 func (*FetchCharacterSearchRequest) ProtoMessage() {}
 
 func (x *FetchCharacterSearchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[46]
+	mi := &file_api_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2850,7 +2902,7 @@ func (x *FetchCharacterSearchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchCharacterSearchRequest.ProtoReflect.Descriptor instead.
 func (*FetchCharacterSearchRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{46}
+	return file_api_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *FetchCharacterSearchRequest) GetPage() int32 {
@@ -2892,7 +2944,7 @@ type FetchCharacterSearchResponse struct {
 
 func (x *FetchCharacterSearchResponse) Reset() {
 	*x = FetchCharacterSearchResponse{}
-	mi := &file_api_proto_msgTypes[47]
+	mi := &file_api_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2904,7 +2956,7 @@ func (x *FetchCharacterSearchResponse) String() string {
 func (*FetchCharacterSearchResponse) ProtoMessage() {}
 
 func (x *FetchCharacterSearchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[47]
+	mi := &file_api_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2917,7 +2969,7 @@ func (x *FetchCharacterSearchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchCharacterSearchResponse.ProtoReflect.Descriptor instead.
 func (*FetchCharacterSearchResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{47}
+	return file_api_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *FetchCharacterSearchResponse) GetCharacters() []*Character {
@@ -2953,7 +3005,7 @@ type FetchStaffSearchRequest struct {
 
 func (x *FetchStaffSearchRequest) Reset() {
 	*x = FetchStaffSearchRequest{}
-	mi := &file_api_proto_msgTypes[48]
+	mi := &file_api_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2965,7 +3017,7 @@ func (x *FetchStaffSearchRequest) String() string {
 func (*FetchStaffSearchRequest) ProtoMessage() {}
 
 func (x *FetchStaffSearchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[48]
+	mi := &file_api_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2978,7 +3030,7 @@ func (x *FetchStaffSearchRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchStaffSearchRequest.ProtoReflect.Descriptor instead.
 func (*FetchStaffSearchRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{48}
+	return file_api_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *FetchStaffSearchRequest) GetPage() int32 {
@@ -3020,7 +3072,7 @@ type FetchStaffSearchResponse struct {
 
 func (x *FetchStaffSearchResponse) Reset() {
 	*x = FetchStaffSearchResponse{}
-	mi := &file_api_proto_msgTypes[49]
+	mi := &file_api_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3032,7 +3084,7 @@ func (x *FetchStaffSearchResponse) String() string {
 func (*FetchStaffSearchResponse) ProtoMessage() {}
 
 func (x *FetchStaffSearchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[49]
+	mi := &file_api_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3045,7 +3097,7 @@ func (x *FetchStaffSearchResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FetchStaffSearchResponse.ProtoReflect.Descriptor instead.
 func (*FetchStaffSearchResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{49}
+	return file_api_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *FetchStaffSearchResponse) GetStaff() []*Staff {
@@ -3079,7 +3131,7 @@ type UpdateCustomListsRequest struct {
 
 func (x *UpdateCustomListsRequest) Reset() {
 	*x = UpdateCustomListsRequest{}
-	mi := &file_api_proto_msgTypes[50]
+	mi := &file_api_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3091,7 +3143,7 @@ func (x *UpdateCustomListsRequest) String() string {
 func (*UpdateCustomListsRequest) ProtoMessage() {}
 
 func (x *UpdateCustomListsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[50]
+	mi := &file_api_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3104,7 +3156,7 @@ func (x *UpdateCustomListsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCustomListsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateCustomListsRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{50}
+	return file_api_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *UpdateCustomListsRequest) GetMediaType() string {
@@ -3132,7 +3184,7 @@ type UpdateCustomListsResponse struct {
 
 func (x *UpdateCustomListsResponse) Reset() {
 	*x = UpdateCustomListsResponse{}
-	mi := &file_api_proto_msgTypes[51]
+	mi := &file_api_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3144,7 +3196,7 @@ func (x *UpdateCustomListsResponse) String() string {
 func (*UpdateCustomListsResponse) ProtoMessage() {}
 
 func (x *UpdateCustomListsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[51]
+	mi := &file_api_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3157,7 +3209,7 @@ func (x *UpdateCustomListsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCustomListsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateCustomListsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{51}
+	return file_api_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *UpdateCustomListsResponse) GetError() string {
@@ -3204,7 +3256,9 @@ const file_api_proto_rawDesc = "" +
 	"\x03day\x18\x03 \x01(\x05H\x02R\x03day\x88\x01\x01B\a\n" +
 	"\x05_yearB\b\n" +
 	"\x06_monthB\x06\n" +
-	"\x04_day\"\xeb\x04\n" +
+	"\x04_day\"5\n" +
+	"\x10CustomListsInput\x12!\n" +
+	"\fcustom_lists\x18\x01 \x03(\tR\vcustomLists\"\xc1\x05\n" +
 	"\x19SaveMediaListEntryRequest\x12\x19\n" +
 	"\bmedia_id\x18\x01 \x01(\x05R\amediaId\x12\x1f\n" +
 	"\bprogress\x18\x02 \x01(\x05H\x00R\bprogress\x88\x01\x01\x12\x1b\n" +
@@ -3218,7 +3272,9 @@ const file_api_proto_rawDesc = "" +
 	"\aprivate\x18\t \x01(\bH\aR\aprivate\x88\x01\x01\x12<\n" +
 	"\x18hidden_from_status_lists\x18\n" +
 	" \x01(\bH\bR\x15hiddenFromStatusLists\x88\x01\x01\x12\x19\n" +
-	"\x05notes\x18\v \x01(\tH\tR\x05notes\x88\x01\x01B\v\n" +
+	"\x05notes\x18\v \x01(\tH\tR\x05notes\x88\x01\x01\x12C\n" +
+	"\fcustom_lists\x18\f \x01(\v2\x1b.goodanime.CustomListsInputH\n" +
+	"R\vcustomLists\x88\x01\x01B\v\n" +
 	"\t_progressB\t\n" +
 	"\a_statusB\b\n" +
 	"\x06_scoreB\r\n" +
@@ -3229,7 +3285,8 @@ const file_api_proto_rawDesc = "" +
 	"\n" +
 	"\b_privateB\x1b\n" +
 	"\x19_hidden_from_status_listsB\b\n" +
-	"\x06_notes\"c\n" +
+	"\x06_notesB\x0f\n" +
+	"\r_custom_lists\"c\n" +
 	"\x1aSaveMediaListEntryResponse\x12/\n" +
 	"\x05entry\x18\x01 \x01(\v2\x19.goodanime.MediaListEntryR\x05entry\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05error\"5\n" +
@@ -3481,106 +3538,108 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 52)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 53)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
 	(*FetchViewerResponse)(nil),               // 2: goodanime.FetchViewerResponse
 	(*FuzzyDateInput)(nil),                    // 3: goodanime.FuzzyDateInput
-	(*SaveMediaListEntryRequest)(nil),         // 4: goodanime.SaveMediaListEntryRequest
-	(*SaveMediaListEntryResponse)(nil),        // 5: goodanime.SaveMediaListEntryResponse
-	(*FetchMediaDetailsRequest)(nil),          // 6: goodanime.FetchMediaDetailsRequest
-	(*FetchMediaDetailsResponse)(nil),         // 7: goodanime.FetchMediaDetailsResponse
-	(*FetchMediaStaffRequest)(nil),            // 8: goodanime.FetchMediaStaffRequest
-	(*FetchMediaStaffResponse)(nil),           // 9: goodanime.FetchMediaStaffResponse
-	(*FetchMediaCharactersRequest)(nil),       // 10: goodanime.FetchMediaCharactersRequest
-	(*FetchMediaCharactersResponse)(nil),      // 11: goodanime.FetchMediaCharactersResponse
-	(*FetchMediaRecommendationsRequest)(nil),  // 12: goodanime.FetchMediaRecommendationsRequest
-	(*FetchMediaRecommendationsResponse)(nil), // 13: goodanime.FetchMediaRecommendationsResponse
-	(*ToggleFavouriteAnimeRequest)(nil),       // 14: goodanime.ToggleFavouriteAnimeRequest
-	(*ToggleFavouriteAnimeResponse)(nil),      // 15: goodanime.ToggleFavouriteAnimeResponse
-	(*ToggleFavouriteMangaRequest)(nil),       // 16: goodanime.ToggleFavouriteMangaRequest
-	(*ToggleFavouriteMangaResponse)(nil),      // 17: goodanime.ToggleFavouriteMangaResponse
-	(*ToggleActivityLikeRequest)(nil),         // 18: goodanime.ToggleActivityLikeRequest
-	(*ToggleActivityLikeResponse)(nil),        // 19: goodanime.ToggleActivityLikeResponse
-	(*DeleteMediaListEntryRequest)(nil),       // 20: goodanime.DeleteMediaListEntryRequest
-	(*DeleteMediaListEntryResponse)(nil),      // 21: goodanime.DeleteMediaListEntryResponse
-	(*FetchMediaReviewsRequest)(nil),          // 22: goodanime.FetchMediaReviewsRequest
-	(*FetchMediaReviewsResponse)(nil),         // 23: goodanime.FetchMediaReviewsResponse
-	(*RateReviewRequest)(nil),                 // 24: goodanime.RateReviewRequest
-	(*RateReviewResponse)(nil),                // 25: goodanime.RateReviewResponse
-	(*FetchMediaActivitiesRequest)(nil),       // 26: goodanime.FetchMediaActivitiesRequest
-	(*FetchMediaActivitiesResponse)(nil),      // 27: goodanime.FetchMediaActivitiesResponse
-	(*FetchStudioDetailsRequest)(nil),         // 28: goodanime.FetchStudioDetailsRequest
-	(*FetchStudioDetailsResponse)(nil),        // 29: goodanime.FetchStudioDetailsResponse
-	(*ToggleFavouriteStudioRequest)(nil),      // 30: goodanime.ToggleFavouriteStudioRequest
-	(*ToggleFavouriteStudioResponse)(nil),     // 31: goodanime.ToggleFavouriteStudioResponse
-	(*FetchStaffDetailsRequest)(nil),          // 32: goodanime.FetchStaffDetailsRequest
-	(*FetchStaffDetailsResponse)(nil),         // 33: goodanime.FetchStaffDetailsResponse
-	(*ToggleFavouriteStaffRequest)(nil),       // 34: goodanime.ToggleFavouriteStaffRequest
-	(*ToggleFavouriteStaffResponse)(nil),      // 35: goodanime.ToggleFavouriteStaffResponse
-	(*FetchGenresResponse)(nil),               // 36: goodanime.FetchGenresResponse
-	(*FetchTagsResponse)(nil),                 // 37: goodanime.FetchTagsResponse
-	(*FetchMediaSearchRequest)(nil),           // 38: goodanime.FetchMediaSearchRequest
-	(*FetchMediaSearchResponse)(nil),          // 39: goodanime.FetchMediaSearchResponse
-	(*FetchStudioSearchRequest)(nil),          // 40: goodanime.FetchStudioSearchRequest
-	(*FetchStudioSearchResponse)(nil),         // 41: goodanime.FetchStudioSearchResponse
-	(*FetchCharacterDetailsRequest)(nil),      // 42: goodanime.FetchCharacterDetailsRequest
-	(*FetchCharacterDetailsResponse)(nil),     // 43: goodanime.FetchCharacterDetailsResponse
-	(*ToggleFavouriteCharacterRequest)(nil),   // 44: goodanime.ToggleFavouriteCharacterRequest
-	(*ToggleFavouriteCharacterResponse)(nil),  // 45: goodanime.ToggleFavouriteCharacterResponse
-	(*FetchCharacterSearchRequest)(nil),       // 46: goodanime.FetchCharacterSearchRequest
-	(*FetchCharacterSearchResponse)(nil),      // 47: goodanime.FetchCharacterSearchResponse
-	(*FetchStaffSearchRequest)(nil),           // 48: goodanime.FetchStaffSearchRequest
-	(*FetchStaffSearchResponse)(nil),          // 49: goodanime.FetchStaffSearchResponse
-	(*UpdateCustomListsRequest)(nil),          // 50: goodanime.UpdateCustomListsRequest
-	(*UpdateCustomListsResponse)(nil),         // 51: goodanime.UpdateCustomListsResponse
-	(*MediaListCollection)(nil),               // 52: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 53: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 54: goodanime.MediaListEntry
-	(*Media)(nil),                             // 55: goodanime.Media
-	(ReviewUserRating)(0),                     // 56: goodanime.ReviewUserRating
-	(*ReviewNode)(nil),                        // 57: goodanime.ReviewNode
-	(*PageInfo)(nil),                          // 58: goodanime.PageInfo
-	(*ListActivity)(nil),                      // 59: goodanime.ListActivity
-	(*Studio)(nil),                            // 60: goodanime.Studio
-	(*Staff)(nil),                             // 61: goodanime.Staff
-	(*MediaTag)(nil),                          // 62: goodanime.MediaTag
-	(*MediaMin)(nil),                          // 63: goodanime.MediaMin
-	(*Character)(nil),                         // 64: goodanime.Character
+	(*CustomListsInput)(nil),                  // 4: goodanime.CustomListsInput
+	(*SaveMediaListEntryRequest)(nil),         // 5: goodanime.SaveMediaListEntryRequest
+	(*SaveMediaListEntryResponse)(nil),        // 6: goodanime.SaveMediaListEntryResponse
+	(*FetchMediaDetailsRequest)(nil),          // 7: goodanime.FetchMediaDetailsRequest
+	(*FetchMediaDetailsResponse)(nil),         // 8: goodanime.FetchMediaDetailsResponse
+	(*FetchMediaStaffRequest)(nil),            // 9: goodanime.FetchMediaStaffRequest
+	(*FetchMediaStaffResponse)(nil),           // 10: goodanime.FetchMediaStaffResponse
+	(*FetchMediaCharactersRequest)(nil),       // 11: goodanime.FetchMediaCharactersRequest
+	(*FetchMediaCharactersResponse)(nil),      // 12: goodanime.FetchMediaCharactersResponse
+	(*FetchMediaRecommendationsRequest)(nil),  // 13: goodanime.FetchMediaRecommendationsRequest
+	(*FetchMediaRecommendationsResponse)(nil), // 14: goodanime.FetchMediaRecommendationsResponse
+	(*ToggleFavouriteAnimeRequest)(nil),       // 15: goodanime.ToggleFavouriteAnimeRequest
+	(*ToggleFavouriteAnimeResponse)(nil),      // 16: goodanime.ToggleFavouriteAnimeResponse
+	(*ToggleFavouriteMangaRequest)(nil),       // 17: goodanime.ToggleFavouriteMangaRequest
+	(*ToggleFavouriteMangaResponse)(nil),      // 18: goodanime.ToggleFavouriteMangaResponse
+	(*ToggleActivityLikeRequest)(nil),         // 19: goodanime.ToggleActivityLikeRequest
+	(*ToggleActivityLikeResponse)(nil),        // 20: goodanime.ToggleActivityLikeResponse
+	(*DeleteMediaListEntryRequest)(nil),       // 21: goodanime.DeleteMediaListEntryRequest
+	(*DeleteMediaListEntryResponse)(nil),      // 22: goodanime.DeleteMediaListEntryResponse
+	(*FetchMediaReviewsRequest)(nil),          // 23: goodanime.FetchMediaReviewsRequest
+	(*FetchMediaReviewsResponse)(nil),         // 24: goodanime.FetchMediaReviewsResponse
+	(*RateReviewRequest)(nil),                 // 25: goodanime.RateReviewRequest
+	(*RateReviewResponse)(nil),                // 26: goodanime.RateReviewResponse
+	(*FetchMediaActivitiesRequest)(nil),       // 27: goodanime.FetchMediaActivitiesRequest
+	(*FetchMediaActivitiesResponse)(nil),      // 28: goodanime.FetchMediaActivitiesResponse
+	(*FetchStudioDetailsRequest)(nil),         // 29: goodanime.FetchStudioDetailsRequest
+	(*FetchStudioDetailsResponse)(nil),        // 30: goodanime.FetchStudioDetailsResponse
+	(*ToggleFavouriteStudioRequest)(nil),      // 31: goodanime.ToggleFavouriteStudioRequest
+	(*ToggleFavouriteStudioResponse)(nil),     // 32: goodanime.ToggleFavouriteStudioResponse
+	(*FetchStaffDetailsRequest)(nil),          // 33: goodanime.FetchStaffDetailsRequest
+	(*FetchStaffDetailsResponse)(nil),         // 34: goodanime.FetchStaffDetailsResponse
+	(*ToggleFavouriteStaffRequest)(nil),       // 35: goodanime.ToggleFavouriteStaffRequest
+	(*ToggleFavouriteStaffResponse)(nil),      // 36: goodanime.ToggleFavouriteStaffResponse
+	(*FetchGenresResponse)(nil),               // 37: goodanime.FetchGenresResponse
+	(*FetchTagsResponse)(nil),                 // 38: goodanime.FetchTagsResponse
+	(*FetchMediaSearchRequest)(nil),           // 39: goodanime.FetchMediaSearchRequest
+	(*FetchMediaSearchResponse)(nil),          // 40: goodanime.FetchMediaSearchResponse
+	(*FetchStudioSearchRequest)(nil),          // 41: goodanime.FetchStudioSearchRequest
+	(*FetchStudioSearchResponse)(nil),         // 42: goodanime.FetchStudioSearchResponse
+	(*FetchCharacterDetailsRequest)(nil),      // 43: goodanime.FetchCharacterDetailsRequest
+	(*FetchCharacterDetailsResponse)(nil),     // 44: goodanime.FetchCharacterDetailsResponse
+	(*ToggleFavouriteCharacterRequest)(nil),   // 45: goodanime.ToggleFavouriteCharacterRequest
+	(*ToggleFavouriteCharacterResponse)(nil),  // 46: goodanime.ToggleFavouriteCharacterResponse
+	(*FetchCharacterSearchRequest)(nil),       // 47: goodanime.FetchCharacterSearchRequest
+	(*FetchCharacterSearchResponse)(nil),      // 48: goodanime.FetchCharacterSearchResponse
+	(*FetchStaffSearchRequest)(nil),           // 49: goodanime.FetchStaffSearchRequest
+	(*FetchStaffSearchResponse)(nil),          // 50: goodanime.FetchStaffSearchResponse
+	(*UpdateCustomListsRequest)(nil),          // 51: goodanime.UpdateCustomListsRequest
+	(*UpdateCustomListsResponse)(nil),         // 52: goodanime.UpdateCustomListsResponse
+	(*MediaListCollection)(nil),               // 53: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 54: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 55: goodanime.MediaListEntry
+	(*Media)(nil),                             // 56: goodanime.Media
+	(ReviewUserRating)(0),                     // 57: goodanime.ReviewUserRating
+	(*ReviewNode)(nil),                        // 58: goodanime.ReviewNode
+	(*PageInfo)(nil),                          // 59: goodanime.PageInfo
+	(*ListActivity)(nil),                      // 60: goodanime.ListActivity
+	(*Studio)(nil),                            // 61: goodanime.Studio
+	(*Staff)(nil),                             // 62: goodanime.Staff
+	(*MediaTag)(nil),                          // 63: goodanime.MediaTag
+	(*MediaMin)(nil),                          // 64: goodanime.MediaMin
+	(*Character)(nil),                         // 65: goodanime.Character
 }
 var file_api_proto_depIdxs = []int32{
-	52, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	53, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	53, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	54, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
-	54, // 4: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	55, // 5: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	55, // 6: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	55, // 7: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	55, // 8: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	55, // 9: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
-	56, // 10: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
-	57, // 11: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
-	58, // 12: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
-	59, // 13: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
-	60, // 14: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
-	61, // 15: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
-	62, // 16: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
-	63, // 17: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
-	58, // 18: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
-	60, // 19: goodanime.FetchStudioSearchResponse.studios:type_name -> goodanime.Studio
-	58, // 20: goodanime.FetchStudioSearchResponse.page_info:type_name -> goodanime.PageInfo
-	64, // 21: goodanime.FetchCharacterDetailsResponse.character:type_name -> goodanime.Character
-	64, // 22: goodanime.FetchCharacterSearchResponse.characters:type_name -> goodanime.Character
-	58, // 23: goodanime.FetchCharacterSearchResponse.page_info:type_name -> goodanime.PageInfo
-	61, // 24: goodanime.FetchStaffSearchResponse.staff:type_name -> goodanime.Staff
-	58, // 25: goodanime.FetchStaffSearchResponse.page_info:type_name -> goodanime.PageInfo
-	26, // [26:26] is the sub-list for method output_type
-	26, // [26:26] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	4,  // 4: goodanime.SaveMediaListEntryRequest.custom_lists:type_name -> goodanime.CustomListsInput
+	55, // 5: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	56, // 6: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	56, // 7: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	56, // 8: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	56, // 9: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	56, // 10: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	57, // 11: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
+	58, // 12: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
+	59, // 13: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	60, // 14: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
+	61, // 15: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
+	62, // 16: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
+	63, // 17: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
+	64, // 18: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
+	59, // 19: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
+	61, // 20: goodanime.FetchStudioSearchResponse.studios:type_name -> goodanime.Studio
+	59, // 21: goodanime.FetchStudioSearchResponse.page_info:type_name -> goodanime.PageInfo
+	65, // 22: goodanime.FetchCharacterDetailsResponse.character:type_name -> goodanime.Character
+	65, // 23: goodanime.FetchCharacterSearchResponse.characters:type_name -> goodanime.Character
+	59, // 24: goodanime.FetchCharacterSearchResponse.page_info:type_name -> goodanime.PageInfo
+	62, // 25: goodanime.FetchStaffSearchResponse.staff:type_name -> goodanime.Staff
+	59, // 26: goodanime.FetchStaffSearchResponse.page_info:type_name -> goodanime.PageInfo
+	27, // [27:27] is the sub-list for method output_type
+	27, // [27:27] is the sub-list for method input_type
+	27, // [27:27] is the sub-list for extension type_name
+	27, // [27:27] is the sub-list for extension extendee
+	0,  // [0:27] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -3601,18 +3660,18 @@ func file_api_proto_init() {
 	file_media_studio_proto_init()
 	file_viewer_proto_init()
 	file_api_proto_msgTypes[3].OneofWrappers = []any{}
-	file_api_proto_msgTypes[4].OneofWrappers = []any{}
-	file_api_proto_msgTypes[38].OneofWrappers = []any{}
-	file_api_proto_msgTypes[40].OneofWrappers = []any{}
-	file_api_proto_msgTypes[46].OneofWrappers = []any{}
-	file_api_proto_msgTypes[48].OneofWrappers = []any{}
+	file_api_proto_msgTypes[5].OneofWrappers = []any{}
+	file_api_proto_msgTypes[39].OneofWrappers = []any{}
+	file_api_proto_msgTypes[41].OneofWrappers = []any{}
+	file_api_proto_msgTypes[47].OneofWrappers = []any{}
+	file_api_proto_msgTypes[49].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   52,
+			NumMessages:   53,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

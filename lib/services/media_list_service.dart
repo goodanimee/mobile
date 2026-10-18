@@ -79,7 +79,7 @@ class MediaListService {
     );
     final rawLists = response.lists;
     final customListNames = rawLists
-        .where((l) => l.status == null)
+        .where((l) => l.isCustomList || l.status == null)
         .map((l) => l.name)
         .where((name) => name.isNotEmpty)
         .toList();
@@ -270,6 +270,7 @@ class MediaListService {
     int? repeat,
     bool? private,
     bool? hiddenFromStatusLists,
+    List<String>? customLists,
     String? notes,
   }) {
     final req = SaveMediaListEntryRequest(mediaId: mediaId);
@@ -282,6 +283,9 @@ class MediaListService {
     if (private != null) req.private = private;
     if (hiddenFromStatusLists != null) {
       req.hiddenFromStatusLists = hiddenFromStatusLists;
+    }
+    if (customLists != null) {
+      req.customLists = CustomListsInput(customLists: customLists);
     }
     if (notes != null) req.notes = notes;
 
@@ -315,6 +319,7 @@ class MediaListService {
     int? repeat,
     bool? private,
     bool? hiddenFromStatusLists,
+    List<String>? customLists,
     String? notes,
   }) async {
     final token = await AuthService.getRawToken() ?? '';
@@ -329,6 +334,7 @@ class MediaListService {
       repeat: repeat,
       private: private,
       hiddenFromStatusLists: hiddenFromStatusLists,
+      customLists: customLists,
       notes: notes,
     );
 

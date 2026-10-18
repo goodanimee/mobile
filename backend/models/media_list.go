@@ -23,8 +23,9 @@ func (c *MediaListCollection) ToProto() *pb.MediaListCollection {
 	}
 	for _, g := range c.Lists {
 		group := &pb.MediaListGroup{
-			Name:   g.Name,
-			Status: g.Status.ToProto(),
+			Name:         g.Name,
+			IsCustomList: g.IsCustomList,
+			Status:       g.Status.ToProto(),
 		}
 		for _, e := range g.Entries {
 			group.Entries = append(group.Entries, e.ToProto())
@@ -44,9 +45,10 @@ type MediaListEntryWithMedia struct {
 type MediaListCollection struct {
 	HasNextChunk bool `json:"hasNextChunk"`
 	Lists        []struct {
-		Name    string                    `json:"name"`
-		Status  *MediaListStatus          `json:"status"`
-		Entries []MediaListEntryWithMedia `json:"entries"`
+		Name         string                    `json:"name"`
+		IsCustomList bool                      `json:"isCustomList"`
+		Status       *MediaListStatus          `json:"status"`
+		Entries      []MediaListEntryWithMedia `json:"entries"`
 	} `json:"lists"`
 }
 

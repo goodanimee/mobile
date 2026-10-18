@@ -31,6 +31,7 @@ class MediaListEntry extends $pb.GeneratedMessage {
     $core.bool? private,
     $core.bool? hiddenFromStatusLists,
     $core.String? notes,
+    $core.Iterable<$core.String>? customLists,
   }) {
     final result = MediaListEntry._();
     if (id != null) result.id = id;
@@ -45,6 +46,7 @@ class MediaListEntry extends $pb.GeneratedMessage {
     if (hiddenFromStatusLists != null)
       result.hiddenFromStatusLists = hiddenFromStatusLists;
     if (notes != null) result.notes = notes;
+    if (customLists != null) result.customLists.addAll(customLists);
     return result;
   }
 
@@ -75,6 +77,7 @@ class MediaListEntry extends $pb.GeneratedMessage {
     ..aOB(9, _omitFieldNames ? '' : 'private')
     ..aOB(10, _omitFieldNames ? '' : 'hiddenFromStatusLists')
     ..aOS(11, _omitFieldNames ? '' : 'notes')
+    ..pPS(12, _omitFieldNames ? '' : 'customLists')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -201,6 +204,9 @@ class MediaListEntry extends $pb.GeneratedMessage {
   $core.bool hasNotes() => $_has(10);
   @$pb.TagNumber(11)
   void clearNotes() => $_clearField(11);
+
+  @$pb.TagNumber(12)
+  $pb.PbList<$core.String> get customLists => $_getList(11);
 }
 
 const $core.bool _omitFieldNames =

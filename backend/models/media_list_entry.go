@@ -1,12 +1,24 @@
 package models
 
-import pb "goodanime-backend/proto"
+import (
+	"sort"
+
+	pb "goodanime-backend/proto"
+)
 
 // ToProto converts MediaListEntry to its protobuf representation.
 func (e *MediaListEntry) ToProto() *pb.MediaListEntry {
 	if e == nil {
 		return nil
 	}
+
+	var customLists []string
+	for name, enabled := range e.CustomLists {
+		if enabled {
+			customLists = append(customLists, name)
+		}
+	}
+	sort.Strings(customLists)
 
 	return &pb.MediaListEntry{
 		Id:                    e.ID,
@@ -19,6 +31,7 @@ func (e *MediaListEntry) ToProto() *pb.MediaListEntry {
 		ProgressVolumes:       e.ProgressVolumes,
 		Private:               e.Private,
 		HiddenFromStatusLists: e.HiddenFromStatusLists,
+		CustomLists:           customLists,
 		Notes:                 e.Notes,
 	}
 }
@@ -35,6 +48,7 @@ type MediaListEntry struct {
 	ProgressVolumes       int32            `json:"progressVolumes"`
 	Private               bool             `json:"private"`
 	HiddenFromStatusLists bool             `json:"hiddenFromStatusLists"`
+	CustomLists           map[string]bool  `json:"customLists"`
 	Notes                 string           `json:"notes"`
 }
 

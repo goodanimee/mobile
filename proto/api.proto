@@ -39,6 +39,10 @@ message FuzzyDateInput {
   optional int32 day = 3;
 }
 
+message CustomListsInput {
+  repeated string custom_lists = 1;
+}
+
 message SaveMediaListEntryRequest {
   int32 media_id = 1;
   optional int32 progress = 2;
@@ -51,6 +55,7 @@ message SaveMediaListEntryRequest {
   optional bool private = 9;
   optional bool hidden_from_status_lists = 10;
   optional string notes = 11;
+  optional CustomListsInput custom_lists = 12;
 }
 
 message SaveMediaListEntryResponse {

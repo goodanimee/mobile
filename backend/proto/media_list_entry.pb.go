@@ -34,6 +34,7 @@ type MediaListEntry struct {
 	Private               bool                   `protobuf:"varint,9,opt,name=private,proto3" json:"private,omitempty"`
 	HiddenFromStatusLists bool                   `protobuf:"varint,10,opt,name=hidden_from_status_lists,json=hiddenFromStatusLists,proto3" json:"hidden_from_status_lists,omitempty"`
 	Notes                 string                 `protobuf:"bytes,11,opt,name=notes,proto3" json:"notes,omitempty"`
+	CustomLists           []string               `protobuf:"bytes,12,rep,name=custom_lists,json=customLists,proto3" json:"custom_lists,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -145,11 +146,18 @@ func (x *MediaListEntry) GetNotes() string {
 	return ""
 }
 
+func (x *MediaListEntry) GetCustomLists() []string {
+	if x != nil {
+		return x.CustomLists
+	}
+	return nil
+}
+
 var File_media_list_entry_proto protoreflect.FileDescriptor
 
 const file_media_list_entry_proto_rawDesc = "" +
 	"\n" +
-	"\x16media_list_entry.proto\x12\tgoodanime\x1a\fcommon.proto\"\xb0\x03\n" +
+	"\x16media_list_entry.proto\x12\tgoodanime\x1a\fcommon.proto\"\xd3\x03\n" +
 	"\x0eMediaListEntry\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x127\n" +
 	"\x06status\x18\x02 \x01(\x0e2\x1a.goodanime.MediaListStatusH\x00R\x06status\x88\x01\x01\x12\x1a\n" +
@@ -163,7 +171,8 @@ const file_media_list_entry_proto_rawDesc = "" +
 	"\aprivate\x18\t \x01(\bR\aprivate\x127\n" +
 	"\x18hidden_from_status_lists\x18\n" +
 	" \x01(\bR\x15hiddenFromStatusLists\x12\x14\n" +
-	"\x05notes\x18\v \x01(\tR\x05notesB\t\n" +
+	"\x05notes\x18\v \x01(\tR\x05notes\x12!\n" +
+	"\fcustom_lists\x18\f \x03(\tR\vcustomListsB\t\n" +
 	"\a_statusB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (

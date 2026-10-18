@@ -98,6 +98,13 @@ func SaveMediaListEntry(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *
 	if req.Notes != nil {
 		variables["notes"] = *req.Notes
 	}
+	if req.CustomLists != nil {
+		lists := req.CustomLists.CustomLists
+		if lists == nil {
+			lists = []string{}
+		}
+		variables["customLists"] = lists
+	}
 
 	data, err := executeGraphQL[models.SaveMediaListEntryDTO](tk, saveMediaListEntryMutation, variables)
 	if err != nil {
