@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/media_list_api.dart';
 import '../proto/api.pb.dart';
+import '../utils/app_navigation.dart';
 import 'auth_service.dart';
 import 'user_service.dart';
 
@@ -18,14 +19,10 @@ class CustomListService extends ChangeNotifier {
   /// SharedPreferences key for cached manga custom lists
   static const String keyMangaCustomLists = 'cached_manga_custom_lists';
 
-  static CustomListService _instance = CustomListService._();
+  static final CustomListService _instance = CustomListService._();
 
   /// Singleton instance of [CustomListService].
   static CustomListService get instance => _instance;
-
-  @visibleForTesting
-  /// Sets test instance
-  static set instance(CustomListService value) => _instance = value;
 
   CustomListService._();
 
@@ -47,24 +44,27 @@ class CustomListService extends ChangeNotifier {
     _animeCustomLists = prefs.getStringList(keyAnimeCustomLists) ?? [];
     _mangaCustomLists = prefs.getStringList(keyMangaCustomLists) ?? [];
     _initialized = true;
-
-    if (_animeCustomLists.isEmpty && _mangaCustomLists.isEmpty) {
-      try {
-        final viewer = await UserService.getViewer();
-        if (viewer != null) {
-          if (viewer.animeCustomLists.isNotEmpty) {
-            _animeCustomLists = List.from(viewer.animeCustomLists);
-            await prefs.setStringList(keyAnimeCustomLists, _animeCustomLists);
-          }
-          if (viewer.mangaCustomLists.isNotEmpty) {
-            _mangaCustomLists = List.from(viewer.mangaCustomLists);
-            await prefs.setStringList(keyMangaCustomLists, _mangaCustomLists);
-          }
-        }
-      } catch (_) {}
-    }
-
     notifyListeners();
+
+    await syncFromRemote();
+  }
+
+  /// Synchronizes custom lists from AniList viewer settings.
+  Future<void> syncFromRemote() async {
+    try {
+      final token = await AuthService.getRawToken();
+      if (token == null || token.isEmpty) return;
+
+      final viewer = await UserService.getViewer();
+      if (viewer == null) return;
+
+      final prefs = await SharedPreferences.getInstance();
+      _animeCustomLists = List.from(viewer.animeCustomLists);
+      _mangaCustomLists = List.from(viewer.mangaCustomLists);
+      await prefs.setStringList(keyAnimeCustomLists, _animeCustomLists);
+      await prefs.setStringList(keyMangaCustomLists, _mangaCustomLists);
+      notifyListeners();
+    } catch (_) {}
   }
 
   /// Sets whether the custom list management drawer is open and persists the state.
@@ -88,9 +88,6 @@ class CustomListService extends ChangeNotifier {
   }
 
   /// Adds a custom list for the specified [mediaType].
-  ///
-  /// Trims whitespace and prevents duplicate entries (case-insensitive).
-  /// Returns true if added, false if invalid or duplicate.
   Future<bool> addCustomList(String mediaType, String name) async {
     final trimmed = name.trim();
     if (trimmed.isEmpty) return false;
@@ -103,6 +100,7 @@ class CustomListService extends ChangeNotifier {
     );
     if (exists) return false;
 
+    final previousLists = List<String>.from(currentLists);
     final updated = List<String>.from(currentLists)..add(trimmed);
     if (isManga) {
       _mangaCustomLists = updated;
@@ -126,9 +124,21 @@ class CustomListService extends ChangeNotifier {
         );
         await MediaListApi.updateCustomLists(req, token);
       }
-    } catch (_) {}
-
-    return true;
+      return true;
+    } catch (_) {
+      if (isManga) {
+        _mangaCustomLists = previousLists;
+      } else {
+        _animeCustomLists = previousLists;
+      }
+      await prefs.setStringList(
+        isManga ? keyMangaCustomLists : keyAnimeCustomLists,
+        previousLists,
+      );
+      notifyListeners();
+      AppNavigation.showSnackBar('Failed to sync custom list with AniList');
+      return false;
+    }
   }
 
   /// Deletes a custom list by [name] for the specified [mediaType].
@@ -144,6 +154,7 @@ class CustomListService extends ChangeNotifier {
 
     if (updated.length == initialCount) return false;
 
+    final previousLists = List<String>.from(currentLists);
     if (isManga) {
       _mangaCustomLists = updated;
     } else {
@@ -166,9 +177,21 @@ class CustomListService extends ChangeNotifier {
         );
         await MediaListApi.updateCustomLists(req, token);
       }
-    } catch (_) {}
-
-    return true;
+      return true;
+    } catch (_) {
+      if (isManga) {
+        _mangaCustomLists = previousLists;
+      } else {
+        _animeCustomLists = previousLists;
+      }
+      await prefs.setStringList(
+        isManga ? keyMangaCustomLists : keyAnimeCustomLists,
+        previousLists,
+      );
+      notifyListeners();
+      AppNavigation.showSnackBar('Failed to sync list deletion with AniList');
+      return false;
+    }
   }
 
   /// Resets state for logout or testing.

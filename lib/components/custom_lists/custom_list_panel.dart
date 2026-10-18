@@ -86,43 +86,7 @@ class _CustomListPanelState extends State<CustomListPanel> {
   }
 
   Future<void> _deleteList(String name) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: bgColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: cardBorderColor),
-        ),
-        title: const Text(
-          'Delete Custom List',
-          style: TextStyle(color: textPrimary, fontSize: 16),
-        ),
-        content: Text(
-          'Are you sure you want to delete "$name"?',
-          style: const TextStyle(color: textSecondary, fontSize: 14),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel', style: TextStyle(color: textMuted)),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: Colors.redAccent),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    if (!mounted) return;
-
-    if (confirmed == true) {
-      await CustomListService.instance.deleteCustomList(widget.mediaType, name);
-    }
+    await CustomListService.instance.deleteCustomList(widget.mediaType, name);
   }
 
   double _resolveDefaultWidth() {

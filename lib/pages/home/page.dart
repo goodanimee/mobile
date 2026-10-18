@@ -60,6 +60,9 @@ class _HomePageState extends State<HomePage> {
 
   void _onTabChanged() {
     if (mounted && _navIndex != AppNavigation.currentTab.value) {
+      if (CustomListService.instance.isPanelOpen) {
+        unawaited(CustomListService.instance.setPanelOpen(false));
+      }
       setState(() => _navIndex = AppNavigation.currentTab.value);
     }
   }
@@ -110,6 +113,7 @@ class _HomePageState extends State<HomePage> {
     if (!mounted) return;
     setState(() => _token = token);
     DeepLinkService.instance.markReady();
+    unawaited(CustomListService.instance.syncFromRemote());
   }
 
   /// Resets state on sign out

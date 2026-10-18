@@ -325,6 +325,9 @@ class _FloatingNavState extends State<FloatingNav>
                     message: item.label,
                     child: GestureDetector(
                       onTap: () {
+                        if (CustomListService.instance.isPanelOpen) {
+                          CustomListService.instance.setPanelOpen(false);
+                        }
                         widget.onTap(i);
                         _toggle();
                       },
@@ -382,6 +385,9 @@ class _FloatingNavState extends State<FloatingNav>
                     message: section.label,
                     child: GestureDetector(
                       onTap: () {
+                        if (CustomListService.instance.isPanelOpen) {
+                          CustomListService.instance.setPanelOpen(false);
+                        }
                         section.onTap();
                         _toggle();
                       },
@@ -421,7 +427,7 @@ class _FloatingNavState extends State<FloatingNav>
                           vertical: 8,
                         ),
                         child: Icon(
-                          LucideIcons.settings,
+                          LucideIcons.folderCog,
                           size: iconSize,
                           color: isPanelOpen
                               ? borderColor
