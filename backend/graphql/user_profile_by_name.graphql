@@ -11,5 +11,13 @@ query GetUserProfileByName($name: String!) {
     isFollowing
     isFollower
     createdAt
+    statistics {
+      anime {
+        count
+      }
+      manga {
+        count
+      }
+    }
   }
 }

@@ -16,6 +16,14 @@ type UserProfileDTO struct {
 		IsFollowing bool   `json:"isFollowing"`
 		IsFollower  bool   `json:"isFollower"`
 		CreatedAt   int32  `json:"createdAt"`
+		Statistics  struct {
+			Anime struct {
+				Count int32 `json:"count"`
+			} `json:"anime"`
+			Manga struct {
+				Count int32 `json:"count"`
+			} `json:"manga"`
+		} `json:"statistics"`
 	} `json:"User"`
 	Followers *struct {
 		PageInfo struct {
@@ -69,6 +77,8 @@ func (u *UserProfileDTO) ToProto() *pb.UserProfile {
 		IsFollowing: u.User.IsFollowing,
 		IsFollower:  u.User.IsFollower,
 		CreatedAt:   u.User.CreatedAt,
+		AnimeCount:  u.User.Statistics.Anime.Count,
+		MangaCount:  u.User.Statistics.Manga.Count,
 	}
 	if u.Followers != nil {
 		profile.FollowersCount = u.Followers.PageInfo.Total

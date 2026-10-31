@@ -11,6 +11,14 @@ query GetUserProfileById($id: Int!) {
     isFollowing
     isFollower
     createdAt
+    statistics {
+      anime {
+        count
+      }
+      manga {
+        count
+      }
+    }
   }
   followers: Page(page: 1, perPage: 1) {
     pageInfo {
