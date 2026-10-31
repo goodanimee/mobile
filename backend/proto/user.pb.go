@@ -85,6 +85,8 @@ type UserProfile struct {
 	CreatedAt      int32                  `protobuf:"varint,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	FollowersCount int32                  `protobuf:"varint,9,opt,name=followers_count,json=followersCount,proto3" json:"followers_count,omitempty"`
 	FollowingCount int32                  `protobuf:"varint,10,opt,name=following_count,json=followingCount,proto3" json:"following_count,omitempty"`
+	AnimeCount     int32                  `protobuf:"varint,11,opt,name=anime_count,json=animeCount,proto3" json:"anime_count,omitempty"`
+	MangaCount     int32                  `protobuf:"varint,12,opt,name=manga_count,json=mangaCount,proto3" json:"manga_count,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -189,6 +191,20 @@ func (x *UserProfile) GetFollowingCount() int32 {
 	return 0
 }
 
+func (x *UserProfile) GetAnimeCount() int32 {
+	if x != nil {
+		return x.AnimeCount
+	}
+	return 0
+}
+
+func (x *UserProfile) GetMangaCount() int32 {
+	if x != nil {
+		return x.MangaCount
+	}
+	return 0
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
@@ -198,7 +214,7 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"UserAvatar\x12\x14\n" +
 	"\x05large\x18\x01 \x01(\tR\x05large\x12\x16\n" +
-	"\x06medium\x18\x02 \x01(\tR\x06medium\"\xce\x02\n" +
+	"\x06medium\x18\x02 \x01(\tR\x06medium\"\x90\x03\n" +
 	"\vUserProfile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -212,7 +228,11 @@ const file_user_proto_rawDesc = "" +
 	"created_at\x18\b \x01(\x05R\tcreatedAt\x12'\n" +
 	"\x0ffollowers_count\x18\t \x01(\x05R\x0efollowersCount\x12'\n" +
 	"\x0ffollowing_count\x18\n" +
-	" \x01(\x05R\x0efollowingCountB\x19Z\x17goodanime/backend/protob\x06proto3"
+	" \x01(\x05R\x0efollowingCount\x12\x1f\n" +
+	"\vanime_count\x18\v \x01(\x05R\n" +
+	"animeCount\x12\x1f\n" +
+	"\vmanga_count\x18\f \x01(\x05R\n" +
+	"mangaCountB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once

@@ -50,6 +50,8 @@ const UserProfile$json = {
     {'1': 'created_at', '3': 8, '4': 1, '5': 5, '10': 'createdAt'},
     {'1': 'followers_count', '3': 9, '4': 1, '5': 5, '10': 'followersCount'},
     {'1': 'following_count', '3': 10, '4': 1, '5': 5, '10': 'followingCount'},
+    {'1': 'anime_count', '3': 11, '4': 1, '5': 5, '10': 'animeCount'},
+    {'1': 'manga_count', '3': 12, '4': 1, '5': 5, '10': 'mangaCount'},
   ],
 };
 
@@ -61,4 +63,5 @@ final $typed_data.Uint8List userProfileDescriptor = $convert.base64Decode(
     'luZxgGIAEoCFILaXNGb2xsb3dpbmcSHwoLaXNfZm9sbG93ZXIYByABKAhSCmlzRm9sbG93ZXIS'
     'HQoKY3JlYXRlZF9hdBgIIAEoBVIJY3JlYXRlZEF0EicKD2ZvbGxvd2Vyc19jb3VudBgJIAEoBV'
     'IOZm9sbG93ZXJzQ291bnQSJwoPZm9sbG93aW5nX2NvdW50GAogASgFUg5mb2xsb3dpbmdDb3Vu'
-    'dA==');
+    'dBIfCgthbmltZV9jb3VudBgLIAEoBVIKYW5pbWVDb3VudBIfCgttYW5nYV9jb3VudBgMIAEoBV'
+    'IKbWFuZ2FDb3VudA==');

@@ -95,6 +95,8 @@ class UserProfile extends $pb.GeneratedMessage {
     $core.int? createdAt,
     $core.int? followersCount,
     $core.int? followingCount,
+    $core.int? animeCount,
+    $core.int? mangaCount,
   }) {
     final result = UserProfile._();
     if (id != null) result.id = id;
@@ -107,6 +109,8 @@ class UserProfile extends $pb.GeneratedMessage {
     if (createdAt != null) result.createdAt = createdAt;
     if (followersCount != null) result.followersCount = followersCount;
     if (followingCount != null) result.followingCount = followingCount;
+    if (animeCount != null) result.animeCount = animeCount;
+    if (mangaCount != null) result.mangaCount = mangaCount;
     return result;
   }
 
@@ -134,6 +138,8 @@ class UserProfile extends $pb.GeneratedMessage {
     ..aI(8, _omitFieldNames ? '' : 'createdAt')
     ..aI(9, _omitFieldNames ? '' : 'followersCount')
     ..aI(10, _omitFieldNames ? '' : 'followingCount')
+    ..aI(11, _omitFieldNames ? '' : 'animeCount')
+    ..aI(12, _omitFieldNames ? '' : 'mangaCount')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -249,6 +255,24 @@ class UserProfile extends $pb.GeneratedMessage {
   $core.bool hasFollowingCount() => $_has(9);
   @$pb.TagNumber(10)
   void clearFollowingCount() => $_clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.int get animeCount => $_getIZ(10);
+  @$pb.TagNumber(11)
+  set animeCount($core.int value) => $_setSignedInt32(10, value);
+  @$pb.TagNumber(11)
+  $core.bool hasAnimeCount() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearAnimeCount() => $_clearField(11);
+
+  @$pb.TagNumber(12)
+  $core.int get mangaCount => $_getIZ(11);
+  @$pb.TagNumber(12)
+  set mangaCount($core.int value) => $_setSignedInt32(11, value);
+  @$pb.TagNumber(12)
+  $core.bool hasMangaCount() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearMangaCount() => $_clearField(12);
 }
 
 const $core.bool _omitFieldNames =
