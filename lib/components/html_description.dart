@@ -2,36 +2,72 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../theme/theme.dart';
 import '../utils/app_navigation.dart';
+import 'html_description_widgets.dart';
 
-final _markdownLinkPattern = RegExp(r'\[([^\]]+)\]\(([^)\s]+)\)');
+final _inlineTokenPattern = RegExp(
+  r'\[([^\]]+)\]\(([^)\s]+)\)'
+  r'|(https?:\/\/[^\s<>()]+)'
+  r'|~!(.+?)!~'
+  r'|\*\*(?!\s)(.+?)(?<!\s)\*\*'
+  r'|(?<!\w)__(?!\s)(.+?)(?<!\s)__(?!\w)'
+  r'|~~(?!\s)(.+?)(?<!\s)~~'
+  r'|(?<!\*)\*(?!\s|\*)(.+?)(?<!\s|\*)\*(?!\*)'
+  r'|(?<!\w)_(?!\s|_)(.+?)(?<!\s|_)_(?!\w)',
+);
 
-const _blockElements = {'p', 'div', 'h1', 'h2', 'h3', 'ul', 'ol', 'li'};
-const _nestedBlocksOrImages = {
+final _trailingUrlPunctuation = RegExp(r'[.,;:!?]+$');
+
+const _blockElements = {
   'p',
   'div',
+  'center',
   'h1',
   'h2',
   'h3',
+  'h4',
+  'h5',
+  'h6',
   'ul',
   'ol',
   'li',
+  'blockquote',
+  'pre',
+};
+
+const _nestedBlockTriggers = {
+  'p',
+  'div',
+  'center',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'ul',
+  'ol',
+  'li',
+  'blockquote',
+  'pre',
+  'hr',
+  'video',
   'img',
 };
-const _parentBlockElements = {'body', 'div', 'ul', 'ol'};
+
+const _parentBlockElements = {'body', 'div', 'center', 'ul', 'ol'};
 
 /// A widget that parses HTML and displays it with consistent styling.
 class HtmlDescription extends StatefulWidget {
-  /// The HTML content to parse and display
+  /// The HTML content to parse and display.
   final String html;
 
-  /// The text style for the description
+  /// The text style for the description.
   final TextStyle? style;
 
-  /// Creates an HTML description
+  /// Creates an HTML description.
   const HtmlDescription({super.key, required this.html, this.style});
 
   @override
@@ -88,62 +124,167 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
     }
   }
 
-  String _processTextNode(dom.Node node) {
+  String _processTextNode(dom.Node node, {required bool preserveNewlines}) {
     String text = node.text ?? '';
-    text = text.replaceAll(RegExp(r'[\r\n]\s*'), ' ');
-
     final parent = node.parent;
+    dom.Node? prev;
+    dom.Node? next;
     if (parent != null) {
       final index = parent.nodes.indexOf(node);
-      if (index > 0) {
-        final prev = parent.nodes[index - 1];
-        if (prev is dom.Element && prev.localName == 'br') {
-          text = text.trimLeft();
-        }
+      if (index > 0) prev = parent.nodes[index - 1];
+      if (index >= 0 && index + 1 < parent.nodes.length) {
+        next = parent.nodes[index + 1];
       }
+    }
+
+    if (preserveNewlines) {
+      text = text.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
+      text = text.replaceAll(RegExp(r'[ \t]*\n[ \t]*'), '\n');
+      if (prev is dom.Element &&
+          prev.localName == 'br' &&
+          text.startsWith('\n')) {
+        text = text.substring(1).trimLeft();
+      }
+      if (next is dom.Element &&
+          next.localName == 'br' &&
+          text.endsWith('\n')) {
+        text = text.substring(0, text.length - 1);
+      }
+      return text;
+    }
+
+    text = text.replaceAll(RegExp(r'[\r\n]\s*'), ' ');
+    if (prev is dom.Element && prev.localName == 'br') {
+      text = text.trimLeft();
     }
     return text;
   }
 
-  InlineSpan _buildTextSpanWithMarkdownLinks(
+  TapGestureRecognizer _createLinkRecognizer(String url) {
+    final tapRecognizer = TapGestureRecognizer()
+      ..onTap = () async {
+        await AppNavigation.handleLinkTap(context, url);
+      };
+    _recognizers.add(tapRecognizer);
+    return tapRecognizer;
+  }
+
+  InlineSpan _buildRichTextSpans(
     String text,
     TextStyle style, {
     GestureRecognizer? recognizer,
   }) {
-    if (recognizer != null || !_markdownLinkPattern.hasMatch(text)) {
+    if (text.isEmpty || !_inlineTokenPattern.hasMatch(text)) {
       return TextSpan(text: text, style: style, recognizer: recognizer);
     }
 
     final spans = <InlineSpan>[];
     int lastEnd = 0;
 
-    for (final match in _markdownLinkPattern.allMatches(text)) {
+    for (final match in _inlineTokenPattern.allMatches(text)) {
       if (match.start > lastEnd) {
         spans.add(
-          TextSpan(text: text.substring(lastEnd, match.start), style: style),
+          TextSpan(
+            text: text.substring(lastEnd, match.start),
+            style: style,
+            recognizer: recognizer,
+          ),
         );
       }
 
-      final label = match.group(1)!;
-      final url = match.group(2)!;
-      final tapRecognizer = TapGestureRecognizer()
-        ..onTap = () async {
-          await AppNavigation.handleLinkTap(context, url);
-        };
-      _recognizers.add(tapRecognizer);
+      final mdLabel = match.group(1);
+      final mdUrl = match.group(2);
+      final bareUrl = match.group(3);
+      final spoilerText = match.group(4);
+      final boldText = match.group(5) ?? match.group(6);
+      final strikeText = match.group(7);
+      final italicText = match.group(8) ?? match.group(9);
 
-      spans.add(
-        TextSpan(
-          text: label,
-          style: style.copyWith(color: borderColor),
-          recognizer: tapRecognizer,
-        ),
-      );
+      if (mdLabel != null && mdUrl != null) {
+        final linkRecognizer = recognizer ?? _createLinkRecognizer(mdUrl);
+        spans.add(
+          _buildRichTextSpans(
+            mdLabel,
+            style.copyWith(color: borderColor),
+            recognizer: linkRecognizer,
+          ),
+        );
+      } else if (bareUrl != null) {
+        String cleanUrl = bareUrl;
+        String trailing = '';
+        final punctMatch = _trailingUrlPunctuation.firstMatch(cleanUrl);
+        if (punctMatch != null) {
+          trailing = punctMatch.group(0)!;
+          cleanUrl = cleanUrl.substring(0, punctMatch.start);
+        }
+        final linkRecognizer = recognizer ?? _createLinkRecognizer(cleanUrl);
+        spans.add(
+          TextSpan(
+            text: cleanUrl,
+            style: style.copyWith(color: borderColor),
+            recognizer: linkRecognizer,
+          ),
+        );
+        if (trailing.isNotEmpty) {
+          spans.add(
+            TextSpan(text: trailing, style: style, recognizer: recognizer),
+          );
+        }
+      } else if (spoilerText != null) {
+        final spoilerStyle = style.copyWith(fontSize: fontLarge(context));
+        spans.add(
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: HtmlInlineSpoiler(
+              childrenSpans: [
+                _buildRichTextSpans(
+                  spoilerText.trim(),
+                  spoilerStyle,
+                  recognizer: recognizer,
+                ),
+              ],
+              style: style,
+              revealedStyle: spoilerStyle,
+            ),
+          ),
+        );
+      } else if (boldText != null) {
+        spans.add(
+          _buildRichTextSpans(
+            boldText,
+            style.copyWith(fontWeight: FontWeight.bold),
+            recognizer: recognizer,
+          ),
+        );
+      } else if (strikeText != null) {
+        spans.add(
+          _buildRichTextSpans(
+            strikeText,
+            style.copyWith(decoration: TextDecoration.lineThrough),
+            recognizer: recognizer,
+          ),
+        );
+      } else if (italicText != null) {
+        spans.add(
+          _buildRichTextSpans(
+            italicText,
+            style.copyWith(fontStyle: FontStyle.italic),
+            recognizer: recognizer,
+          ),
+        );
+      }
+
       lastEnd = match.end;
     }
 
     if (lastEnd < text.length) {
-      spans.add(TextSpan(text: text.substring(lastEnd), style: style));
+      spans.add(
+        TextSpan(
+          text: text.substring(lastEnd),
+          style: style,
+          recognizer: recognizer,
+        ),
+      );
     }
 
     return TextSpan(children: spans, style: style);
@@ -153,14 +294,12 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
     dom.Node node,
     TextStyle parentStyle, {
     GestureRecognizer? recognizer,
+    String? activeLinkUrl,
+    bool preserveNewlines = false,
   }) {
     if (node.nodeType == dom.Node.TEXT_NODE) {
-      final text = _processTextNode(node);
-      return _buildTextSpanWithMarkdownLinks(
-        text,
-        parentStyle,
-        recognizer: recognizer,
-      );
+      final text = _processTextNode(node, preserveNewlines: preserveNewlines);
+      return _buildRichTextSpans(text, parentStyle, recognizer: recognizer);
     }
 
     if (node.nodeType == dom.Node.ELEMENT_NODE && node is dom.Element) {
@@ -168,48 +307,73 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
         return const TextSpan(text: '\n');
       }
 
+      if (node.localName == 'img') {
+        final src = node.attributes['src'];
+        if (src == null || src.isEmpty) return const TextSpan();
+        return WidgetSpan(
+          alignment: PlaceholderAlignment.middle,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+            child: HtmlImageEmbed(
+              src: src,
+              widthAttr: node.attributes['width'],
+              linkUrl: activeLinkUrl,
+            ),
+          ),
+        );
+      }
+
       TextStyle currentStyle = parentStyle;
       if (node.localName == 'b' || node.localName == 'strong') {
         currentStyle = currentStyle.copyWith(fontWeight: FontWeight.bold);
       } else if (node.localName == 'i' || node.localName == 'em') {
         currentStyle = currentStyle.copyWith(fontStyle: FontStyle.italic);
+      } else if (node.localName == 'del' ||
+          node.localName == 's' ||
+          node.localName == 'strike') {
+        currentStyle = currentStyle.copyWith(
+          decoration: TextDecoration.lineThrough,
+        );
+      } else if (node.localName == 'code') {
+        currentStyle = currentStyle.copyWith(
+          fontFamily: 'monospace',
+          backgroundColor: hoverBgColor,
+          color: textPrimary,
+        );
       }
 
       GestureRecognizer? currentRecognizer = recognizer;
+      String? nextLinkUrl = activeLinkUrl;
       if (node.localName == 'a') {
         final href = node.attributes['href'];
         if (href != null && href.isNotEmpty) {
-          final tapRecognizer = TapGestureRecognizer()
-            ..onTap = () async {
-              await AppNavigation.handleLinkTap(context, href);
-            };
-          _recognizers.add(tapRecognizer);
-          currentRecognizer = tapRecognizer;
+          currentRecognizer = _createLinkRecognizer(href);
           currentStyle = currentStyle.copyWith(color: borderColor);
+          nextLinkUrl = href;
         }
       }
 
       if (node.localName == 'span' &&
           node.classes.contains('markdown_spoiler')) {
         _trimWhitespace(node);
-
         final spoilerStyle = currentStyle.copyWith(
           fontSize: fontLarge(context),
         );
-
         final childrenSpans = node.nodes
             .map(
               (child) => _buildInlineSpan(
                 child,
                 spoilerStyle,
                 recognizer: currentRecognizer,
+                activeLinkUrl: nextLinkUrl,
+                preserveNewlines: preserveNewlines,
               ),
             )
             .toList();
 
         return WidgetSpan(
           alignment: PlaceholderAlignment.middle,
-          child: _InlineSpoiler(
+          child: HtmlInlineSpoiler(
             childrenSpans: childrenSpans,
             style: currentStyle,
             revealedStyle: spoilerStyle,
@@ -223,6 +387,8 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
               child,
               currentStyle,
               recognizer: currentRecognizer,
+              activeLinkUrl: nextLinkUrl,
+              preserveNewlines: preserveNewlines,
             ),
           )
           .toList();
@@ -234,6 +400,66 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
     }
 
     return const TextSpan();
+  }
+
+  bool _isBlankSpanList(List<InlineSpan> spans) {
+    if (spans.isEmpty) return true;
+    for (final span in spans) {
+      if (span is! TextSpan) return false;
+      if (span.children != null && !_isBlankSpanList(span.children!)) {
+        return false;
+      }
+      if ((span.text ?? '').trim().isNotEmpty) return false;
+    }
+    return true;
+  }
+
+  String? _extractVideoSrc(dom.Element videoNode) {
+    final direct = videoNode.attributes['src'];
+    if (direct != null && direct.trim().isNotEmpty) return direct.trim();
+    for (final child in videoNode.children) {
+      if (child.localName == 'source') {
+        final src = child.attributes['src'];
+        if (src != null && src.trim().isNotEmpty) return src.trim();
+      }
+    }
+    return null;
+  }
+
+  TextStyle _headingStyle(BuildContext context, String tag, TextStyle base) {
+    return switch (tag) {
+      'h1' => base.copyWith(
+        fontSize: fontTitle(context),
+        fontWeight: FontWeight.bold,
+        color: textPrimary,
+      ),
+      'h2' => base.copyWith(
+        fontSize: fontLarge(context),
+        fontWeight: FontWeight.bold,
+        color: textPrimary,
+      ),
+      'h3' => base.copyWith(
+        fontSize: fontBody(context),
+        fontWeight: FontWeight.bold,
+        color: textPrimary,
+      ),
+      'h4' => base.copyWith(
+        fontSize: fontMedium(context),
+        fontWeight: FontWeight.bold,
+        color: textPrimary,
+      ),
+      'h5' => base.copyWith(
+        fontSize: fontSmall(context),
+        fontWeight: FontWeight.bold,
+        color: textSecondary,
+      ),
+      'h6' => base.copyWith(
+        fontSize: fontSmall(context),
+        fontWeight: FontWeight.bold,
+        color: textMuted,
+      ),
+      _ => base,
+    };
   }
 
   @override
@@ -254,58 +480,189 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
 
     final List<Widget> widgets = [];
     final List<InlineSpan> currentSpans = [];
+    TextAlign currentAlign = TextAlign.start;
 
-    void flushSpans() {
-      if (currentSpans.isNotEmpty) {
-        widgets.add(
-          Padding(
-            padding: const EdgeInsets.only(bottom: 2),
-            child: Text.rich(
-              TextSpan(children: List.from(currentSpans)),
-              style: baseStyle,
-            ),
-          ),
-        );
-        currentSpans.clear();
+    Widget alignBlock(Widget child, TextAlign align) {
+      if (align == TextAlign.center) {
+        return Align(child: child);
       }
+      return child;
     }
 
-    void traverse(dom.Node node) {
+    void flushSpans({double bottomPadding = 2}) {
+      if (currentSpans.isEmpty) return;
+      if (_isBlankSpanList(currentSpans)) {
+        currentSpans.clear();
+        return;
+      }
+      final align = currentAlign;
+      final textWidget = Text.rich(
+        TextSpan(children: List.from(currentSpans)),
+        style: baseStyle,
+        textAlign: align,
+      );
+      widgets.add(
+        Padding(
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: alignBlock(textWidget, align),
+        ),
+      );
+      currentSpans.clear();
+    }
+
+    void traverse(
+      dom.Node node, {
+      TextAlign textAlign = TextAlign.start,
+      bool preserveNewlines = false,
+    }) {
       if (node.nodeType == dom.Node.ELEMENT_NODE && node is dom.Element) {
-        if (node.localName == 'img') {
+        final tag = node.localName ?? '';
+        final alignAttr = node.attributes['align']?.toLowerCase();
+        final effectiveAlign = (tag == 'center' || alignAttr == 'center')
+            ? TextAlign.center
+            : textAlign;
+        final effectivePreserveNewlines =
+            preserveNewlines || tag == 'center' || alignAttr == 'center';
+
+        if (tag == 'hr') {
+          flushSpans();
+          widgets.add(
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: Divider(color: cardBorderColor, height: 1, thickness: 1),
+            ),
+          );
+          return;
+        }
+
+        if (tag == 'img') {
           final src = node.attributes['src'];
           if (src != null && src.isNotEmpty) {
             flushSpans();
             widgets.add(
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        src,
-                        fit: BoxFit.contain,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Container(
-                            height: 150,
-                            color: Colors.white.withValues(alpha: 0.05),
-                            child: const Center(
-                              child: SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) =>
-                            const SizedBox.shrink(),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Align(
+                  child: HtmlImageEmbed(
+                    src: src,
+                    widthAttr: node.attributes['width'],
+                  ),
+                ),
+              ),
+            );
+          }
+          return;
+        }
+
+        if (tag == 'div' && node.classes.contains('youtube')) {
+          final rawId = node.attributes['id'] ?? '';
+          if (rawId.trim().isNotEmpty) {
+            flushSpans();
+            widgets.add(
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: alignBlock(
+                  HtmlYoutubeCard(rawId: rawId),
+                  effectiveAlign,
+                ),
+              ),
+            );
+          }
+          return;
+        }
+
+        if (tag == 'video') {
+          final src = _extractVideoSrc(node);
+          if (src != null) {
+            flushSpans();
+            widgets.add(
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: alignBlock(HtmlVideoCard(src: src), effectiveAlign),
+              ),
+            );
+          }
+          return;
+        }
+
+        if (tag == 'br') {
+          currentAlign = effectiveAlign;
+          currentSpans.add(const TextSpan(text: '\n'));
+          return;
+        }
+
+        if (_blockElements.contains(tag) &&
+            node.classes.contains('markdown_spoiler')) {
+          flushSpans();
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: alignBlock(
+                HtmlBlockSpoiler(
+                  style: baseStyle,
+                  revealedBuilder: (spoilerStyle) => HtmlDescription(
+                    html: node.innerHtml,
+                    style: spoilerStyle,
+                  ),
+                ),
+                effectiveAlign,
+              ),
+            ),
+          );
+          return;
+        }
+
+        if (tag == 'blockquote') {
+          flushSpans();
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(12, 6, 10, 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.03),
+                  border: const Border(
+                    left: BorderSide(color: borderColor, width: 3),
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(6),
+                    bottomRight: Radius.circular(6),
+                  ),
+                ),
+                child: HtmlDescription(
+                  html: node.innerHtml,
+                  style: baseStyle.copyWith(color: textSecondary),
+                ),
+              ),
+            ),
+          );
+          return;
+        }
+
+        if (tag == 'pre') {
+          flushSpans();
+          final codeText = node.text.trimRight();
+          if (codeText.isNotEmpty) {
+            widgets.add(
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: hoverBgColor,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: cardBorderColor),
+                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Text(
+                      codeText,
+                      style: baseStyle.copyWith(
+                        fontFamily: 'monospace',
+                        fontSize: fontSmall(context),
+                        color: textPrimary,
                       ),
                     ),
                   ),
@@ -313,60 +670,66 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
               ),
             );
           }
-        } else if (node.localName == 'br') {
-          currentSpans.add(const TextSpan(text: '\n'));
-        } else if (_blockElements.contains(node.localName) &&
-            node.classes.contains('markdown_spoiler')) {
+          return;
+        }
+
+        if (tag == 'center') {
           flushSpans();
-          widgets.add(
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: _BlockSpoiler(innerHtml: node.innerHtml, style: baseStyle),
-            ),
-          );
-        } else if (_blockElements.contains(node.localName)) {
+          _trimWhitespace(node);
+          currentAlign = TextAlign.center;
+          for (final child in node.nodes) {
+            traverse(
+              child,
+              textAlign: TextAlign.center,
+              preserveNewlines: true,
+            );
+          }
+          flushSpans(bottomPadding: 8);
+          currentAlign = textAlign;
+          return;
+        }
+
+        if (_blockElements.contains(tag)) {
           flushSpans();
 
-          final hasNestedBlocksOrImages = node.nodes.any(
+          final hasNestedBlocks = node.nodes.any(
             (n) =>
-                n is dom.Element && _nestedBlocksOrImages.contains(n.localName),
+                n is dom.Element &&
+                (_nestedBlockTriggers.contains(n.localName) ||
+                    (n.localName == 'div' && n.classes.contains('youtube'))),
           );
 
-          if (hasNestedBlocksOrImages) {
+          if (hasNestedBlocks) {
             for (final child in node.nodes) {
-              traverse(child);
+              traverse(
+                child,
+                textAlign: effectiveAlign,
+                preserveNewlines: effectivePreserveNewlines,
+              );
             }
+            flushSpans();
           } else {
             _trimWhitespace(node);
-
-            TextStyle blockStyle = baseStyle;
-            if (node.localName == 'h1') {
-              blockStyle = blockStyle.copyWith(
-                fontSize: fontTitle(context),
-                fontWeight: FontWeight.bold,
-              );
-            } else if (node.localName == 'h2') {
-              blockStyle = blockStyle.copyWith(
-                fontSize: fontLarge(context),
-                fontWeight: FontWeight.bold,
-              );
-            } else if (node.localName == 'h3') {
-              blockStyle = blockStyle.copyWith(
-                fontSize: fontBody(context),
-                fontWeight: FontWeight.bold,
-              );
-            }
+            final blockStyle = _headingStyle(context, tag, baseStyle);
 
             final inlineSpans = node.nodes
-                .map((child) => _buildInlineSpan(child, blockStyle))
+                .map(
+                  (child) => _buildInlineSpan(
+                    child,
+                    blockStyle,
+                    preserveNewlines: effectivePreserveNewlines,
+                  ),
+                )
                 .toList();
 
+            if (_isBlankSpanList(inlineSpans)) return;
+
             String prefix = '';
-            if (node.localName == 'li') {
+            if (tag == 'li') {
               final parent = node.parent;
               if (parent != null) {
                 if (parent.localName == 'ul') {
-                  prefix = '•  ';
+                  prefix = '\u2022  ';
                 } else if (parent.localName == 'ol') {
                   final liSiblings = parent.children
                       .where((c) => c.localName == 'li')
@@ -377,36 +740,47 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
               }
             }
 
+            final richText = Text.rich(
+              TextSpan(
+                children: [
+                  if (prefix.isNotEmpty)
+                    TextSpan(
+                      text: prefix,
+                      style: blockStyle.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: textMuted,
+                      ),
+                    ),
+                  ...inlineSpans,
+                ],
+              ),
+              style: blockStyle,
+              textAlign: effectiveAlign,
+            );
+
             widgets.add(
               Padding(
                 padding: EdgeInsets.only(
-                  left: node.localName == 'li' ? 16 : 0,
-                  bottom: node.localName == 'p' ? 12 : 2,
+                  left: tag == 'li' ? 16 : 0,
+                  bottom: tag == 'p' ? 12 : 4,
                 ),
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      if (prefix.isNotEmpty)
-                        TextSpan(
-                          text: prefix,
-                          style: blockStyle.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: textMuted,
-                          ),
-                        ),
-                      ...inlineSpans,
-                    ],
-                  ),
-                  style: blockStyle,
-                ),
+                child: alignBlock(richText, effectiveAlign),
               ),
             );
           }
-        } else {
-          currentSpans.add(_buildInlineSpan(node, baseStyle));
+          return;
         }
+
+        currentAlign = effectiveAlign;
+        currentSpans.add(
+          _buildInlineSpan(
+            node,
+            baseStyle,
+            preserveNewlines: effectivePreserveNewlines,
+          ),
+        );
       } else if (node.nodeType == dom.Node.TEXT_NODE) {
-        final text = _processTextNode(node);
+        final text = _processTextNode(node, preserveNewlines: preserveNewlines);
 
         if (text.trim().isEmpty) {
           final parent = node.parent;
@@ -416,7 +790,8 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
           }
         }
 
-        currentSpans.add(_buildTextSpanWithMarkdownLinks(text, baseStyle));
+        currentAlign = textAlign;
+        currentSpans.add(_buildRichTextSpans(text, baseStyle));
       }
     }
 
@@ -429,149 +804,6 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: widgets,
-    );
-  }
-}
-
-class _InlineSpoiler extends StatefulWidget {
-  final List<InlineSpan> childrenSpans;
-  final TextStyle style;
-  final TextStyle revealedStyle;
-
-  const _InlineSpoiler({
-    required this.childrenSpans,
-    required this.style,
-    required this.revealedStyle,
-  });
-
-  @override
-  State<_InlineSpoiler> createState() => _InlineSpoilerState();
-}
-
-class _InlineSpoilerState extends State<_InlineSpoiler> {
-  bool _isRevealed = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final spoilerBtnTextSize = widget.style.fontSize ?? fontMedium(context);
-
-    if (!_isRevealed) {
-      return MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              _isRevealed = true;
-            });
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(
-              color: spoilerColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: spoilerColor.withValues(alpha: 0.3)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  LucideIcons.eye,
-                  size: spoilerBtnTextSize,
-                  color: spoilerColor,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  'Spoiler',
-                  style: widget.style.copyWith(
-                    color: spoilerColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    } else {
-      return MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              _isRevealed = false;
-            });
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(
-              color: spoilerColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: spoilerColor.withValues(alpha: 0.3)),
-            ),
-            child: Text.rich(
-              TextSpan(children: widget.childrenSpans),
-              style: widget.revealedStyle.copyWith(color: spoilerColor),
-            ),
-          ),
-        ),
-      );
-    }
-  }
-}
-
-class _BlockSpoiler extends StatefulWidget {
-  final String innerHtml;
-  final TextStyle style;
-
-  const _BlockSpoiler({required this.innerHtml, required this.style});
-
-  @override
-  State<_BlockSpoiler> createState() => _BlockSpoilerState();
-}
-
-class _BlockSpoilerState extends State<_BlockSpoiler> {
-  bool _isRevealed = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final spoilerBtnTextSize = widget.style.fontSize ?? fontMedium(context);
-
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () => setState(() => _isRevealed = !_isRevealed),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            color: spoilerColor.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: spoilerColor.withValues(alpha: 0.3)),
-          ),
-          child: _isRevealed
-              ? HtmlDescription(
-                  html: widget.innerHtml,
-                  style: widget.style.copyWith(color: spoilerColor),
-                )
-              : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      LucideIcons.eye,
-                      size: spoilerBtnTextSize,
-                      color: spoilerColor,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      'Spoiler',
-                      style: widget.style.copyWith(
-                        color: spoilerColor,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-        ),
-      ),
     );
   }
 }
