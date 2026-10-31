@@ -35,6 +35,12 @@ class UserProfile {
   /// Total count of followed users.
   final int followingCount;
 
+  /// Total count of anime entries.
+  final int animeCount;
+
+  /// Total count of manga entries.
+  final int mangaCount;
+
   /// Creates a user profile.
   const UserProfile({
     required this.id,
@@ -48,6 +54,8 @@ class UserProfile {
     this.createdAt = 0,
     this.followersCount = 0,
     this.followingCount = 0,
+    this.animeCount = 0,
+    this.mangaCount = 0,
   });
 
   /// Creates a user profile from a protobuf object.
@@ -64,6 +72,8 @@ class UserProfile {
       createdAt: pbObj.createdAt,
       followersCount: pbObj.followersCount,
       followingCount: pbObj.followingCount,
+      animeCount: pbObj.animeCount,
+      mangaCount: pbObj.mangaCount,
     );
   }
 
@@ -79,6 +89,8 @@ class UserProfile {
       createdAt: createdAt,
       followersCount: followersCount,
       followingCount: followingCount,
+      animeCount: animeCount,
+      mangaCount: mangaCount,
     );
     if (avatarLarge.isNotEmpty || avatarMedium.isNotEmpty) {
       pbObj.avatar = pb.UserAvatar(large: avatarLarge, medium: avatarMedium);
@@ -99,6 +111,8 @@ class UserProfile {
     int? createdAt,
     int? followersCount,
     int? followingCount,
+    int? animeCount,
+    int? mangaCount,
   }) {
     return UserProfile(
       id: id ?? this.id,
@@ -112,6 +126,8 @@ class UserProfile {
       createdAt: createdAt ?? this.createdAt,
       followersCount: followersCount ?? this.followersCount,
       followingCount: followingCount ?? this.followingCount,
+      animeCount: animeCount ?? this.animeCount,
+      mangaCount: mangaCount ?? this.mangaCount,
     );
   }
 }

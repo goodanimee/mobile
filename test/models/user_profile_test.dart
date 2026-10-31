@@ -18,6 +18,8 @@ void main() {
       expect(profile.createdAt, 0);
       expect(profile.followersCount, 0);
       expect(profile.followingCount, 0);
+      expect(profile.animeCount, 0);
+      expect(profile.mangaCount, 0);
     });
 
     test('roundtrips through protobuf representation', () {
@@ -33,6 +35,8 @@ void main() {
         createdAt: 1600000000,
         followersCount: 42,
         followingCount: 15,
+        animeCount: 180,
+        mangaCount: 64,
       );
 
       final pbObj = profile.toProto();
@@ -49,6 +53,8 @@ void main() {
       expect(restored.createdAt, profile.createdAt);
       expect(restored.followersCount, profile.followersCount);
       expect(restored.followingCount, profile.followingCount);
+      expect(restored.animeCount, profile.animeCount);
+      expect(restored.mangaCount, profile.mangaCount);
     });
 
     test('handles empty or missing avatar in protobuf object', () {
@@ -66,15 +72,24 @@ void main() {
         id: 100,
         name: 'Original',
         followersCount: 10,
+        animeCount: 25,
+        mangaCount: 12,
       );
 
-      final updated = original.copyWith(isFollowing: true, followersCount: 11);
+      final updated = original.copyWith(
+        isFollowing: true,
+        followersCount: 11,
+        animeCount: 26,
+      );
 
       expect(updated.id, 100);
       expect(updated.name, 'Original');
       expect(updated.isFollowing, isTrue);
       expect(updated.followersCount, 11);
+      expect(updated.animeCount, 26);
+      expect(updated.mangaCount, 12);
       expect(original.isFollowing, isFalse);
+      expect(original.animeCount, 25);
     });
   });
 }

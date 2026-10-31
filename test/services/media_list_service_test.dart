@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:goodanime/models/common.dart';
 import 'package:goodanime/models/media_list.dart';
 import 'package:goodanime/models/media_min.dart';
+import 'package:goodanime/services/custom_list_service.dart';
 import 'package:goodanime/services/media_list_service.dart';
 import 'package:goodanime/utils/app_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,6 +42,7 @@ MediaListEntryWithMedia _createEntry({
   double score = 8.0,
   bool private = false,
   bool hiddenFromStatusLists = false,
+  List<String> customLists = const [],
   String notes = '',
 }) {
   return MediaListEntryWithMedia(
@@ -52,6 +54,7 @@ MediaListEntryWithMedia _createEntry({
     progressVolumes: 0,
     private: private,
     hiddenFromStatusLists: hiddenFromStatusLists,
+    customLists: customLists,
     notes: notes,
     media: _createMedia(mediaId),
   );
@@ -443,5 +446,91 @@ void main() {
 
       expect(req.hasCustomLists(), isFalse);
     });
+  });
+
+  group('MediaListService.groupCollectionLists', () {
+    test(
+      'groups canonical statuses, merges repeating into current, and isolates custom lists',
+      () async {
+        await CustomListService.instance.setCustomLists('ANIME', [
+          'ViewerOnlyCustom',
+        ]);
+
+        final currentEntry = _createEntry(
+          id: 1,
+          mediaId: 10,
+          status: MediaListStatus.current,
+          progress: 4,
+        );
+        final repeatingEntry = _createEntry(
+          id: 2,
+          mediaId: 20,
+          status: MediaListStatus.repeating,
+          progress: 2,
+        );
+        final hiddenCustomEntry = _createEntry(
+          id: 3,
+          mediaId: 30,
+          status: MediaListStatus.completed,
+          hiddenFromStatusLists: true,
+          customLists: ['All Time Top'],
+        );
+
+        final collection = MediaListCollection(
+          hasNextChunk: false,
+          lists: [
+            MediaList(
+              name: 'Watching',
+              status: MediaListStatus.current,
+              entries: [currentEntry],
+            ),
+            MediaList(
+              name: 'Rewatching',
+              status: MediaListStatus.repeating,
+              entries: [repeatingEntry],
+            ),
+            MediaList(
+              name: 'All Time Top',
+              isCustomList: true,
+              entries: [hiddenCustomEntry],
+            ),
+          ],
+        );
+
+        final grouped = MediaListService.groupCollectionLists(
+          collection,
+          'ANIME',
+        );
+
+        expect(grouped.take(5).map((s) => s.status).toList(), [
+          MediaListStatus.current,
+          MediaListStatus.planning,
+          MediaListStatus.completed,
+          MediaListStatus.paused,
+          MediaListStatus.dropped,
+        ]);
+
+        final currentSection = grouped.firstWhere(
+          (s) => s.status == MediaListStatus.current,
+        );
+        final completedSection = grouped.firstWhere(
+          (s) => s.status == MediaListStatus.completed,
+        );
+        final customSections = grouped.where((s) => s.isCustomList).toList();
+
+        expect(currentSection.entries.map((e) => e.media.id).toList(), [
+          10,
+          20,
+        ]);
+        expect(completedSection.entries, isEmpty);
+        expect(customSections.map((s) => s.name).toList(), ['All Time Top']);
+        expect(customSections.single.entries.map((e) => e.media.id).toList(), [
+          30,
+        ]);
+        expect(CustomListService.instance.getCustomLists('ANIME'), [
+          'ViewerOnlyCustom',
+        ]);
+      },
+    );
   });
 }
