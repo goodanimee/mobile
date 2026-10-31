@@ -1,11 +1,24 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Title;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:goodanime/components/html_anilist_link_card.dart';
 import 'package:goodanime/components/html_description.dart';
 import 'package:goodanime/components/html_description_widgets.dart';
+import 'package:goodanime/components/relation_card.dart';
+import 'package:goodanime/models/media_character.dart';
+import 'package:goodanime/models/media_min.dart';
+import 'package:goodanime/models/media_staff.dart';
+import 'package:goodanime/models/media_studio.dart';
+import 'package:goodanime/models/user_profile.dart';
+import 'package:goodanime/utils/anilist_url_parser.dart';
 
-/// Widget tests for [HtmlDescription] AniList HTML and markdown support.
+/// Widget tests for [HtmlDescription] AniList HTML, markdown, and entity cards.
 void main() {
+  tearDown(() {
+    HtmlAnilistLinkCard.debugResolverOverride = null;
+    HtmlAnilistLinkCard.clearCache();
+  });
+
   Widget buildSubject(String html) {
     return MaterialApp(
       home: Scaffold(
@@ -14,9 +27,46 @@ void main() {
     );
   }
 
+  MediaMin buildMediaFixture({
+    required int id,
+    required String type,
+    required String title,
+    required String format,
+    int episodes = 0,
+    int chapters = 0,
+    int averageScore = 85,
+  }) {
+    return MediaMin(
+      id: id,
+      type: type,
+      title: Title(
+        english: title,
+        native: '',
+        romaji: title,
+        userPreferred: title,
+      ),
+      averageScore: averageScore,
+      coverImage: const CoverImage(
+        medium: '',
+        large: '',
+        extraLarge: '',
+        color: '#4F9DDE',
+      ),
+      episodes: episodes,
+      chapters: chapters,
+      volumes: 0,
+      format: format,
+      isAdult: false,
+      isFavourite: false,
+      siteUrl: 'https://anilist.co/${type.toLowerCase()}/$id',
+    );
+  }
+
   testWidgets(
-    'renders multi-section bio with center blocks, hr dividers, newlines, links, and sized image',
+    'renders multi-section bio with center blocks, hr dividers, newlines, entity cards, and sized image',
     (tester) async {
+      HtmlAnilistLinkCard.debugResolverOverride = (target) async => null;
+
       const multiSectionLoremHtml =
           '<center>_"Lorem ipsum dolor sit amet, consectetur adipiscing elit."_</center> \n'
           '<p>lorem | 23 | ipsum | dolor/sit | amet consectetur</p>\n'
@@ -68,32 +118,165 @@ void main() {
 
       expect(find.text('lorem badges'), findsOneWidget);
 
-      final themeBlock = tester.widget<Text>(
-        find.byWidgetPredicate(
-          (w) =>
-              w is Text &&
-              (w.textSpan?.toPlainText().contains(
-                    'https://anilist.co/anime/1/Lorem-Ipsum/',
-                  ) ??
-                  false),
-        ),
-      );
-      expect(themeBlock.textAlign, TextAlign.center);
-      final rootSpan = themeBlock.textSpan! as TextSpan;
-      final recognizerCount = <GestureRecognizer>[];
-      rootSpan.visitChildren((span) {
-        if (span is TextSpan && span.recognizer != null) {
-          recognizerCount.add(span.recognizer!);
-        }
-        return true;
-      });
-      expect(recognizerCount.length, 2);
+      final themeHeading = tester.widget<Text>(find.text('adipiscing theme'));
+      expect(themeHeading.textAlign, TextAlign.center);
+
+      expect(find.byType(HtmlAnilistLinkCard), findsNWidgets(2));
+      expect(find.text('Lorem Ipsum'), findsOneWidget);
+      expect(find.text('Dolor Sit'), findsOneWidget);
+      expect(find.text('ANIME'), findsOneWidget);
+      expect(find.text('MANGA'), findsOneWidget);
 
       final imgEmbed = tester.widget<HtmlImageEmbed>(
         find.byType(HtmlImageEmbed),
       );
       expect(imgEmbed.src, 'https://example.com/lorem.jpg');
       expect(imgEmbed.widthAttr, '350');
+    },
+  );
+
+  testWidgets(
+    'renders rich RelationCard and Studio boxes for all 6 AniList entity types',
+    (tester) async {
+      HtmlAnilistLinkCard.debugResolverOverride = (target) async {
+        return switch (target.type) {
+          AnilistEntityType.anime => AnilistMediaPreview(
+            buildMediaFixture(
+              id: 101,
+              type: 'ANIME',
+              title: 'Lorem Anime',
+              format: 'TV',
+              episodes: 12,
+              averageScore: 86,
+            ),
+          ),
+          AnilistEntityType.manga => AnilistMediaPreview(
+            buildMediaFixture(
+              id: 202,
+              type: 'MANGA',
+              title: 'Dolor Manga',
+              format: 'MANGA',
+              chapters: 48,
+              averageScore: 91,
+            ),
+          ),
+          AnilistEntityType.character => const AnilistCharacterPreview(
+            Character(
+              id: 303,
+              name: CharacterName(
+                full: 'Amet Character',
+                userPreferred: 'Amet Character',
+                alternative: [],
+                alternativeSpoiler: [],
+              ),
+              favourites: 1200,
+            ),
+          ),
+          AnilistEntityType.staff => const AnilistStaffPreview(
+            Staff(
+              id: 404,
+              name: StaffName(full: 'Elit Staff', userPreferred: 'Elit Staff'),
+              yearsActive: [],
+              primaryOccupations: ['Director'],
+              favourites: 450,
+            ),
+          ),
+          AnilistEntityType.studio => const AnilistStudioPreview(
+            Studio(
+              id: 505,
+              name: 'Tempor Studio',
+              favourites: 3400,
+              isFavourite: false,
+              media: null,
+            ),
+          ),
+          AnilistEntityType.user => const AnilistUserPreview(
+            UserProfile(
+              id: 606,
+              name: 'lorem_viewer',
+              animeCount: 120,
+              mangaCount: 45,
+              followersCount: 89,
+            ),
+          ),
+        };
+      };
+
+      const allEntitiesHtml =
+          '<p>https://anilist.co/anime/101/Lorem-Anime/</p>'
+          '<p><a href="https://anilist.co/manga/202">Dolor Label</a></p>'
+          '<center>[Character Label](https://anilist.co/character/303)</center>'
+          '<p>https://anilist.co/staff/404/Elit-Staff/</p>'
+          '<p>https://anilist.co/studio/505/Tempor-Studio/</p>'
+          '<p>https://anilist.co/user/lorem_viewer/</p>';
+
+      await tester.pumpWidget(buildSubject(allEntitiesHtml));
+      await tester.pump();
+
+      expect(find.byType(HtmlAnilistLinkCard), findsNWidgets(6));
+      expect(find.byType(RelationCard), findsNWidgets(5));
+
+      expect(find.text('Lorem Anime'), findsOneWidget);
+      expect(find.text('TV \u00B7 12 Episodes'), findsOneWidget);
+      expect(find.text('8.6'), findsOneWidget);
+
+      expect(find.text('Dolor Manga'), findsOneWidget);
+      expect(find.text('MANGA \u00B7 48 Chapters'), findsOneWidget);
+      expect(find.text('9.1'), findsOneWidget);
+
+      expect(find.text('Amet Character'), findsOneWidget);
+      expect(find.text('CHARACTER'), findsOneWidget);
+
+      expect(find.text('Elit Staff'), findsOneWidget);
+      expect(find.text('Director'), findsOneWidget);
+      expect(find.text('STAFF'), findsOneWidget);
+
+      expect(find.text('Tempor Studio'), findsOneWidget);
+      expect(find.text('STUDIO'), findsOneWidget);
+
+      expect(find.text('lorem_viewer'), findsOneWidget);
+      expect(find.text('120 Anime \u00B7 45 Manga'), findsOneWidget);
+      expect(find.text('USER'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'keeps mid-sentence named AniList links and linked images inline without breaking sentences',
+    (tester) async {
+      HtmlAnilistLinkCard.debugResolverOverride = (target) async => null;
+
+      const inlineLinksHtml =
+          '<p>Currently watching <a href="https://anilist.co/anime/10">Lorem Title</a> every week.</p>'
+          '<center>Reading [Dolor Title](https://anilist.co/manga/20) right now</center>'
+          '<center><a href="https://anilist.co/anime/30"><img width="140" src="https://example.com/banner.png"></a></center>';
+
+      await tester.pumpWidget(buildSubject(inlineLinksHtml));
+      await tester.pump();
+
+      expect(find.byType(HtmlAnilistLinkCard), findsNothing);
+      expect(find.byType(HtmlImageEmbed), findsOneWidget);
+
+      final proseParagraph = tester.widget<Text>(
+        find.byWidgetPredicate(
+          (w) =>
+              w is Text &&
+              (w.textSpan?.toPlainText().contains(
+                    'Currently watching Lorem Title every week.',
+                  ) ??
+                  false),
+        ),
+      );
+      final rootSpan = proseParagraph.textSpan! as TextSpan;
+      final recognizers = <GestureRecognizer>[];
+      rootSpan.visitChildren((span) {
+        if (span is TextSpan && span.recognizer != null) {
+          recognizers.add(span.recognizer!);
+        }
+        return true;
+      });
+      expect(recognizers, isNotEmpty);
+
+      expect(find.text('Reading Dolor Title right now'), findsOneWidget);
     },
   );
 

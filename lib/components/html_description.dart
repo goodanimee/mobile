@@ -4,8 +4,65 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
 
 import '../theme/theme.dart';
+import '../utils/anilist_url_parser.dart';
 import '../utils/app_navigation.dart';
+import 'html_anilist_link_card.dart';
 import 'html_description_widgets.dart';
+
+final _lonePunctuationPattern = RegExp(r'^[\s.,;:!?]+$');
+
+class _CardLinkCandidate {
+  final AnilistRouteTarget target;
+  final String rawUrl;
+  final String? fallbackLabel;
+  final bool isUrlLabel;
+  final InlineSpan inlineFallback;
+
+  const _CardLinkCandidate({
+    required this.target,
+    required this.rawUrl,
+    required this.fallbackLabel,
+    required this.isUrlLabel,
+    required this.inlineFallback,
+  });
+}
+
+class _AnilistLinkCandidateMarker extends StatelessWidget {
+  final _CardLinkCandidate candidate;
+
+  const _AnilistLinkCandidateMarker(this.candidate);
+
+  @override
+  Widget build(BuildContext context) => const SizedBox.shrink();
+}
+
+sealed class _FlatInlineToken {
+  const _FlatInlineToken();
+}
+
+class _TextToken extends _FlatInlineToken {
+  final String text;
+  final TextStyle? style;
+  final GestureRecognizer? recognizer;
+
+  const _TextToken(this.text, this.style, this.recognizer);
+}
+
+class _SpanToken extends _FlatInlineToken {
+  final InlineSpan span;
+
+  const _SpanToken(this.span);
+}
+
+class _NewlineToken extends _FlatInlineToken {
+  const _NewlineToken();
+}
+
+class _CandidateToken extends _FlatInlineToken {
+  final _CardLinkCandidate candidate;
+
+  const _CandidateToken(this.candidate);
+}
 
 final _inlineTokenPattern = RegExp(
   r'\[([^\]]+)\]\(([^)\s]+)\)'
@@ -169,10 +226,41 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
     return tapRecognizer;
   }
 
+  InlineSpan _maybeWrapAnilistCandidate({
+    required String rawUrl,
+    required String? visibleLabel,
+    required InlineSpan inlineFallback,
+    required bool allowBlockCards,
+  }) {
+    if (!allowBlockCards) return inlineFallback;
+    final target = AnilistUrlParser.parse(rawUrl, allowRelative: true);
+    if (target == null) return inlineFallback;
+
+    final trimmedLabel = visibleLabel?.trim();
+    final isUrlLabel =
+        trimmedLabel == null ||
+        trimmedLabel.isEmpty ||
+        trimmedLabel == rawUrl.trim() ||
+        AnilistUrlParser.parse(trimmedLabel) != null;
+
+    return WidgetSpan(
+      child: _AnilistLinkCandidateMarker(
+        _CardLinkCandidate(
+          target: target,
+          rawUrl: rawUrl.trim(),
+          fallbackLabel: isUrlLabel ? null : trimmedLabel,
+          isUrlLabel: isUrlLabel,
+          inlineFallback: inlineFallback,
+        ),
+      ),
+    );
+  }
+
   InlineSpan _buildRichTextSpans(
     String text,
     TextStyle style, {
     GestureRecognizer? recognizer,
+    bool allowBlockCards = true,
   }) {
     if (text.isEmpty || !_inlineTokenPattern.hasMatch(text)) {
       return TextSpan(text: text, style: style, recognizer: recognizer);
@@ -202,11 +290,21 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
 
       if (mdLabel != null && mdUrl != null) {
         final linkRecognizer = recognizer ?? _createLinkRecognizer(mdUrl);
+        final inlineSpan = _buildRichTextSpans(
+          mdLabel,
+          style.copyWith(color: borderColor),
+          recognizer: linkRecognizer,
+          allowBlockCards: false,
+        );
         spans.add(
-          _buildRichTextSpans(
-            mdLabel,
-            style.copyWith(color: borderColor),
-            recognizer: linkRecognizer,
+          _maybeWrapAnilistCandidate(
+            rawUrl: mdUrl,
+            visibleLabel: mdLabel,
+            inlineFallback: inlineSpan,
+            allowBlockCards:
+                allowBlockCards &&
+                recognizer == null &&
+                !mdLabel.contains('\n'),
           ),
         );
       } else if (bareUrl != null) {
@@ -218,11 +316,17 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
           cleanUrl = cleanUrl.substring(0, punctMatch.start);
         }
         final linkRecognizer = recognizer ?? _createLinkRecognizer(cleanUrl);
+        final inlineSpan = TextSpan(
+          text: cleanUrl,
+          style: style.copyWith(color: borderColor),
+          recognizer: linkRecognizer,
+        );
         spans.add(
-          TextSpan(
-            text: cleanUrl,
-            style: style.copyWith(color: borderColor),
-            recognizer: linkRecognizer,
+          _maybeWrapAnilistCandidate(
+            rawUrl: cleanUrl,
+            visibleLabel: null,
+            inlineFallback: inlineSpan,
+            allowBlockCards: allowBlockCards && recognizer == null,
           ),
         );
         if (trailing.isNotEmpty) {
@@ -241,6 +345,7 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
                   spoilerText.trim(),
                   spoilerStyle,
                   recognizer: recognizer,
+                  allowBlockCards: false,
                 ),
               ],
               style: style,
@@ -254,6 +359,7 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
             boldText,
             style.copyWith(fontWeight: FontWeight.bold),
             recognizer: recognizer,
+            allowBlockCards: allowBlockCards,
           ),
         );
       } else if (strikeText != null) {
@@ -262,6 +368,7 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
             strikeText,
             style.copyWith(decoration: TextDecoration.lineThrough),
             recognizer: recognizer,
+            allowBlockCards: allowBlockCards,
           ),
         );
       } else if (italicText != null) {
@@ -270,6 +377,7 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
             italicText,
             style.copyWith(fontStyle: FontStyle.italic),
             recognizer: recognizer,
+            allowBlockCards: allowBlockCards,
           ),
         );
       }
@@ -296,10 +404,16 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
     GestureRecognizer? recognizer,
     String? activeLinkUrl,
     bool preserveNewlines = false,
+    bool allowBlockCards = true,
   }) {
     if (node.nodeType == dom.Node.TEXT_NODE) {
       final text = _processTextNode(node, preserveNewlines: preserveNewlines);
-      return _buildRichTextSpans(text, parentStyle, recognizer: recognizer);
+      return _buildRichTextSpans(
+        text,
+        parentStyle,
+        recognizer: recognizer,
+        allowBlockCards: allowBlockCards,
+      );
     }
 
     if (node.nodeType == dom.Node.ELEMENT_NODE && node is dom.Element) {
@@ -344,9 +458,11 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
 
       GestureRecognizer? currentRecognizer = recognizer;
       String? nextLinkUrl = activeLinkUrl;
+      String? anchorHref;
       if (node.localName == 'a') {
         final href = node.attributes['href'];
         if (href != null && href.isNotEmpty) {
+          anchorHref = href;
           currentRecognizer = _createLinkRecognizer(href);
           currentStyle = currentStyle.copyWith(color: borderColor);
           nextLinkUrl = href;
@@ -367,6 +483,7 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
                 recognizer: currentRecognizer,
                 activeLinkUrl: nextLinkUrl,
                 preserveNewlines: preserveNewlines,
+                allowBlockCards: false,
               ),
             )
             .toList();
@@ -389,17 +506,145 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
               recognizer: currentRecognizer,
               activeLinkUrl: nextLinkUrl,
               preserveNewlines: preserveNewlines,
+              allowBlockCards: allowBlockCards,
             ),
           )
           .toList();
-      return TextSpan(
+      final textSpan = TextSpan(
         children: childrenSpans,
         style: currentStyle,
         recognizer: currentRecognizer,
       );
+
+      if (anchorHref != null) {
+        final hasEmbeddedMedia = node.querySelector('img, video') != null;
+        final hasLineBreak =
+            node.querySelector('br') != null || node.text.trim().contains('\n');
+        if (!hasEmbeddedMedia && !hasLineBreak) {
+          return _maybeWrapAnilistCandidate(
+            rawUrl: anchorHref,
+            visibleLabel: node.text,
+            inlineFallback: textSpan,
+            allowBlockCards: allowBlockCards && recognizer == null,
+          );
+        }
+      }
+
+      return textSpan;
     }
 
     return const TextSpan();
+  }
+
+  bool _containsCardCandidate(List<InlineSpan> spans) {
+    for (final span in spans) {
+      if (span is WidgetSpan && span.child is _AnilistLinkCandidateMarker) {
+        return true;
+      }
+      if (span is TextSpan &&
+          span.children != null &&
+          _containsCardCandidate(span.children!)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void _flattenSpans(
+    List<InlineSpan> spans,
+    TextStyle? parentStyle,
+    GestureRecognizer? parentRecognizer,
+    List<_FlatInlineToken> out,
+  ) {
+    for (final span in spans) {
+      if (span is WidgetSpan) {
+        final child = span.child;
+        if (child is _AnilistLinkCandidateMarker) {
+          out.add(_CandidateToken(child.candidate));
+        } else {
+          out.add(_SpanToken(span));
+        }
+      } else if (span is TextSpan) {
+        final mergedStyle = parentStyle == null
+            ? span.style
+            : (span.style == null
+                  ? parentStyle
+                  : parentStyle.merge(span.style));
+        final effectiveRecognizer = span.recognizer ?? parentRecognizer;
+        final text = span.text;
+        if (text != null && text.isNotEmpty) {
+          final parts = text.split('\n');
+          for (int i = 0; i < parts.length; i++) {
+            if (i > 0) out.add(const _NewlineToken());
+            if (parts[i].isNotEmpty) {
+              out.add(_TextToken(parts[i], mergedStyle, effectiveRecognizer));
+            }
+          }
+        }
+        if (span.children != null) {
+          _flattenSpans(span.children!, mergedStyle, effectiveRecognizer, out);
+        }
+      }
+    }
+  }
+
+  InlineSpan _tokenToInlineSpan(_FlatInlineToken token) {
+    return switch (token) {
+      _TextToken(:final text, :final style, :final recognizer) => TextSpan(
+        text: text,
+        style: style,
+        recognizer: recognizer,
+      ),
+      _SpanToken(:final span) => span,
+      _CandidateToken(:final candidate) => candidate.inlineFallback,
+      _NewlineToken() => const TextSpan(text: '\n'),
+    };
+  }
+
+  void _trimLeadingSpanSpaces(List<InlineSpan> segment) {
+    while (segment.isNotEmpty) {
+      final first = segment.first;
+      if (first is! TextSpan || first.children != null) break;
+      final trimmed = (first.text ?? '').trimLeft();
+      if (trimmed.isEmpty) {
+        segment.removeAt(0);
+      } else {
+        segment[0] = TextSpan(
+          text: trimmed,
+          style: first.style,
+          recognizer: first.recognizer,
+        );
+        break;
+      }
+    }
+  }
+
+  void _trimTrailingSpanSpaces(List<InlineSpan> segment) {
+    while (segment.isNotEmpty) {
+      final last = segment.last;
+      if (last is! TextSpan || last.children != null) break;
+      final trimmed = (last.text ?? '').trimRight();
+      if (trimmed.isEmpty) {
+        segment.removeLast();
+      } else {
+        segment[segment.length - 1] = TextSpan(
+          text: trimmed,
+          style: last.style,
+          recognizer: last.recognizer,
+        );
+        break;
+      }
+    }
+  }
+
+  bool _isIgnorableRemainder(List<InlineSpan> spans) {
+    if (_isBlankSpanList(spans)) return true;
+    final buffer = StringBuffer();
+    for (final span in spans) {
+      if (span is! TextSpan) return false;
+      buffer.write(span.toPlainText());
+    }
+    return _lonePunctuationPattern.hasMatch(buffer.toString());
   }
 
   bool _isBlankSpanList(List<InlineSpan> spans) {
@@ -489,25 +734,159 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
       return child;
     }
 
-    void flushSpans({double bottomPadding = 2}) {
-      if (currentSpans.isEmpty) return;
-      if (_isBlankSpanList(currentSpans)) {
-        currentSpans.clear();
+    void emitSpans(
+      List<InlineSpan> spans, {
+      required TextStyle blockStyle,
+      required TextAlign align,
+      required double bottomPadding,
+      double leftPadding = 0,
+      InlineSpan? prefixSpan,
+    }) {
+      if (spans.isEmpty) return;
+
+      if (!_containsCardCandidate(spans)) {
+        if (_isBlankSpanList(spans)) return;
+        final richText = Text.rich(
+          TextSpan(children: [?prefixSpan, ...spans]),
+          style: blockStyle,
+          textAlign: align,
+        );
+        widgets.add(
+          Padding(
+            padding: EdgeInsets.only(left: leftPadding, bottom: bottomPadding),
+            child: alignBlock(richText, align),
+          ),
+        );
         return;
       }
-      final align = currentAlign;
-      final textWidget = Text.rich(
-        TextSpan(children: List.from(currentSpans)),
-        style: baseStyle,
-        textAlign: align,
-      );
-      widgets.add(
-        Padding(
-          padding: EdgeInsets.only(bottom: bottomPadding),
-          child: alignBlock(textWidget, align),
-        ),
-      );
+
+      final flatTokens = <_FlatInlineToken>[];
+      _flattenSpans(spans, null, null, flatTokens);
+
+      final lines = <List<_FlatInlineToken>>[<_FlatInlineToken>[]];
+      for (final token in flatTokens) {
+        if (token is _NewlineToken) {
+          lines.add(<_FlatInlineToken>[]);
+        } else {
+          lines.last.add(token);
+        }
+      }
+
+      final pendingLines = <List<InlineSpan>>[];
+      bool prefixUsed = false;
+
+      void flushPendingLines({required double padBottom}) {
+        while (pendingLines.isNotEmpty &&
+            _isBlankSpanList(pendingLines.first)) {
+          pendingLines.removeAt(0);
+        }
+        while (pendingLines.isNotEmpty && _isBlankSpanList(pendingLines.last)) {
+          pendingLines.removeLast();
+        }
+        if (pendingLines.isEmpty) return;
+
+        final combined = <InlineSpan>[];
+        if (!prefixUsed && prefixSpan != null) {
+          combined.add(prefixSpan);
+          prefixUsed = true;
+        }
+        for (int i = 0; i < pendingLines.length; i++) {
+          if (i > 0) {
+            combined.add(const TextSpan(text: '\n'));
+          }
+          combined.addAll(pendingLines[i]);
+        }
+        pendingLines.clear();
+
+        final richText = Text.rich(
+          TextSpan(children: combined),
+          style: blockStyle,
+          textAlign: align,
+        );
+        widgets.add(
+          Padding(
+            padding: EdgeInsets.only(left: leftPadding, bottom: padBottom),
+            child: alignBlock(richText, align),
+          ),
+        );
+      }
+
+      for (final line in lines) {
+        int nonBlankCount = 0;
+        for (final token in line) {
+          final isNonBlank = switch (token) {
+            _TextToken(:final text) => text.trim().isNotEmpty,
+            _SpanToken() => true,
+            _CandidateToken() => true,
+            _NewlineToken() => false,
+          };
+          if (isNonBlank) nonBlankCount++;
+        }
+
+        final hasPromotedCard = line.any(
+          (t) =>
+              t is _CandidateToken &&
+              (t.candidate.isUrlLabel || nonBlankCount == 1),
+        );
+
+        if (!hasPromotedCard) {
+          pendingLines.add(line.map(_tokenToInlineSpan).toList());
+          continue;
+        }
+
+        var currentSegment = <InlineSpan>[];
+        bool trimLeadingOnNext = false;
+
+        for (final token in line) {
+          if (token is _CandidateToken &&
+              (token.candidate.isUrlLabel || nonBlankCount == 1)) {
+            _trimTrailingSpanSpaces(currentSegment);
+            if (!_isBlankSpanList(currentSegment)) {
+              pendingLines.add(currentSegment);
+            }
+            currentSegment = <InlineSpan>[];
+            flushPendingLines(padBottom: 4);
+
+            widgets.add(
+              Padding(
+                padding: EdgeInsets.only(left: leftPadding, top: 4, bottom: 8),
+                child: HtmlAnilistLinkCard(
+                  target: token.candidate.target,
+                  rawUrl: token.candidate.rawUrl,
+                  fallbackLabel: token.candidate.fallbackLabel,
+                ),
+              ),
+            );
+            trimLeadingOnNext = true;
+          } else {
+            currentSegment.add(_tokenToInlineSpan(token));
+            if (trimLeadingOnNext) {
+              _trimLeadingSpanSpaces(currentSegment);
+              if (currentSegment.isNotEmpty) {
+                trimLeadingOnNext = false;
+              }
+            }
+          }
+        }
+
+        if (!_isIgnorableRemainder(currentSegment)) {
+          pendingLines.add(currentSegment);
+        }
+      }
+
+      flushPendingLines(padBottom: bottomPadding);
+    }
+
+    void flushSpans({double bottomPadding = 2}) {
+      if (currentSpans.isEmpty) return;
+      final copy = List<InlineSpan>.from(currentSpans);
       currentSpans.clear();
+      emitSpans(
+        copy,
+        blockStyle: baseStyle,
+        align: currentAlign,
+        bottomPadding: bottomPadding,
+      );
     }
 
     void traverse(
@@ -740,32 +1119,23 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
               }
             }
 
-            final richText = Text.rich(
-              TextSpan(
-                children: [
-                  if (prefix.isNotEmpty)
-                    TextSpan(
-                      text: prefix,
-                      style: blockStyle.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: textMuted,
-                      ),
+            final prefixSpan = prefix.isNotEmpty
+                ? TextSpan(
+                    text: prefix,
+                    style: blockStyle.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: textMuted,
                     ),
-                  ...inlineSpans,
-                ],
-              ),
-              style: blockStyle,
-              textAlign: effectiveAlign,
-            );
+                  )
+                : null;
 
-            widgets.add(
-              Padding(
-                padding: EdgeInsets.only(
-                  left: tag == 'li' ? 16 : 0,
-                  bottom: tag == 'p' ? 12 : 4,
-                ),
-                child: alignBlock(richText, effectiveAlign),
-              ),
+            emitSpans(
+              inlineSpans,
+              blockStyle: blockStyle,
+              align: effectiveAlign,
+              bottomPadding: tag == 'p' ? 12 : 4,
+              leftPadding: tag == 'li' ? 16 : 0,
+              prefixSpan: prefixSpan,
             );
           }
           return;
