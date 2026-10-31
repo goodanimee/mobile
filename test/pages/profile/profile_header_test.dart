@@ -1,0 +1,80 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:goodanime/models/user_profile.dart';
+import 'package:goodanime/pages/profile/widgets/profile_header.dart';
+import 'package:goodanime/utils/utils.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+/// Widget tests for [ProfileHeader].
+void main() {
+  const sampleProfile = UserProfile(
+    id: 5114158,
+    name: 'thedrone7',
+    followersCount: 1250,
+    followingCount: 340,
+    isFollower: true,
+  );
+
+  Widget buildHeader({
+    UserProfile profile = sampleProfile,
+    VoidCallback? onBack,
+  }) {
+    return MaterialApp(
+      home: Scaffold(
+        body: SingleChildScrollView(
+          child: ProfileHeader(profile: profile, onBack: onBack),
+        ),
+      ),
+    );
+  }
+
+  testWidgets('renders identity and social counts without user ID', (
+    tester,
+  ) async {
+    await tester.pumpWidget(buildHeader());
+    await tester.pumpAndSettle();
+
+    expect(find.text('thedrone7'), findsOneWidget);
+    expect(find.text('#5114158'), findsNothing);
+    expect(find.text('Follows you'), findsOneWidget);
+    expect(
+      find.text(StringUtils.formatCompactNumber(sampleProfile.followingCount)),
+      findsOneWidget,
+    );
+    expect(find.text('Following'), findsWidgets);
+    expect(
+      find.text(StringUtils.formatCompactNumber(sampleProfile.followersCount)),
+      findsOneWidget,
+    );
+    expect(find.text('Followers'), findsOneWidget);
+  });
+
+  testWidgets('renders back button only when onBack callback provided', (
+    tester,
+  ) async {
+    bool backPressed = false;
+    await tester.pumpWidget(buildHeader(onBack: () => backPressed = true));
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(LucideIcons.arrowLeft), findsOneWidget);
+    await tester.tap(find.byIcon(LucideIcons.arrowLeft));
+    expect(backPressed, isTrue);
+
+    await tester.pumpWidget(buildHeader());
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(LucideIcons.arrowLeft), findsNothing);
+  });
+
+  testWidgets('does not display follower badge when isFollower is false', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      buildHeader(profile: sampleProfile.copyWith(isFollower: false)),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Follows you'), findsNothing);
+    expect(find.text('thedrone7'), findsOneWidget);
+  });
+}

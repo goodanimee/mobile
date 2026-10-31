@@ -14,6 +14,9 @@ enum AnilistEntityType {
 
   /// Studio entity.
   studio,
+
+  /// User profile entity.
+  user,
 }
 
 /// Resolved navigation target parsed from an AniList URL.
@@ -22,10 +25,13 @@ class AnilistRouteTarget {
   final AnilistEntityType type;
 
   /// The positive numeric entity ID.
-  final int id;
+  final int? id;
+
+  /// The username for user entity targets.
+  final String? username;
 
   /// Creates an AniList route target.
-  const AnilistRouteTarget({required this.type, required this.id});
+  const AnilistRouteTarget({required this.type, this.id, this.username});
 
   @override
   bool operator ==(Object other) =>
@@ -33,10 +39,11 @@ class AnilistRouteTarget {
       other is AnilistRouteTarget &&
           runtimeType == other.runtimeType &&
           type == other.type &&
-          id == other.id;
+          id == other.id &&
+          username == other.username;
 
   @override
-  int get hashCode => Object.hash(type, id);
+  int get hashCode => Object.hash(type, id, username);
 }
 
 /// Parser for AniList entity URLs and paths.
@@ -56,6 +63,16 @@ class AnilistUrlParser {
 
     final entityType = _parseEntityType(segments[0]);
     if (entityType == null) return null;
+
+    if (entityType == AnilistEntityType.user) {
+      final identifier = segments[1].trim();
+      if (identifier.isEmpty) return null;
+      final numericId = int.tryParse(identifier);
+      if (numericId != null && numericId > 0) {
+        return AnilistRouteTarget(type: entityType, id: numericId);
+      }
+      return AnilistRouteTarget(type: entityType, username: identifier);
+    }
 
     final id = int.tryParse(segments[1]);
     if (id == null || id <= 0) return null;
@@ -117,6 +134,8 @@ class AnilistUrlParser {
         return AnilistEntityType.staff;
       case 'studio':
         return AnilistEntityType.studio;
+      case 'user':
+        return AnilistEntityType.user;
       default:
         return null;
     }

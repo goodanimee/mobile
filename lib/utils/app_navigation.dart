@@ -5,6 +5,7 @@ import '../models/media_character.dart';
 import '../models/media_staff.dart';
 import '../pages/characters/page.dart';
 import '../pages/media/page.dart';
+import '../pages/profile/page.dart';
 import '../pages/staff/page.dart';
 import '../pages/studio/page.dart';
 import '../services/media_list_controller.dart';
@@ -77,13 +78,23 @@ class AppNavigation {
     switch (target.type) {
       case AnilistEntityType.anime:
       case AnilistEntityType.manga:
-        await toMedia(navContext, target.id);
+        if (target.id != null) await toMedia(navContext, target.id!);
       case AnilistEntityType.character:
-        await toCharacter(navContext, characterId: target.id);
+        if (target.id != null) {
+          await toCharacter(navContext, characterId: target.id!);
+        }
       case AnilistEntityType.staff:
-        await toStaff(navContext, StaffMin(id: target.id));
+        if (target.id != null) {
+          await toStaff(navContext, StaffMin(id: target.id!));
+        }
       case AnilistEntityType.studio:
-        await toStudio(navContext, target.id);
+        if (target.id != null) await toStudio(navContext, target.id!);
+      case AnilistEntityType.user:
+        await toProfile(
+          navContext,
+          userId: target.id,
+          username: target.username,
+        );
     }
   }
 
@@ -157,6 +168,21 @@ class AppNavigation {
     await Navigator.push<void>(
       context,
       _buildPageRoute(CharacterPage(characterId: id, character: character)),
+    );
+  }
+
+  /// Navigate to User Profile
+  static Future<void> toProfile(
+    BuildContext context, {
+    int? userId,
+    String? username,
+    VoidCallback? onSignOut,
+  }) async {
+    await Navigator.push<void>(
+      context,
+      _buildPageRoute(
+        ProfilePage(userId: userId, username: username, onSignOut: onSignOut),
+      ),
     );
   }
 }
