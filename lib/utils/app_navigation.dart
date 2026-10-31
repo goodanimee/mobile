@@ -6,6 +6,7 @@ import '../models/media_staff.dart';
 import '../pages/characters/page.dart';
 import '../pages/media/page.dart';
 import '../pages/profile/page.dart';
+import '../pages/profile/user_media_list_page.dart';
 import '../pages/staff/page.dart';
 import '../pages/studio/page.dart';
 import '../services/media_list_controller.dart';
@@ -182,6 +183,25 @@ class AppNavigation {
       context,
       _buildPageRoute(
         ProfilePage(userId: userId, username: username, onSignOut: onSignOut),
+      ),
+    );
+  }
+
+  /// Navigate to another user's read-only media list.
+  static Future<void> toUserMediaList(
+    BuildContext context, {
+    required int userId,
+    required String username,
+    required String mediaType,
+  }) async {
+    await Navigator.push<void>(
+      context,
+      _buildPageRoute(
+        UserMediaListPage(
+          userId: userId,
+          username: username,
+          mediaType: mediaType,
+        ),
       ),
     );
   }

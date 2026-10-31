@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../components/error_view.dart';
 import '../../components/floating_nav.dart';
@@ -8,8 +9,10 @@ import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../../theme/theme.dart';
 import '../../utils/app_navigation.dart';
+import 'tabs/info_tab.dart';
 import 'widgets/profile_fab.dart';
 import 'widgets/profile_header.dart';
+import 'widgets/profile_sticky_header.dart';
 
 /// A page displaying a user profile, social stats, and activity.
 class ProfilePage extends StatefulWidget {
@@ -25,6 +28,9 @@ class ProfilePage extends StatefulWidget {
   /// Explicit flag to control floating nav bar visibility.
   final bool? showFloatingNav;
 
+  /// Callback notifying parent navigation of profile quick-nav tab sections.
+  final ValueChanged<List<QuickNavSection>>? onQuickNavChanged;
+
   /// Creates a profile page.
   const ProfilePage({
     super.key,
@@ -32,6 +38,7 @@ class ProfilePage extends StatefulWidget {
     this.username,
     this.onSignOut,
     this.showFloatingNav,
+    this.onQuickNavChanged,
   });
 
   @override
@@ -39,16 +46,36 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final _scrollController = ScrollController();
+
   UserProfile? _profile;
   bool _isLoading = true;
   bool _isSelf = false;
   bool _isFollowLoading = false;
+  bool _showStickyBar = false;
+  int _selectedTabIndex = 0;
   String? _error;
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     _loadProfile();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final shouldShow = _scrollController.offset > 180;
+    if (shouldShow != _showStickyBar) {
+      setState(() => _showStickyBar = shouldShow);
+    }
   }
 
   @override
@@ -93,6 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
           _profile = profile;
           _isLoading = false;
         });
+        _notifyQuickNav();
       }
     } on AuthExpiredException {
       if (mounted) {
@@ -165,6 +193,57 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  List<QuickNavSection> _buildQuickNavSections() {
+    return QuickNavSection.fromTabs(
+      tabs: const [(icon: LucideIcons.info, label: 'Info')],
+      selectedIndex: _selectedTabIndex,
+      onSelect: (index) {
+        if (_selectedTabIndex != index) {
+          setState(() => _selectedTabIndex = index);
+          _notifyQuickNav();
+        }
+      },
+      scrollController: _scrollController,
+    );
+  }
+
+  void _notifyQuickNav() {
+    if (widget.onQuickNavChanged == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      widget.onQuickNavChanged?.call(_buildQuickNavSections());
+    });
+  }
+
+  void _openAnimeList() => _openMediaList('ANIME');
+
+  void _openMangaList() => _openMediaList('MANGA');
+
+  void _openMediaList(String mediaType) {
+    final profile = _profile;
+    if (profile == null) return;
+    if (_isSelf) {
+      AppNavigation.handleNavTap(context, mediaType == 'MANGA' ? 2 : 1);
+      return;
+    }
+    AppNavigation.toUserMediaList(
+      context,
+      userId: profile.id,
+      username: profile.name,
+      mediaType: mediaType,
+    );
+  }
+
+  Widget _buildActiveTab(UserProfile profile) {
+    return switch (_selectedTabIndex) {
+      _ => ProfileInfoTab(
+        profile: profile,
+        onOpenAnimeList: _openAnimeList,
+        onOpenMangaList: _openMangaList,
+      ),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -183,6 +262,7 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
+    final profile = _profile!;
     final canPop = widget.showFloatingNav ?? Navigator.of(context).canPop();
     final showFab = (!_isSelf) || (_isSelf && widget.onSignOut != null);
 
@@ -195,16 +275,23 @@ class _ProfilePageState extends State<ProfilePage> {
             backgroundColor: hoverBgColor,
             onRefresh: _loadProfile,
             child: CustomScrollView(
+              controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
-                SliverToBoxAdapter(
-                  child: ProfileHeader(
-                    profile: _profile!,
-                    onBack: canPop ? () => Navigator.of(context).pop() : null,
-                  ),
-                ),
+                SliverToBoxAdapter(child: ProfileHeader(profile: profile)),
+                SliverToBoxAdapter(child: _buildActiveTab(profile)),
                 const SliverToBoxAdapter(child: SizedBox(height: 128)),
               ],
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: ProfileStickyHeader(
+              profile: profile,
+              showStickyBar: _showStickyBar,
+              onBack: canPop ? () => Navigator.of(context).pop() : null,
             ),
           ),
           if (canPop)
@@ -218,7 +305,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (showFab) ...[
                     ProfileFab(
                       isSelf: _isSelf,
-                      isFollowing: _profile!.isFollowing,
+                      isFollowing: profile.isFollowing,
                       isFollowLoading: _isFollowLoading,
                       onToggleFollow: _handleToggleFollow,
                       onSignOut: widget.onSignOut != null
@@ -231,6 +318,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     selectedIndex: -1,
                     onTap: (index) =>
                         AppNavigation.handleNavTap(context, index),
+                    quickNavSections: _buildQuickNavSections(),
                   ),
                 ],
               ),

@@ -280,10 +280,11 @@ class _MediaListCardState extends State<MediaListCard> {
     final isFavourite = widget.entry.media.isFavourite;
 
     final showPlayButton =
-        _status == MediaListStatus.current ||
-        _status == MediaListStatus.repeating ||
-        _status == MediaListStatus.planning ||
-        _status == MediaListStatus.paused;
+        widget.onEntryUpdated != null &&
+        (_status == MediaListStatus.current ||
+            _status == MediaListStatus.repeating ||
+            _status == MediaListStatus.planning ||
+            _status == MediaListStatus.paused);
 
     return GestureDetector(
       onTap: widget.onTap,

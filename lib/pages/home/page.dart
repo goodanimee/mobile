@@ -50,6 +50,7 @@ class _HomePageState extends State<HomePage> {
   int _navIndex = 1;
   bool _isGridMode = true;
   List<QuickNavSection> _quickNavSections = [];
+  List<QuickNavSection> _profileQuickNavSections = [];
 
   @override
   void initState() {
@@ -158,6 +159,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _handleProfileQuickNavChanged(List<QuickNavSection> sections) {
+    if (!mounted) return;
+    setState(() => _profileQuickNavSections = sections);
+  }
+
   /// Builds the body content based on the selected navigation index
   Widget _buildBody() {
     switch (_navIndex) {
@@ -180,7 +186,10 @@ class _HomePageState extends State<HomePage> {
       case 3:
         return const SearchPage();
       case 4:
-        return ProfilePage(onSignOut: _handleSignOut);
+        return ProfilePage(
+          onSignOut: _handleSignOut,
+          onQuickNavChanged: _handleProfileQuickNavChanged,
+        );
       default:
         return Center(
           child: Text(
@@ -229,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: (i) => AppNavigation.currentTab.value = i,
                       quickNavSections: (_navIndex == 1 || _navIndex == 2)
                           ? _quickNavSections
-                          : null,
+                          : (_navIndex == 4 ? _profileQuickNavSections : null),
                       isGridMode: (_navIndex == 1 || _navIndex == 2)
                           ? _isGridMode
                           : null,

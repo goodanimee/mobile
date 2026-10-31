@@ -189,7 +189,8 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
         }
       }
 
-      if (node.localName == 'span' && node.className == 'markdown_spoiler') {
+      if (node.localName == 'span' &&
+          node.classes.contains('markdown_spoiler')) {
         _trimWhitespace(node);
 
         final spoilerStyle = currentStyle.copyWith(
@@ -314,6 +315,15 @@ class _HtmlDescriptionState extends State<HtmlDescription> {
           }
         } else if (node.localName == 'br') {
           currentSpans.add(const TextSpan(text: '\n'));
+        } else if (_blockElements.contains(node.localName) &&
+            node.classes.contains('markdown_spoiler')) {
+          flushSpans();
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: _BlockSpoiler(innerHtml: node.innerHtml, style: baseStyle),
+            ),
+          );
         } else if (_blockElements.contains(node.localName)) {
           flushSpans();
 
@@ -506,5 +516,62 @@ class _InlineSpoilerState extends State<_InlineSpoiler> {
         ),
       );
     }
+  }
+}
+
+class _BlockSpoiler extends StatefulWidget {
+  final String innerHtml;
+  final TextStyle style;
+
+  const _BlockSpoiler({required this.innerHtml, required this.style});
+
+  @override
+  State<_BlockSpoiler> createState() => _BlockSpoilerState();
+}
+
+class _BlockSpoilerState extends State<_BlockSpoiler> {
+  bool _isRevealed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final spoilerBtnTextSize = widget.style.fontSize ?? fontMedium(context);
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => setState(() => _isRevealed = !_isRevealed),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: spoilerColor.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: spoilerColor.withValues(alpha: 0.3)),
+          ),
+          child: _isRevealed
+              ? HtmlDescription(
+                  html: widget.innerHtml,
+                  style: widget.style.copyWith(color: spoilerColor),
+                )
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      LucideIcons.eye,
+                      size: spoilerBtnTextSize,
+                      color: spoilerColor,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Spoiler',
+                      style: widget.style.copyWith(
+                        color: spoilerColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+      ),
+    );
   }
 }

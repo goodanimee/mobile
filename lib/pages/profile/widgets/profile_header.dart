@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../../components/app_network_image.dart';
 import '../../../models/user_profile.dart';
@@ -14,20 +11,11 @@ class ProfileHeader extends StatelessWidget {
   /// User profile data to display.
   final UserProfile profile;
 
-  /// Optional callback when back button is pressed.
-  final VoidCallback? onBack;
-
   /// Creates a profile header.
-  const ProfileHeader({super.key, required this.profile, this.onBack});
-
-  void _handleShare() {
-    final shareUrl = 'https://anilist.co/user/${profile.name}/';
-    SharePlus.instance.share(ShareParams(text: shareUrl));
-  }
+  const ProfileHeader({super.key, required this.profile});
 
   @override
   Widget build(BuildContext context) {
-    final topPadding = MediaQuery.of(context).padding.top;
     final avatarUrl = profile.avatarLarge.isNotEmpty
         ? profile.avatarLarge
         : profile.avatarMedium;
@@ -74,31 +62,6 @@ class ProfileHeader extends StatelessWidget {
                     bgColor,
                   ],
                   stops: const [0.0, 0.4, 0.8, 1.0],
-                ),
-              ),
-            ),
-            if (onBack != null)
-              Positioned(
-                top: topPadding + 8,
-                left: 16,
-                child: _buildGlassCircle(
-                  onTap: onBack!,
-                  child: const Icon(
-                    LucideIcons.arrowLeft,
-                    color: textPrimary,
-                    size: 22,
-                  ),
-                ),
-              ),
-            Positioned(
-              top: topPadding + 8,
-              right: 16,
-              child: _buildGlassCircle(
-                onTap: _handleShare,
-                child: const Icon(
-                  LucideIcons.share2,
-                  color: textPrimary,
-                  size: 20,
                 ),
               ),
             ),
@@ -193,28 +156,6 @@ class ProfileHeader extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-
-  Widget _buildGlassCircle({
-    required Widget child,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ClipOval(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: shadowColor.withValues(alpha: 0.4),
-              shape: BoxShape.circle,
-            ),
-            child: child,
-          ),
-        ),
-      ),
     );
   }
 

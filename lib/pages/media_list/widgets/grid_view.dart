@@ -21,7 +21,7 @@ class MediaListGridView extends StatelessWidget {
   final VoidCallback onRefresh;
 
   /// Callback when a card is long-pressed
-  final void Function(BuildContext context, MediaListEntryWithMedia entry)
+  final void Function(BuildContext context, MediaListEntryWithMedia entry)?
   onLongPress;
 
   /// The text to show when list is empty
@@ -34,7 +34,7 @@ class MediaListGridView extends StatelessWidget {
     required this.entries,
     required this.scrollController,
     required this.onRefresh,
-    required this.onLongPress,
+    this.onLongPress,
     this.emptyLabel = 'No anime',
   });
 
@@ -90,7 +90,9 @@ class MediaListGridView extends StatelessWidget {
                       );
                     }
                   },
-                  onLongPress: () => onLongPress(context, entry),
+                  onLongPress: onLongPress != null
+                      ? () => onLongPress!(context, entry)
+                      : null,
                 );
               }, childCount: entries.length),
             ),

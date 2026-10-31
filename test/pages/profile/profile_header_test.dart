@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:goodanime/models/user_profile.dart';
 import 'package:goodanime/pages/profile/widgets/profile_header.dart';
+import 'package:goodanime/pages/profile/widgets/profile_sticky_header.dart';
 import 'package:goodanime/utils/utils.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-/// Widget tests for [ProfileHeader].
+/// Widget tests for [ProfileHeader] and [ProfileStickyHeader].
 void main() {
   const sampleProfile = UserProfile(
     id: 5114158,
@@ -15,14 +16,25 @@ void main() {
     isFollower: true,
   );
 
-  Widget buildHeader({
+  Widget buildHeader({UserProfile profile = sampleProfile}) {
+    return MaterialApp(
+      home: Scaffold(
+        body: SingleChildScrollView(child: ProfileHeader(profile: profile)),
+      ),
+    );
+  }
+
+  Widget buildStickyHeader({
     UserProfile profile = sampleProfile,
+    bool showStickyBar = false,
     VoidCallback? onBack,
   }) {
     return MaterialApp(
       home: Scaffold(
-        body: SingleChildScrollView(
-          child: ProfileHeader(profile: profile, onBack: onBack),
+        body: ProfileStickyHeader(
+          profile: profile,
+          showStickyBar: showStickyBar,
+          onBack: onBack,
         ),
       ),
     );
@@ -49,21 +61,42 @@ void main() {
     expect(find.text('Followers'), findsOneWidget);
   });
 
-  testWidgets('renders back button only when onBack callback provided', (
+  testWidgets('sticky header renders back button only when onBack provided', (
     tester,
   ) async {
     bool backPressed = false;
-    await tester.pumpWidget(buildHeader(onBack: () => backPressed = true));
+    await tester.pumpWidget(
+      buildStickyHeader(onBack: () => backPressed = true),
+    );
     await tester.pumpAndSettle();
 
     expect(find.byIcon(LucideIcons.arrowLeft), findsOneWidget);
+    expect(find.byIcon(LucideIcons.share2), findsOneWidget);
     await tester.tap(find.byIcon(LucideIcons.arrowLeft));
     expect(backPressed, isTrue);
 
-    await tester.pumpWidget(buildHeader());
+    await tester.pumpWidget(buildStickyHeader());
     await tester.pumpAndSettle();
 
     expect(find.byIcon(LucideIcons.arrowLeft), findsNothing);
+    expect(find.byIcon(LucideIcons.share2), findsOneWidget);
+  });
+
+  testWidgets('sticky header fades username in when showStickyBar is true', (
+    tester,
+  ) async {
+    await tester.pumpWidget(buildStickyHeader());
+    await tester.pumpAndSettle();
+
+    AnimatedOpacity opacity = tester.widget(find.byType(AnimatedOpacity));
+    expect(opacity.opacity, 0.0);
+
+    await tester.pumpWidget(buildStickyHeader(showStickyBar: true));
+    await tester.pumpAndSettle();
+
+    opacity = tester.widget(find.byType(AnimatedOpacity));
+    expect(opacity.opacity, 1.0);
+    expect(find.text('thedrone7'), findsOneWidget);
   });
 
   testWidgets('does not display follower badge when isFollower is false', (
