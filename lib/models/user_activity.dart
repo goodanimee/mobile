@@ -10,13 +10,10 @@ enum UserActivityTypeFilter {
   all(label: 'All', apiTypes: <String>[]),
 
   /// Anime and manga list updates.
-  listUpdates(
-    label: 'List Updates',
-    apiTypes: <String>['ANIME_LIST', 'MANGA_LIST'],
-  ),
+  listUpdates(label: 'Lists', apiTypes: <String>['ANIME_LIST', 'MANGA_LIST']),
 
   /// Text status posts.
-  statusPosts(label: 'Status Posts', apiTypes: <String>['TEXT']),
+  statusPosts(label: 'Posts', apiTypes: <String>['TEXT']),
 
   /// Profile wall messages.
   messages(label: 'Messages', apiTypes: <String>['MESSAGE']);

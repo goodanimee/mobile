@@ -163,14 +163,21 @@ void main() {
       },
     );
 
-    test('UserActivityTypeFilter exposes expected API enum lists', () {
-      expect(UserActivityTypeFilter.all.apiTypes, isEmpty);
-      expect(UserActivityTypeFilter.listUpdates.apiTypes, [
-        'ANIME_LIST',
-        'MANGA_LIST',
-      ]);
-      expect(UserActivityTypeFilter.statusPosts.apiTypes, ['TEXT']);
-      expect(UserActivityTypeFilter.messages.apiTypes, ['MESSAGE']);
-    });
+    test(
+      'UserActivityTypeFilter exposes expected labels and API enum lists',
+      () {
+        expect(UserActivityTypeFilter.all.label, 'All');
+        expect(UserActivityTypeFilter.listUpdates.label, 'Lists');
+        expect(UserActivityTypeFilter.statusPosts.label, 'Posts');
+        expect(UserActivityTypeFilter.messages.label, 'Messages');
+        expect(UserActivityTypeFilter.all.apiTypes, isEmpty);
+        expect(UserActivityTypeFilter.listUpdates.apiTypes, [
+          'ANIME_LIST',
+          'MANGA_LIST',
+        ]);
+        expect(UserActivityTypeFilter.statusPosts.apiTypes, ['TEXT']);
+        expect(UserActivityTypeFilter.messages.apiTypes, ['MESSAGE']);
+      },
+    );
   });
 }

@@ -107,8 +107,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('All'), findsOneWidget);
-    expect(find.text('List Updates'), findsOneWidget);
-    expect(find.text('Status Posts'), findsOneWidget);
+    expect(find.text('Lists'), findsOneWidget);
+    expect(find.text('Posts'), findsOneWidget);
     expect(find.text('Messages'), findsOneWidget);
 
     expect(
@@ -154,7 +154,7 @@ void main() {
 
     expect(recordedTypes, [<String>[]]);
 
-    await tester.tap(find.text('Status Posts'));
+    await tester.tap(find.text('Posts'));
     await tester.pumpAndSettle();
 
     expect(recordedTypes.last, ['TEXT']);
