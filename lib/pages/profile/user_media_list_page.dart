@@ -28,12 +28,17 @@ class UserMediaListPage extends StatefulWidget {
   /// The media type ('ANIME' or 'MANGA').
   final String mediaType;
 
+  /// Optional callback to fetch public user lists (for testing)
+  final Future<List<MediaList>> Function(int userId, String mediaType)?
+  fetchLists;
+
   /// Creates a read-only user media list page.
   const UserMediaListPage({
     super.key,
     required this.userId,
     required this.username,
     required this.mediaType,
+    this.fetchLists,
   });
 
   @override
@@ -111,10 +116,12 @@ class _UserMediaListPageState extends State<UserMediaListPage>
     });
 
     try {
-      final lists = await MediaListService.getPublicUserLists(
-        widget.userId,
-        widget.mediaType,
-      );
+      final lists = widget.fetchLists != null
+          ? await widget.fetchLists!(widget.userId, widget.mediaType)
+          : await MediaListService.getPublicUserLists(
+              widget.userId,
+              widget.mediaType,
+            );
       if (!mounted) return;
 
       MediaListStatus? nextStatus = _activeStatus;
@@ -204,8 +211,11 @@ class _UserMediaListPageState extends State<UserMediaListPage>
     MediaListStatus.dropped => LucideIcons.ban,
   };
 
+  List<String> get _customListNames =>
+      _lists.where((l) => l.isCustomList).map((l) => l.name).toList();
+
   List<QuickNavSection> _buildQuickNavSections() {
-    final statusSections = _lists
+    return _lists
         .where((l) => !l.isCustomList && l.status != null)
         .map(
           (l) => QuickNavSection(
@@ -214,21 +224,8 @@ class _UserMediaListPageState extends State<UserMediaListPage>
             isSelected: _activeCustomList == null && _activeStatus == l.status,
             onTap: () => _selectStatusSection(l.status!),
           ),
-        );
-
-    final customSections = _lists
-        .where((l) => l.isCustomList && l.entries.isNotEmpty)
-        .take(3)
-        .map(
-          (l) => QuickNavSection(
-            icon: LucideIcons.folder,
-            label: l.name,
-            isSelected: _activeCustomList == l.name,
-            onTap: () => _selectCustomSection(l.name),
-          ),
-        );
-
-    return [...statusSections, ...customSections];
+        )
+        .toList();
   }
 
   Widget _buildHeader({String? activeSectionName}) {
@@ -420,6 +417,11 @@ class _UserMediaListPageState extends State<UserMediaListPage>
                 quickNavSections: hasLists ? _buildQuickNavSections() : null,
                 isGridMode: hasLists ? _isGridMode : null,
                 onToggleGridMode: hasLists ? _toggleGridMode : null,
+                mediaType: widget.mediaType,
+                customLists: hasLists ? _customListNames : null,
+                activeCustomList: _activeCustomList,
+                onSelectCustomList: _selectCustomSection,
+                showCustomListManagement: false,
               ),
             ),
           ],
