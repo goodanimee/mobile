@@ -279,3 +279,47 @@ func FetchStaffSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.
 
 	return marshalAndReturn(pbResponse, outLen)
 }
+
+//go:embed graphql/user_search.graphql
+var userSearchQuery string
+
+// FetchUserSearch searches for users on AniList.
+//
+//export FetchUserSearch
+func FetchUserSearch(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.FetchUserSearchResponse{}
+
+	var req pb.FetchUserSearchRequest
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]any{
+		"page": req.Page,
+	}
+	if req.Query != nil && *req.Query != "" {
+		variables["query"] = *req.Query
+	}
+	if len(req.Sort) > 0 {
+		variables["sort"] = []string{req.Sort[0]}
+	}
+
+	data, err := executeGraphQL[models.UserSearchDTO](tk, userSearchQuery, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	var pbUsers []*pb.SocialUser
+	for _, u := range data.Page.Users {
+		if u != nil {
+			pbUsers = append(pbUsers, u.ToProto())
+		}
+	}
+	pbResponse.Users = pbUsers
+	pbResponse.PageInfo = data.Page.PageInfo.ToProto()
+
+	return marshalAndReturn(pbResponse, outLen)
+}

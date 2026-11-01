@@ -329,6 +329,18 @@ message FetchStaffSearchResponse {
   string error = 3;
 }
 
+message FetchUserSearchRequest {
+  int32 page = 1;
+  optional string query = 2;
+  repeated string sort = 3;
+}
+
+message FetchUserSearchResponse {
+  repeated SocialUser users = 1;
+  PageInfo page_info = 2;
+  string error = 3;
+}
+
 message UpdateCustomListsRequest {
   string media_type = 1;
   repeated string custom_lists = 2;

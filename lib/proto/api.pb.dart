@@ -4380,6 +4380,164 @@ class FetchStaffSearchResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(3);
 }
 
+class FetchUserSearchRequest extends $pb.GeneratedMessage {
+  factory FetchUserSearchRequest({
+    $core.int? page,
+    $core.String? query,
+    $core.Iterable<$core.String>? sort,
+  }) {
+    final result = FetchUserSearchRequest._();
+    if (page != null) result.page = page;
+    if (query != null) result.query = query;
+    if (sort != null) result.sort.addAll(sort);
+    return result;
+  }
+
+  FetchUserSearchRequest._();
+
+  factory FetchUserSearchRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FetchUserSearchRequest()..mergeFromBuffer(data, registry);
+  factory FetchUserSearchRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FetchUserSearchRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchUserSearchRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: FetchUserSearchRequest.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'page')
+    ..aOS(2, _omitFieldNames ? '' : 'query')
+    ..pPS(3, _omitFieldNames ? '' : 'sort')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchUserSearchRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchUserSearchRequest copyWith(
+          void Function(FetchUserSearchRequest) updates) =>
+      super.copyWith((message) => updates(message as FetchUserSearchRequest))
+          as FetchUserSearchRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchUserSearchRequest() / FetchUserSearchRequest.new instead')
+  static FetchUserSearchRequest create() => FetchUserSearchRequest._();
+  static $pb.GeneratedMessage $_createMessage() => FetchUserSearchRequest._();
+  @$core.override
+  FetchUserSearchRequest createEmptyInstance() => FetchUserSearchRequest._();
+  @$core.pragma('dart2js:noInline')
+  static FetchUserSearchRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchUserSearchRequest>(
+          FetchUserSearchRequest.$_createMessage);
+  static FetchUserSearchRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get page => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set page($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPage() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get query => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set query($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasQuery() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearQuery() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$core.String> get sort => $_getList(2);
+}
+
+class FetchUserSearchResponse extends $pb.GeneratedMessage {
+  factory FetchUserSearchResponse({
+    $core.Iterable<$12.SocialUser>? users,
+    $5.PageInfo? pageInfo,
+    $core.String? error,
+  }) {
+    final result = FetchUserSearchResponse._();
+    if (users != null) result.users.addAll(users);
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  FetchUserSearchResponse._();
+
+  factory FetchUserSearchResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FetchUserSearchResponse()..mergeFromBuffer(data, registry);
+  factory FetchUserSearchResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FetchUserSearchResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FetchUserSearchResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: FetchUserSearchResponse.$_createMessage)
+    ..pPM<$12.SocialUser>(1, _omitFieldNames ? '' : 'users',
+        subBuilder: $12.SocialUser.$_createMessage)
+    ..aOM<$5.PageInfo>(2, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $5.PageInfo.$_createMessage)
+    ..aOS(3, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchUserSearchResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FetchUserSearchResponse copyWith(
+          void Function(FetchUserSearchResponse) updates) =>
+      super.copyWith((message) => updates(message as FetchUserSearchResponse))
+          as FetchUserSearchResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FetchUserSearchResponse() / FetchUserSearchResponse.new instead')
+  static FetchUserSearchResponse create() => FetchUserSearchResponse._();
+  static $pb.GeneratedMessage $_createMessage() => FetchUserSearchResponse._();
+  @$core.override
+  FetchUserSearchResponse createEmptyInstance() => FetchUserSearchResponse._();
+  @$core.pragma('dart2js:noInline')
+  static FetchUserSearchResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FetchUserSearchResponse>(
+          FetchUserSearchResponse.$_createMessage);
+  static FetchUserSearchResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$12.SocialUser> get users => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $5.PageInfo get pageInfo => $_getN(1);
+  @$pb.TagNumber(2)
+  set pageInfo($5.PageInfo value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPageInfo() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPageInfo() => $_clearField(2);
+  @$pb.TagNumber(2)
+  $5.PageInfo ensurePageInfo() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.String get error => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set error($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasError() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearError() => $_clearField(3);
+}
+
 class UpdateCustomListsRequest extends $pb.GeneratedMessage {
   factory UpdateCustomListsRequest({
     $core.String? mediaType,

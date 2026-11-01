@@ -1360,6 +1360,55 @@ final $typed_data.Uint8List fetchStaffSearchResponseDescriptor = $convert.base64
     'RhZmZSBXN0YWZmEjAKCXBhZ2VfaW5mbxgCIAEoCzITLmdvb2RhbmltZS5QYWdlSW5mb1IIcGFn'
     'ZUluZm8SFAoFZXJyb3IYAyABKAlSBWVycm9y');
 
+@$core.Deprecated('Use fetchUserSearchRequestDescriptor instead')
+const FetchUserSearchRequest$json = {
+  '1': 'FetchUserSearchRequest',
+  '2': [
+    {'1': 'page', '3': 1, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'query', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'query', '17': true},
+    {'1': 'sort', '3': 3, '4': 3, '5': 9, '10': 'sort'},
+  ],
+  '8': [
+    {'1': '_query'},
+  ],
+};
+
+/// Descriptor for `FetchUserSearchRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchUserSearchRequestDescriptor =
+    $convert.base64Decode(
+        'ChZGZXRjaFVzZXJTZWFyY2hSZXF1ZXN0EhIKBHBhZ2UYASABKAVSBHBhZ2USGQoFcXVlcnkYAi'
+        'ABKAlIAFIFcXVlcnmIAQESEgoEc29ydBgDIAMoCVIEc29ydEIICgZfcXVlcnk=');
+
+@$core.Deprecated('Use fetchUserSearchResponseDescriptor instead')
+const FetchUserSearchResponse$json = {
+  '1': 'FetchUserSearchResponse',
+  '2': [
+    {
+      '1': 'users',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.SocialUser',
+      '10': 'users'
+    },
+    {
+      '1': 'page_info',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `FetchUserSearchResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fetchUserSearchResponseDescriptor = $convert.base64Decode(
+    'ChdGZXRjaFVzZXJTZWFyY2hSZXNwb25zZRIrCgV1c2VycxgBIAMoCzIVLmdvb2RhbmltZS5Tb2'
+    'NpYWxVc2VyUgV1c2VycxIwCglwYWdlX2luZm8YAiABKAsyEy5nb29kYW5pbWUuUGFnZUluZm9S'
+    'CHBhZ2VJbmZvEhQKBWVycm9yGAMgASgJUgVlcnJvcg==');
+
 @$core.Deprecated('Use updateCustomListsRequestDescriptor instead')
 const UpdateCustomListsRequest$json = {
   '1': 'UpdateCustomListsRequest',
