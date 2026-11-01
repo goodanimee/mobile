@@ -1,0 +1,101 @@
+query GetUserActivities($userId: Int!, $page: Int, $perPage: Int, $types: [ActivityType]) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo {
+      hasNextPage
+      currentPage
+    }
+    activities(userId: $userId, type_in: $types, sort: [ID_DESC]) {
+      __typename
+      ... on ListActivity {
+        id
+        type
+        createdAt
+        isLiked
+        likeCount
+        replyCount
+        status
+        progress
+        user {
+          id
+          name
+          avatar {
+            large
+            medium
+          }
+        }
+        media {
+          id
+          type
+          title {
+            english
+            native
+            romaji
+            userPreferred
+          }
+          averageScore
+          coverImage {
+            medium
+            large
+            extraLarge
+            color
+          }
+          episodes
+          chapters
+          volumes
+          format
+          isAdult
+          isFavourite
+          siteUrl
+          startDate {
+            year
+            month
+            day
+          }
+        }
+      }
+      ... on TextActivity {
+        id
+        type
+        createdAt
+        isLiked
+        likeCount
+        replyCount
+        text(asHtml: true)
+        user {
+          id
+          name
+          avatar {
+            large
+            medium
+          }
+        }
+      }
+      ... on MessageActivity {
+        id
+        type
+        createdAt
+        isLiked
+        likeCount
+        replyCount
+        message(asHtml: true)
+        isPrivate
+        messenger {
+          id
+          name
+          avatar {
+            large
+            medium
+          }
+        }
+        recipient {
+          id
+          name
+          avatar {
+            large
+            medium
+          }
+        }
+      }
+    }
+  }
+}

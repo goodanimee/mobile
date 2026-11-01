@@ -25,6 +25,9 @@ var userFollowCountsQuery string
 //go:embed graphql/toggle_follow.graphql
 var toggleFollowMutation string
 
+//go:embed graphql/user_activities.graphql
+var userActivitiesQuery string
+
 // GetUserProfile fetches a user profile by ID or username
 //
 //export GetUserProfile
@@ -104,5 +107,58 @@ func ToggleFollow(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int)
 
 	pbResponse.UserId = data.ToggleFollow.ID
 	pbResponse.IsFollowing = data.ToggleFollow.IsFollowing
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// GetUserActivities fetches paginated activities for a user
+//
+//export GetUserActivities
+func GetUserActivities(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.GetUserActivitiesResponse{}
+
+	var req pb.GetUserActivitiesRequest
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	if req.UserId <= 0 {
+		pbResponse.Error = "Must provide userId"
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	page := req.Page
+	if page <= 0 {
+		page = 1
+	}
+	perPage := req.PerPage
+	if perPage <= 0 {
+		perPage = 25
+	}
+
+	variables := map[string]any{
+		"userId":  req.UserId,
+		"page":    page,
+		"perPage": perPage,
+	}
+	if len(req.TypeIn) > 0 {
+		variables["types"] = req.TypeIn
+	}
+
+	data, err := executeGraphQL[models.UserActivitiesPageDTO](tk, userActivitiesQuery, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	pbResponse.PageInfo = data.Page.PageInfo.ToProto()
+	activities := make([]*pb.UserActivity, 0, len(data.Page.Activities))
+	for i := range data.Page.Activities {
+		if protoItem := data.Page.Activities[i].ToProto(); protoItem != nil {
+			activities = append(activities, protoItem)
+		}
+	}
+	pbResponse.Activities = activities
 	return marshalAndReturn(pbResponse, outLen)
 }
