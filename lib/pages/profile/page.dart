@@ -4,11 +4,13 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../components/error_view.dart';
 import '../../components/floating_nav.dart';
 import '../../components/skeleton.dart';
+import '../../models/user_activity.dart';
 import '../../models/user_profile.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../../theme/theme.dart';
 import '../../utils/app_navigation.dart';
+import 'tabs/activity_tab.dart';
 import 'tabs/info_tab.dart';
 import 'widgets/profile_fab.dart';
 import 'widgets/profile_header.dart';
@@ -49,11 +51,13 @@ class _ProfilePageState extends State<ProfilePage> {
   final _scrollController = ScrollController();
 
   UserProfile? _profile;
+  UserActivityPage? _cachedActivitiesPage;
   bool _isLoading = true;
   bool _isSelf = false;
   bool _isFollowLoading = false;
   bool _showStickyBar = false;
   int _selectedTabIndex = 0;
+  int _refreshTrigger = 0;
   String? _error;
 
   @override
@@ -91,6 +95,8 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       _isLoading = true;
       _error = null;
+      _cachedActivitiesPage = null;
+      _refreshTrigger++;
     });
 
     try {
@@ -195,7 +201,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   List<QuickNavSection> _buildQuickNavSections() {
     return QuickNavSection.fromTabs(
-      tabs: const [(icon: LucideIcons.info, label: 'Info')],
+      tabs: const [
+        (icon: LucideIcons.info, label: 'Info'),
+        (icon: LucideIcons.activity, label: 'Activity'),
+      ],
       selectedIndex: _selectedTabIndex,
       onSelect: (index) {
         if (_selectedTabIndex != index) {
@@ -236,6 +245,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildActiveTab(UserProfile profile) {
     return switch (_selectedTabIndex) {
+      1 => ProfileActivityTab(
+        userId: profile.id,
+        scrollController: _scrollController,
+        refreshTrigger: _refreshTrigger,
+        initialPage: _cachedActivitiesPage,
+        onInitialPageLoaded: (page) => _cachedActivitiesPage = page,
+      ),
       _ => ProfileInfoTab(
         profile: profile,
         onOpenAnimeList: _openAnimeList,
