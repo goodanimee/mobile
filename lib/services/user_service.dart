@@ -1,6 +1,9 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../api/user_api.dart';
+import '../models/user_activity.dart';
 import '../models/user_profile.dart';
 import '../models/viewer.dart';
 import '../proto/viewer.pb.dart' as pb;
@@ -77,6 +80,23 @@ class UserService {
     final token = await AuthService.getValidToken();
     final res = await UserApi.toggleFollow(userId, token);
     return res.isFollowing;
+  }
+
+  /// Fetches paginated activities for [userId].
+  static Future<UserActivityPage> getUserActivities({
+    required int userId,
+    int page = 1,
+    int perPage = 25,
+    List<String> typeIn = const [],
+  }) async {
+    final token = await AuthService.getRawToken() ?? '';
+    return UserApi.getUserActivities(
+      userId: userId,
+      page: page,
+      perPage: perPage,
+      typeIn: typeIn,
+      token: token,
+    );
   }
 
   /// Clears user cache.

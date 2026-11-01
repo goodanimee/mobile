@@ -1,3 +1,4 @@
+import '../models/user_activity.dart';
 import '../models/user_profile.dart';
 import '../models/viewer.dart';
 import '../proto/api.pb.dart';
@@ -53,5 +54,29 @@ class UserApi {
     final response = ToggleFollowResponse.fromBuffer(bytes);
     if (response.error.isNotEmpty) throw Exception(response.error);
     return response;
+  }
+
+  /// Fetches paginated activities for [userId].
+  static Future<UserActivityPage> getUserActivities({
+    required int userId,
+    int page = 1,
+    int perPage = 25,
+    List<String> typeIn = const [],
+    required String token,
+  }) async {
+    final request = GetUserActivitiesRequest(
+      userId: userId,
+      page: page,
+      perPage: perPage,
+      typeIn: typeIn,
+    );
+    final bytes = await FfiCore.executeProtoCall(
+      'GetUserActivities',
+      request.writeToBuffer(),
+      token,
+    );
+    final response = GetUserActivitiesResponse.fromBuffer(bytes);
+    if (response.error.isNotEmpty) throw Exception(response.error);
+    return UserActivityPage.fromProto(response);
   }
 }
