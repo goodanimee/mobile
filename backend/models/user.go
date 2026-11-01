@@ -5,10 +5,10 @@ import pb "goodanime-backend/proto"
 // UserProfileDTO represents the DTO for user profile queries.
 type UserProfileDTO struct {
 	User struct {
-		ID          int32  `json:"id"`
-		Name        string `json:"name"`
-		About       string `json:"about"`
-		Avatar      struct {
+		ID     int32  `json:"id"`
+		Name   string `json:"name"`
+		About  string `json:"about"`
+		Avatar struct {
 			Large  string `json:"large"`
 			Medium string `json:"medium"`
 		} `json:"avatar"`
@@ -66,9 +66,9 @@ func (u *UserProfileDTO) ToProto() *pb.UserProfile {
 		return nil
 	}
 	profile := &pb.UserProfile{
-		Id:          u.User.ID,
-		Name:        u.User.Name,
-		About:       u.User.About,
+		Id:    u.User.ID,
+		Name:  u.User.Name,
+		About: u.User.About,
 		Avatar: &pb.UserAvatar{
 			Large:  u.User.Avatar.Large,
 			Medium: u.User.Avatar.Medium,
@@ -87,4 +87,49 @@ func (u *UserProfileDTO) ToProto() *pb.UserProfile {
 		profile.FollowingCount = u.Following.PageInfo.Total
 	}
 	return profile
+}
+
+// SocialUserDTO represents a user item in following/followers queries.
+type SocialUserDTO struct {
+	ID     int32  `json:"id"`
+	Name   string `json:"name"`
+	Avatar struct {
+		Large  string `json:"large"`
+		Medium string `json:"medium"`
+	} `json:"avatar"`
+	IsFollowing bool `json:"isFollowing"`
+	IsFollower  bool `json:"isFollower"`
+}
+
+// ToProto converts SocialUserDTO to its protobuf representation.
+func (s *SocialUserDTO) ToProto() *pb.SocialUser {
+	if s == nil {
+		return nil
+	}
+	return &pb.SocialUser{
+		Id:   s.ID,
+		Name: s.Name,
+		Avatar: &pb.UserAvatar{
+			Large:  s.Avatar.Large,
+			Medium: s.Avatar.Medium,
+		},
+		IsFollowing: s.IsFollowing,
+		IsFollower:  s.IsFollower,
+	}
+}
+
+// UserFollowingPageDTO represents the Page payload for user following query.
+type UserFollowingPageDTO struct {
+	Page struct {
+		PageInfo  FavouritePageInfoDTO `json:"pageInfo"`
+		Following []*SocialUserDTO     `json:"following"`
+	} `json:"Page"`
+}
+
+// UserFollowersPageDTO represents the Page payload for user followers query.
+type UserFollowersPageDTO struct {
+	Page struct {
+		PageInfo  FavouritePageInfoDTO `json:"pageInfo"`
+		Followers []*SocialUserDTO     `json:"followers"`
+	} `json:"Page"`
 }

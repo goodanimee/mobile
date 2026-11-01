@@ -47,6 +47,12 @@ var userFavouritesStaffQuery string
 //go:embed graphql/user_favourites_studios.graphql
 var userFavouritesStudiosQuery string
 
+//go:embed graphql/user_following.graphql
+var userFollowingQuery string
+
+//go:embed graphql/user_followers.graphql
+var userFollowersQuery string
+
 // GetUserProfile fetches a user profile by ID or username
 //
 //export GetUserProfile
@@ -241,5 +247,73 @@ func GetUserFavourites(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 	}
 
 	pbResponse.Favourites = data.ToProto()
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// GetUserSocial fetches paginated following or followers for a user
+//
+//export GetUserSocial
+func GetUserSocial(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.GetUserSocialResponse{}
+
+	var req pb.GetUserSocialRequest
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	if req.UserId <= 0 {
+		pbResponse.Error = "Must provide userId"
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	page := req.Page
+	if page <= 0 {
+		page = 1
+	}
+	perPage := req.PerPage
+	if perPage <= 0 {
+		perPage = 30
+	}
+
+	variables := map[string]any{
+		"userId":  req.UserId,
+		"page":    page,
+		"perPage": perPage,
+	}
+
+	if req.IsFollowers {
+		data, err := executeGraphQL[models.UserFollowersPageDTO](tk, userFollowersQuery, variables)
+		if err != nil {
+			pbResponse.Error = err.Error()
+			return marshalAndReturn(pbResponse, outLen)
+		}
+		pbResponse.PageInfo = data.Page.PageInfo.ToProto()
+		pbResponse.Total = data.Page.PageInfo.Total
+		users := make([]*pb.SocialUser, 0, len(data.Page.Followers))
+		for _, u := range data.Page.Followers {
+			if pbUser := u.ToProto(); pbUser != nil {
+				users = append(users, pbUser)
+			}
+		}
+		pbResponse.Users = users
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	data, err := executeGraphQL[models.UserFollowingPageDTO](tk, userFollowingQuery, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+	pbResponse.PageInfo = data.Page.PageInfo.ToProto()
+	pbResponse.Total = data.Page.PageInfo.Total
+	users := make([]*pb.SocialUser, 0, len(data.Page.Following))
+	for _, u := range data.Page.Following {
+		if pbUser := u.ToProto(); pbUser != nil {
+			users = append(users, pbUser)
+		}
+	}
+	pbResponse.Users = users
 	return marshalAndReturn(pbResponse, outLen)
 }
