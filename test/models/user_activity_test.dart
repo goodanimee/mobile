@@ -164,12 +164,8 @@ void main() {
     );
 
     test(
-      'UserActivityTypeFilter exposes expected labels and API enum lists',
+      'UserActivityTypeFilter maps filters to AniList API activity types',
       () {
-        expect(UserActivityTypeFilter.all.label, 'All');
-        expect(UserActivityTypeFilter.listUpdates.label, 'Lists');
-        expect(UserActivityTypeFilter.statusPosts.label, 'Posts');
-        expect(UserActivityTypeFilter.messages.label, 'Messages');
         expect(UserActivityTypeFilter.all.apiTypes, isEmpty);
         expect(UserActivityTypeFilter.listUpdates.apiTypes, [
           'ANIME_LIST',

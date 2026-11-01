@@ -196,9 +196,7 @@ void main() {
     });
 
     test('ignores tag entries when tag is missing in allTags', () {
-      final req = _buildDefaultMediaRequest(
-        tags: {999: true},
-      );
+      final req = _buildDefaultMediaRequest(tags: {999: true});
 
       expect(req.tagIn, isEmpty);
       expect(req.tagNotIn, isEmpty);

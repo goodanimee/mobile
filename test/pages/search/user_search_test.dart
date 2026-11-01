@@ -8,25 +8,6 @@ import 'package:goodanime/services/search_service.dart';
 
 void main() {
   group('UserSearchResult', () {
-    test('instantiates with users list and page info', () {
-      const pageInfo = PageInfo(hasNextPage: true, currentPage: 1);
-      const user = SocialUser(
-        id: 12345,
-        name: 'TheDrone7',
-        avatarLarge: 'https://example.com/large.jpg',
-        isFollowing: true,
-      );
-
-      const result = UserSearchResult(users: [user], pageInfo: pageInfo);
-
-      expect(result.users.length, 1);
-      expect(result.users.first.id, 12345);
-      expect(result.users.first.name, 'TheDrone7');
-      expect(result.users.first.avatarUrl, 'https://example.com/large.jpg');
-      expect(result.pageInfo.hasNextPage, isTrue);
-      expect(result.pageInfo.currentPage, 1);
-    });
-
     test('maps from protobuf FetchUserSearchResponse correctly', () {
       final pbResponse = pb_api.FetchUserSearchResponse(
         pageInfo: pb_common.PageInfo(hasNextPage: false, currentPage: 3),

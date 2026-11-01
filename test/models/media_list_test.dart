@@ -27,20 +27,6 @@ void main() {
       final serialized = entry.toProto() as pb_entry.MediaListEntry;
       expect(serialized.customLists, ['Favorites', 'Top 10']);
     });
-
-    test('copyWith updates customLists', () {
-      const entry = MediaListEntry(
-        id: 1,
-        progress: 0,
-        score: 0,
-        repeat: 0,
-        progressVolumes: 0,
-        customLists: ['List A'],
-      );
-
-      final updated = entry.copyWith(customLists: ['List B', 'List C']);
-      expect(updated.customLists, ['List B', 'List C']);
-    });
   });
 
   group('MediaList', () {

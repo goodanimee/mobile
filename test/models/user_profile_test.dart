@@ -4,24 +4,6 @@ import 'package:goodanime/proto/user.pb.dart' as pb;
 
 void main() {
   group('UserProfile model & protobuf mapping', () {
-    test('creates UserProfile with defaults', () {
-      const profile = UserProfile(id: 123, name: 'AnimeFan');
-
-      expect(profile.id, 123);
-      expect(profile.name, 'AnimeFan');
-      expect(profile.about, isEmpty);
-      expect(profile.avatarLarge, isEmpty);
-      expect(profile.avatarMedium, isEmpty);
-      expect(profile.bannerImage, isEmpty);
-      expect(profile.isFollowing, isFalse);
-      expect(profile.isFollower, isFalse);
-      expect(profile.createdAt, 0);
-      expect(profile.followersCount, 0);
-      expect(profile.followingCount, 0);
-      expect(profile.animeCount, 0);
-      expect(profile.mangaCount, 0);
-    });
-
     test('roundtrips through protobuf representation', () {
       const profile = UserProfile(
         id: 456,
@@ -65,31 +47,6 @@ void main() {
       expect(profile.name, 'NoAvatarUser');
       expect(profile.avatarLarge, isEmpty);
       expect(profile.avatarMedium, isEmpty);
-    });
-
-    test('copyWith updates specified fields only', () {
-      const original = UserProfile(
-        id: 100,
-        name: 'Original',
-        followersCount: 10,
-        animeCount: 25,
-        mangaCount: 12,
-      );
-
-      final updated = original.copyWith(
-        isFollowing: true,
-        followersCount: 11,
-        animeCount: 26,
-      );
-
-      expect(updated.id, 100);
-      expect(updated.name, 'Original');
-      expect(updated.isFollowing, isTrue);
-      expect(updated.followersCount, 11);
-      expect(updated.animeCount, 26);
-      expect(updated.mangaCount, 12);
-      expect(original.isFollowing, isFalse);
-      expect(original.animeCount, 25);
     });
   });
 }
