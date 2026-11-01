@@ -5,14 +5,11 @@ import 'package:goodanime/components/error_view.dart';
 import 'package:goodanime/components/skeleton.dart';
 import 'package:goodanime/models/social_user.dart';
 import 'package:goodanime/pages/search/widgets/layout/user_results_list.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 Widget _wrap(Widget child) {
   return MaterialApp(
-    home: Scaffold(
-      body: SingleChildScrollView(
-        child: child,
-      ),
-    ),
+    home: Scaffold(body: SingleChildScrollView(child: child)),
   );
 }
 
@@ -81,10 +78,7 @@ void main() {
     testWidgets('renders user cards, follower badge, and respects viewerId', (
       tester,
     ) async {
-      const viewerUser = SocialUser(
-        id: 1,
-        name: 'ViewerUser',
-      );
+      const viewerUser = SocialUser(id: 1, name: 'ViewerUser');
       const followerUser = SocialUser(
         id: 2,
         name: 'FollowerUser',
@@ -115,8 +109,8 @@ void main() {
 
       expect(find.text('Follows you'), findsOneWidget);
 
-      expect(find.text('Follow'), findsOneWidget);
-      expect(find.text('Following'), findsOneWidget);
+      expect(find.byIcon(LucideIcons.userPlus), findsOneWidget);
+      expect(find.byIcon(LucideIcons.userCheck), findsOneWidget);
     });
 
     testWidgets('optimistically toggles follow and confirms server response', (
@@ -138,9 +132,9 @@ void main() {
         ),
       );
 
-      expect(find.text('Follow'), findsOneWidget);
+      expect(find.byIcon(LucideIcons.userPlus), findsOneWidget);
 
-      await tester.tap(find.text('Follow'));
+      await tester.tap(find.byIcon(LucideIcons.userPlus));
       await tester.pump();
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -148,7 +142,7 @@ void main() {
       completer.complete(true);
       await tester.pumpAndSettle();
 
-      expect(find.text('Following'), findsOneWidget);
+      expect(find.byIcon(LucideIcons.userCheck), findsOneWidget);
     });
 
     testWidgets('rolls back follow status and displays snackbar on failure', (
@@ -169,10 +163,10 @@ void main() {
         ),
       );
 
-      await tester.tap(find.text('Follow'));
+      await tester.tap(find.byIcon(LucideIcons.userPlus));
       await tester.pumpAndSettle();
 
-      expect(find.text('Follow'), findsOneWidget);
+      expect(find.byIcon(LucideIcons.userPlus), findsOneWidget);
       expect(find.byType(SnackBar), findsOneWidget);
       expect(
         find.textContaining('Failed to update follow status'),
@@ -184,10 +178,7 @@ void main() {
       tester,
     ) async {
       SocialUser? tappedUser;
-      const user = SocialUser(
-        id: 77,
-        name: 'OkabeRintarou',
-      );
+      const user = SocialUser(id: 77, name: 'OkabeRintarou');
 
       await tester.pumpWidget(
         _wrap(

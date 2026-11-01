@@ -105,42 +105,40 @@ class _UserResultsListState extends State<UserResultsList> {
 
   Widget _buildFollowButton(SocialUser user, {required bool isToggling}) {
     final isFollowing = user.isFollowing;
-    return Material(
-      color: isFollowing ? hoverBgColor : paletteBlue,
-      borderRadius: BorderRadius.circular(8),
-      child: InkWell(
-        onTap: isToggling ? null : () => _handleToggleFollow(user),
-        borderRadius: BorderRadius.circular(8),
-        splashColor: pressBgColor,
-        highlightColor: pressBgColor,
-        child: Container(
-          constraints: const BoxConstraints(minWidth: 84),
-          height: 32,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: isFollowing ? cardBorderColor : paletteBlue,
+    final double buttonSize = getResponsiveSize(context, 48.0);
+    final double iconSize = getResponsiveSize(context, 22.0);
+    final iconColor = isFollowing ? paletteBlue : textPrimary;
+    final iconData = isFollowing ? LucideIcons.userCheck : LucideIcons.userPlus;
+
+    return Tooltip(
+      message: isFollowing ? 'Following' : 'Follow',
+      child: Material(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          onTap: isToggling ? null : () => _handleToggleFollow(user),
+          borderRadius: BorderRadius.circular(12),
+          splashColor: pressBgColor,
+          highlightColor: pressBgColor,
+          child: Container(
+            width: buttonSize,
+            height: buttonSize,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: cardBorderColor),
             ),
+            alignment: Alignment.center,
+            child: isToggling
+                ? SizedBox(
+                    width: iconSize * 0.85,
+                    height: iconSize * 0.85,
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: paletteBlue,
+                    ),
+                  )
+                : Icon(iconData, color: iconColor, size: iconSize),
           ),
-          alignment: Alignment.center,
-          child: isToggling
-              ? const SizedBox(
-                  width: 14,
-                  height: 14,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                )
-              : Text(
-                  isFollowing ? 'Following' : 'Follow',
-                  style: TextStyle(
-                    color: isFollowing ? textSecondary : Colors.white,
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
         ),
       ),
     );
@@ -190,7 +188,7 @@ class _UserResultsListState extends State<UserResultsList> {
             onTap: () => _handleOpenProfile(user),
             borderRadius: BorderRadius.circular(12),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              padding: const EdgeInsets.fromLTRB(14, 8, 8, 8),
               decoration: BoxDecoration(
                 color: hoverBgColor,
                 borderRadius: BorderRadius.circular(12),
