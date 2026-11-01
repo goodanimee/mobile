@@ -11,8 +11,19 @@ class ProfileHeader extends StatelessWidget {
   /// User profile data to display.
   final UserProfile profile;
 
+  /// Optional callback when tapping following count.
+  final VoidCallback? onTapFollowing;
+
+  /// Optional callback when tapping followers count.
+  final VoidCallback? onTapFollowers;
+
   /// Creates a profile header.
-  const ProfileHeader({super.key, required this.profile});
+  const ProfileHeader({
+    super.key,
+    required this.profile,
+    this.onTapFollowing,
+    this.onTapFollowers,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -151,16 +162,28 @@ class ProfileHeader extends StatelessWidget {
           spacing: 16,
           runSpacing: 4,
           children: [
-            _buildStat(count: profile.followingCount, label: 'Following'),
-            _buildStat(count: profile.followersCount, label: 'Followers'),
+            _buildStat(
+              count: profile.followingCount,
+              label: 'Following',
+              onTap: onTapFollowing,
+            ),
+            _buildStat(
+              count: profile.followersCount,
+              label: 'Followers',
+              onTap: onTapFollowers,
+            ),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildStat({required int count, required String label}) {
-    return Row(
+  Widget _buildStat({
+    required int count,
+    required String label,
+    VoidCallback? onTap,
+  }) {
+    final content = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
@@ -174,6 +197,17 @@ class ProfileHeader extends StatelessWidget {
         const SizedBox(width: 4),
         Text(label, style: const TextStyle(color: textSecondary, fontSize: 13)),
       ],
+    );
+
+    if (onTap == null) return content;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: content,
+      ),
     );
   }
 }

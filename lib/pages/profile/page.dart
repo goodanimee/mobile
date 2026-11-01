@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../components/error_view.dart';
 import '../../components/floating_nav.dart';
 import '../../components/skeleton.dart';
+import '../../models/social_user.dart';
 import '../../models/user_activity.dart';
 import '../../models/user_favourites.dart';
 import '../../models/user_profile.dart';
@@ -14,6 +15,7 @@ import '../../utils/app_navigation.dart';
 import 'tabs/activity_tab.dart';
 import 'tabs/favourites_tab.dart';
 import 'tabs/info_tab.dart';
+import 'tabs/social_tab.dart';
 import 'widgets/profile_fab.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/profile_sticky_header.dart';
@@ -55,6 +57,10 @@ class _ProfilePageState extends State<ProfilePage> {
   UserProfile? _profile;
   UserActivityPage? _cachedActivitiesPage;
   UserFavourites? _cachedFavourites;
+  SocialUserPage? _cachedFollowingPage;
+  SocialUserPage? _cachedFollowersPage;
+  int? _viewerId;
+  SocialSegment _socialSegment = SocialSegment.following;
   bool _isLoading = true;
   bool _isSelf = false;
   bool _isFollowLoading = false;
@@ -100,6 +106,9 @@ class _ProfilePageState extends State<ProfilePage> {
       _error = null;
       _cachedActivitiesPage = null;
       _cachedFavourites = null;
+      _cachedFollowingPage = null;
+      _cachedFollowersPage = null;
+      _socialSegment = SocialSegment.following;
       _refreshTrigger++;
     });
 
@@ -128,6 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
       if (mounted) {
         setState(() {
           _profile = profile;
+          _viewerId = viewerId;
           _isLoading = false;
         });
         _notifyQuickNav();
@@ -209,6 +219,7 @@ class _ProfilePageState extends State<ProfilePage> {
         (icon: LucideIcons.info, label: 'Info'),
         (icon: LucideIcons.activity, label: 'Activity'),
         (icon: LucideIcons.heart, label: 'Favourites'),
+        (icon: LucideIcons.users, label: 'Social'),
       ],
       selectedIndex: _selectedTabIndex,
       onSelect: (index) {
@@ -227,6 +238,22 @@ class _ProfilePageState extends State<ProfilePage> {
       if (!mounted) return;
       widget.onQuickNavChanged?.call(_buildQuickNavSections());
     });
+  }
+
+  void _handleOpenFollowing() {
+    setState(() {
+      _socialSegment = SocialSegment.following;
+      _selectedTabIndex = 3;
+    });
+    _notifyQuickNav();
+  }
+
+  void _handleOpenFollowers() {
+    setState(() {
+      _socialSegment = SocialSegment.followers;
+      _selectedTabIndex = 3;
+    });
+    _notifyQuickNav();
   }
 
   void _openAnimeList() => _openMediaList('ANIME');
@@ -262,6 +289,33 @@ class _ProfilePageState extends State<ProfilePage> {
         refreshTrigger: _refreshTrigger,
         initialFavourites: _cachedFavourites,
         onFavouritesChanged: (favs) => _cachedFavourites = favs,
+      ),
+      3 => ProfileSocialTab(
+        userId: profile.id,
+        viewerId: _viewerId,
+        scrollController: _scrollController,
+        refreshTrigger: _refreshTrigger,
+        initialSegment: _socialSegment,
+        initialFollowingPage: _cachedFollowingPage,
+        initialFollowersPage: _cachedFollowersPage,
+        onSegmentChanged: (segment) => _socialSegment = segment,
+        onFollowingPageChanged: (page) => _cachedFollowingPage = page,
+        onFollowersPageChanged: (page) => _cachedFollowersPage = page,
+        onFollowToggle: (userId, isFollowing) {
+          if (_isSelf && _profile != null) {
+            final counts = SocialMathUtils.computeUpdatedFollowCounts(
+              currentFollowers: _profile!.followersCount,
+              currentFollowing: _profile!.followingCount,
+              nowFollowing: isFollowing,
+              isViewingOwnProfile: true,
+            );
+            setState(() {
+              _profile = _profile!.copyWith(
+                followingCount: counts.followingCount,
+              );
+            });
+          }
+        },
       ),
       _ => ProfileInfoTab(
         profile: profile,
@@ -305,7 +359,13 @@ class _ProfilePageState extends State<ProfilePage> {
               controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
-                SliverToBoxAdapter(child: ProfileHeader(profile: profile)),
+                SliverToBoxAdapter(
+                  child: ProfileHeader(
+                    profile: profile,
+                    onTapFollowing: _handleOpenFollowing,
+                    onTapFollowers: _handleOpenFollowers,
+                  ),
+                ),
                 SliverToBoxAdapter(child: _buildActiveTab(profile)),
                 const SliverToBoxAdapter(child: SizedBox(height: 128)),
               ],

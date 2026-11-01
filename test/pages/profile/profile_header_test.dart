@@ -16,10 +16,20 @@ void main() {
     isFollower: true,
   );
 
-  Widget buildHeader({UserProfile profile = sampleProfile}) {
+  Widget buildHeader({
+    UserProfile profile = sampleProfile,
+    VoidCallback? onTapFollowing,
+    VoidCallback? onTapFollowers,
+  }) {
     return MaterialApp(
       home: Scaffold(
-        body: SingleChildScrollView(child: ProfileHeader(profile: profile)),
+        body: SingleChildScrollView(
+          child: ProfileHeader(
+            profile: profile,
+            onTapFollowing: onTapFollowing,
+            onTapFollowers: onTapFollowers,
+          ),
+        ),
       ),
     );
   }
@@ -60,6 +70,28 @@ void main() {
     );
     expect(find.text('Followers'), findsOneWidget);
   });
+
+  testWidgets(
+    'invokes onTapFollowing and onTapFollowers callbacks when tapped',
+    (tester) async {
+      bool followingTapped = false;
+      bool followersTapped = false;
+
+      await tester.pumpWidget(
+        buildHeader(
+          onTapFollowing: () => followingTapped = true,
+          onTapFollowers: () => followersTapped = true,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Following'));
+      expect(followingTapped, isTrue);
+
+      await tester.tap(find.text('Followers'));
+      expect(followersTapped, isTrue);
+    },
+  );
 
   testWidgets('sticky header renders back button only when onBack provided', (
     tester,
