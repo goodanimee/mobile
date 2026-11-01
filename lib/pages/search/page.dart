@@ -9,8 +9,10 @@ import '../../models/media_min.dart';
 import '../../models/media_misc.dart';
 import '../../models/media_staff.dart';
 import '../../models/media_studio.dart';
+import '../../models/social_user.dart';
 import '../../services/genre_service.dart';
 import '../../services/search_service.dart';
+import '../../services/user_service.dart';
 import '../../theme/theme.dart';
 import '../../utils/anilist_url_parser.dart';
 import '../../utils/app_navigation.dart';
@@ -23,6 +25,7 @@ import 'widgets/layout/search_sort_button.dart';
 import 'widgets/layout/search_top_bar.dart';
 import 'widgets/layout/staff_results_list.dart';
 import 'widgets/layout/studio_results_list.dart';
+import 'widgets/layout/user_results_list.dart';
 import 'widgets/panels/genre_filter_sheet.dart';
 import 'widgets/panels/tag_filter_sheet.dart';
 
@@ -69,6 +72,13 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     'STAFF': [
       (type: 'search_match', label: 'Search Match'),
       (type: 'favourites_desc', label: 'Favourites'),
+    ],
+    'USER': [
+      (type: 'search_match', label: 'Search Match'),
+      (type: 'username', label: 'Username (Asc)'),
+      (type: 'username_desc', label: 'Username (Desc)'),
+      (type: 'watched_time_desc', label: 'Most Watched Time'),
+      (type: 'chapters_read_desc', label: 'Most Chapters Read'),
     ],
   };
 
@@ -129,6 +139,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   final List<Studio> _studioResults = [];
   final List<Character> _characterResults = [];
   final List<Staff> _staffResults = [];
+  final List<SocialUser> _userResults = [];
+  int? _viewerId;
   bool _isSearching = false;
   bool _isSearchingMore = false;
   bool _hasNextPage = false;
@@ -139,6 +151,13 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _loadGenresAndTags();
+    UserService.getViewer()
+        .then((v) {
+          if (mounted && v != null) {
+            setState(() => _viewerId = v.id);
+          }
+        })
+        .catchError((_) {});
     _searchController.addListener(_onSearchChanged);
     AppNavigation.pendingFiltersVersion.addListener(_checkPendingFilters);
     _sortMenuController = AnimationController(
@@ -232,6 +251,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         _studioResults.clear();
         _characterResults.clear();
         _staffResults.clear();
+        _userResults.clear();
 
         _searchType = AppNavigation.pendingSearchType ?? 'ANIME';
 
@@ -364,6 +384,22 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             _isSearching = false;
           });
         }
+      } else if (_searchType == 'USER') {
+        final req = buildUserSearchRequest(
+          page: 1,
+          query: _searchController.text,
+          sortBy: _sortBy,
+        );
+        final result = await SearchService.searchUsers(req);
+        if (mounted) {
+          setState(() {
+            _userResults.clear();
+            _userResults.addAll(result.users);
+            _currentPage = 1;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearching = false;
+          });
+        }
       } else {
         final req = buildSearchRequest(
           page: 1,
@@ -407,6 +443,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           _studioResults.clear();
           _characterResults.clear();
           _staffResults.clear();
+          _userResults.clear();
           _hasNextPage = false;
           _currentPage = 1;
           _isSearching = false;
@@ -463,6 +500,21 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         if (mounted) {
           setState(() {
             _staffResults.addAll(result.staff);
+            _currentPage++;
+            _hasNextPage = result.pageInfo.hasNextPage;
+            _isSearchingMore = false;
+          });
+        }
+      } else if (_searchType == 'USER') {
+        final req = buildUserSearchRequest(
+          page: _currentPage + 1,
+          query: _searchController.text,
+          sortBy: _sortBy,
+        );
+        final result = await SearchService.searchUsers(req);
+        if (mounted) {
+          setState(() {
+            _userResults.addAll(result.users);
             _currentPage++;
             _hasNextPage = result.pageInfo.hasNextPage;
             _isSearchingMore = false;
@@ -713,6 +765,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                   _studioResults.clear();
                                   _characterResults.clear();
                                   _staffResults.clear();
+                                  _userResults.clear();
                                 });
                                 _performSearch();
                               },
@@ -865,6 +918,15 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 isSearchingMore: _isSearchingMore,
                                 searchError: _searchError,
                                 onRetry: _performSearch,
+                              )
+                            else if (_searchType == 'USER')
+                              UserResultsList(
+                                userResults: _userResults,
+                                isSearching: _isSearching,
+                                isSearchingMore: _isSearchingMore,
+                                searchError: _searchError,
+                                onRetry: _performSearch,
+                                viewerId: _viewerId,
                               )
                             else
                               SearchResultsList(
