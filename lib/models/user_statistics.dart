@@ -18,7 +18,7 @@ class UserScoreStat {
     return UserScoreStat(
       score: stat.score,
       count: stat.count,
-      meanScore: stat.meanScore,
+      meanScore: StatisticsMathUtils.normalizeScore(stat.meanScore),
       minutesWatched: stat.minutesWatched,
       chaptersRead: stat.chaptersRead,
     );
@@ -56,7 +56,7 @@ class UserLengthStat {
     return UserLengthStat(
       length: stat.length,
       count: stat.count,
-      meanScore: stat.meanScore,
+      meanScore: StatisticsMathUtils.normalizeScore(stat.meanScore),
       minutesWatched: stat.minutesWatched,
       chaptersRead: stat.chaptersRead,
     );
@@ -94,7 +94,7 @@ class UserStatusStat {
     return UserStatusStat(
       status: stat.status,
       count: stat.count,
-      meanScore: stat.meanScore,
+      meanScore: StatisticsMathUtils.normalizeScore(stat.meanScore),
       minutesWatched: stat.minutesWatched,
       chaptersRead: stat.chaptersRead,
     );
@@ -132,7 +132,7 @@ class UserFormatStat {
     return UserFormatStat(
       format: stat.format,
       count: stat.count,
-      meanScore: stat.meanScore,
+      meanScore: StatisticsMathUtils.normalizeScore(stat.meanScore),
       minutesWatched: stat.minutesWatched,
       chaptersRead: stat.chaptersRead,
     );
@@ -170,7 +170,7 @@ class UserReleaseYearStat {
     return UserReleaseYearStat(
       releaseYear: stat.releaseYear,
       count: stat.count,
-      meanScore: stat.meanScore,
+      meanScore: StatisticsMathUtils.normalizeScore(stat.meanScore),
       minutesWatched: stat.minutesWatched,
       chaptersRead: stat.chaptersRead,
     );
@@ -217,7 +217,7 @@ class UserMediaStatistics {
     }
     return UserMediaStatistics(
       count: stat.count,
-      meanScore: stat.meanScore,
+      meanScore: StatisticsMathUtils.normalizeScore(stat.meanScore),
       standardDeviation: stat.standardDeviation,
       minutesWatched: stat.minutesWatched,
       episodesWatched: stat.episodesWatched,
@@ -298,6 +298,14 @@ class UserStatistics {
 
 /// Math and formatting helpers for statistics calculations.
 class StatisticsMathUtils {
+  /// Normalizes a score value to a 10-point scale if represented on a 100-point scale.
+  static double normalizeScore(double score) {
+    if (score > 10.0) {
+      return score / 10.0;
+    }
+    return score;
+  }
+
   /// Calculates weighted mean score excluding unrated (score == 0) entries.
   static double computeMeanScore(List<UserScoreStat> scores) {
     final valid = scores.where((s) => s.score > 0 && s.count > 0);
@@ -307,7 +315,7 @@ class StatisticsMathUtils {
     }
     final totalScore = valid.fold<double>(
       0.0,
-      (sum, s) => sum + (s.score * s.count),
+      (sum, s) => sum + ((s.score > 10 ? s.score / 10.0 : s.score) * s.count),
     );
     return totalScore / totalCount;
   }
@@ -325,7 +333,10 @@ class StatisticsMathUtils {
     final mean = precomputedMean ?? computeMeanScore(scores);
     final varianceSum = valid.fold<double>(
       0.0,
-      (sum, s) => sum + (s.count * math.pow(s.score - mean, 2)),
+      (sum, s) =>
+          sum +
+          (s.count *
+              math.pow((s.score > 10 ? s.score / 10.0 : s.score) - mean, 2)),
     );
     return math.sqrt(varianceSum / totalCount);
   }
@@ -345,27 +356,59 @@ class StatisticsMathUtils {
     return (minutes / 60.0).toStringAsFixed(1);
   }
 
-  /// Ensures full 1-10 score buckets exist in ascending order for histogram rendering.
+  /// Ensures full 1-10 score buckets exist in ascending order for histogram rendering,
+  /// normalizing both 1-10 and 100-point scale ratings.
   static List<UserScoreStat> computeScoreHistogram(
     List<UserScoreStat> rawScores,
   ) {
-    final map = <int, UserScoreStat>{};
+    final countMap = <int, int>{};
+    final minutesMap = <int, int>{};
+    final chaptersMap = <int, int>{};
+    final scoreSumMap = <int, double>{};
+
     for (final s in rawScores) {
-      if (s.score > 0) {
-        map[s.score] = s;
-      }
+      if (s.score <= 0 || s.count <= 0) continue;
+      final bucket = s.score > 10
+          ? (s.score / 10).round().clamp(1, 10)
+          : s.score;
+      countMap[bucket] = (countMap[bucket] ?? 0) + s.count;
+      minutesMap[bucket] = (minutesMap[bucket] ?? 0) + s.minutesWatched;
+      chaptersMap[bucket] = (chaptersMap[bucket] ?? 0) + s.chaptersRead;
+      scoreSumMap[bucket] =
+          (scoreSumMap[bucket] ?? 0.0) + (s.meanScore * s.count);
     }
+
     return List.generate(10, (index) {
       final scoreVal = index + 1;
-      return map[scoreVal] ??
-          UserScoreStat(
-            score: scoreVal,
-            count: 0,
-            meanScore: 0.0,
-            minutesWatched: 0,
-            chaptersRead: 0,
-          );
+      final count = countMap[scoreVal] ?? 0;
+      final meanScore = count > 0 ? (scoreSumMap[scoreVal]! / count) : 0.0;
+      return UserScoreStat(
+        score: scoreVal,
+        count: count,
+        meanScore: meanScore,
+        minutesWatched: minutesMap[scoreVal] ?? 0,
+        chaptersRead: chaptersMap[scoreVal] ?? 0,
+      );
     });
+  }
+
+  /// Sorts episode or chapter length statistics in ascending numerical order.
+  static List<UserLengthStat> sortLengthBuckets(List<UserLengthStat> lengths) {
+    final valid = lengths.where((l) => l.count > 0).toList();
+    valid.sort((a, b) {
+      final aStart = _parseBucketStart(a.length);
+      final bStart = _parseBucketStart(b.length);
+      return aStart.compareTo(bStart);
+    });
+    return valid;
+  }
+
+  static int _parseBucketStart(String length) {
+    final match = RegExp(r'\d+').firstMatch(length);
+    if (match != null) {
+      return int.tryParse(match.group(0)!) ?? 0;
+    }
+    return 0;
   }
 
   /// Sorts release years chronologically in ascending order, filtering invalid years.

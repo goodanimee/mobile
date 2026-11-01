@@ -43,12 +43,16 @@ class _EpisodeDistributionChartState extends State<EpisodeDistributionChart> {
 
   @override
   Widget build(BuildContext context) {
+    final sortedLengths = StatisticsMathUtils.sortLengthBuckets(widget.lengths);
     final hasData =
-        widget.lengths.isNotEmpty && widget.lengths.any((l) => l.count > 0);
+        sortedLengths.isNotEmpty && sortedLengths.any((l) => l.count > 0);
+    if (!hasData) {
+      return const SizedBox.shrink();
+    }
 
     final title = widget.isAnime
-        ? 'Episode Length Distribution'
-        : 'Chapter Length Distribution';
+        ? 'Episode Count Distribution'
+        : 'Chapter Count Distribution';
 
     final trailingToggle = Container(
       decoration: BoxDecoration(
@@ -81,17 +85,7 @@ class _EpisodeDistributionChartState extends State<EpisodeDistributionChart> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: cardBorderColor),
           ),
-          child: hasData
-              ? _buildChart(widget.lengths)
-              : const SizedBox(
-                  height: 120,
-                  child: Center(
-                    child: Text(
-                      'No length distribution data available',
-                      style: TextStyle(color: textMuted, fontSize: 13),
-                    ),
-                  ),
-                ),
+          child: _buildChart(sortedLengths),
         ),
       ],
     );
@@ -129,101 +123,98 @@ class _EpisodeDistributionChartState extends State<EpisodeDistributionChart> {
           widget.isAnime
               ? (l.minutesWatched / 60.0)
               : l.chaptersRead.toDouble(),
-        LengthMetricType.score => l.meanScore,
+        LengthMetricType.score =>
+          StatisticsMathUtils.normalizeScore(l.meanScore),
       };
     }).toList();
 
-    final maxVal = values.fold<double>(0.0, math.max);
+    final maxVal = _activeMetric == LengthMetricType.score
+        ? 10.0
+        : values.fold<double>(0.0, math.max);
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minWidth: 320),
-        child: SizedBox(
-          height: 160,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: List.generate(lengths.length, (index) {
-              final stat = lengths[index];
-              final val = values[index];
-              final ratio = maxVal > 0 ? (val / maxVal).clamp(0.0, 1.0) : 0.0;
+    return SizedBox(
+      height: 160,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: List.generate(lengths.length, (index) {
+          final stat = lengths[index];
+          final val = values[index];
+          final ratio = maxVal > 0 ? (val / maxVal).clamp(0.0, 1.0) : 0.0;
 
-              String displayVal = '';
-              if (val > 0) {
-                displayVal = switch (_activeMetric) {
-                  LengthMetricType.titles => stat.count.toString(),
-                  LengthMetricType.timeSpent =>
-                    widget.isAnime
-                        ? (val < 10
-                              ? val.toStringAsFixed(1)
-                              : val.toStringAsFixed(0))
-                        : stat.chaptersRead.toString(),
-                  LengthMetricType.score =>
-                    '${stat.meanScore.toStringAsFixed(0)}%',
-                };
-              }
+          String displayVal = '';
+          if (val > 0) {
+            displayVal = switch (_activeMetric) {
+              LengthMetricType.titles => stat.count.toString(),
+              LengthMetricType.timeSpent =>
+                widget.isAnime
+                    ? (val < 10
+                          ? val.toStringAsFixed(1)
+                          : val.toStringAsFixed(0))
+                    : stat.chaptersRead.toString(),
+              LengthMetricType.score => StatisticsMathUtils.normalizeScore(
+                stat.meanScore,
+              ).toStringAsFixed(1),
+            };
+          }
 
-              return Container(
-                width: math.max(48.0, 300.0 / lengths.length),
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      height: 16,
-                      child: Text(
-                        displayVal,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: textMuted,
-                          fontSize: 9,
-                          fontWeight: FontWeight.w600,
-                        ),
+          return Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: 16,
+                    child: Text(
+                      displayVal,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: textMuted,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.04),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        alignment: Alignment.bottomCenter,
-                        child: FractionallySizedBox(
-                          heightFactor: ratio > 0 ? ratio : 0.02,
-                          widthFactor: 1.0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: ratio > 0
-                                  ? borderColor
-                                  : Colors.white.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
+                  ),
+                  const SizedBox(height: 4),
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.04),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      alignment: Alignment.bottomCenter,
+                      child: FractionallySizedBox(
+                        heightFactor: ratio > 0 ? ratio : 0.02,
+                        widthFactor: 1.0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ratio > 0
+                                ? borderColor
+                                : Colors.white.withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(4),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      stat.length,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: ratio > 0 ? textPrimary : textMuted,
-                        fontSize: 11,
-                        fontWeight: ratio > 0
-                            ? FontWeight.w600
-                            : FontWeight.w400,
-                      ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    stat.length,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: ratio > 0 ? textPrimary : textMuted,
+                      fontSize: 10,
+                      fontWeight: ratio > 0 ? FontWeight.w600 : FontWeight.w400,
                     ),
-                  ],
-                ),
-              );
-            }),
-          ),
-        ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }

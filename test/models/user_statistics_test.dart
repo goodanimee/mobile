@@ -52,7 +52,7 @@ void main() {
 
       final domain = UserStatistics.fromProto(pbStats);
       expect(domain.anime.count, 50);
-      expect(domain.anime.meanScore, 78.4);
+      expect(domain.anime.meanScore, closeTo(7.84, 0.001));
       expect(domain.anime.standardDeviation, 10.2);
       expect(domain.anime.minutesWatched, 14400);
       expect(domain.anime.episodesWatched, 600);
@@ -277,6 +277,97 @@ void main() {
       expect(StatisticsMathUtils.calculatePercentage(25, 100), 25.0);
       expect(StatisticsMathUtils.calculatePercentage(5, 0), 0.0);
       expect(StatisticsMathUtils.calculatePercentage(5, -10), 0.0);
+    });
+
+    test('computeScoreHistogram maps 100-point scores into 1-10 buckets', () {
+      final raw100Scores = [
+        const UserScoreStat(
+          score: 80,
+          count: 24,
+          meanScore: 80.0,
+          minutesWatched: 100,
+          chaptersRead: 0,
+        ),
+        const UserScoreStat(
+          score: 85,
+          count: 11,
+          meanScore: 85.0,
+          minutesWatched: 50,
+          chaptersRead: 0,
+        ),
+        const UserScoreStat(
+          score: 100,
+          count: 8,
+          meanScore: 100.0,
+          minutesWatched: 40,
+          chaptersRead: 0,
+        ),
+      ];
+
+      final histogram = StatisticsMathUtils.computeScoreHistogram(raw100Scores);
+      expect(histogram.length, 10);
+      expect(histogram[7].score, 8);
+      expect(histogram[7].count, 24);
+      expect(histogram[8].score, 9);
+      expect(histogram[8].count, 11);
+      expect(histogram[9].score, 10);
+      expect(histogram[9].count, 8);
+    });
+
+    test('sortLengthBuckets orders buckets in ascending numerical order', () {
+      final jumbled = [
+        const UserLengthStat(
+          length: '7-16',
+          count: 172,
+          meanScore: 82.0,
+          minutesWatched: 0,
+          chaptersRead: 0,
+        ),
+        const UserLengthStat(
+          length: '17-28',
+          count: 69,
+          meanScore: 80.0,
+          minutesWatched: 0,
+          chaptersRead: 0,
+        ),
+        const UserLengthStat(
+          length: '1',
+          count: 35,
+          meanScore: 78.0,
+          minutesWatched: 0,
+          chaptersRead: 0,
+        ),
+        const UserLengthStat(
+          length: '2-6',
+          count: 9,
+          meanScore: 75.0,
+          minutesWatched: 0,
+          chaptersRead: 0,
+        ),
+        const UserLengthStat(
+          length: '101+',
+          count: 2,
+          meanScore: 88.0,
+          minutesWatched: 0,
+          chaptersRead: 0,
+        ),
+      ];
+
+      final sorted = StatisticsMathUtils.sortLengthBuckets(jumbled);
+      expect(sorted.map((l) => l.length).toList(), [
+        '1',
+        '2-6',
+        '7-16',
+        '17-28',
+        '101+',
+      ]);
+    });
+
+    test('normalizeScore converts 100-point scale to 10-point scale', () {
+      expect(StatisticsMathUtils.normalizeScore(84.5), 8.45);
+      expect(StatisticsMathUtils.normalizeScore(100.0), 10.0);
+      expect(StatisticsMathUtils.normalizeScore(8.45), 8.45);
+      expect(StatisticsMathUtils.normalizeScore(0.0), 0.0);
     });
   });
 }

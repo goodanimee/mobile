@@ -60,7 +60,9 @@ class QuickMetricsGrid extends StatelessWidget {
         icon: LucideIcons.star,
         label: 'Mean Score',
         value: stats.meanScore > 0
-            ? '${stats.meanScore.toStringAsFixed(1)}%'
+            ? StatisticsMathUtils.normalizeScore(
+                stats.meanScore,
+              ).toStringAsFixed(1)
             : 'N/A',
       ),
       _MetricData(

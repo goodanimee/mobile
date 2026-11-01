@@ -84,7 +84,7 @@ func (d *UserMediaStatisticsDTO) ToProto() *pb.UserMediaStatistics {
 		scores = append(scores, &pb.UserScoreStat{
 			Score:          s.Score,
 			Count:          s.Count,
-			MeanScore:      s.MeanScore,
+			MeanScore:      s.MeanScore / 10.0,
 			MinutesWatched: s.MinutesWatched,
 			ChaptersRead:   s.ChaptersRead,
 		})
@@ -95,7 +95,7 @@ func (d *UserMediaStatisticsDTO) ToProto() *pb.UserMediaStatistics {
 		lengths = append(lengths, &pb.UserLengthStat{
 			Length:         l.Length,
 			Count:          l.Count,
-			MeanScore:      l.MeanScore,
+			MeanScore:      l.MeanScore / 10.0,
 			MinutesWatched: l.MinutesWatched,
 			ChaptersRead:   l.ChaptersRead,
 		})
@@ -106,7 +106,7 @@ func (d *UserMediaStatisticsDTO) ToProto() *pb.UserMediaStatistics {
 		statuses = append(statuses, &pb.UserStatusStat{
 			Status:         st.Status,
 			Count:          st.Count,
-			MeanScore:      st.MeanScore,
+			MeanScore:      st.MeanScore / 10.0,
 			MinutesWatched: st.MinutesWatched,
 			ChaptersRead:   st.ChaptersRead,
 		})
@@ -117,7 +117,7 @@ func (d *UserMediaStatisticsDTO) ToProto() *pb.UserMediaStatistics {
 		formats = append(formats, &pb.UserFormatStat{
 			Format:         f.Format,
 			Count:          f.Count,
-			MeanScore:      f.MeanScore,
+			MeanScore:      f.MeanScore / 10.0,
 			MinutesWatched: f.MinutesWatched,
 			ChaptersRead:   f.ChaptersRead,
 		})
@@ -128,7 +128,7 @@ func (d *UserMediaStatisticsDTO) ToProto() *pb.UserMediaStatistics {
 		releaseYears = append(releaseYears, &pb.UserReleaseYearStat{
 			ReleaseYear:    y.ReleaseYear,
 			Count:          y.Count,
-			MeanScore:      y.MeanScore,
+			MeanScore:      y.MeanScore / 10.0,
 			MinutesWatched: y.MinutesWatched,
 			ChaptersRead:   y.ChaptersRead,
 		})
@@ -136,7 +136,7 @@ func (d *UserMediaStatisticsDTO) ToProto() *pb.UserMediaStatistics {
 
 	return &pb.UserMediaStatistics{
 		Count:             d.Count,
-		MeanScore:         d.MeanScore,
+		MeanScore:         d.MeanScore / 10.0,
 		StandardDeviation: d.StandardDeviation,
 		MinutesWatched:    d.MinutesWatched,
 		EpisodesWatched:   d.EpisodesWatched,

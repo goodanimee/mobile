@@ -34,6 +34,9 @@ class StatusFormatBreakdown extends StatelessWidget {
   Widget _buildStatusSection() {
     final validStatuses = statuses.where((s) => s.count > 0).toList();
     final total = validStatuses.fold<int>(0, (sum, s) => sum + s.count);
+    if (total == 0) {
+      return const SizedBox.shrink();
+    }
 
     return Section(
       title: 'Status Distribution',
@@ -45,47 +48,37 @@ class StatusFormatBreakdown extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: cardBorderColor),
           ),
-          child: total > 0
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildSegmentedBar(
-                      segments: validStatuses.map((s) {
-                        return _BarSegment(
-                          label: _formatStatusLabel(s.status, isAnime),
-                          count: s.count,
-                          color: _statusColor(s.status),
-                        );
-                      }).toList(),
-                      total: total,
-                    ),
-                    const SizedBox(height: 14),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 8,
-                      children: validStatuses.map((s) {
-                        final pct = StatisticsMathUtils.calculatePercentage(
-                          s.count,
-                          total,
-                        );
-                        return _buildLegendItem(
-                          color: _statusColor(s.status),
-                          label: _formatStatusLabel(s.status, isAnime),
-                          value: '${s.count} (${pct.toStringAsFixed(0)}%)',
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                )
-              : const SizedBox(
-                  height: 60,
-                  child: Center(
-                    child: Text(
-                      'No status distribution data available',
-                      style: TextStyle(color: textMuted, fontSize: 13),
-                    ),
-                  ),
-                ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSegmentedBar(
+                segments: validStatuses.map((s) {
+                  return _BarSegment(
+                    label: _formatStatusLabel(s.status, isAnime),
+                    count: s.count,
+                    color: _statusColor(s.status),
+                  );
+                }).toList(),
+                total: total,
+              ),
+              const SizedBox(height: 14),
+              Wrap(
+                spacing: 12,
+                runSpacing: 8,
+                children: validStatuses.map((s) {
+                  final pct = StatisticsMathUtils.calculatePercentage(
+                    s.count,
+                    total,
+                  );
+                  return _buildLegendItem(
+                    color: _statusColor(s.status),
+                    label: _formatStatusLabel(s.status, isAnime),
+                    value: '${s.count} (${pct.toStringAsFixed(0)}%)',
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -94,6 +87,9 @@ class StatusFormatBreakdown extends StatelessWidget {
   Widget _buildFormatSection() {
     final validFormats = formats.where((f) => f.count > 0).toList();
     final total = validFormats.fold<int>(0, (sum, f) => sum + f.count);
+    if (total == 0) {
+      return const SizedBox.shrink();
+    }
 
     return Section(
       title: 'Format Distribution',
@@ -105,47 +101,37 @@ class StatusFormatBreakdown extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: cardBorderColor),
           ),
-          child: total > 0
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildSegmentedBar(
-                      segments: validFormats.map((f) {
-                        return _BarSegment(
-                          label: _formatName(f.format),
-                          count: f.count,
-                          color: _formatColor(f.format),
-                        );
-                      }).toList(),
-                      total: total,
-                    ),
-                    const SizedBox(height: 14),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 8,
-                      children: validFormats.map((f) {
-                        final pct = StatisticsMathUtils.calculatePercentage(
-                          f.count,
-                          total,
-                        );
-                        return _buildLegendItem(
-                          color: _formatColor(f.format),
-                          label: _formatName(f.format),
-                          value: '${f.count} (${pct.toStringAsFixed(0)}%)',
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                )
-              : const SizedBox(
-                  height: 60,
-                  child: Center(
-                    child: Text(
-                      'No format distribution data available',
-                      style: TextStyle(color: textMuted, fontSize: 13),
-                    ),
-                  ),
-                ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSegmentedBar(
+                segments: validFormats.map((f) {
+                  return _BarSegment(
+                    label: _formatName(f.format),
+                    count: f.count,
+                    color: _formatColor(f.format),
+                  );
+                }).toList(),
+                total: total,
+              ),
+              const SizedBox(height: 14),
+              Wrap(
+                spacing: 12,
+                runSpacing: 8,
+                children: validFormats.map((f) {
+                  final pct = StatisticsMathUtils.calculatePercentage(
+                    f.count,
+                    total,
+                  );
+                  return _buildLegendItem(
+                    color: _formatColor(f.format),
+                    label: _formatName(f.format),
+                    value: '${f.count} (${pct.toStringAsFixed(0)}%)',
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
         ),
       ],
     );

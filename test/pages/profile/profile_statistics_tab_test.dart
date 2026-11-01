@@ -205,7 +205,7 @@ void main() {
     expect(find.text('Episodes Watched'), findsOneWidget);
     expect(find.text('750'), findsOneWidget);
     expect(find.text('Mean Score'), findsOneWidget);
-    expect(find.text('82.4%'), findsOneWidget);
+    expect(find.text('8.2'), findsOneWidget);
     expect(find.text('Standard Dev'), findsOneWidget);
     expect(find.text('9.6'), findsOneWidget);
   });
@@ -223,7 +223,7 @@ void main() {
     expect(find.text('850'), findsOneWidget);
     expect(find.text('Volumes Read'), findsOneWidget);
     expect(find.text('60'), findsOneWidget);
-    expect(find.text('79.5%'), findsOneWidget);
+    expect(find.text('8.0'), findsOneWidget);
     expect(find.text('8.2'), findsOneWidget);
   });
 
@@ -253,7 +253,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(EpisodeDistributionChart), findsOneWidget);
-      expect(find.text('Episode Length Distribution'), findsOneWidget);
+      expect(find.text('Episode Count Distribution'), findsOneWidget);
 
       final scoreToggle = find.descendant(
         of: find.byType(EpisodeDistributionChart),
@@ -303,6 +303,37 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('No Anime statistics found'), findsOneWidget);
+  });
+
+  testWidgets('hides missing graph sections when their data is empty', (
+    tester,
+  ) async {
+    const partialStats = UserStatistics(
+      anime: UserMediaStatistics(
+        count: 10,
+        episodesWatched: 50,
+        minutesWatched: 1200,
+        statuses: [
+          UserStatusStat(
+            status: 'COMPLETED',
+            count: 10,
+            meanScore: 0.0,
+            minutesWatched: 1200,
+            chaptersRead: 0,
+          ),
+        ],
+      ),
+    );
+
+    await tester.pumpWidget(buildTab(initialStats: partialStats));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Total Anime'), findsOneWidget);
+    expect(find.text('Score Distribution'), findsNothing);
+    expect(find.text('Episode Count Distribution'), findsNothing);
+    expect(find.text('Format Distribution'), findsNothing);
+    expect(find.text('Release Year Distribution'), findsNothing);
+    expect(find.text('Status Distribution'), findsOneWidget);
   });
 
   testWidgets('renders error view and retries on tap', (tester) async {

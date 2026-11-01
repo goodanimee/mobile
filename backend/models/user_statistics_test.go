@@ -70,8 +70,11 @@ func TestUserStatisticsDTO_ToProto(t *testing.T) {
 	if protoStats.Anime.Count != 42 {
 		t.Errorf("Expected Anime.Count 42, got %d", protoStats.Anime.Count)
 	}
-	if protoStats.Anime.MeanScore != 81.5 {
-		t.Errorf("Expected Anime.MeanScore 81.5, got %f", protoStats.Anime.MeanScore)
+	if protoStats.Anime.MeanScore != 8.15 {
+		t.Errorf("Expected Anime.MeanScore 8.15, got %f", protoStats.Anime.MeanScore)
+	}
+	if protoStats.Anime.StandardDeviation != 12.3 {
+		t.Errorf("Expected Anime.StandardDeviation 12.3, got %f", protoStats.Anime.StandardDeviation)
 	}
 	if protoStats.Anime.MinutesWatched != 10240 {
 		t.Errorf("Expected Anime.MinutesWatched 10240, got %d", protoStats.Anime.MinutesWatched)
@@ -79,7 +82,7 @@ func TestUserStatisticsDTO_ToProto(t *testing.T) {
 	if len(protoStats.Anime.Scores) != 2 {
 		t.Fatalf("Expected 2 scores, got %d", len(protoStats.Anime.Scores))
 	}
-	if protoStats.Anime.Scores[0].Score != 8 || protoStats.Anime.Scores[0].Count != 15 {
+	if protoStats.Anime.Scores[0].Score != 8 || protoStats.Anime.Scores[0].Count != 15 || protoStats.Anime.Scores[0].MeanScore != 8.0 {
 		t.Errorf("Unexpected score stat: %+v", protoStats.Anime.Scores[0])
 	}
 	if len(protoStats.Anime.Lengths) != 1 || protoStats.Anime.Lengths[0].Length != "12" {

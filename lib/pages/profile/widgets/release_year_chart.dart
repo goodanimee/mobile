@@ -47,6 +47,9 @@ class _ReleaseYearChartState extends State<ReleaseYearChart> {
     );
     final hasData =
         sortedYears.isNotEmpty && sortedYears.any((y) => y.count > 0);
+    if (!hasData) {
+      return const SizedBox.shrink();
+    }
 
     final trailingToggle = Container(
       decoration: BoxDecoration(
@@ -79,17 +82,7 @@ class _ReleaseYearChartState extends State<ReleaseYearChart> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: cardBorderColor),
           ),
-          child: hasData
-              ? _buildChart(sortedYears)
-              : const SizedBox(
-                  height: 120,
-                  child: Center(
-                    child: Text(
-                      'No release year data available',
-                      style: TextStyle(color: textMuted, fontSize: 13),
-                    ),
-                  ),
-                ),
+          child: _buildChart(sortedYears),
         ),
       ],
     );
@@ -127,102 +120,127 @@ class _ReleaseYearChartState extends State<ReleaseYearChart> {
           widget.isAnime
               ? (y.minutesWatched / 60.0)
               : y.chaptersRead.toDouble(),
-        YearMetricType.score => y.meanScore,
+        YearMetricType.score =>
+          StatisticsMathUtils.normalizeScore(y.meanScore),
       };
     }).toList();
 
-    final maxVal = values.fold<double>(0.0, math.max);
+    final maxVal = _activeMetric == YearMetricType.score
+        ? 10.0
+        : values.fold<double>(0.0, math.max);
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minWidth: 320),
-        child: SizedBox(
-          height: 160,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: List.generate(years.length, (index) {
-              final stat = years[index];
-              final val = values[index];
-              final ratio = maxVal > 0 ? (val / maxVal).clamp(0.0, 1.0) : 0.0;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableWidth = constraints.maxWidth;
+        final isScrollable = years.length > 10;
+        final barWidth = isScrollable
+            ? math.max(38.0, availableWidth / years.length)
+            : (availableWidth / years.length);
 
-              String displayVal = '';
-              if (val > 0) {
-                displayVal = switch (_activeMetric) {
-                  YearMetricType.titles => stat.count.toString(),
-                  YearMetricType.timeSpent =>
-                    widget.isAnime
-                        ? (val < 10
-                              ? val.toStringAsFixed(1)
-                              : val.toStringAsFixed(0))
-                        : stat.chaptersRead.toString(),
-                  YearMetricType.score =>
-                    '${stat.meanScore.toStringAsFixed(0)}%',
-                };
-              }
+        final bars = List.generate(years.length, (index) {
+          final stat = years[index];
+          final val = values[index];
+          final ratio = maxVal > 0 ? (val / maxVal).clamp(0.0, 1.0) : 0.0;
 
-              return Container(
-                width: math.max(44.0, 320.0 / years.length),
-                padding: const EdgeInsets.symmetric(horizontal: 3),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      height: 16,
-                      child: Text(
-                        displayVal,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: textMuted,
-                          fontSize: 9,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+          String displayVal = '';
+          if (val > 0) {
+            displayVal = switch (_activeMetric) {
+              YearMetricType.titles => stat.count.toString(),
+              YearMetricType.timeSpent =>
+                widget.isAnime
+                    ? (val < 10
+                          ? val.toStringAsFixed(1)
+                          : val.toStringAsFixed(0))
+                    : stat.chaptersRead.toString(),
+              YearMetricType.score => StatisticsMathUtils.normalizeScore(
+                stat.meanScore,
+              ).toStringAsFixed(1),
+            };
+          }
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(
+                  height: 16,
+                  child: Text(
+                    displayVal,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: textMuted,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w600,
                     ),
-                    const SizedBox(height: 4),
-                    Expanded(
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.04),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    alignment: Alignment.bottomCenter,
+                    child: FractionallySizedBox(
+                      heightFactor: ratio > 0 ? ratio : 0.02,
+                      widthFactor: 1.0,
                       child: Container(
-                        width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.04),
+                          color: ratio > 0
+                              ? borderColor
+                              : Colors.white.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        alignment: Alignment.bottomCenter,
-                        child: FractionallySizedBox(
-                          heightFactor: ratio > 0 ? ratio : 0.02,
-                          widthFactor: 1.0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: ratio > 0
-                                  ? borderColor
-                                  : Colors.white.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                        ),
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      stat.releaseYear.toString(),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: ratio > 0 ? textPrimary : textMuted,
-                        fontSize: 10,
-                        fontWeight: ratio > 0
-                            ? FontWeight.w600
-                            : FontWeight.w400,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              );
-            }),
+                const SizedBox(height: 6),
+                Text(
+                  stat.releaseYear.toString(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: ratio > 0 ? textPrimary : textMuted,
+                    fontSize: 10,
+                    fontWeight: ratio > 0 ? FontWeight.w600 : FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+
+        if (!isScrollable) {
+          return SizedBox(
+            height: 160,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: bars.map((b) => Expanded(child: b)).toList(),
+            ),
+          );
+        }
+
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: availableWidth),
+            child: SizedBox(
+              height: 160,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: bars
+                    .map((b) => SizedBox(width: barWidth, child: b))
+                    .toList(),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

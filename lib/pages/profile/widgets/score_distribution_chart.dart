@@ -41,6 +41,9 @@ class _ScoreDistributionChartState extends State<ScoreDistributionChart> {
   Widget build(BuildContext context) {
     final histogram = StatisticsMathUtils.computeScoreHistogram(widget.scores);
     final hasData = histogram.any((s) => s.count > 0);
+    if (!hasData) {
+      return const SizedBox.shrink();
+    }
 
     final trailingToggle = Container(
       decoration: BoxDecoration(
@@ -72,17 +75,7 @@ class _ScoreDistributionChartState extends State<ScoreDistributionChart> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: cardBorderColor),
           ),
-          child: hasData
-              ? _buildChart(histogram)
-              : const SizedBox(
-                  height: 120,
-                  child: Center(
-                    child: Text(
-                      'No score data available',
-                      style: TextStyle(color: textMuted, fontSize: 13),
-                    ),
-                  ),
-                ),
+          child: _buildChart(histogram),
         ),
       ],
     );

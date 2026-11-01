@@ -38,12 +38,11 @@ class Section extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: SectionTitle(title: title, bottomPadding: innerSpacing),
-            ),
+            Expanded(child: SectionTitle(title: title, bottomPadding: 0)),
             if (trailing != null) ...[trailing!, const SizedBox(width: 4)],
           ],
         ),
+        SizedBox(height: innerSpacing),
         ...children,
       ],
     );
