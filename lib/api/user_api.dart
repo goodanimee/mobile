@@ -2,6 +2,7 @@ import '../models/social_user.dart';
 import '../models/user_activity.dart';
 import '../models/user_favourites.dart';
 import '../models/user_profile.dart';
+import '../models/user_statistics.dart';
 import '../models/viewer.dart';
 import '../proto/api.pb.dart';
 import 'ffi_core.dart';
@@ -145,5 +146,23 @@ class UserApi {
     final response = GetUserSocialResponse.fromBuffer(bytes);
     if (response.error.isNotEmpty) throw Exception(response.error);
     return SocialUserPage.fromProto(response);
+  }
+
+  /// Fetches statistics breakdown for [userId].
+  static Future<UserStatistics> getUserStatistics({
+    required int userId,
+    required String token,
+  }) async {
+    final request = GetUserStatisticsRequest(userId: userId);
+    final bytes = await FfiCore.executeProtoCall(
+      'GetUserStatistics',
+      request.writeToBuffer(),
+      token,
+    );
+    final response = GetUserStatisticsResponse.fromBuffer(bytes);
+    if (response.error.isNotEmpty) throw Exception(response.error);
+    return response.hasStatistics()
+        ? UserStatistics.fromProto(response.statistics)
+        : const UserStatistics();
   }
 }

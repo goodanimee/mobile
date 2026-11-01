@@ -7,6 +7,7 @@ import '../models/social_user.dart';
 import '../models/user_activity.dart';
 import '../models/user_favourites.dart';
 import '../models/user_profile.dart';
+import '../models/user_statistics.dart';
 import '../models/viewer.dart';
 import '../proto/api.pb.dart';
 import '../proto/viewer.pb.dart' as pb;
@@ -142,6 +143,12 @@ class UserService {
       perPage: perPage,
       token: token,
     );
+  }
+
+  /// Fetches statistics breakdown for [userId].
+  static Future<UserStatistics> getUserStatistics({required int userId}) async {
+    final token = await AuthService.getRawToken() ?? '';
+    return UserApi.getUserStatistics(userId: userId, token: token);
   }
 
   /// Clears user cache.
