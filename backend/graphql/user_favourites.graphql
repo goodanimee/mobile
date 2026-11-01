@@ -1,0 +1,134 @@
+query GetUserFavourites($userId: Int!, $page: Int, $perPage: Int) {
+  User(id: $userId) {
+    favourites {
+      anime(page: $page, perPage: $perPage) {
+        pageInfo {
+          hasNextPage
+          currentPage
+          total
+        }
+        nodes {
+          id
+          type
+          title {
+            english
+            native
+            romaji
+            userPreferred
+          }
+          averageScore
+          coverImage {
+            medium
+            large
+            extraLarge
+            color
+          }
+          episodes
+          chapters
+          volumes
+          format
+          isAdult
+          isFavourite
+          siteUrl
+          startDate {
+            year
+            month
+            day
+          }
+        }
+      }
+      manga(page: $page, perPage: $perPage) {
+        pageInfo {
+          hasNextPage
+          currentPage
+          total
+        }
+        nodes {
+          id
+          type
+          title {
+            english
+            native
+            romaji
+            userPreferred
+          }
+          averageScore
+          coverImage {
+            medium
+            large
+            extraLarge
+            color
+          }
+          episodes
+          chapters
+          volumes
+          format
+          isAdult
+          isFavourite
+          siteUrl
+          startDate {
+            year
+            month
+            day
+          }
+        }
+      }
+      characters(page: $page, perPage: $perPage) {
+        pageInfo {
+          hasNextPage
+          currentPage
+          total
+        }
+        nodes {
+          id
+          name {
+            full
+            native
+            userPreferred
+          }
+          image {
+            large
+            medium
+          }
+          favourites
+          isFavourite
+        }
+      }
+      staff(page: $page, perPage: $perPage) {
+        pageInfo {
+          hasNextPage
+          currentPage
+          total
+        }
+        nodes {
+          id
+          name {
+            full
+            native
+            userPreferred
+          }
+          image {
+            large
+            medium
+          }
+          primaryOccupations
+          favourites
+          isFavourite
+        }
+      }
+      studios(page: $page, perPage: $perPage) {
+        pageInfo {
+          hasNextPage
+          currentPage
+          total
+        }
+        nodes {
+          id
+          name
+          favourites
+          isFavourite
+        }
+      }
+    }
+  }
+}

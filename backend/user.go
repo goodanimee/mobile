@@ -8,6 +8,7 @@ import "C"
 
 import (
 	_ "embed"
+	"strings"
 
 	"goodanime-backend/models"
 	pb "goodanime-backend/proto"
@@ -27,6 +28,24 @@ var toggleFollowMutation string
 
 //go:embed graphql/user_activities.graphql
 var userActivitiesQuery string
+
+//go:embed graphql/user_favourites.graphql
+var userFavouritesQuery string
+
+//go:embed graphql/user_favourites_anime.graphql
+var userFavouritesAnimeQuery string
+
+//go:embed graphql/user_favourites_manga.graphql
+var userFavouritesMangaQuery string
+
+//go:embed graphql/user_favourites_characters.graphql
+var userFavouritesCharactersQuery string
+
+//go:embed graphql/user_favourites_staff.graphql
+var userFavouritesStaffQuery string
+
+//go:embed graphql/user_favourites_studios.graphql
+var userFavouritesStudiosQuery string
 
 // GetUserProfile fetches a user profile by ID or username
 //
@@ -160,5 +179,67 @@ func GetUserActivities(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C
 		}
 	}
 	pbResponse.Activities = activities
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// GetUserFavourites fetches all or single-category paginated favourites for a user
+//
+//export GetUserFavourites
+func GetUserFavourites(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.GetUserFavouritesResponse{}
+
+	var req pb.GetUserFavouritesRequest
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	if req.UserId <= 0 {
+		pbResponse.Error = "Must provide userId"
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	page := req.Page
+	if page <= 0 {
+		page = 1
+	}
+	perPage := req.PerPage
+	if perPage <= 0 || perPage > 25 {
+		perPage = 25
+	}
+
+	var query string
+	switch strings.ToUpper(strings.TrimSpace(req.Category)) {
+	case "":
+		query = userFavouritesQuery
+	case "ANIME":
+		query = userFavouritesAnimeQuery
+	case "MANGA":
+		query = userFavouritesMangaQuery
+	case "CHARACTERS":
+		query = userFavouritesCharactersQuery
+	case "STAFF":
+		query = userFavouritesStaffQuery
+	case "STUDIOS":
+		query = userFavouritesStudiosQuery
+	default:
+		pbResponse.Error = "Unsupported favourites category: " + req.Category
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]any{
+		"userId":  req.UserId,
+		"page":    page,
+		"perPage": perPage,
+	}
+
+	data, err := executeGraphQL[models.UserFavouritesDTO](tk, query, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	pbResponse.Favourites = data.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
