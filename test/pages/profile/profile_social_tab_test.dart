@@ -78,8 +78,8 @@ void main() {
       expect(find.text('zoro'), findsOneWidget);
       expect(find.text('nami'), findsOneWidget);
       expect(find.text('Follows you'), findsOneWidget);
-      expect(find.text('Following'), findsNWidgets(2));
-      expect(find.text('Follow'), findsOneWidget);
+      expect(find.byIcon(LucideIcons.userCheck), findsNWidgets(2));
+      expect(find.byIcon(LucideIcons.userPlus), findsOneWidget);
     },
   );
 
@@ -90,7 +90,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('zoro'), findsOneWidget);
-    expect(find.text('Follow'), findsNothing);
+    expect(find.byIcon(LucideIcons.userPlus), findsNothing);
   });
 
   testWidgets('switches segment when initialSegment updates', (tester) async {
@@ -174,20 +174,23 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Follow'), findsOneWidget);
-      await tester.tap(find.text('Follow'));
+      expect(find.byIcon(LucideIcons.userPlus), findsOneWidget);
+      await tester.tap(find.byIcon(LucideIcons.userPlus));
       await tester.pump();
 
       expect(toggleCalled, isTrue);
       await tester.pumpAndSettle();
-      expect(find.text('Follow'), findsNothing);
+      expect(find.byIcon(LucideIcons.userPlus), findsNothing);
 
       shouldFail = true;
       final zoroCard = find
           .ancestor(of: find.text('zoro'), matching: find.byType(Container))
           .first;
       await tester.tap(
-        find.descendant(of: zoroCard, matching: find.text('Following')),
+        find.descendant(
+          of: zoroCard,
+          matching: find.byIcon(LucideIcons.userCheck),
+        ),
       );
       await tester.pump();
       await tester.pumpAndSettle();
