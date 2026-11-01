@@ -373,3 +373,21 @@ message GetUserActivitiesResponse {
   string error = 3;
 }
 
+message ResolveAnilistPreviewsRequest {
+  repeated int32 media_ids = 1;
+  repeated int32 character_ids = 2;
+  repeated int32 staff_ids = 3;
+  repeated int32 studio_ids = 4;
+  repeated int32 user_ids = 5;
+  repeated string usernames = 6;
+}
+
+message ResolveAnilistPreviewsResponse {
+  repeated MediaMin media = 1;
+  repeated Character characters = 2;
+  repeated Staff staff = 3;
+  repeated Studio studios = 4;
+  repeated UserProfile users = 5;
+  string error = 6;
+}
+

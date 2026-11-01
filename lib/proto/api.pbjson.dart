@@ -1513,3 +1513,80 @@ final $typed_data.Uint8List getUserActivitiesResponseDescriptor = $convert.base6
     'ChlHZXRVc2VyQWN0aXZpdGllc1Jlc3BvbnNlEjAKCXBhZ2VfaW5mbxgBIAEoCzITLmdvb2Rhbm'
     'ltZS5QYWdlSW5mb1IIcGFnZUluZm8SNwoKYWN0aXZpdGllcxgCIAMoCzIXLmdvb2RhbmltZS5V'
     'c2VyQWN0aXZpdHlSCmFjdGl2aXRpZXMSFAoFZXJyb3IYAyABKAlSBWVycm9y');
+
+@$core.Deprecated('Use resolveAnilistPreviewsRequestDescriptor instead')
+const ResolveAnilistPreviewsRequest$json = {
+  '1': 'ResolveAnilistPreviewsRequest',
+  '2': [
+    {'1': 'media_ids', '3': 1, '4': 3, '5': 5, '10': 'mediaIds'},
+    {'1': 'character_ids', '3': 2, '4': 3, '5': 5, '10': 'characterIds'},
+    {'1': 'staff_ids', '3': 3, '4': 3, '5': 5, '10': 'staffIds'},
+    {'1': 'studio_ids', '3': 4, '4': 3, '5': 5, '10': 'studioIds'},
+    {'1': 'user_ids', '3': 5, '4': 3, '5': 5, '10': 'userIds'},
+    {'1': 'usernames', '3': 6, '4': 3, '5': 9, '10': 'usernames'},
+  ],
+};
+
+/// Descriptor for `ResolveAnilistPreviewsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List resolveAnilistPreviewsRequestDescriptor = $convert.base64Decode(
+    'Ch1SZXNvbHZlQW5pbGlzdFByZXZpZXdzUmVxdWVzdBIbCgltZWRpYV9pZHMYASADKAVSCG1lZG'
+    'lhSWRzEiMKDWNoYXJhY3Rlcl9pZHMYAiADKAVSDGNoYXJhY3RlcklkcxIbCglzdGFmZl9pZHMY'
+    'AyADKAVSCHN0YWZmSWRzEh0KCnN0dWRpb19pZHMYBCADKAVSCXN0dWRpb0lkcxIZCgh1c2VyX2'
+    'lkcxgFIAMoBVIHdXNlcklkcxIcCgl1c2VybmFtZXMYBiADKAlSCXVzZXJuYW1lcw==');
+
+@$core.Deprecated('Use resolveAnilistPreviewsResponseDescriptor instead')
+const ResolveAnilistPreviewsResponse$json = {
+  '1': 'ResolveAnilistPreviewsResponse',
+  '2': [
+    {
+      '1': 'media',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.MediaMin',
+      '10': 'media'
+    },
+    {
+      '1': 'characters',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.Character',
+      '10': 'characters'
+    },
+    {
+      '1': 'staff',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.Staff',
+      '10': 'staff'
+    },
+    {
+      '1': 'studios',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.Studio',
+      '10': 'studios'
+    },
+    {
+      '1': 'users',
+      '3': 5,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.UserProfile',
+      '10': 'users'
+    },
+    {'1': 'error', '3': 6, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `ResolveAnilistPreviewsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List resolveAnilistPreviewsResponseDescriptor = $convert.base64Decode(
+    'Ch5SZXNvbHZlQW5pbGlzdFByZXZpZXdzUmVzcG9uc2USKQoFbWVkaWEYASADKAsyEy5nb29kYW'
+    '5pbWUuTWVkaWFNaW5SBW1lZGlhEjQKCmNoYXJhY3RlcnMYAiADKAsyFC5nb29kYW5pbWUuQ2hh'
+    'cmFjdGVyUgpjaGFyYWN0ZXJzEiYKBXN0YWZmGAMgAygLMhAuZ29vZGFuaW1lLlN0YWZmUgVzdG'
+    'FmZhIrCgdzdHVkaW9zGAQgAygLMhEuZ29vZGFuaW1lLlN0dWRpb1IHc3R1ZGlvcxIsCgV1c2Vy'
+    'cxgFIAMoCzIWLmdvb2RhbmltZS5Vc2VyUHJvZmlsZVIFdXNlcnMSFAoFZXJyb3IYBiABKAlSBW'
+    'Vycm9y');

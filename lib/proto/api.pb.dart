@@ -4979,6 +4979,191 @@ class GetUserActivitiesResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(3);
 }
 
+class ResolveAnilistPreviewsRequest extends $pb.GeneratedMessage {
+  factory ResolveAnilistPreviewsRequest({
+    $core.Iterable<$core.int>? mediaIds,
+    $core.Iterable<$core.int>? characterIds,
+    $core.Iterable<$core.int>? staffIds,
+    $core.Iterable<$core.int>? studioIds,
+    $core.Iterable<$core.int>? userIds,
+    $core.Iterable<$core.String>? usernames,
+  }) {
+    final result = ResolveAnilistPreviewsRequest._();
+    if (mediaIds != null) result.mediaIds.addAll(mediaIds);
+    if (characterIds != null) result.characterIds.addAll(characterIds);
+    if (staffIds != null) result.staffIds.addAll(staffIds);
+    if (studioIds != null) result.studioIds.addAll(studioIds);
+    if (userIds != null) result.userIds.addAll(userIds);
+    if (usernames != null) result.usernames.addAll(usernames);
+    return result;
+  }
+
+  ResolveAnilistPreviewsRequest._();
+
+  factory ResolveAnilistPreviewsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ResolveAnilistPreviewsRequest()..mergeFromBuffer(data, registry);
+  factory ResolveAnilistPreviewsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ResolveAnilistPreviewsRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ResolveAnilistPreviewsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: ResolveAnilistPreviewsRequest.$_createMessage)
+    ..p<$core.int>(1, _omitFieldNames ? '' : 'mediaIds', $pb.PbFieldType.K3)
+    ..p<$core.int>(2, _omitFieldNames ? '' : 'characterIds', $pb.PbFieldType.K3)
+    ..p<$core.int>(3, _omitFieldNames ? '' : 'staffIds', $pb.PbFieldType.K3)
+    ..p<$core.int>(4, _omitFieldNames ? '' : 'studioIds', $pb.PbFieldType.K3)
+    ..p<$core.int>(5, _omitFieldNames ? '' : 'userIds', $pb.PbFieldType.K3)
+    ..pPS(6, _omitFieldNames ? '' : 'usernames')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ResolveAnilistPreviewsRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ResolveAnilistPreviewsRequest copyWith(
+          void Function(ResolveAnilistPreviewsRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as ResolveAnilistPreviewsRequest))
+          as ResolveAnilistPreviewsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ResolveAnilistPreviewsRequest() / ResolveAnilistPreviewsRequest.new instead')
+  static ResolveAnilistPreviewsRequest create() =>
+      ResolveAnilistPreviewsRequest._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ResolveAnilistPreviewsRequest._();
+  @$core.override
+  ResolveAnilistPreviewsRequest createEmptyInstance() =>
+      ResolveAnilistPreviewsRequest._();
+  @$core.pragma('dart2js:noInline')
+  static ResolveAnilistPreviewsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ResolveAnilistPreviewsRequest>(
+          ResolveAnilistPreviewsRequest.$_createMessage);
+  static ResolveAnilistPreviewsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$core.int> get mediaIds => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $pb.PbList<$core.int> get characterIds => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$core.int> get staffIds => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<$core.int> get studioIds => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $pb.PbList<$core.int> get userIds => $_getList(4);
+
+  @$pb.TagNumber(6)
+  $pb.PbList<$core.String> get usernames => $_getList(5);
+}
+
+class ResolveAnilistPreviewsResponse extends $pb.GeneratedMessage {
+  factory ResolveAnilistPreviewsResponse({
+    $core.Iterable<$10.MediaMin>? media,
+    $core.Iterable<$11.Character>? characters,
+    $core.Iterable<$8.Staff>? staff,
+    $core.Iterable<$7.Studio>? studios,
+    $core.Iterable<$12.UserProfile>? users,
+    $core.String? error,
+  }) {
+    final result = ResolveAnilistPreviewsResponse._();
+    if (media != null) result.media.addAll(media);
+    if (characters != null) result.characters.addAll(characters);
+    if (staff != null) result.staff.addAll(staff);
+    if (studios != null) result.studios.addAll(studios);
+    if (users != null) result.users.addAll(users);
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  ResolveAnilistPreviewsResponse._();
+
+  factory ResolveAnilistPreviewsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ResolveAnilistPreviewsResponse()..mergeFromBuffer(data, registry);
+  factory ResolveAnilistPreviewsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ResolveAnilistPreviewsResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ResolveAnilistPreviewsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: ResolveAnilistPreviewsResponse.$_createMessage)
+    ..pPM<$10.MediaMin>(1, _omitFieldNames ? '' : 'media',
+        subBuilder: $10.MediaMin.$_createMessage)
+    ..pPM<$11.Character>(2, _omitFieldNames ? '' : 'characters',
+        subBuilder: $11.Character.$_createMessage)
+    ..pPM<$8.Staff>(3, _omitFieldNames ? '' : 'staff',
+        subBuilder: $8.Staff.$_createMessage)
+    ..pPM<$7.Studio>(4, _omitFieldNames ? '' : 'studios',
+        subBuilder: $7.Studio.$_createMessage)
+    ..pPM<$12.UserProfile>(5, _omitFieldNames ? '' : 'users',
+        subBuilder: $12.UserProfile.$_createMessage)
+    ..aOS(6, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ResolveAnilistPreviewsResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ResolveAnilistPreviewsResponse copyWith(
+          void Function(ResolveAnilistPreviewsResponse) updates) =>
+      super.copyWith(
+              (message) => updates(message as ResolveAnilistPreviewsResponse))
+          as ResolveAnilistPreviewsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use ResolveAnilistPreviewsResponse() / ResolveAnilistPreviewsResponse.new instead')
+  static ResolveAnilistPreviewsResponse create() =>
+      ResolveAnilistPreviewsResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      ResolveAnilistPreviewsResponse._();
+  @$core.override
+  ResolveAnilistPreviewsResponse createEmptyInstance() =>
+      ResolveAnilistPreviewsResponse._();
+  @$core.pragma('dart2js:noInline')
+  static ResolveAnilistPreviewsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ResolveAnilistPreviewsResponse>(
+          ResolveAnilistPreviewsResponse.$_createMessage);
+  static ResolveAnilistPreviewsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$10.MediaMin> get media => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $pb.PbList<$11.Character> get characters => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$8.Staff> get staff => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<$7.Studio> get studios => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $pb.PbList<$12.UserProfile> get users => $_getList(4);
+
+  @$pb.TagNumber(6)
+  $core.String get error => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set error($core.String value) => $_setString(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasError() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearError() => $_clearField(6);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =
