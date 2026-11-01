@@ -79,4 +79,19 @@ class UserApi {
     if (response.error.isNotEmpty) throw Exception(response.error);
     return UserActivityPage.fromProto(response);
   }
+
+  /// Resolves multiple AniList entity previews in bulk.
+  static Future<ResolveAnilistPreviewsResponse> resolveAnilistPreviews({
+    required ResolveAnilistPreviewsRequest request,
+    required String token,
+  }) async {
+    final bytes = await FfiCore.executeProtoCall(
+      'ResolveAnilistPreviews',
+      request.writeToBuffer(),
+      token,
+    );
+    final response = ResolveAnilistPreviewsResponse.fromBuffer(bytes);
+    if (response.error.isNotEmpty) throw Exception(response.error);
+    return response;
+  }
 }

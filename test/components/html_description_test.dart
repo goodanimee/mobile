@@ -16,6 +16,7 @@ import 'package:goodanime/utils/anilist_url_parser.dart';
 void main() {
   tearDown(() {
     HtmlAnilistLinkCard.debugResolverOverride = null;
+    HtmlAnilistLinkCard.debugBatchResolverOverride = null;
     HtmlAnilistLinkCard.clearCache();
   });
 
@@ -338,6 +339,133 @@ void main() {
       );
       expect(badgeEmbed.linkUrl, 'https://example.com/target');
       expect(badgeEmbed.widthAttr, '120');
+    },
+  );
+
+  testWidgets(
+    'coalesces uncached links across multiple HtmlDescriptions into a single batch call and negative-caches 404s',
+    (tester) async {
+      final batchCalls = <List<AnilistRouteTarget>>[];
+
+      HtmlAnilistLinkCard.debugBatchResolverOverride = (targets) async {
+        batchCalls.add(List<AnilistRouteTarget>.of(targets));
+        return {
+          const AnilistRouteTarget(
+            type: AnilistEntityType.anime,
+            id: 11,
+          ): AnilistMediaPreview(
+            buildMediaFixture(
+              id: 11,
+              type: 'ANIME',
+              title: 'Batched Alpha',
+              format: 'TV',
+            ),
+          ),
+          const AnilistRouteTarget(
+            type: AnilistEntityType.manga,
+            id: 22,
+          ): AnilistMediaPreview(
+            buildMediaFixture(
+              id: 22,
+              type: 'MANGA',
+              title: 'Batched Beta',
+              format: 'MANGA',
+            ),
+          ),
+        };
+      };
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  HtmlDescription(
+                    html:
+                        '<p>https://anilist.co/anime/11/Alpha/</p>'
+                        '<p>https://anilist.co/manga/22/Beta/</p>',
+                  ),
+                  HtmlDescription(
+                    html:
+                        '<p>https://anilist.co/anime/11/Alpha/</p>'
+                        '<p>https://anilist.co/anime/999/Missing-Show/</p>',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+
+      expect(batchCalls.length, 1);
+      expect(batchCalls.single.length, 3);
+      expect(find.text('Batched Alpha'), findsNWidgets(2));
+      expect(find.text('Batched Beta'), findsOneWidget);
+      expect(find.text('Missing Show'), findsOneWidget);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpWidget(
+        buildSubject(
+          '<p>https://anilist.co/anime/11/Alpha/</p>'
+          '<p>https://anilist.co/anime/999/Missing-Show/</p>',
+        ),
+      );
+      await tester.pump();
+
+      expect(batchCalls.length, 1);
+      expect(find.text('Batched Alpha'), findsOneWidget);
+      expect(find.text('Missing Show'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'transient batch errors render fallback cards without negative-caching failed targets',
+    (tester) async {
+      var callCount = 0;
+      var shouldThrow = true;
+
+      HtmlAnilistLinkCard.debugBatchResolverOverride = (targets) async {
+        callCount++;
+        if (shouldThrow) {
+          throw Exception('HTTP 429 Too Many Requests');
+        }
+        return {
+          const AnilistRouteTarget(
+            type: AnilistEntityType.anime,
+            id: 55,
+          ): AnilistMediaPreview(
+            buildMediaFixture(
+              id: 55,
+              type: 'ANIME',
+              title: 'Recovered Gamma',
+              format: 'TV',
+            ),
+          ),
+        };
+      };
+
+      await tester.pumpWidget(
+        buildSubject('<p>https://anilist.co/anime/55/Fallback-Slug/</p>'),
+      );
+      await tester.pump();
+      await tester.pump();
+
+      expect(callCount, 1);
+      expect(find.text('Fallback Slug'), findsOneWidget);
+
+      shouldThrow = false;
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpWidget(
+        buildSubject('<p>https://anilist.co/anime/55/Fallback-Slug/</p>'),
+      );
+      await tester.pump();
+      await tester.pump();
+
+      expect(callCount, 2);
+      expect(find.text('Recovered Gamma'), findsOneWidget);
     },
   );
 }

@@ -6,6 +6,7 @@ import '../api/user_api.dart';
 import '../models/user_activity.dart';
 import '../models/user_profile.dart';
 import '../models/viewer.dart';
+import '../proto/api.pb.dart';
 import '../proto/viewer.pb.dart' as pb;
 import 'auth_service.dart';
 
@@ -97,6 +98,14 @@ class UserService {
       typeIn: typeIn,
       token: token,
     );
+  }
+
+  /// Resolves multiple AniList entity previews in bulk.
+  static Future<ResolveAnilistPreviewsResponse> resolveAnilistPreviews(
+    ResolveAnilistPreviewsRequest request,
+  ) async {
+    final token = await AuthService.getRawToken() ?? '';
+    return UserApi.resolveAnilistPreviews(request: request, token: token);
   }
 
   /// Clears user cache.

@@ -8,8 +8,7 @@ import '../models/media_min.dart';
 import '../models/media_staff.dart';
 import '../models/media_studio.dart';
 import '../models/user_profile.dart';
-import '../services/character_service.dart';
-import '../services/media_service.dart';
+import '../proto/api.pb.dart';
 import '../services/user_service.dart';
 import '../theme/theme.dart';
 import '../utils/anilist_url_parser.dart';
@@ -74,6 +73,12 @@ class AnilistUserPreview extends AnilistLinkPreview {
 typedef AnilistPreviewResolver =
     Future<AnilistLinkPreview?> Function(AnilistRouteTarget target);
 
+/// Async batch resolver signature for fetching multiple [AnilistLinkPreview]s at once.
+typedef AnilistBatchPreviewResolver =
+    Future<Map<AnilistRouteTarget, AnilistLinkPreview>> Function(
+      List<AnilistRouteTarget> targets,
+    );
+
 /// Renders an AniList entity URL as a rich preview card matching search and relation cards.
 class HtmlAnilistLinkCard extends StatefulWidget {
   /// Parsed AniList route target.
@@ -85,79 +90,194 @@ class HtmlAnilistLinkCard extends StatefulWidget {
   /// Optional custom link label used if remote resolution fails.
   final String? fallbackLabel;
 
-  /// Optional resolver override for widget tests.
+  /// Optional single-target resolver override for widget tests.
   @visibleForTesting
   static AnilistPreviewResolver? debugResolverOverride;
 
+  /// Optional batch resolver override for widget tests.
+  @visibleForTesting
+  static AnilistBatchPreviewResolver? debugBatchResolverOverride;
+
   static final Map<AnilistRouteTarget, AnilistLinkPreview> _cache = {};
+  static final Set<AnilistRouteTarget> _notFoundCache = {};
   static final Map<AnilistRouteTarget, Future<AnilistLinkPreview?>> _inFlight =
       {};
+  static final Map<AnilistRouteTarget, Completer<AnilistLinkPreview?>>
+  _pendingQueue = {};
+  static bool _batchScheduled = false;
 
-  /// Clears the in-memory preview cache.
+  /// Clears the in-memory preview and negative-lookup caches.
   @visibleForTesting
   static void clearCache() {
     _cache.clear();
+    _notFoundCache.clear();
     _inFlight.clear();
+    for (final completer in _pendingQueue.values) {
+      if (!completer.isCompleted) {
+        completer.complete(null);
+      }
+    }
+    _pendingQueue.clear();
+    _batchScheduled = false;
   }
 
-  static Future<AnilistLinkPreview?> _resolveCached(
-    AnilistRouteTarget target,
-  ) async {
+  static Future<AnilistLinkPreview?> _resolveCached(AnilistRouteTarget target) {
     final cached = _cache[target];
-    if (cached != null) return cached;
+    if (cached != null) return Future<AnilistLinkPreview?>.value(cached);
+    if (_notFoundCache.contains(target)) {
+      return Future<AnilistLinkPreview?>.value();
+    }
 
     final existing = _inFlight[target];
     if (existing != null) return existing;
 
-    final future = _fetchRemote(target);
-    _inFlight[target] = future;
+    final pending = _pendingQueue[target];
+    if (pending != null) return pending.future;
+
+    final completer = Completer<AnilistLinkPreview?>();
+    _pendingQueue[target] = completer;
+
+    if (!_batchScheduled) {
+      _batchScheduled = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        unawaited(_flushBatch());
+      });
+      WidgetsBinding.instance.scheduleFrame();
+    }
+
+    return completer.future;
+  }
+
+  static Future<void> _flushBatch() async {
+    _batchScheduled = false;
+    if (_pendingQueue.isEmpty) return;
+
+    final batchEntries =
+        Map<AnilistRouteTarget, Completer<AnilistLinkPreview?>>.of(
+          _pendingQueue,
+        );
+    _pendingQueue.clear();
+
+    for (final entry in batchEntries.entries) {
+      _inFlight[entry.key] = entry.value.future;
+    }
+
+    final batchTargets = batchEntries.keys.toList(growable: false);
+    final batchResolver = debugBatchResolverOverride ?? _fetchRemoteBatch;
+
     try {
-      final resolved = await future;
-      if (resolved != null) {
-        _cache[target] = resolved;
+      final resolvedMap = await batchResolver(batchTargets);
+      for (final entry in batchEntries.entries) {
+        final preview = resolvedMap[entry.key];
+        if (preview != null) {
+          _cache[entry.key] = preview;
+        } else {
+          _notFoundCache.add(entry.key);
+        }
+        if (!entry.value.isCompleted) {
+          entry.value.complete(preview);
+        }
       }
-      return resolved;
+    } catch (_) {
+      for (final completer in batchEntries.values) {
+        if (!completer.isCompleted) {
+          completer.complete(null);
+        }
+      }
     } finally {
-      unawaited(_inFlight.remove(target));
+      for (final key in batchEntries.keys) {
+        unawaited(_inFlight.remove(key));
+      }
     }
   }
 
-  static Future<AnilistLinkPreview?> _fetchRemote(
-    AnilistRouteTarget target,
+  static Future<Map<AnilistRouteTarget, AnilistLinkPreview>> _fetchRemoteBatch(
+    List<AnilistRouteTarget> targets,
   ) async {
-    try {
+    final request = ResolveAnilistPreviewsRequest();
+    for (final target in targets) {
       switch (target.type) {
         case AnilistEntityType.anime:
         case AnilistEntityType.manga:
-          final id = target.id;
-          if (id == null) return null;
-          final media = await MediaService.getMediaDetails(id);
-          return media != null ? AnilistMediaPreview(media) : null;
+          if (target.id != null) request.mediaIds.add(target.id!);
         case AnilistEntityType.character:
-          final id = target.id;
-          if (id == null) return null;
-          final character = await CharacterService.getCharacterDetails(id, 1);
-          return AnilistCharacterPreview(character);
+          if (target.id != null) request.characterIds.add(target.id!);
         case AnilistEntityType.staff:
-          final id = target.id;
-          if (id == null) return null;
-          final staff = await MediaService.getStaffDetails(id, 1, 1);
-          return AnilistStaffPreview(staff);
+          if (target.id != null) request.staffIds.add(target.id!);
         case AnilistEntityType.studio:
-          final id = target.id;
-          if (id == null) return null;
-          final studio = await MediaService.getStudio(id, 1);
-          return AnilistStudioPreview(studio);
+          if (target.id != null) request.studioIds.add(target.id!);
         case AnilistEntityType.user:
-          final profile = await UserService.getUserProfile(
-            userId: target.id,
-            username: target.username,
-          );
-          return profile != null ? AnilistUserPreview(profile) : null;
+          if (target.id != null) {
+            request.userIds.add(target.id!);
+          } else if (target.username != null &&
+              target.username!.trim().isNotEmpty) {
+            request.usernames.add(target.username!.trim());
+          }
       }
-    } catch (_) {
-      return null;
     }
+
+    final response = await UserService.resolveAnilistPreviews(request);
+
+    final mediaById = <int, MediaMin>{
+      for (final pbMedia in response.media)
+        pbMedia.id: MediaMin.fromProto(pbMedia),
+    };
+    final charById = <int, Character>{
+      for (final pbChar in response.characters)
+        if (pbChar.hasId()) pbChar.id: Character.fromProto(pbChar),
+    };
+    final staffById = <int, Staff>{
+      for (final pbStaff in response.staff)
+        pbStaff.id: Staff.fromProto(pbStaff),
+    };
+    final studioById = <int, Studio>{
+      for (final pbStudio in response.studios)
+        pbStudio.id: Studio.fromProto(pbStudio),
+    };
+    final userById = <int, UserProfile>{};
+    final userByLowerName = <String, UserProfile>{};
+    for (final pbUser in response.users) {
+      final profile = UserProfile.fromProto(pbUser);
+      if (profile.id > 0) {
+        userById[profile.id] = profile;
+      }
+      if (profile.name.isNotEmpty) {
+        userByLowerName[profile.name.toLowerCase()] = profile;
+      }
+    }
+
+    final results = <AnilistRouteTarget, AnilistLinkPreview>{};
+    for (final target in targets) {
+      final preview = switch (target.type) {
+        AnilistEntityType.anime ||
+        AnilistEntityType.manga => switch (mediaById[target.id]) {
+          final MediaMin m => AnilistMediaPreview(m),
+          null => null,
+        },
+        AnilistEntityType.character => switch (charById[target.id]) {
+          final Character c => AnilistCharacterPreview(c),
+          null => null,
+        },
+        AnilistEntityType.staff => switch (staffById[target.id]) {
+          final Staff s => AnilistStaffPreview(s),
+          null => null,
+        },
+        AnilistEntityType.studio => switch (studioById[target.id]) {
+          final Studio st => AnilistStudioPreview(st),
+          null => null,
+        },
+        AnilistEntityType.user => switch (target.id != null
+            ? userById[target.id]
+            : userByLowerName[target.username?.trim().toLowerCase() ?? '']) {
+          final UserProfile u => AnilistUserPreview(u),
+          null => null,
+        },
+      };
+      if (preview != null) {
+        results[target] = preview;
+      }
+    }
+    return results;
   }
 
   /// Creates an AniList entity preview card.
@@ -196,6 +316,11 @@ class _HtmlAnilistLinkCardState extends State<HtmlAnilistLinkCard> {
       final cached = HtmlAnilistLinkCard._cache[widget.target];
       if (cached != null) {
         _preview = cached;
+        _isLoading = false;
+        return;
+      }
+      if (HtmlAnilistLinkCard._notFoundCache.contains(widget.target)) {
+        _preview = null;
         _isLoading = false;
         return;
       }
