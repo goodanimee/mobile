@@ -7,6 +7,7 @@ import '../../../../components/lucide_icons_helper.dart';
 import '../../../../models/media_review.dart';
 import '../../../../services/media_service.dart';
 import '../../../../theme/theme.dart';
+import '../../../../utils/app_navigation.dart';
 
 /// A bottom sheet displaying details about a review
 class ReviewSheet extends StatefulWidget {
@@ -19,12 +20,16 @@ class ReviewSheet extends StatefulWidget {
   /// Callback when the review is updated
   final ValueChanged<ReviewNode>? onReviewUpdated;
 
+  /// Callback when user profile is tapped
+  final void Function(int userId, String username)? onUserTap;
+
   /// Creates a review sheet
   const ReviewSheet({
     super.key,
     required this.review,
     required this.mediaTitle,
     this.onReviewUpdated,
+    this.onUserTap,
   });
 
   @override
@@ -88,6 +93,16 @@ class _ReviewSheetState extends State<ReviewSheet> {
     }
   }
 
+  void _handleUserTap(BuildContext context) {
+    final user = widget.review.user;
+    if (user == null) return;
+    if (widget.onUserTap != null) {
+      widget.onUserTap!(user.id, user.name);
+    } else {
+      AppNavigation.toProfile(context, userId: user.id, username: user.name);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -138,26 +153,45 @@ class _ReviewSheetState extends State<ReviewSheet> {
                       const SizedBox(height: 14),
                       Row(
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: AppNetworkImage(
-                              imageUrl: widget.review.user?.avatarMedium ?? '',
-                              width: 30,
-                              height: 30,
-                              fallbackIcon: LucideIcons.user,
-                              checkDefault: true,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
                           Expanded(
-                            child: Text(
-                              widget.review.user?.name ?? 'Anonymous',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: textSecondary,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                            child: MouseRegion(
+                              cursor: widget.review.user != null
+                                  ? SystemMouseCursors.click
+                                  : SystemMouseCursors.basic,
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: widget.review.user != null
+                                    ? () => _handleUserTap(context)
+                                    : null,
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: AppNetworkImage(
+                                        imageUrl:
+                                            widget.review.user?.avatarMedium ??
+                                            '',
+                                        width: 30,
+                                        height: 30,
+                                        fallbackIcon: LucideIcons.user,
+                                        checkDefault: true,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        widget.review.user?.name ?? 'Anonymous',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          color: textSecondary,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

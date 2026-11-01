@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../models/media_review.dart';
 import '../theme/theme.dart';
+import '../utils/app_navigation.dart';
 import 'app_network_image.dart';
 import 'lucide_icons_helper.dart';
 
@@ -14,8 +15,26 @@ class ReviewCard extends StatelessWidget {
   /// Callback when tapped
   final VoidCallback? onTap;
 
+  /// Callback when user profile is tapped
+  final void Function(int userId, String username)? onUserTap;
+
   /// Creates a review card
-  const ReviewCard({super.key, required this.review, this.onTap});
+  const ReviewCard({
+    super.key,
+    required this.review,
+    this.onTap,
+    this.onUserTap,
+  });
+
+  void _handleUserTap(BuildContext context) {
+    final user = review.user;
+    if (user == null) return;
+    if (onUserTap != null) {
+      onUserTap!(user.id, user.name);
+    } else {
+      AppNavigation.toProfile(context, userId: user.id, username: user.name);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,24 +58,41 @@ class ReviewCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                AppNetworkImage(
-                  imageUrl: avatarUrl,
-                  width: 24,
-                  height: 24,
-                  borderRadius: BorderRadius.circular(12),
-                  fallbackIcon: LucideIcons.user,
-                  checkDefault: true,
-                ),
-                const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
-                    username,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: textSecondary,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                  child: MouseRegion(
+                    cursor: review.user != null
+                        ? SystemMouseCursors.click
+                        : SystemMouseCursors.basic,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: review.user != null
+                          ? () => _handleUserTap(context)
+                          : null,
+                      child: Row(
+                        children: [
+                          AppNetworkImage(
+                            imageUrl: avatarUrl,
+                            width: 24,
+                            height: 24,
+                            borderRadius: BorderRadius.circular(12),
+                            fallbackIcon: LucideIcons.user,
+                            checkDefault: true,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              username,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: textSecondary,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

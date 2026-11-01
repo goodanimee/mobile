@@ -70,4 +70,21 @@ class SearchApi {
     }
     return response;
   }
+
+  /// Searches for users on AniList using native FFI.
+  static Future<FetchUserSearchResponse> fetchUserSearch(
+    FetchUserSearchRequest request,
+    String token,
+  ) async {
+    final bytes = await FfiCore.executeProtoCall(
+      'FetchUserSearch',
+      request.writeToBuffer(),
+      token,
+    );
+    final response = FetchUserSearchResponse.fromBuffer(bytes);
+    if (response.error.isNotEmpty) {
+      throw Exception(response.error);
+    }
+    return response;
+  }
 }

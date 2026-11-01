@@ -19,6 +19,15 @@ class CustomListPanel extends StatefulWidget {
   /// Optional callback invoked when a custom list is selected
   final void Function(String name)? onSelectList;
 
+  /// Whether create and delete management controls are enabled
+  final bool showManagementControls;
+
+  /// Optional custom lists to display (falls back to CustomListService if null)
+  final List<String>? customLists;
+
+  /// Optional active custom list name for selection highlight
+  final String? activeCustomList;
+
   /// Creates a custom list management panel
   const CustomListPanel({
     super.key,
@@ -26,6 +35,9 @@ class CustomListPanel extends StatefulWidget {
     this.width,
     this.height,
     this.onSelectList,
+    this.showManagementControls = true,
+    this.customLists,
+    this.activeCustomList,
   });
 
   @override
@@ -114,37 +126,43 @@ class _CustomListPanelState extends State<CustomListPanel> {
     final panelWidth = widget.width ?? _resolveDefaultWidth();
     final panelHeight = widget.height;
 
-    final controller = MediaListController.forType(widget.mediaType);
+    final controller = widget.showManagementControls
+        ? MediaListController.forType(widget.mediaType)
+        : null;
 
-    return ListenableBuilder(
-      listenable: Listenable.merge([CustomListService.instance, controller]),
-      builder: (context, _) {
-        final lists = CustomListService.instance.getCustomLists(
-          widget.mediaType,
-        );
-        final activeCustomList = controller.activeCustomList;
+    final listenables = <Listenable>[];
+    if (widget.customLists == null) {
+      listenables.add(CustomListService.instance);
+    }
+    if (controller != null) {
+      listenables.add(controller);
+    }
 
-        Widget content = lists.isEmpty
-            ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 24,
-                    horizontal: 16,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        LucideIcons.folder,
-                        size: 28,
-                        color: textMuted,
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'No custom lists yet',
-                        style: TextStyle(fontSize: 12, color: textMuted),
-                        textAlign: TextAlign.center,
-                      ),
+    Widget buildPanel() {
+      final lists =
+          widget.customLists ??
+          CustomListService.instance.getCustomLists(widget.mediaType);
+      final activeCustomList =
+          widget.activeCustomList ?? controller?.activeCustomList;
+
+      Widget content = lists.isEmpty
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 24,
+                  horizontal: 16,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(LucideIcons.folder, size: 28, color: textMuted),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'No custom lists yet',
+                      style: TextStyle(fontSize: 12, color: textMuted),
+                      textAlign: TextAlign.center,
+                    ),
+                    if (widget.showManagementControls) ...[
                       const SizedBox(height: 10),
                       InkWell(
                         onTap: _startAdding,
@@ -176,58 +194,58 @@ class _CustomListPanelState extends State<CustomListPanel> {
                         ),
                       ),
                     ],
-                  ),
+                  ],
                 ),
-              )
-            : ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                itemCount: lists.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 2),
-                itemBuilder: (context, index) {
-                  final listName = lists[index];
-                  final isSelected = activeCustomList == listName;
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? borderColor.withValues(alpha: 0.15)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                      border: isSelected
-                          ? Border.all(
-                              color: borderColor.withValues(alpha: 0.35),
-                            )
-                          : null,
-                    ),
-                    child: InkWell(
-                      onTap: () => widget.onSelectList?.call(listName),
-                      borderRadius: BorderRadius.circular(8),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 8,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              LucideIcons.list,
-                              size: 16,
-                              color: isSelected ? borderColor : textSecondary,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                listName,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: isSelected
-                                      ? FontWeight.w600
-                                      : FontWeight.w500,
-                                  color: isSelected ? borderColor : textPrimary,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+              ),
+            )
+          : ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              itemCount: lists.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 2),
+              itemBuilder: (context, index) {
+                final listName = lists[index];
+                final isSelected = activeCustomList == listName;
+                return Container(
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? borderColor.withValues(alpha: 0.15)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                    border: isSelected
+                        ? Border.all(color: borderColor.withValues(alpha: 0.35))
+                        : null,
+                  ),
+                  child: InkWell(
+                    onTap: () => widget.onSelectList?.call(listName),
+                    borderRadius: BorderRadius.circular(8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            LucideIcons.list,
+                            size: 16,
+                            color: isSelected ? borderColor : textSecondary,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              listName,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: isSelected
+                                    ? FontWeight.w600
+                                    : FontWeight.w500,
+                                color: isSelected ? borderColor : textPrimary,
                               ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
+                          ),
+                          if (widget.showManagementControls)
                             GestureDetector(
                               onTap: () => _deleteList(listName),
                               behavior: HitTestBehavior.opaque,
@@ -242,67 +260,65 @@ class _CustomListPanelState extends State<CustomListPanel> {
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                        ],
                       ),
                     ),
-                  );
-                },
-              );
+                  ),
+                );
+              },
+            );
 
-        if (panelHeight != null) {
-          content = Expanded(child: content);
-        } else {
-          content = Flexible(child: content);
-        }
+      if (panelHeight != null) {
+        content = Expanded(child: content);
+      } else {
+        content = Flexible(child: content);
+      }
 
-        return Container(
-          width: panelWidth,
-          height: panelHeight,
-          constraints: panelHeight == null
-              ? BoxConstraints(maxHeight: getResponsiveSize(context, 320.0))
-              : null,
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: cardBorderColor),
-            boxShadow: [
-              BoxShadow(
-                color: shadowColor.withValues(alpha: 0.5),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: panelHeight != null
-                ? MainAxisSize.max
-                : MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      LucideIcons.folderCog,
-                      size: 16,
-                      color: borderColor,
-                    ),
-                    const SizedBox(width: 8),
-                    const Expanded(
-                      child: Text(
-                        'Custom Lists',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: textPrimary,
-                        ),
+      return Container(
+        width: panelWidth,
+        height: panelHeight,
+        constraints: panelHeight == null
+            ? BoxConstraints(maxHeight: getResponsiveSize(context, 320.0))
+            : null,
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: cardBorderColor),
+          boxShadow: [
+            BoxShadow(
+              color: shadowColor.withValues(alpha: 0.5),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: panelHeight != null
+              ? MainAxisSize.max
+              : MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              child: Row(
+                children: [
+                  const Icon(
+                    LucideIcons.folderCog,
+                    size: 16,
+                    color: borderColor,
+                  ),
+                  const SizedBox(width: 8),
+                  const Expanded(
+                    child: Text(
+                      'Custom Lists',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: textPrimary,
                       ),
                     ),
+                  ),
+                  if (widget.showManagementControls)
                     GestureDetector(
                       onTap: _isAdding ? _cancelAdding : _startAdding,
                       behavior: HitTestBehavior.opaque,
@@ -315,101 +331,108 @@ class _CustomListPanelState extends State<CustomListPanel> {
                         ),
                       ),
                     ),
+                ],
+              ),
+            ),
+            const Divider(height: 1, thickness: 1, color: cardBorderColor),
+            if (widget.showManagementControls && _isAdding) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: 36,
+                            child: TextField(
+                              controller: _textController,
+                              focusNode: _focusNode,
+                              style: const TextStyle(
+                                color: textPrimary,
+                                fontSize: 13,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'New list name...',
+                                hintStyle: const TextStyle(
+                                  color: textMuted,
+                                  fontSize: 12,
+                                ),
+                                isDense: true,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 8,
+                                ),
+                                filled: true,
+                                fillColor: hoverBgColor,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(
+                                    color: cardBorderColor,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(
+                                    color: borderColor,
+                                  ),
+                                ),
+                              ),
+                              onSubmitted: (_) => _submitAdd(),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        GestureDetector(
+                          onTap: _submitAdd,
+                          behavior: HitTestBehavior.opaque,
+                          child: Container(
+                            height: 34,
+                            width: 34,
+                            decoration: BoxDecoration(
+                              color: borderColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              LucideIcons.check,
+                              size: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (_errorMessage != null) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        _errorMessage!,
+                        style: const TextStyle(
+                          color: Colors.redAccent,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
               const Divider(height: 1, thickness: 1, color: cardBorderColor),
-              if (_isAdding) ...[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 8,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              height: 36,
-                              child: TextField(
-                                controller: _textController,
-                                focusNode: _focusNode,
-                                style: const TextStyle(
-                                  color: textPrimary,
-                                  fontSize: 13,
-                                ),
-                                decoration: InputDecoration(
-                                  hintText: 'New list name...',
-                                  hintStyle: const TextStyle(
-                                    color: textMuted,
-                                    fontSize: 12,
-                                  ),
-                                  isDense: true,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 8,
-                                  ),
-                                  filled: true,
-                                  fillColor: hoverBgColor,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: const BorderSide(
-                                      color: cardBorderColor,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: const BorderSide(
-                                      color: borderColor,
-                                    ),
-                                  ),
-                                ),
-                                onSubmitted: (_) => _submitAdd(),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          GestureDetector(
-                            onTap: _submitAdd,
-                            behavior: HitTestBehavior.opaque,
-                            child: Container(
-                              height: 34,
-                              width: 34,
-                              decoration: BoxDecoration(
-                                color: borderColor,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Icon(
-                                LucideIcons.check,
-                                size: 16,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (_errorMessage != null) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          _errorMessage!,
-                          style: const TextStyle(
-                            color: Colors.redAccent,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                const Divider(height: 1, thickness: 1, color: cardBorderColor),
-              ],
-              content,
             ],
-          ),
-        );
-      },
-    );
+            content,
+          ],
+        ),
+      );
+    }
+
+    if (listenables.isNotEmpty) {
+      return ListenableBuilder(
+        listenable: Listenable.merge(listenables),
+        builder: (context, _) => buildPanel(),
+      );
+    }
+    return buildPanel();
   }
 }

@@ -1,0 +1,158 @@
+syntax = "proto3";
+
+package goodanime;
+
+import "common.proto";
+import "media_character.proto";
+import "media_min.proto";
+import "media_staff.proto";
+import "media_studio.proto";
+
+option go_package = "goodanime/backend/proto";
+
+message UserAvatar {
+  string large = 1;
+  string medium = 2;
+}
+
+message UserProfile {
+  int32 id = 1;
+  string name = 2;
+  string about = 3;
+  UserAvatar avatar = 4;
+  string banner_image = 5;
+  bool is_following = 6;
+  bool is_follower = 7;
+  int32 created_at = 8;
+  int32 followers_count = 9;
+  int32 following_count = 10;
+  int32 anime_count = 11;
+  int32 manga_count = 12;
+}
+
+message UserActivityUser {
+  int32 id = 1;
+  string name = 2;
+  UserAvatar avatar = 3;
+}
+
+message UserActivity {
+  int32 id = 1;
+  string type = 2;
+  int32 created_at = 3;
+  bool is_liked = 4;
+  int32 like_count = 5;
+  int32 reply_count = 6;
+  string status = 7;
+  string progress = 8;
+  string text_html = 9;
+  bool is_private = 10;
+  UserActivityUser user = 11;
+  UserActivityUser recipient = 12;
+  MediaMin media = 13;
+}
+
+message FavouriteMediaConnection {
+  PageInfo page_info = 1;
+  int32 total = 2;
+  repeated MediaMin nodes = 3;
+}
+
+message FavouriteCharacterConnection {
+  PageInfo page_info = 1;
+  int32 total = 2;
+  repeated Character nodes = 3;
+}
+
+message FavouriteStaffConnection {
+  PageInfo page_info = 1;
+  int32 total = 2;
+  repeated Staff nodes = 3;
+}
+
+message FavouriteStudioConnection {
+  PageInfo page_info = 1;
+  int32 total = 2;
+  repeated Studio nodes = 3;
+}
+
+message UserFavourites {
+  FavouriteMediaConnection anime = 1;
+  FavouriteMediaConnection manga = 2;
+  FavouriteCharacterConnection characters = 3;
+  FavouriteStaffConnection staff = 4;
+  FavouriteStudioConnection studios = 5;
+}
+
+message SocialUser {
+  int32 id = 1;
+  string name = 2;
+  UserAvatar avatar = 3;
+  bool is_following = 4;
+  bool is_follower = 5;
+}
+
+message UserScoreStat {
+  int32 score = 1;
+  int32 count = 2;
+  double mean_score = 3;
+  int32 minutes_watched = 4;
+  int32 chapters_read = 5;
+  repeated int32 media_ids = 6;
+}
+
+message UserLengthStat {
+  string length = 1;
+  int32 count = 2;
+  double mean_score = 3;
+  int32 minutes_watched = 4;
+  int32 chapters_read = 5;
+  repeated int32 media_ids = 6;
+}
+
+message UserStatusStat {
+  string status = 1;
+  int32 count = 2;
+  double mean_score = 3;
+  int32 minutes_watched = 4;
+  int32 chapters_read = 5;
+  repeated int32 media_ids = 6;
+}
+
+message UserFormatStat {
+  string format = 1;
+  int32 count = 2;
+  double mean_score = 3;
+  int32 minutes_watched = 4;
+  int32 chapters_read = 5;
+  repeated int32 media_ids = 6;
+}
+
+message UserReleaseYearStat {
+  int32 release_year = 1;
+  int32 count = 2;
+  double mean_score = 3;
+  int32 minutes_watched = 4;
+  int32 chapters_read = 5;
+  repeated int32 media_ids = 6;
+}
+
+message UserMediaStatistics {
+  int32 count = 1;
+  double mean_score = 2;
+  double standard_deviation = 3;
+  int32 minutes_watched = 4;
+  int32 episodes_watched = 5;
+  int32 chapters_read = 6;
+  int32 volumes_read = 7;
+  repeated UserScoreStat scores = 8;
+  repeated UserLengthStat lengths = 9;
+  repeated UserStatusStat statuses = 10;
+  repeated UserFormatStat formats = 11;
+  repeated UserReleaseYearStat release_years = 12;
+}
+
+message UserStatistics {
+  UserMediaStatistics anime = 1;
+  UserMediaStatistics manga = 2;
+}

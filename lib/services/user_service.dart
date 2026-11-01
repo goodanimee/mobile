@@ -1,7 +1,15 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../api/user_api.dart';
+import '../models/social_user.dart';
+import '../models/user_activity.dart';
+import '../models/user_favourites.dart';
+import '../models/user_profile.dart';
+import '../models/user_statistics.dart';
 import '../models/viewer.dart';
+import '../proto/api.pb.dart';
 import '../proto/viewer.pb.dart' as pb;
 import 'auth_service.dart';
 
@@ -52,6 +60,95 @@ class UserService {
     } catch (e) {
       return null;
     }
+  }
+
+  /// Fetches a user profile by [userId] or [username].
+  static Future<UserProfile?> getUserProfile({
+    int? userId,
+    String? username,
+  }) async {
+    try {
+      final token = await AuthService.getRawToken() ?? '';
+      return await UserApi.getUserProfile(
+        userId: userId,
+        username: username,
+        token: token,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Toggles follow status for [userId].
+  static Future<bool> toggleFollow(int userId) async {
+    final token = await AuthService.getValidToken();
+    final res = await UserApi.toggleFollow(userId, token);
+    return res.isFollowing;
+  }
+
+  /// Fetches paginated activities for [userId].
+  static Future<UserActivityPage> getUserActivities({
+    required int userId,
+    int page = 1,
+    int perPage = 25,
+    List<String> typeIn = const [],
+  }) async {
+    final token = await AuthService.getRawToken() ?? '';
+    return UserApi.getUserActivities(
+      userId: userId,
+      page: page,
+      perPage: perPage,
+      typeIn: typeIn,
+      token: token,
+    );
+  }
+
+  /// Resolves multiple AniList entity previews in bulk.
+  static Future<ResolveAnilistPreviewsResponse> resolveAnilistPreviews(
+    ResolveAnilistPreviewsRequest request,
+  ) async {
+    final token = await AuthService.getRawToken() ?? '';
+    return UserApi.resolveAnilistPreviews(request: request, token: token);
+  }
+
+  /// Fetches initial or single-category paginated favourites for [userId].
+  static Future<UserFavourites> getUserFavourites({
+    required int userId,
+    FavouriteCategory? category,
+    int page = 1,
+    int perPage = 25,
+  }) async {
+    final token = await AuthService.getRawToken() ?? '';
+    return UserApi.getUserFavourites(
+      userId: userId,
+      category: category?.apiKey ?? '',
+      page: page,
+      perPage: perPage,
+      token: token,
+    );
+  }
+
+  /// Fetches paginated following or followers for [userId].
+  static Future<SocialUserPage> getUserSocial({
+    required int userId,
+    required bool isFollowers,
+    int page = 1,
+    int perPage = 30,
+  }) async {
+    final token = await AuthService.getRawToken() ?? '';
+    return UserApi.getUserSocial(
+      userId: userId,
+      isFollowers: isFollowers,
+      page: page,
+      perPage: perPage,
+      token: token,
+    );
+  }
+
+  /// Fetches statistics breakdown for [userId].
+  static Future<UserStatistics> getUserStatistics({required int userId}) async {
+    final token = await AuthService.getRawToken() ?? '';
+    return UserApi.getUserStatistics(userId: userId, token: token);
   }
 
   /// Clears user cache.

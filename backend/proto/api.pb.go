@@ -3121,6 +3121,126 @@ func (x *FetchStaffSearchResponse) GetError() string {
 	return ""
 }
 
+type FetchUserSearchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	Query         *string                `protobuf:"bytes,2,opt,name=query,proto3,oneof" json:"query,omitempty"`
+	Sort          []string               `protobuf:"bytes,3,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchUserSearchRequest) Reset() {
+	*x = FetchUserSearchRequest{}
+	mi := &file_api_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchUserSearchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchUserSearchRequest) ProtoMessage() {}
+
+func (x *FetchUserSearchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchUserSearchRequest.ProtoReflect.Descriptor instead.
+func (*FetchUserSearchRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *FetchUserSearchRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *FetchUserSearchRequest) GetQuery() string {
+	if x != nil && x.Query != nil {
+		return *x.Query
+	}
+	return ""
+}
+
+func (x *FetchUserSearchRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type FetchUserSearchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Users         []*SocialUser          `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	PageInfo      *PageInfo              `protobuf:"bytes,2,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Error         string                 `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FetchUserSearchResponse) Reset() {
+	*x = FetchUserSearchResponse{}
+	mi := &file_api_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FetchUserSearchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FetchUserSearchResponse) ProtoMessage() {}
+
+func (x *FetchUserSearchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FetchUserSearchResponse.ProtoReflect.Descriptor instead.
+func (*FetchUserSearchResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *FetchUserSearchResponse) GetUsers() []*SocialUser {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
+func (x *FetchUserSearchResponse) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *FetchUserSearchResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 type UpdateCustomListsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MediaType     string                 `protobuf:"bytes,1,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
@@ -3131,7 +3251,7 @@ type UpdateCustomListsRequest struct {
 
 func (x *UpdateCustomListsRequest) Reset() {
 	*x = UpdateCustomListsRequest{}
-	mi := &file_api_proto_msgTypes[51]
+	mi := &file_api_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3143,7 +3263,7 @@ func (x *UpdateCustomListsRequest) String() string {
 func (*UpdateCustomListsRequest) ProtoMessage() {}
 
 func (x *UpdateCustomListsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[51]
+	mi := &file_api_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3156,7 +3276,7 @@ func (x *UpdateCustomListsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCustomListsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateCustomListsRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{51}
+	return file_api_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *UpdateCustomListsRequest) GetMediaType() string {
@@ -3184,7 +3304,7 @@ type UpdateCustomListsResponse struct {
 
 func (x *UpdateCustomListsResponse) Reset() {
 	*x = UpdateCustomListsResponse{}
-	mi := &file_api_proto_msgTypes[52]
+	mi := &file_api_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3196,7 +3316,7 @@ func (x *UpdateCustomListsResponse) String() string {
 func (*UpdateCustomListsResponse) ProtoMessage() {}
 
 func (x *UpdateCustomListsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_msgTypes[52]
+	mi := &file_api_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3209,7 +3329,7 @@ func (x *UpdateCustomListsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCustomListsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateCustomListsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_rawDescGZIP(), []int{52}
+	return file_api_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *UpdateCustomListsResponse) GetError() string {
@@ -3233,11 +3353,868 @@ func (x *UpdateCustomListsResponse) GetMangaCustomLists() []string {
 	return nil
 }
 
+type GetUserProfileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserProfileRequest) Reset() {
+	*x = GetUserProfileRequest{}
+	mi := &file_api_proto_msgTypes[55]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserProfileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserProfileRequest) ProtoMessage() {}
+
+func (x *GetUserProfileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[55]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserProfileRequest.ProtoReflect.Descriptor instead.
+func (*GetUserProfileRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{55}
+}
+
+func (x *GetUserProfileRequest) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *GetUserProfileRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+type GetUserProfileResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Profile       *UserProfile           `protobuf:"bytes,1,opt,name=profile,proto3" json:"profile,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserProfileResponse) Reset() {
+	*x = GetUserProfileResponse{}
+	mi := &file_api_proto_msgTypes[56]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserProfileResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserProfileResponse) ProtoMessage() {}
+
+func (x *GetUserProfileResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[56]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserProfileResponse.ProtoReflect.Descriptor instead.
+func (*GetUserProfileResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *GetUserProfileResponse) GetProfile() *UserProfile {
+	if x != nil {
+		return x.Profile
+	}
+	return nil
+}
+
+func (x *GetUserProfileResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type ToggleFollowRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleFollowRequest) Reset() {
+	*x = ToggleFollowRequest{}
+	mi := &file_api_proto_msgTypes[57]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleFollowRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleFollowRequest) ProtoMessage() {}
+
+func (x *ToggleFollowRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[57]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleFollowRequest.ProtoReflect.Descriptor instead.
+func (*ToggleFollowRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{57}
+}
+
+func (x *ToggleFollowRequest) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type ToggleFollowResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	IsFollowing   bool                   `protobuf:"varint,2,opt,name=is_following,json=isFollowing,proto3" json:"is_following,omitempty"`
+	Error         string                 `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleFollowResponse) Reset() {
+	*x = ToggleFollowResponse{}
+	mi := &file_api_proto_msgTypes[58]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleFollowResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleFollowResponse) ProtoMessage() {}
+
+func (x *ToggleFollowResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[58]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleFollowResponse.ProtoReflect.Descriptor instead.
+func (*ToggleFollowResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{58}
+}
+
+func (x *ToggleFollowResponse) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *ToggleFollowResponse) GetIsFollowing() bool {
+	if x != nil {
+		return x.IsFollowing
+	}
+	return false
+}
+
+func (x *ToggleFollowResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type GetUserActivitiesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	PerPage       int32                  `protobuf:"varint,3,opt,name=per_page,json=perPage,proto3" json:"per_page,omitempty"`
+	TypeIn        []string               `protobuf:"bytes,4,rep,name=type_in,json=typeIn,proto3" json:"type_in,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserActivitiesRequest) Reset() {
+	*x = GetUserActivitiesRequest{}
+	mi := &file_api_proto_msgTypes[59]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserActivitiesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserActivitiesRequest) ProtoMessage() {}
+
+func (x *GetUserActivitiesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[59]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserActivitiesRequest.ProtoReflect.Descriptor instead.
+func (*GetUserActivitiesRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *GetUserActivitiesRequest) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *GetUserActivitiesRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetUserActivitiesRequest) GetPerPage() int32 {
+	if x != nil {
+		return x.PerPage
+	}
+	return 0
+}
+
+func (x *GetUserActivitiesRequest) GetTypeIn() []string {
+	if x != nil {
+		return x.TypeIn
+	}
+	return nil
+}
+
+type GetUserActivitiesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageInfo      *PageInfo              `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Activities    []*UserActivity        `protobuf:"bytes,2,rep,name=activities,proto3" json:"activities,omitempty"`
+	Error         string                 `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserActivitiesResponse) Reset() {
+	*x = GetUserActivitiesResponse{}
+	mi := &file_api_proto_msgTypes[60]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserActivitiesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserActivitiesResponse) ProtoMessage() {}
+
+func (x *GetUserActivitiesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[60]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserActivitiesResponse.ProtoReflect.Descriptor instead.
+func (*GetUserActivitiesResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{60}
+}
+
+func (x *GetUserActivitiesResponse) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *GetUserActivitiesResponse) GetActivities() []*UserActivity {
+	if x != nil {
+		return x.Activities
+	}
+	return nil
+}
+
+func (x *GetUserActivitiesResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type ResolveAnilistPreviewsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MediaIds      []int32                `protobuf:"varint,1,rep,packed,name=media_ids,json=mediaIds,proto3" json:"media_ids,omitempty"`
+	CharacterIds  []int32                `protobuf:"varint,2,rep,packed,name=character_ids,json=characterIds,proto3" json:"character_ids,omitempty"`
+	StaffIds      []int32                `protobuf:"varint,3,rep,packed,name=staff_ids,json=staffIds,proto3" json:"staff_ids,omitempty"`
+	StudioIds     []int32                `protobuf:"varint,4,rep,packed,name=studio_ids,json=studioIds,proto3" json:"studio_ids,omitempty"`
+	UserIds       []int32                `protobuf:"varint,5,rep,packed,name=user_ids,json=userIds,proto3" json:"user_ids,omitempty"`
+	Usernames     []string               `protobuf:"bytes,6,rep,name=usernames,proto3" json:"usernames,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResolveAnilistPreviewsRequest) Reset() {
+	*x = ResolveAnilistPreviewsRequest{}
+	mi := &file_api_proto_msgTypes[61]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResolveAnilistPreviewsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResolveAnilistPreviewsRequest) ProtoMessage() {}
+
+func (x *ResolveAnilistPreviewsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[61]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResolveAnilistPreviewsRequest.ProtoReflect.Descriptor instead.
+func (*ResolveAnilistPreviewsRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{61}
+}
+
+func (x *ResolveAnilistPreviewsRequest) GetMediaIds() []int32 {
+	if x != nil {
+		return x.MediaIds
+	}
+	return nil
+}
+
+func (x *ResolveAnilistPreviewsRequest) GetCharacterIds() []int32 {
+	if x != nil {
+		return x.CharacterIds
+	}
+	return nil
+}
+
+func (x *ResolveAnilistPreviewsRequest) GetStaffIds() []int32 {
+	if x != nil {
+		return x.StaffIds
+	}
+	return nil
+}
+
+func (x *ResolveAnilistPreviewsRequest) GetStudioIds() []int32 {
+	if x != nil {
+		return x.StudioIds
+	}
+	return nil
+}
+
+func (x *ResolveAnilistPreviewsRequest) GetUserIds() []int32 {
+	if x != nil {
+		return x.UserIds
+	}
+	return nil
+}
+
+func (x *ResolveAnilistPreviewsRequest) GetUsernames() []string {
+	if x != nil {
+		return x.Usernames
+	}
+	return nil
+}
+
+type ResolveAnilistPreviewsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Media         []*MediaMin            `protobuf:"bytes,1,rep,name=media,proto3" json:"media,omitempty"`
+	Characters    []*Character           `protobuf:"bytes,2,rep,name=characters,proto3" json:"characters,omitempty"`
+	Staff         []*Staff               `protobuf:"bytes,3,rep,name=staff,proto3" json:"staff,omitempty"`
+	Studios       []*Studio              `protobuf:"bytes,4,rep,name=studios,proto3" json:"studios,omitempty"`
+	Users         []*UserProfile         `protobuf:"bytes,5,rep,name=users,proto3" json:"users,omitempty"`
+	Error         string                 `protobuf:"bytes,6,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResolveAnilistPreviewsResponse) Reset() {
+	*x = ResolveAnilistPreviewsResponse{}
+	mi := &file_api_proto_msgTypes[62]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResolveAnilistPreviewsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResolveAnilistPreviewsResponse) ProtoMessage() {}
+
+func (x *ResolveAnilistPreviewsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[62]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResolveAnilistPreviewsResponse.ProtoReflect.Descriptor instead.
+func (*ResolveAnilistPreviewsResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{62}
+}
+
+func (x *ResolveAnilistPreviewsResponse) GetMedia() []*MediaMin {
+	if x != nil {
+		return x.Media
+	}
+	return nil
+}
+
+func (x *ResolveAnilistPreviewsResponse) GetCharacters() []*Character {
+	if x != nil {
+		return x.Characters
+	}
+	return nil
+}
+
+func (x *ResolveAnilistPreviewsResponse) GetStaff() []*Staff {
+	if x != nil {
+		return x.Staff
+	}
+	return nil
+}
+
+func (x *ResolveAnilistPreviewsResponse) GetStudios() []*Studio {
+	if x != nil {
+		return x.Studios
+	}
+	return nil
+}
+
+func (x *ResolveAnilistPreviewsResponse) GetUsers() []*UserProfile {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
+func (x *ResolveAnilistPreviewsResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type GetUserFavouritesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Category      string                 `protobuf:"bytes,2,opt,name=category,proto3" json:"category,omitempty"`
+	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
+	PerPage       int32                  `protobuf:"varint,4,opt,name=per_page,json=perPage,proto3" json:"per_page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserFavouritesRequest) Reset() {
+	*x = GetUserFavouritesRequest{}
+	mi := &file_api_proto_msgTypes[63]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserFavouritesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserFavouritesRequest) ProtoMessage() {}
+
+func (x *GetUserFavouritesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[63]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserFavouritesRequest.ProtoReflect.Descriptor instead.
+func (*GetUserFavouritesRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{63}
+}
+
+func (x *GetUserFavouritesRequest) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *GetUserFavouritesRequest) GetCategory() string {
+	if x != nil {
+		return x.Category
+	}
+	return ""
+}
+
+func (x *GetUserFavouritesRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetUserFavouritesRequest) GetPerPage() int32 {
+	if x != nil {
+		return x.PerPage
+	}
+	return 0
+}
+
+type GetUserFavouritesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Favourites    *UserFavourites        `protobuf:"bytes,1,opt,name=favourites,proto3" json:"favourites,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserFavouritesResponse) Reset() {
+	*x = GetUserFavouritesResponse{}
+	mi := &file_api_proto_msgTypes[64]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserFavouritesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserFavouritesResponse) ProtoMessage() {}
+
+func (x *GetUserFavouritesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[64]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserFavouritesResponse.ProtoReflect.Descriptor instead.
+func (*GetUserFavouritesResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{64}
+}
+
+func (x *GetUserFavouritesResponse) GetFavourites() *UserFavourites {
+	if x != nil {
+		return x.Favourites
+	}
+	return nil
+}
+
+func (x *GetUserFavouritesResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type GetUserSocialRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	IsFollowers   bool                   `protobuf:"varint,2,opt,name=is_followers,json=isFollowers,proto3" json:"is_followers,omitempty"`
+	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
+	PerPage       int32                  `protobuf:"varint,4,opt,name=per_page,json=perPage,proto3" json:"per_page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserSocialRequest) Reset() {
+	*x = GetUserSocialRequest{}
+	mi := &file_api_proto_msgTypes[65]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserSocialRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserSocialRequest) ProtoMessage() {}
+
+func (x *GetUserSocialRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[65]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserSocialRequest.ProtoReflect.Descriptor instead.
+func (*GetUserSocialRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{65}
+}
+
+func (x *GetUserSocialRequest) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *GetUserSocialRequest) GetIsFollowers() bool {
+	if x != nil {
+		return x.IsFollowers
+	}
+	return false
+}
+
+func (x *GetUserSocialRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetUserSocialRequest) GetPerPage() int32 {
+	if x != nil {
+		return x.PerPage
+	}
+	return 0
+}
+
+type GetUserSocialResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageInfo      *PageInfo              `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Users         []*SocialUser          `protobuf:"bytes,3,rep,name=users,proto3" json:"users,omitempty"`
+	Error         string                 `protobuf:"bytes,4,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserSocialResponse) Reset() {
+	*x = GetUserSocialResponse{}
+	mi := &file_api_proto_msgTypes[66]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserSocialResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserSocialResponse) ProtoMessage() {}
+
+func (x *GetUserSocialResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[66]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserSocialResponse.ProtoReflect.Descriptor instead.
+func (*GetUserSocialResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{66}
+}
+
+func (x *GetUserSocialResponse) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *GetUserSocialResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *GetUserSocialResponse) GetUsers() []*SocialUser {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
+func (x *GetUserSocialResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type GetUserStatisticsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserStatisticsRequest) Reset() {
+	*x = GetUserStatisticsRequest{}
+	mi := &file_api_proto_msgTypes[67]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserStatisticsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserStatisticsRequest) ProtoMessage() {}
+
+func (x *GetUserStatisticsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[67]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserStatisticsRequest.ProtoReflect.Descriptor instead.
+func (*GetUserStatisticsRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{67}
+}
+
+func (x *GetUserStatisticsRequest) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type GetUserStatisticsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Statistics    *UserStatistics        `protobuf:"bytes,1,opt,name=statistics,proto3" json:"statistics,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserStatisticsResponse) Reset() {
+	*x = GetUserStatisticsResponse{}
+	mi := &file_api_proto_msgTypes[68]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserStatisticsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserStatisticsResponse) ProtoMessage() {}
+
+func (x *GetUserStatisticsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[68]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserStatisticsResponse.ProtoReflect.Descriptor instead.
+func (*GetUserStatisticsResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{68}
+}
+
+func (x *GetUserStatisticsResponse) GetStatistics() *UserStatistics {
+	if x != nil {
+		return x.Statistics
+	}
+	return nil
+}
+
+func (x *GetUserStatisticsResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
 	"\n" +
-	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x14media_activity.proto\x1a\x15media_character.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\fviewer.proto\"X\n" +
+	"\tapi.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\vmedia.proto\x1a\x14media_activity.proto\x1a\x15media_character.proto\x1a\x10media_list.proto\x1a\x16media_list_entry.proto\x1a\x0fmedia_min.proto\x1a\x10media_misc.proto\x1a\x12media_review.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\x1a\fviewer.proto\x1a\n" +
+	"user.proto\"X\n" +
 	"\x15FetchMediaListRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x12\n" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x12\n" +
@@ -3516,6 +4493,15 @@ const file_api_proto_rawDesc = "" +
 	"\x18FetchStaffSearchResponse\x12&\n" +
 	"\x05staff\x18\x01 \x03(\v2\x10.goodanime.StaffR\x05staff\x120\n" +
 	"\tpage_info\x18\x02 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
+	"\x05error\x18\x03 \x01(\tR\x05error\"e\n" +
+	"\x16FetchUserSearchRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x19\n" +
+	"\x05query\x18\x02 \x01(\tH\x00R\x05query\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x03 \x03(\tR\x04sortB\b\n" +
+	"\x06_query\"\x8e\x01\n" +
+	"\x17FetchUserSearchResponse\x12+\n" +
+	"\x05users\x18\x01 \x03(\v2\x15.goodanime.SocialUserR\x05users\x120\n" +
+	"\tpage_info\x18\x02 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
 	"\x05error\x18\x03 \x01(\tR\x05error\"\\\n" +
 	"\x18UpdateCustomListsRequest\x12\x1d\n" +
 	"\n" +
@@ -3524,7 +4510,74 @@ const file_api_proto_rawDesc = "" +
 	"\x19UpdateCustomListsResponse\x12\x14\n" +
 	"\x05error\x18\x01 \x01(\tR\x05error\x12,\n" +
 	"\x12anime_custom_lists\x18\x02 \x03(\tR\x10animeCustomLists\x12,\n" +
-	"\x12manga_custom_lists\x18\x03 \x03(\tR\x10mangaCustomListsB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x12manga_custom_lists\x18\x03 \x03(\tR\x10mangaCustomLists\"L\n" +
+	"\x15GetUserProfileRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\"`\n" +
+	"\x16GetUserProfileResponse\x120\n" +
+	"\aprofile\x18\x01 \x01(\v2\x16.goodanime.UserProfileR\aprofile\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\".\n" +
+	"\x13ToggleFollowRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\"h\n" +
+	"\x14ToggleFollowResponse\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12!\n" +
+	"\fis_following\x18\x02 \x01(\bR\visFollowing\x12\x14\n" +
+	"\x05error\x18\x03 \x01(\tR\x05error\"{\n" +
+	"\x18GetUserActivitiesRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x12\n" +
+	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x19\n" +
+	"\bper_page\x18\x03 \x01(\x05R\aperPage\x12\x17\n" +
+	"\atype_in\x18\x04 \x03(\tR\x06typeIn\"\x9c\x01\n" +
+	"\x19GetUserActivitiesResponse\x120\n" +
+	"\tpage_info\x18\x01 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x127\n" +
+	"\n" +
+	"activities\x18\x02 \x03(\v2\x17.goodanime.UserActivityR\n" +
+	"activities\x12\x14\n" +
+	"\x05error\x18\x03 \x01(\tR\x05error\"\xd6\x01\n" +
+	"\x1dResolveAnilistPreviewsRequest\x12\x1b\n" +
+	"\tmedia_ids\x18\x01 \x03(\x05R\bmediaIds\x12#\n" +
+	"\rcharacter_ids\x18\x02 \x03(\x05R\fcharacterIds\x12\x1b\n" +
+	"\tstaff_ids\x18\x03 \x03(\x05R\bstaffIds\x12\x1d\n" +
+	"\n" +
+	"studio_ids\x18\x04 \x03(\x05R\tstudioIds\x12\x19\n" +
+	"\buser_ids\x18\x05 \x03(\x05R\auserIds\x12\x1c\n" +
+	"\tusernames\x18\x06 \x03(\tR\tusernames\"\x9a\x02\n" +
+	"\x1eResolveAnilistPreviewsResponse\x12)\n" +
+	"\x05media\x18\x01 \x03(\v2\x13.goodanime.MediaMinR\x05media\x124\n" +
+	"\n" +
+	"characters\x18\x02 \x03(\v2\x14.goodanime.CharacterR\n" +
+	"characters\x12&\n" +
+	"\x05staff\x18\x03 \x03(\v2\x10.goodanime.StaffR\x05staff\x12+\n" +
+	"\astudios\x18\x04 \x03(\v2\x11.goodanime.StudioR\astudios\x12,\n" +
+	"\x05users\x18\x05 \x03(\v2\x16.goodanime.UserProfileR\x05users\x12\x14\n" +
+	"\x05error\x18\x06 \x01(\tR\x05error\"~\n" +
+	"\x18GetUserFavouritesRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x1a\n" +
+	"\bcategory\x18\x02 \x01(\tR\bcategory\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x19\n" +
+	"\bper_page\x18\x04 \x01(\x05R\aperPage\"l\n" +
+	"\x19GetUserFavouritesResponse\x129\n" +
+	"\n" +
+	"favourites\x18\x01 \x01(\v2\x19.goodanime.UserFavouritesR\n" +
+	"favourites\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"\x81\x01\n" +
+	"\x14GetUserSocialRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12!\n" +
+	"\fis_followers\x18\x02 \x01(\bR\visFollowers\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x19\n" +
+	"\bper_page\x18\x04 \x01(\x05R\aperPage\"\xa2\x01\n" +
+	"\x15GetUserSocialResponse\x120\n" +
+	"\tpage_info\x18\x01 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12+\n" +
+	"\x05users\x18\x03 \x03(\v2\x15.goodanime.SocialUserR\x05users\x12\x14\n" +
+	"\x05error\x18\x04 \x01(\tR\x05error\"3\n" +
+	"\x18GetUserStatisticsRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\"l\n" +
+	"\x19GetUserStatisticsResponse\x129\n" +
+	"\n" +
+	"statistics\x18\x01 \x01(\v2\x19.goodanime.UserStatisticsR\n" +
+	"statistics\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_api_proto_rawDescOnce sync.Once
@@ -3538,7 +4591,7 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 53)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 69)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
@@ -3591,55 +4644,90 @@ var file_api_proto_goTypes = []any{
 	(*FetchCharacterSearchResponse)(nil),      // 48: goodanime.FetchCharacterSearchResponse
 	(*FetchStaffSearchRequest)(nil),           // 49: goodanime.FetchStaffSearchRequest
 	(*FetchStaffSearchResponse)(nil),          // 50: goodanime.FetchStaffSearchResponse
-	(*UpdateCustomListsRequest)(nil),          // 51: goodanime.UpdateCustomListsRequest
-	(*UpdateCustomListsResponse)(nil),         // 52: goodanime.UpdateCustomListsResponse
-	(*MediaListCollection)(nil),               // 53: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 54: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 55: goodanime.MediaListEntry
-	(*Media)(nil),                             // 56: goodanime.Media
-	(ReviewUserRating)(0),                     // 57: goodanime.ReviewUserRating
-	(*ReviewNode)(nil),                        // 58: goodanime.ReviewNode
-	(*PageInfo)(nil),                          // 59: goodanime.PageInfo
-	(*ListActivity)(nil),                      // 60: goodanime.ListActivity
-	(*Studio)(nil),                            // 61: goodanime.Studio
-	(*Staff)(nil),                             // 62: goodanime.Staff
-	(*MediaTag)(nil),                          // 63: goodanime.MediaTag
-	(*MediaMin)(nil),                          // 64: goodanime.MediaMin
-	(*Character)(nil),                         // 65: goodanime.Character
+	(*FetchUserSearchRequest)(nil),            // 51: goodanime.FetchUserSearchRequest
+	(*FetchUserSearchResponse)(nil),           // 52: goodanime.FetchUserSearchResponse
+	(*UpdateCustomListsRequest)(nil),          // 53: goodanime.UpdateCustomListsRequest
+	(*UpdateCustomListsResponse)(nil),         // 54: goodanime.UpdateCustomListsResponse
+	(*GetUserProfileRequest)(nil),             // 55: goodanime.GetUserProfileRequest
+	(*GetUserProfileResponse)(nil),            // 56: goodanime.GetUserProfileResponse
+	(*ToggleFollowRequest)(nil),               // 57: goodanime.ToggleFollowRequest
+	(*ToggleFollowResponse)(nil),              // 58: goodanime.ToggleFollowResponse
+	(*GetUserActivitiesRequest)(nil),          // 59: goodanime.GetUserActivitiesRequest
+	(*GetUserActivitiesResponse)(nil),         // 60: goodanime.GetUserActivitiesResponse
+	(*ResolveAnilistPreviewsRequest)(nil),     // 61: goodanime.ResolveAnilistPreviewsRequest
+	(*ResolveAnilistPreviewsResponse)(nil),    // 62: goodanime.ResolveAnilistPreviewsResponse
+	(*GetUserFavouritesRequest)(nil),          // 63: goodanime.GetUserFavouritesRequest
+	(*GetUserFavouritesResponse)(nil),         // 64: goodanime.GetUserFavouritesResponse
+	(*GetUserSocialRequest)(nil),              // 65: goodanime.GetUserSocialRequest
+	(*GetUserSocialResponse)(nil),             // 66: goodanime.GetUserSocialResponse
+	(*GetUserStatisticsRequest)(nil),          // 67: goodanime.GetUserStatisticsRequest
+	(*GetUserStatisticsResponse)(nil),         // 68: goodanime.GetUserStatisticsResponse
+	(*MediaListCollection)(nil),               // 69: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 70: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 71: goodanime.MediaListEntry
+	(*Media)(nil),                             // 72: goodanime.Media
+	(ReviewUserRating)(0),                     // 73: goodanime.ReviewUserRating
+	(*ReviewNode)(nil),                        // 74: goodanime.ReviewNode
+	(*PageInfo)(nil),                          // 75: goodanime.PageInfo
+	(*ListActivity)(nil),                      // 76: goodanime.ListActivity
+	(*Studio)(nil),                            // 77: goodanime.Studio
+	(*Staff)(nil),                             // 78: goodanime.Staff
+	(*MediaTag)(nil),                          // 79: goodanime.MediaTag
+	(*MediaMin)(nil),                          // 80: goodanime.MediaMin
+	(*Character)(nil),                         // 81: goodanime.Character
+	(*SocialUser)(nil),                        // 82: goodanime.SocialUser
+	(*UserProfile)(nil),                       // 83: goodanime.UserProfile
+	(*UserActivity)(nil),                      // 84: goodanime.UserActivity
+	(*UserFavourites)(nil),                    // 85: goodanime.UserFavourites
+	(*UserStatistics)(nil),                    // 86: goodanime.UserStatistics
 }
 var file_api_proto_depIdxs = []int32{
-	53, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	54, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	69, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	70, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
 	4,  // 4: goodanime.SaveMediaListEntryRequest.custom_lists:type_name -> goodanime.CustomListsInput
-	55, // 5: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	56, // 6: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	56, // 7: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	56, // 8: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	56, // 9: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	56, // 10: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
-	57, // 11: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
-	58, // 12: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
-	59, // 13: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
-	60, // 14: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
-	61, // 15: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
-	62, // 16: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
-	63, // 17: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
-	64, // 18: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
-	59, // 19: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
-	61, // 20: goodanime.FetchStudioSearchResponse.studios:type_name -> goodanime.Studio
-	59, // 21: goodanime.FetchStudioSearchResponse.page_info:type_name -> goodanime.PageInfo
-	65, // 22: goodanime.FetchCharacterDetailsResponse.character:type_name -> goodanime.Character
-	65, // 23: goodanime.FetchCharacterSearchResponse.characters:type_name -> goodanime.Character
-	59, // 24: goodanime.FetchCharacterSearchResponse.page_info:type_name -> goodanime.PageInfo
-	62, // 25: goodanime.FetchStaffSearchResponse.staff:type_name -> goodanime.Staff
-	59, // 26: goodanime.FetchStaffSearchResponse.page_info:type_name -> goodanime.PageInfo
-	27, // [27:27] is the sub-list for method output_type
-	27, // [27:27] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	71, // 5: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	72, // 6: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	72, // 7: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	72, // 8: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	72, // 9: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	72, // 10: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	73, // 11: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
+	74, // 12: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
+	75, // 13: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	76, // 14: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
+	77, // 15: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
+	78, // 16: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
+	79, // 17: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
+	80, // 18: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
+	75, // 19: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
+	77, // 20: goodanime.FetchStudioSearchResponse.studios:type_name -> goodanime.Studio
+	75, // 21: goodanime.FetchStudioSearchResponse.page_info:type_name -> goodanime.PageInfo
+	81, // 22: goodanime.FetchCharacterDetailsResponse.character:type_name -> goodanime.Character
+	81, // 23: goodanime.FetchCharacterSearchResponse.characters:type_name -> goodanime.Character
+	75, // 24: goodanime.FetchCharacterSearchResponse.page_info:type_name -> goodanime.PageInfo
+	78, // 25: goodanime.FetchStaffSearchResponse.staff:type_name -> goodanime.Staff
+	75, // 26: goodanime.FetchStaffSearchResponse.page_info:type_name -> goodanime.PageInfo
+	82, // 27: goodanime.FetchUserSearchResponse.users:type_name -> goodanime.SocialUser
+	75, // 28: goodanime.FetchUserSearchResponse.page_info:type_name -> goodanime.PageInfo
+	83, // 29: goodanime.GetUserProfileResponse.profile:type_name -> goodanime.UserProfile
+	75, // 30: goodanime.GetUserActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	84, // 31: goodanime.GetUserActivitiesResponse.activities:type_name -> goodanime.UserActivity
+	80, // 32: goodanime.ResolveAnilistPreviewsResponse.media:type_name -> goodanime.MediaMin
+	81, // 33: goodanime.ResolveAnilistPreviewsResponse.characters:type_name -> goodanime.Character
+	78, // 34: goodanime.ResolveAnilistPreviewsResponse.staff:type_name -> goodanime.Staff
+	77, // 35: goodanime.ResolveAnilistPreviewsResponse.studios:type_name -> goodanime.Studio
+	83, // 36: goodanime.ResolveAnilistPreviewsResponse.users:type_name -> goodanime.UserProfile
+	85, // 37: goodanime.GetUserFavouritesResponse.favourites:type_name -> goodanime.UserFavourites
+	75, // 38: goodanime.GetUserSocialResponse.page_info:type_name -> goodanime.PageInfo
+	82, // 39: goodanime.GetUserSocialResponse.users:type_name -> goodanime.SocialUser
+	86, // 40: goodanime.GetUserStatisticsResponse.statistics:type_name -> goodanime.UserStatistics
+	41, // [41:41] is the sub-list for method output_type
+	41, // [41:41] is the sub-list for method input_type
+	41, // [41:41] is the sub-list for extension type_name
+	41, // [41:41] is the sub-list for extension extendee
+	0,  // [0:41] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -3659,19 +4747,21 @@ func file_api_proto_init() {
 	file_media_staff_proto_init()
 	file_media_studio_proto_init()
 	file_viewer_proto_init()
+	file_user_proto_init()
 	file_api_proto_msgTypes[3].OneofWrappers = []any{}
 	file_api_proto_msgTypes[5].OneofWrappers = []any{}
 	file_api_proto_msgTypes[39].OneofWrappers = []any{}
 	file_api_proto_msgTypes[41].OneofWrappers = []any{}
 	file_api_proto_msgTypes[47].OneofWrappers = []any{}
 	file_api_proto_msgTypes[49].OneofWrappers = []any{}
+	file_api_proto_msgTypes[51].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   53,
+			NumMessages:   69,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

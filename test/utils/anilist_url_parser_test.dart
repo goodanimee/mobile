@@ -27,6 +27,17 @@ void main() {
           AnilistUrlParser.parse('https://anilist.co/studio/2'),
           const AnilistRouteTarget(type: AnilistEntityType.studio, id: 2),
         );
+        expect(
+          AnilistUrlParser.parse('https://anilist.co/user/thedrone7'),
+          const AnilistRouteTarget(
+            type: AnilistEntityType.user,
+            username: 'thedrone7',
+          ),
+        );
+        expect(
+          AnilistUrlParser.parse('https://anilist.co/user/5114158'),
+          const AnilistRouteTarget(type: AnilistEntityType.user, id: 5114158),
+        );
       },
     );
 
@@ -79,8 +90,9 @@ void main() {
       () {
         expect(AnilistUrlParser.parse(''), isNull);
         expect(AnilistUrlParser.parse('   '), isNull);
+        expect(AnilistUrlParser.parse('https://anilist.co/user'), isNull);
         expect(
-          AnilistUrlParser.parse('https://anilist.co/user/thedrone7'),
+          AnilistUrlParser.parse('https://anilist.co/activity/12345'),
           isNull,
         );
         expect(
@@ -124,6 +136,10 @@ void main() {
         );
         expect(
           AnilistUrlParser.isAnilistEntityPath('https://anilist.co/user/test'),
+          isTrue,
+        );
+        expect(
+          AnilistUrlParser.isAnilistEntityPath('https://anilist.co/forum/test'),
           isFalse,
         );
         expect(

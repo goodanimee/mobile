@@ -14,10 +14,12 @@ import '../../services/custom_list_service.dart';
 import '../../services/deep_link_service.dart';
 import '../../services/media_list_controller.dart';
 import '../../services/update_service.dart';
+import '../../services/user_service.dart';
 import '../../theme/theme.dart';
 import '../login/page.dart';
 import '../media_list/page.dart';
 import '../profile/page.dart';
+import '../profile/widgets/profile_fab.dart';
 import '../search/page.dart';
 
 /// The main container page for the application
@@ -48,6 +50,7 @@ class _HomePageState extends State<HomePage> {
   int _navIndex = 1;
   bool _isGridMode = true;
   List<QuickNavSection> _quickNavSections = [];
+  List<QuickNavSection> _profileQuickNavSections = [];
 
   @override
   void initState() {
@@ -118,14 +121,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Resets state on sign out
-  void _handleSignOut() {
+  Future<void> _handleSignOut() async {
+    await AuthService.clearToken();
+    await UserService.clearCache();
     DeepLinkService.instance.markUnauthenticated();
     MediaListController.resetAll();
     CustomListService.instance.reset();
-    setState(() {
-      _token = null;
-      _navIndex = 1;
-    });
+    if (mounted) {
+      setState(() {
+        _token = null;
+        _navIndex = 1;
+      });
+    }
   }
 
   /// Updates the quick navigation sections based on visible list categories
@@ -152,6 +159,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _handleProfileQuickNavChanged(List<QuickNavSection> sections) {
+    if (!mounted) return;
+    setState(() => _profileQuickNavSections = sections);
+  }
+
   /// Builds the body content based on the selected navigation index
   Widget _buildBody() {
     switch (_navIndex) {
@@ -174,7 +186,10 @@ class _HomePageState extends State<HomePage> {
       case 3:
         return const SearchPage();
       case 4:
-        return ProfilePage(onSignOut: _handleSignOut);
+        return ProfilePage(
+          onSignOut: _handleSignOut,
+          onQuickNavChanged: _handleProfileQuickNavChanged,
+        );
       default:
         return Center(
           child: Text(
@@ -210,21 +225,31 @@ class _HomePageState extends State<HomePage> {
               Positioned(
                 bottom: 24,
                 right: 20,
-                child: FloatingNav(
-                  selectedIndex: _navIndex,
-                  onTap: (i) => AppNavigation.currentTab.value = i,
-                  quickNavSections: (_navIndex == 1 || _navIndex == 2)
-                      ? _quickNavSections
-                      : null,
-                  isGridMode: (_navIndex == 1 || _navIndex == 2)
-                      ? _isGridMode
-                      : null,
-                  onToggleGridMode: (_navIndex == 1 || _navIndex == 2)
-                      ? _toggleGridMode
-                      : null,
-                  mediaType: _navIndex == 1
-                      ? 'ANIME'
-                      : (_navIndex == 2 ? 'MANGA' : null),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (_navIndex == 4) ...[
+                      ProfileFab(isSelf: true, onSignOut: _handleSignOut),
+                      const SizedBox(height: 8),
+                    ],
+                    FloatingNav(
+                      selectedIndex: _navIndex,
+                      onTap: (i) => AppNavigation.currentTab.value = i,
+                      quickNavSections: (_navIndex == 1 || _navIndex == 2)
+                          ? _quickNavSections
+                          : (_navIndex == 4 ? _profileQuickNavSections : null),
+                      isGridMode: (_navIndex == 1 || _navIndex == 2)
+                          ? _isGridMode
+                          : null,
+                      onToggleGridMode: (_navIndex == 1 || _navIndex == 2)
+                          ? _toggleGridMode
+                          : null,
+                      mediaType: _navIndex == 1
+                          ? 'ANIME'
+                          : (_navIndex == 2 ? 'MANGA' : null),
+                    ),
+                  ],
                 ),
               ),
             ],

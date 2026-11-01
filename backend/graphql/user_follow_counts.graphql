@@ -1,0 +1,18 @@
+query GetUserFollowCounts($userId: Int!) {
+  followers: Page(page: 1, perPage: 1) {
+    pageInfo {
+      total
+    }
+    followers(userId: $userId) {
+      id
+    }
+  }
+  following: Page(page: 1, perPage: 1) {
+    pageInfo {
+      total
+    }
+    following(userId: $userId) {
+      id
+    }
+  }
+}

@@ -72,8 +72,16 @@ class MediaListService {
     String mediaType,
   ) => _saveListToDiskCache(lists, mediaType);
 
-  /// Fetches fresh user media lists from the network.
-  static Future<List<MediaList>> _fetchNetworkLists(
+  /// Fetches and groups a public user's media lists without mutating local caches.
+  static Future<List<MediaList>> getPublicUserLists(
+    int userId,
+    String mediaType,
+  ) async {
+    final response = await _fetchRawCollection(userId, mediaType);
+    return groupCollectionLists(response, mediaType);
+  }
+
+  static Future<MediaListCollection> _fetchRawCollection(
     int userId,
     String mediaType,
   ) async {
@@ -86,29 +94,29 @@ class MediaListService {
       token = await AuthService.getRawToken() ?? '';
     }
 
-    MediaListCollection response;
     try {
-      response = await MediaListApi.fetchMediaList(userId, token, mediaType);
+      return await MediaListApi.fetchMediaList(userId, token, mediaType);
     } catch (e) {
       if (token.isNotEmpty && e.toString().contains('Invalid token')) {
         await AuthService.clearToken();
-        response = await MediaListApi.fetchMediaList(userId, '', mediaType);
-      } else {
-        rethrow;
+        return MediaListApi.fetchMediaList(userId, '', mediaType);
       }
+      rethrow;
     }
+  }
+
+  /// Groups a raw [MediaListCollection] into ordered status and custom lists.
+  static List<MediaList> groupCollectionLists(
+    MediaListCollection response,
+    String mediaType, {
+    Iterable<String> extraCustomListNames = const [],
+  }) {
     final rawLists = response.lists;
     final customListNames = rawLists
         .where((l) => l.isCustomList || l.status == null)
         .map((l) => l.name)
         .where((name) => name.isNotEmpty)
         .toList();
-
-    if (customListNames.isNotEmpty) {
-      final existing = CustomListService.instance.getCustomLists(mediaType);
-      final merged = {...existing, ...customListNames}.toList();
-      unawaited(CustomListService.instance.setCustomLists(mediaType, merged));
-    }
 
     final Map<int, MediaListEntryWithMedia> uniqueEntries = {};
     for (final list in rawLists) {
@@ -136,7 +144,7 @@ class MediaListService {
       grouped[displayStatus]!.add(entry);
     }
 
-    final orderedStatuses = [
+    const orderedStatuses = [
       MediaListStatus.current,
       MediaListStatus.planning,
       MediaListStatus.completed,
@@ -166,7 +174,7 @@ class MediaListService {
     }
 
     final allCustomListNames = {
-      ...CustomListService.instance.getCustomLists(mediaType),
+      ...extraCustomListNames,
       ...customListNames,
     }.toList();
 
@@ -199,6 +207,35 @@ class MediaListService {
         MediaList(name: customName, isCustomList: true, entries: customEntries),
       );
     }
+
+    return processedLists;
+  }
+
+  /// Fetches fresh user media lists from the network.
+  static Future<List<MediaList>> _fetchNetworkLists(
+    int userId,
+    String mediaType,
+  ) async {
+    final response = await _fetchRawCollection(userId, mediaType);
+    final customListNames = response.lists
+        .where((l) => l.isCustomList || l.status == null)
+        .map((l) => l.name)
+        .where((name) => name.isNotEmpty)
+        .toList();
+
+    if (customListNames.isNotEmpty) {
+      final existing = CustomListService.instance.getCustomLists(mediaType);
+      final merged = {...existing, ...customListNames}.toList();
+      unawaited(CustomListService.instance.setCustomLists(mediaType, merged));
+    }
+
+    final processedLists = groupCollectionLists(
+      response,
+      mediaType,
+      extraCustomListNames: CustomListService.instance.getCustomLists(
+        mediaType,
+      ),
+    );
 
     await _saveListToDiskCache(processedLists, mediaType);
     return processedLists;

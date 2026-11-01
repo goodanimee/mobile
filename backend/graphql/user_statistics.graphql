@@ -1,0 +1,90 @@
+query UserStatistics($userId: Int) {
+  User(id: $userId) {
+    statistics {
+      anime {
+        count
+        meanScore
+        standardDeviation
+        minutesWatched
+        episodesWatched
+        scores(sort: [ID]) {
+          score
+          count
+          meanScore
+          minutesWatched
+          chaptersRead
+        }
+        lengths(sort: [ID]) {
+          length
+          count
+          meanScore
+          minutesWatched
+          chaptersRead
+        }
+        statuses(sort: [COUNT_DESC]) {
+          status
+          count
+          meanScore
+          minutesWatched
+          chaptersRead
+        }
+        formats(sort: [COUNT_DESC]) {
+          format
+          count
+          meanScore
+          minutesWatched
+          chaptersRead
+        }
+        releaseYears(sort: [ID]) {
+          releaseYear
+          count
+          meanScore
+          minutesWatched
+          chaptersRead
+        }
+      }
+      manga {
+        count
+        meanScore
+        standardDeviation
+        chaptersRead
+        volumesRead
+        scores(sort: [ID]) {
+          score
+          count
+          meanScore
+          minutesWatched
+          chaptersRead
+        }
+        lengths(sort: [ID]) {
+          length
+          count
+          meanScore
+          minutesWatched
+          chaptersRead
+        }
+        statuses(sort: [COUNT_DESC]) {
+          status
+          count
+          meanScore
+          minutesWatched
+          chaptersRead
+        }
+        formats(sort: [COUNT_DESC]) {
+          format
+          count
+          meanScore
+          minutesWatched
+          chaptersRead
+        }
+        releaseYears(sort: [ID]) {
+          releaseYear
+          count
+          meanScore
+          minutesWatched
+          chaptersRead
+        }
+      }
+    }
+  }
+}

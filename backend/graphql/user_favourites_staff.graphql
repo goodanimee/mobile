@@ -1,0 +1,28 @@
+query GetUserFavouritesStaff($userId: Int!, $page: Int, $perPage: Int) {
+  User(id: $userId) {
+    favourites {
+      staff(page: $page, perPage: $perPage) {
+        pageInfo {
+          hasNextPage
+          currentPage
+          total
+        }
+        nodes {
+          id
+          name {
+            full
+            native
+            userPreferred
+          }
+          image {
+            large
+            medium
+          }
+          primaryOccupations
+          favourites
+          isFavourite
+        }
+      }
+    }
+  }
+}

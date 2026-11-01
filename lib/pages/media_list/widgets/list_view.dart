@@ -21,10 +21,10 @@ class MediaListView extends StatelessWidget {
   final VoidCallback onRefresh;
 
   /// Callback when a list entry is updated
-  final void Function(int mediaId, MediaOptionsResult result) onEntryUpdated;
+  final void Function(int mediaId, MediaOptionsResult result)? onEntryUpdated;
 
   /// Callback when a card is long-pressed
-  final void Function(BuildContext context, MediaListEntryWithMedia entry)
+  final void Function(BuildContext context, MediaListEntryWithMedia entry)?
   onLongPress;
 
   /// The text to show when list is empty
@@ -37,8 +37,8 @@ class MediaListView extends StatelessWidget {
     required this.entries,
     required this.scrollController,
     required this.onRefresh,
-    required this.onEntryUpdated,
-    required this.onLongPress,
+    this.onEntryUpdated,
+    this.onLongPress,
     this.emptyLabel = 'No anime',
   });
 
@@ -79,7 +79,9 @@ class MediaListView extends StatelessWidget {
               AppNavigation.toMedia(context, mediaId, onRefresh: onRefresh);
             }
           },
-          onLongPress: () => onLongPress(context, entry),
+          onLongPress: onLongPress != null
+              ? () => onLongPress!(context, entry)
+              : null,
         );
       },
     );

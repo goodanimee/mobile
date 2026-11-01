@@ -14,6 +14,7 @@ import "media_review.proto";
 import "media_staff.proto";
 import "media_studio.proto";
 import "viewer.proto";
+import "user.proto";
 
 option go_package = "goodanime/backend/proto";
 
@@ -328,6 +329,18 @@ message FetchStaffSearchResponse {
   string error = 3;
 }
 
+message FetchUserSearchRequest {
+  int32 page = 1;
+  optional string query = 2;
+  repeated string sort = 3;
+}
+
+message FetchUserSearchResponse {
+  repeated SocialUser users = 1;
+  PageInfo page_info = 2;
+  string error = 3;
+}
+
 message UpdateCustomListsRequest {
   string media_type = 1;
   repeated string custom_lists = 2;
@@ -337,4 +350,91 @@ message UpdateCustomListsResponse {
   string error = 1;
   repeated string anime_custom_lists = 2;
   repeated string manga_custom_lists = 3;
+}
+
+message GetUserProfileRequest {
+  int32 user_id = 1;
+  string username = 2;
+}
+
+message GetUserProfileResponse {
+  UserProfile profile = 1;
+  string error = 2;
+}
+
+message ToggleFollowRequest {
+  int32 user_id = 1;
+}
+
+message ToggleFollowResponse {
+  int32 user_id = 1;
+  bool is_following = 2;
+  string error = 3;
+}
+
+message GetUserActivitiesRequest {
+  int32 user_id = 1;
+  int32 page = 2;
+  int32 per_page = 3;
+  repeated string type_in = 4;
+}
+
+message GetUserActivitiesResponse {
+  PageInfo page_info = 1;
+  repeated UserActivity activities = 2;
+  string error = 3;
+}
+
+message ResolveAnilistPreviewsRequest {
+  repeated int32 media_ids = 1;
+  repeated int32 character_ids = 2;
+  repeated int32 staff_ids = 3;
+  repeated int32 studio_ids = 4;
+  repeated int32 user_ids = 5;
+  repeated string usernames = 6;
+}
+
+message ResolveAnilistPreviewsResponse {
+  repeated MediaMin media = 1;
+  repeated Character characters = 2;
+  repeated Staff staff = 3;
+  repeated Studio studios = 4;
+  repeated UserProfile users = 5;
+  string error = 6;
+}
+
+message GetUserFavouritesRequest {
+  int32 user_id = 1;
+  string category = 2;
+  int32 page = 3;
+  int32 per_page = 4;
+}
+
+message GetUserFavouritesResponse {
+  UserFavourites favourites = 1;
+  string error = 2;
+}
+
+
+message GetUserSocialRequest {
+  int32 user_id = 1;
+  bool is_followers = 2;
+  int32 page = 3;
+  int32 per_page = 4;
+}
+
+message GetUserSocialResponse {
+  PageInfo page_info = 1;
+  int32 total = 2;
+  repeated SocialUser users = 3;
+  string error = 4;
+}
+
+message GetUserStatisticsRequest {
+  int32 user_id = 1;
+}
+
+message GetUserStatisticsResponse {
+  UserStatistics statistics = 1;
+  string error = 2;
 }

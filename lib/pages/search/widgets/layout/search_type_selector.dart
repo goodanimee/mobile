@@ -31,6 +31,8 @@ class SearchTypeSelector extends StatelessWidget {
           _buildTypeChip(context, 'Staff', 'STAFF'),
           const SizedBox(width: 8.0),
           _buildTypeChip(context, 'Studio', 'STUDIO'),
+          const SizedBox(width: 8.0),
+          _buildTypeChip(context, 'Users', 'USER'),
         ],
       ),
     );

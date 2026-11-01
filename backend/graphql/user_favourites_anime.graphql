@@ -1,0 +1,42 @@
+query GetUserFavouritesAnime($userId: Int!, $page: Int, $perPage: Int) {
+  User(id: $userId) {
+    favourites {
+      anime(page: $page, perPage: $perPage) {
+        pageInfo {
+          hasNextPage
+          currentPage
+          total
+        }
+        nodes {
+          id
+          type
+          title {
+            english
+            native
+            romaji
+            userPreferred
+          }
+          averageScore
+          coverImage {
+            medium
+            large
+            extraLarge
+            color
+          }
+          episodes
+          chapters
+          volumes
+          format
+          isAdult
+          isFavourite
+          siteUrl
+          startDate {
+            year
+            month
+            day
+          }
+        }
+      }
+    }
+  }
+}

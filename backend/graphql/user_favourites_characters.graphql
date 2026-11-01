@@ -1,0 +1,27 @@
+query GetUserFavouritesCharacters($userId: Int!, $page: Int, $perPage: Int) {
+  User(id: $userId) {
+    favourites {
+      characters(page: $page, perPage: $perPage) {
+        pageInfo {
+          hasNextPage
+          currentPage
+          total
+        }
+        nodes {
+          id
+          name {
+            full
+            native
+            userPreferred
+          }
+          image {
+            large
+            medium
+          }
+          favourites
+          isFavourite
+        }
+      }
+    }
+  }
+}

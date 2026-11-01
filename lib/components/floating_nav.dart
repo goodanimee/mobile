@@ -96,6 +96,18 @@ class FloatingNav extends StatefulWidget {
   /// Media type ('ANIME' or 'MANGA') if custom list management is enabled on this tab
   final String? mediaType;
 
+  /// Custom lists to display in the custom lists panel (for other users)
+  final List<String>? customLists;
+
+  /// Currently selected custom list name (for other users)
+  final String? activeCustomList;
+
+  /// Callback when a custom list is selected
+  final void Function(String name)? onSelectCustomList;
+
+  /// Whether custom list create and delete management controls are enabled
+  final bool showCustomListManagement;
+
   /// Creates a floating navigation bar
   const FloatingNav({
     super.key,
@@ -106,6 +118,10 @@ class FloatingNav extends StatefulWidget {
     this.onToggleGridMode,
     this.onExpandChanged,
     this.mediaType,
+    this.customLists,
+    this.activeCustomList,
+    this.onSelectCustomList,
+    this.showCustomListManagement = true,
   });
 
   @override
@@ -116,9 +132,28 @@ class FloatingNav extends StatefulWidget {
 class _FloatingNavState extends State<FloatingNav>
     with SingleTickerProviderStateMixin {
   bool _expanded = false;
+  bool _localPanelOpen = false;
   late final AnimationController _controller;
   late final Animation<double> _widthFactor;
   late final Animation<double> _iconsFade;
+
+  bool get _isPanelOpen => widget.customLists != null
+      ? _localPanelOpen
+      : CustomListService.instance.isPanelOpen;
+
+  void _setPanelOpen(bool open) {
+    if (widget.customLists != null) {
+      if (_localPanelOpen != open) {
+        setState(() => _localPanelOpen = open);
+      }
+    } else {
+      CustomListService.instance.setPanelOpen(open);
+    }
+  }
+
+  void _togglePanel() {
+    _setPanelOpen(!_isPanelOpen);
+  }
 
   @override
   void initState() {
@@ -126,8 +161,8 @@ class _FloatingNavState extends State<FloatingNav>
     _controller = AnimationController(vsync: this, duration: _duration);
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) {
-        if (CustomListService.instance.isPanelOpen) {
-          CustomListService.instance.setPanelOpen(false);
+        if (_isPanelOpen) {
+          _setPanelOpen(false);
         }
       }
     });
@@ -155,11 +190,12 @@ class _FloatingNavState extends State<FloatingNav>
     setState(() => _expanded = !_expanded);
     if (_expanded) {
       if (widget.mediaType != null) {
-        final isCustomListActive =
-            MediaListController.forType(widget.mediaType!).activeCustomList !=
-            null;
+        final isCustomListActive = widget.customLists != null
+            ? widget.activeCustomList != null
+            : MediaListController.forType(widget.mediaType!).activeCustomList !=
+                  null;
         if (isCustomListActive) {
-          CustomListService.instance.setPanelOpen(true);
+          _setPanelOpen(true);
         }
       }
       _controller.forward();
@@ -225,9 +261,7 @@ class _FloatingNavState extends State<FloatingNav>
                         child: child,
                       ),
                     ),
-                    child:
-                        (widget.mediaType != null &&
-                            CustomListService.instance.isPanelOpen)
+                    child: (widget.mediaType != null && _isPanelOpen)
                         ? Padding(
                             padding: EdgeInsets.only(right: gap),
                             child: SizedBox(
@@ -247,10 +281,18 @@ class _FloatingNavState extends State<FloatingNav>
                                       mediaType: widget.mediaType!,
                                       width: navBarWidth,
                                       height: quickNavHeight,
+                                      showManagementControls:
+                                          widget.showCustomListManagement,
+                                      customLists: widget.customLists,
+                                      activeCustomList: widget.activeCustomList,
                                       onSelectList: (name) {
-                                        MediaListController.forType(
-                                          widget.mediaType!,
-                                        ).setActiveCustomList(name);
+                                        if (widget.onSelectCustomList != null) {
+                                          widget.onSelectCustomList!(name);
+                                        } else {
+                                          MediaListController.forType(
+                                            widget.mediaType!,
+                                          ).setActiveCustomList(name);
+                                        }
                                         _toggle();
                                       },
                                     ),
@@ -404,7 +446,6 @@ class _FloatingNavState extends State<FloatingNav>
     final bool showCustomListButton = widget.mediaType != null;
     final double totalHeight = _getQuickNavTotalHeight();
     final double iconSize = getResponsiveSize(context, 20.0);
-    final isPanelOpen = CustomListService.instance.isPanelOpen;
 
     return Container(
       width: fabSize,
@@ -455,34 +496,42 @@ class _FloatingNavState extends State<FloatingNav>
                   Tooltip(
                     message: 'Custom Lists',
                     child: GestureDetector(
-                      onTap: () {
-                        CustomListService.instance.togglePanel();
-                      },
+                      onTap: _togglePanel,
                       behavior: HitTestBehavior.opaque,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
                           vertical: 8,
                         ),
-                        child: ListenableBuilder(
-                          listenable: MediaListController.forType(
-                            widget.mediaType!,
-                          ),
-                          builder: (context, _) {
-                            final isCustomListActive =
-                                MediaListController.forType(
+                        child: widget.customLists != null
+                            ? Icon(
+                                LucideIcons.folderCog,
+                                size: iconSize,
+                                color:
+                                    (_isPanelOpen ||
+                                        widget.activeCustomList != null)
+                                    ? borderColor
+                                    : Colors.white.withValues(alpha: 0.8),
+                              )
+                            : ListenableBuilder(
+                                listenable: MediaListController.forType(
                                   widget.mediaType!,
-                                ).activeCustomList !=
-                                null;
-                            return Icon(
-                              LucideIcons.folderCog,
-                              size: iconSize,
-                              color: (isPanelOpen || isCustomListActive)
-                                  ? borderColor
-                                  : Colors.white.withValues(alpha: 0.8),
-                            );
-                          },
-                        ),
+                                ),
+                                builder: (context, _) {
+                                  final isCustomListActive =
+                                      MediaListController.forType(
+                                        widget.mediaType!,
+                                      ).activeCustomList !=
+                                      null;
+                                  return Icon(
+                                    LucideIcons.folderCog,
+                                    size: iconSize,
+                                    color: (_isPanelOpen || isCustomListActive)
+                                        ? borderColor
+                                        : Colors.white.withValues(alpha: 0.8),
+                                  );
+                                },
+                              ),
                       ),
                     ),
                   ),
