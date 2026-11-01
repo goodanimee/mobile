@@ -10,8 +10,10 @@ import '../../../components/review_card.dart';
 import '../../../components/section.dart';
 import '../../../models/media_activity.dart';
 import '../../../models/media_review.dart';
+import '../../../models/viewer.dart';
 import '../../../services/media_service.dart';
 import '../../../theme/theme.dart';
+import '../../../utils/app_navigation.dart';
 import '../widgets/social/review_sheet.dart';
 
 /// Tab displaying paginated reviews for a media item
@@ -37,6 +39,13 @@ class MediaReviewsTab extends StatefulWidget {
   /// Callback when user profile is tapped
   final void Function(int userId, String username)? onUserTap;
 
+  /// Optional callback to fetch activities
+  final Future<ListActivityConnection> Function(int mediaId, int page)?
+  fetchActivities;
+
+  /// Optional callback to toggle activity like
+  final Future<bool> Function(int activityId)? toggleActivityLike;
+
   /// Creates a reviews tab
   const MediaReviewsTab({
     super.key,
@@ -47,6 +56,8 @@ class MediaReviewsTab extends StatefulWidget {
     this.isNested = false,
     this.refreshTrigger = 0,
     this.onUserTap,
+    this.fetchActivities,
+    this.toggleActivityLike,
   });
 
   @override
@@ -93,7 +104,11 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     });
 
     try {
-      await MediaService.toggleActivityLike(activity.id);
+      if (widget.toggleActivityLike != null) {
+        await widget.toggleActivityLike!(activity.id);
+      } else {
+        await MediaService.toggleActivityLike(activity.id);
+      }
       if (mounted) {
         setState(() {
           final index = _activities.indexWhere(
@@ -131,7 +146,9 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
 
   Future<void> _fetchActivities() async {
     try {
-      final connection = await MediaService.getActivities(widget.mediaId, 1);
+      final connection = widget.fetchActivities != null
+          ? await widget.fetchActivities!(widget.mediaId, 1)
+          : await MediaService.getActivities(widget.mediaId, 1);
       if (mounted) {
         setState(() {
           _activities.clear();
@@ -184,10 +201,15 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     setState(() => _isFetchingMoreActivities = true);
 
     try {
-      final connection = await MediaService.getActivities(
-        widget.mediaId,
-        _activitiesCurrentPage + 1,
-      );
+      final connection = widget.fetchActivities != null
+          ? await widget.fetchActivities!(
+              widget.mediaId,
+              _activitiesCurrentPage + 1,
+            )
+          : await MediaService.getActivities(
+              widget.mediaId,
+              _activitiesCurrentPage + 1,
+            );
 
       if (mounted) {
         setState(() {
@@ -431,6 +453,15 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     return timeago.format(date);
   }
 
+  void _handleUserTap(BuildContext context, Viewer? user) {
+    if (user == null) return;
+    if (widget.onUserTap != null) {
+      widget.onUserTap!(user.id, user.name);
+    } else {
+      AppNavigation.toProfile(context, userId: user.id, username: user.name);
+    }
+  }
+
   Widget _buildActivityCard(ListActivity activity) {
     final avatarUrl = activity.user?.avatarMedium ?? '';
     final username = activity.user?.name ?? 'Anonymous';
@@ -456,13 +487,24 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
       ),
       child: Row(
         children: [
-          AppNetworkImage(
-            imageUrl: avatarUrl,
-            width: avatarSize,
-            height: avatarSize,
-            borderRadius: BorderRadius.circular(avatarSize / 2),
-            fallbackIcon: LucideIcons.user,
-            checkDefault: true,
+          MouseRegion(
+            cursor: activity.user != null
+                ? SystemMouseCursors.click
+                : SystemMouseCursors.basic,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: activity.user != null
+                  ? () => _handleUserTap(context, activity.user)
+                  : null,
+              child: AppNetworkImage(
+                imageUrl: avatarUrl,
+                width: avatarSize,
+                height: avatarSize,
+                borderRadius: BorderRadius.circular(avatarSize / 2),
+                fallbackIcon: LucideIcons.user,
+                checkDefault: true,
+              ),
+            ),
           ),
           SizedBox(width: gap),
           Expanded(
@@ -475,14 +517,25 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
                   textBaseline: TextBaseline.alphabetic,
                   children: [
                     Flexible(
-                      child: Text(
-                        username,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: textSecondary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: getResponsiveFontSize(context, 14.0),
+                      child: MouseRegion(
+                        cursor: activity.user != null
+                            ? SystemMouseCursors.click
+                            : SystemMouseCursors.basic,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: activity.user != null
+                              ? () => _handleUserTap(context, activity.user)
+                              : null,
+                          child: Text(
+                            username,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: textSecondary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: getResponsiveFontSize(context, 14.0),
+                            ),
+                          ),
                         ),
                       ),
                     ),
