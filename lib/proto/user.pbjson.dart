@@ -316,3 +316,28 @@ final $typed_data.Uint8List userFavouritesDescriptor = $convert.base64Decode(
     '5GYXZvdXJpdGVDaGFyYWN0ZXJDb25uZWN0aW9uUgpjaGFyYWN0ZXJzEjkKBXN0YWZmGAQgASgL'
     'MiMuZ29vZGFuaW1lLkZhdm91cml0ZVN0YWZmQ29ubmVjdGlvblIFc3RhZmYSPgoHc3R1ZGlvcx'
     'gFIAEoCzIkLmdvb2RhbmltZS5GYXZvdXJpdGVTdHVkaW9Db25uZWN0aW9uUgdzdHVkaW9z');
+
+@$core.Deprecated('Use socialUserDescriptor instead')
+const SocialUser$json = {
+  '1': 'SocialUser',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
+    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+    {
+      '1': 'avatar',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.UserAvatar',
+      '10': 'avatar'
+    },
+    {'1': 'is_following', '3': 4, '4': 1, '5': 8, '10': 'isFollowing'},
+    {'1': 'is_follower', '3': 5, '4': 1, '5': 8, '10': 'isFollower'},
+  ],
+};
+
+/// Descriptor for `SocialUser`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List socialUserDescriptor = $convert.base64Decode(
+    'CgpTb2NpYWxVc2VyEg4KAmlkGAEgASgFUgJpZBISCgRuYW1lGAIgASgJUgRuYW1lEi0KBmF2YX'
+    'RhchgDIAEoCzIVLmdvb2RhbmltZS5Vc2VyQXZhdGFyUgZhdmF0YXISIQoMaXNfZm9sbG93aW5n'
+    'GAQgASgIUgtpc0ZvbGxvd2luZxIfCgtpc19mb2xsb3dlchgFIAEoCFIKaXNGb2xsb3dlcg==');

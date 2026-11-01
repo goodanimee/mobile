@@ -5336,6 +5336,193 @@ class GetUserFavouritesResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(2);
 }
 
+class GetUserSocialRequest extends $pb.GeneratedMessage {
+  factory GetUserSocialRequest({
+    $core.int? userId,
+    $core.bool? isFollowers,
+    $core.int? page,
+    $core.int? perPage,
+  }) {
+    final result = GetUserSocialRequest._();
+    if (userId != null) result.userId = userId;
+    if (isFollowers != null) result.isFollowers = isFollowers;
+    if (page != null) result.page = page;
+    if (perPage != null) result.perPage = perPage;
+    return result;
+  }
+
+  GetUserSocialRequest._();
+
+  factory GetUserSocialRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserSocialRequest()..mergeFromBuffer(data, registry);
+  factory GetUserSocialRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserSocialRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetUserSocialRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: GetUserSocialRequest.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'userId')
+    ..aOB(2, _omitFieldNames ? '' : 'isFollowers')
+    ..aI(3, _omitFieldNames ? '' : 'page')
+    ..aI(4, _omitFieldNames ? '' : 'perPage')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserSocialRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserSocialRequest copyWith(void Function(GetUserSocialRequest) updates) =>
+      super.copyWith((message) => updates(message as GetUserSocialRequest))
+          as GetUserSocialRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetUserSocialRequest() / GetUserSocialRequest.new instead')
+  static GetUserSocialRequest create() => GetUserSocialRequest._();
+  static $pb.GeneratedMessage $_createMessage() => GetUserSocialRequest._();
+  @$core.override
+  GetUserSocialRequest createEmptyInstance() => GetUserSocialRequest._();
+  @$core.pragma('dart2js:noInline')
+  static GetUserSocialRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetUserSocialRequest>(
+          GetUserSocialRequest.$_createMessage);
+  static GetUserSocialRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get userId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get isFollowers => $_getBF(1);
+  @$pb.TagNumber(2)
+  set isFollowers($core.bool value) => $_setBool(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasIsFollowers() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearIsFollowers() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get page => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set page($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasPage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPage() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get perPage => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set perPage($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasPerPage() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPerPage() => $_clearField(4);
+}
+
+class GetUserSocialResponse extends $pb.GeneratedMessage {
+  factory GetUserSocialResponse({
+    $5.PageInfo? pageInfo,
+    $core.int? total,
+    $core.Iterable<$12.SocialUser>? users,
+    $core.String? error,
+  }) {
+    final result = GetUserSocialResponse._();
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (total != null) result.total = total;
+    if (users != null) result.users.addAll(users);
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  GetUserSocialResponse._();
+
+  factory GetUserSocialResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserSocialResponse()..mergeFromBuffer(data, registry);
+  factory GetUserSocialResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserSocialResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetUserSocialResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: GetUserSocialResponse.$_createMessage)
+    ..aOM<$5.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $5.PageInfo.$_createMessage)
+    ..aI(2, _omitFieldNames ? '' : 'total')
+    ..pPM<$12.SocialUser>(3, _omitFieldNames ? '' : 'users',
+        subBuilder: $12.SocialUser.$_createMessage)
+    ..aOS(4, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserSocialResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserSocialResponse copyWith(
+          void Function(GetUserSocialResponse) updates) =>
+      super.copyWith((message) => updates(message as GetUserSocialResponse))
+          as GetUserSocialResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetUserSocialResponse() / GetUserSocialResponse.new instead')
+  static GetUserSocialResponse create() => GetUserSocialResponse._();
+  static $pb.GeneratedMessage $_createMessage() => GetUserSocialResponse._();
+  @$core.override
+  GetUserSocialResponse createEmptyInstance() => GetUserSocialResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetUserSocialResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetUserSocialResponse>(
+          GetUserSocialResponse.$_createMessage);
+  static GetUserSocialResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $5.PageInfo get pageInfo => $_getN(0);
+  @$pb.TagNumber(1)
+  set pageInfo($5.PageInfo value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPageInfo() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPageInfo() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $5.PageInfo ensurePageInfo() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.int get total => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set total($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasTotal() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTotal() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$12.SocialUser> get users => $_getList(2);
+
+  @$pb.TagNumber(4)
+  $core.String get error => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set error($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasError() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearError() => $_clearField(4);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

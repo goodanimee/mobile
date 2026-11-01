@@ -403,3 +403,17 @@ message GetUserFavouritesResponse {
   string error = 2;
 }
 
+
+message GetUserSocialRequest {
+  int32 user_id = 1;
+  bool is_followers = 2;
+  int32 page = 3;
+  int32 per_page = 4;
+}
+
+message GetUserSocialResponse {
+  PageInfo page_info = 1;
+  int32 total = 2;
+  repeated SocialUser users = 3;
+  string error = 4;
+}

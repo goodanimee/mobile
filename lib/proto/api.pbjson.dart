@@ -1629,3 +1629,51 @@ final $typed_data.Uint8List getUserFavouritesResponseDescriptor =
     $convert.base64Decode(
         'ChlHZXRVc2VyRmF2b3VyaXRlc1Jlc3BvbnNlEjkKCmZhdm91cml0ZXMYASABKAsyGS5nb29kYW'
         '5pbWUuVXNlckZhdm91cml0ZXNSCmZhdm91cml0ZXMSFAoFZXJyb3IYAiABKAlSBWVycm9y');
+
+@$core.Deprecated('Use getUserSocialRequestDescriptor instead')
+const GetUserSocialRequest$json = {
+  '1': 'GetUserSocialRequest',
+  '2': [
+    {'1': 'user_id', '3': 1, '4': 1, '5': 5, '10': 'userId'},
+    {'1': 'is_followers', '3': 2, '4': 1, '5': 8, '10': 'isFollowers'},
+    {'1': 'page', '3': 3, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'per_page', '3': 4, '4': 1, '5': 5, '10': 'perPage'},
+  ],
+};
+
+/// Descriptor for `GetUserSocialRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserSocialRequestDescriptor = $convert.base64Decode(
+    'ChRHZXRVc2VyU29jaWFsUmVxdWVzdBIXCgd1c2VyX2lkGAEgASgFUgZ1c2VySWQSIQoMaXNfZm'
+    '9sbG93ZXJzGAIgASgIUgtpc0ZvbGxvd2VycxISCgRwYWdlGAMgASgFUgRwYWdlEhkKCHBlcl9w'
+    'YWdlGAQgASgFUgdwZXJQYWdl');
+
+@$core.Deprecated('Use getUserSocialResponseDescriptor instead')
+const GetUserSocialResponse$json = {
+  '1': 'GetUserSocialResponse',
+  '2': [
+    {
+      '1': 'page_info',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
+    {
+      '1': 'users',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.SocialUser',
+      '10': 'users'
+    },
+    {'1': 'error', '3': 4, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `GetUserSocialResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserSocialResponseDescriptor = $convert.base64Decode(
+    'ChVHZXRVc2VyU29jaWFsUmVzcG9uc2USMAoJcGFnZV9pbmZvGAEgASgLMhMuZ29vZGFuaW1lLl'
+    'BhZ2VJbmZvUghwYWdlSW5mbxIUCgV0b3RhbBgCIAEoBVIFdG90YWwSKwoFdXNlcnMYAyADKAsy'
+    'FS5nb29kYW5pbWUuU29jaWFsVXNlclIFdXNlcnMSFAoFZXJyb3IYBCABKAlSBWVycm9y');

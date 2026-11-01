@@ -721,6 +721,82 @@ func (x *UserFavourites) GetStudios() *FavouriteStudioConnection {
 	return nil
 }
 
+type SocialUser struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Avatar        *UserAvatar            `protobuf:"bytes,3,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	IsFollowing   bool                   `protobuf:"varint,4,opt,name=is_following,json=isFollowing,proto3" json:"is_following,omitempty"`
+	IsFollower    bool                   `protobuf:"varint,5,opt,name=is_follower,json=isFollower,proto3" json:"is_follower,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SocialUser) Reset() {
+	*x = SocialUser{}
+	mi := &file_user_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SocialUser) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SocialUser) ProtoMessage() {}
+
+func (x *SocialUser) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SocialUser.ProtoReflect.Descriptor instead.
+func (*SocialUser) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *SocialUser) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *SocialUser) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SocialUser) GetAvatar() *UserAvatar {
+	if x != nil {
+		return x.Avatar
+	}
+	return nil
+}
+
+func (x *SocialUser) GetIsFollowing() bool {
+	if x != nil {
+		return x.IsFollowing
+	}
+	return false
+}
+
+func (x *SocialUser) GetIsFollower() bool {
+	if x != nil {
+		return x.IsFollower
+	}
+	return false
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
@@ -795,7 +871,15 @@ const file_user_proto_rawDesc = "" +
 	"characters\x18\x03 \x01(\v2'.goodanime.FavouriteCharacterConnectionR\n" +
 	"characters\x129\n" +
 	"\x05staff\x18\x04 \x01(\v2#.goodanime.FavouriteStaffConnectionR\x05staff\x12>\n" +
-	"\astudios\x18\x05 \x01(\v2$.goodanime.FavouriteStudioConnectionR\astudiosB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\astudios\x18\x05 \x01(\v2$.goodanime.FavouriteStudioConnectionR\astudios\"\xa3\x01\n" +
+	"\n" +
+	"SocialUser\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12-\n" +
+	"\x06avatar\x18\x03 \x01(\v2\x15.goodanime.UserAvatarR\x06avatar\x12!\n" +
+	"\fis_following\x18\x04 \x01(\bR\visFollowing\x12\x1f\n" +
+	"\vis_follower\x18\x05 \x01(\bR\n" +
+	"isFollowerB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -809,7 +893,7 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_user_proto_goTypes = []any{
 	(*UserAvatar)(nil),                   // 0: goodanime.UserAvatar
 	(*UserProfile)(nil),                  // 1: goodanime.UserProfile
@@ -820,36 +904,38 @@ var file_user_proto_goTypes = []any{
 	(*FavouriteStaffConnection)(nil),     // 6: goodanime.FavouriteStaffConnection
 	(*FavouriteStudioConnection)(nil),    // 7: goodanime.FavouriteStudioConnection
 	(*UserFavourites)(nil),               // 8: goodanime.UserFavourites
-	(*MediaMin)(nil),                     // 9: goodanime.MediaMin
-	(*PageInfo)(nil),                     // 10: goodanime.PageInfo
-	(*Character)(nil),                    // 11: goodanime.Character
-	(*Staff)(nil),                        // 12: goodanime.Staff
-	(*Studio)(nil),                       // 13: goodanime.Studio
+	(*SocialUser)(nil),                   // 9: goodanime.SocialUser
+	(*MediaMin)(nil),                     // 10: goodanime.MediaMin
+	(*PageInfo)(nil),                     // 11: goodanime.PageInfo
+	(*Character)(nil),                    // 12: goodanime.Character
+	(*Staff)(nil),                        // 13: goodanime.Staff
+	(*Studio)(nil),                       // 14: goodanime.Studio
 }
 var file_user_proto_depIdxs = []int32{
 	0,  // 0: goodanime.UserProfile.avatar:type_name -> goodanime.UserAvatar
 	0,  // 1: goodanime.UserActivityUser.avatar:type_name -> goodanime.UserAvatar
 	2,  // 2: goodanime.UserActivity.user:type_name -> goodanime.UserActivityUser
 	2,  // 3: goodanime.UserActivity.recipient:type_name -> goodanime.UserActivityUser
-	9,  // 4: goodanime.UserActivity.media:type_name -> goodanime.MediaMin
-	10, // 5: goodanime.FavouriteMediaConnection.page_info:type_name -> goodanime.PageInfo
-	9,  // 6: goodanime.FavouriteMediaConnection.nodes:type_name -> goodanime.MediaMin
-	10, // 7: goodanime.FavouriteCharacterConnection.page_info:type_name -> goodanime.PageInfo
-	11, // 8: goodanime.FavouriteCharacterConnection.nodes:type_name -> goodanime.Character
-	10, // 9: goodanime.FavouriteStaffConnection.page_info:type_name -> goodanime.PageInfo
-	12, // 10: goodanime.FavouriteStaffConnection.nodes:type_name -> goodanime.Staff
-	10, // 11: goodanime.FavouriteStudioConnection.page_info:type_name -> goodanime.PageInfo
-	13, // 12: goodanime.FavouriteStudioConnection.nodes:type_name -> goodanime.Studio
+	10, // 4: goodanime.UserActivity.media:type_name -> goodanime.MediaMin
+	11, // 5: goodanime.FavouriteMediaConnection.page_info:type_name -> goodanime.PageInfo
+	10, // 6: goodanime.FavouriteMediaConnection.nodes:type_name -> goodanime.MediaMin
+	11, // 7: goodanime.FavouriteCharacterConnection.page_info:type_name -> goodanime.PageInfo
+	12, // 8: goodanime.FavouriteCharacterConnection.nodes:type_name -> goodanime.Character
+	11, // 9: goodanime.FavouriteStaffConnection.page_info:type_name -> goodanime.PageInfo
+	13, // 10: goodanime.FavouriteStaffConnection.nodes:type_name -> goodanime.Staff
+	11, // 11: goodanime.FavouriteStudioConnection.page_info:type_name -> goodanime.PageInfo
+	14, // 12: goodanime.FavouriteStudioConnection.nodes:type_name -> goodanime.Studio
 	4,  // 13: goodanime.UserFavourites.anime:type_name -> goodanime.FavouriteMediaConnection
 	4,  // 14: goodanime.UserFavourites.manga:type_name -> goodanime.FavouriteMediaConnection
 	5,  // 15: goodanime.UserFavourites.characters:type_name -> goodanime.FavouriteCharacterConnection
 	6,  // 16: goodanime.UserFavourites.staff:type_name -> goodanime.FavouriteStaffConnection
 	7,  // 17: goodanime.UserFavourites.studios:type_name -> goodanime.FavouriteStudioConnection
-	18, // [18:18] is the sub-list for method output_type
-	18, // [18:18] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	0,  // 18: goodanime.SocialUser.avatar:type_name -> goodanime.UserAvatar
+	19, // [19:19] is the sub-list for method output_type
+	19, // [19:19] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -868,7 +954,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -1027,6 +1027,112 @@ class UserFavourites extends $pb.GeneratedMessage {
   FavouriteStudioConnection ensureStudios() => $_ensure(4);
 }
 
+class SocialUser extends $pb.GeneratedMessage {
+  factory SocialUser({
+    $core.int? id,
+    $core.String? name,
+    UserAvatar? avatar,
+    $core.bool? isFollowing,
+    $core.bool? isFollower,
+  }) {
+    final result = SocialUser._();
+    if (id != null) result.id = id;
+    if (name != null) result.name = name;
+    if (avatar != null) result.avatar = avatar;
+    if (isFollowing != null) result.isFollowing = isFollowing;
+    if (isFollower != null) result.isFollower = isFollower;
+    return result;
+  }
+
+  SocialUser._();
+
+  factory SocialUser.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      SocialUser()..mergeFromBuffer(data, registry);
+  factory SocialUser.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      SocialUser()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SocialUser',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: SocialUser.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'id')
+    ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..aOM<UserAvatar>(3, _omitFieldNames ? '' : 'avatar',
+        subBuilder: UserAvatar.$_createMessage)
+    ..aOB(4, _omitFieldNames ? '' : 'isFollowing')
+    ..aOB(5, _omitFieldNames ? '' : 'isFollower')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SocialUser clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SocialUser copyWith(void Function(SocialUser) updates) =>
+      super.copyWith((message) => updates(message as SocialUser)) as SocialUser;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use SocialUser() / SocialUser.new instead')
+  static SocialUser create() => SocialUser._();
+  static $pb.GeneratedMessage $_createMessage() => SocialUser._();
+  @$core.override
+  SocialUser createEmptyInstance() => SocialUser._();
+  @$core.pragma('dart2js:noInline')
+  static SocialUser getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SocialUser>(SocialUser.$_createMessage);
+  static SocialUser? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get id => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set id($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  UserAvatar get avatar => $_getN(2);
+  @$pb.TagNumber(3)
+  set avatar(UserAvatar value) => $_setField(3, value);
+  @$pb.TagNumber(3)
+  $core.bool hasAvatar() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearAvatar() => $_clearField(3);
+  @$pb.TagNumber(3)
+  UserAvatar ensureAvatar() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  $core.bool get isFollowing => $_getBF(3);
+  @$pb.TagNumber(4)
+  set isFollowing($core.bool value) => $_setBool(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasIsFollowing() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearIsFollowing() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.bool get isFollower => $_getBF(4);
+  @$pb.TagNumber(5)
+  set isFollower($core.bool value) => $_setBool(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasIsFollower() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearIsFollower() => $_clearField(5);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

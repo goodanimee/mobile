@@ -83,3 +83,11 @@ message UserFavourites {
   FavouriteStaffConnection staff = 4;
   FavouriteStudioConnection studios = 5;
 }
+
+message SocialUser {
+  int32 id = 1;
+  string name = 2;
+  UserAvatar avatar = 3;
+  bool is_following = 4;
+  bool is_follower = 5;
+}
