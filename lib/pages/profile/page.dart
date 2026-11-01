@@ -5,12 +5,14 @@ import '../../components/error_view.dart';
 import '../../components/floating_nav.dart';
 import '../../components/skeleton.dart';
 import '../../models/user_activity.dart';
+import '../../models/user_favourites.dart';
 import '../../models/user_profile.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../../theme/theme.dart';
 import '../../utils/app_navigation.dart';
 import 'tabs/activity_tab.dart';
+import 'tabs/favourites_tab.dart';
 import 'tabs/info_tab.dart';
 import 'widgets/profile_fab.dart';
 import 'widgets/profile_header.dart';
@@ -52,6 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   UserProfile? _profile;
   UserActivityPage? _cachedActivitiesPage;
+  UserFavourites? _cachedFavourites;
   bool _isLoading = true;
   bool _isSelf = false;
   bool _isFollowLoading = false;
@@ -96,6 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
       _isLoading = true;
       _error = null;
       _cachedActivitiesPage = null;
+      _cachedFavourites = null;
       _refreshTrigger++;
     });
 
@@ -204,6 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
       tabs: const [
         (icon: LucideIcons.info, label: 'Info'),
         (icon: LucideIcons.activity, label: 'Activity'),
+        (icon: LucideIcons.heart, label: 'Favourites'),
       ],
       selectedIndex: _selectedTabIndex,
       onSelect: (index) {
@@ -251,6 +256,12 @@ class _ProfilePageState extends State<ProfilePage> {
         refreshTrigger: _refreshTrigger,
         initialPage: _cachedActivitiesPage,
         onInitialPageLoaded: (page) => _cachedActivitiesPage = page,
+      ),
+      2 => ProfileFavouritesTab(
+        userId: profile.id,
+        refreshTrigger: _refreshTrigger,
+        initialFavourites: _cachedFavourites,
+        onFavouritesChanged: (favs) => _cachedFavourites = favs,
       ),
       _ => ProfileInfoTab(
         profile: profile,
