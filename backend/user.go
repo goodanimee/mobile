@@ -53,6 +53,9 @@ var userFollowingQuery string
 //go:embed graphql/user_followers.graphql
 var userFollowersQuery string
 
+//go:embed graphql/user_statistics.graphql
+var userStatisticsQuery string
+
 // GetUserProfile fetches a user profile by ID or username
 //
 //export GetUserProfile
@@ -315,5 +318,32 @@ func GetUserSocial(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int
 		}
 	}
 	pbResponse.Users = users
+	return marshalAndReturn(pbResponse, outLen)
+}
+
+// GetUserStatistics fetches the anime and manga statistics breakdown for a user.
+//
+//export GetUserStatistics
+func GetUserStatistics(reqPtr *C.uint8_t, reqLen C.int, token *C.char, outLen *C.int) *C.uint8_t {
+	tk := C.GoString(token)
+	pbResponse := &pb.GetUserStatisticsResponse{}
+
+	var req pb.GetUserStatisticsRequest
+	if err := decodeRequest(reqPtr, reqLen, &req); err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	variables := map[string]any{
+		"userId": req.UserId,
+	}
+
+	data, err := executeGraphQL[models.UserStatisticsResponseDTO](tk, userStatisticsQuery, variables)
+	if err != nil {
+		pbResponse.Error = err.Error()
+		return marshalAndReturn(pbResponse, outLen)
+	}
+
+	pbResponse.Statistics = data.ToProto()
 	return marshalAndReturn(pbResponse, outLen)
 }
