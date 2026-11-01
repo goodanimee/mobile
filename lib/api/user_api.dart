@@ -1,4 +1,5 @@
 import '../models/user_activity.dart';
+import '../models/user_favourites.dart';
 import '../models/user_profile.dart';
 import '../models/viewer.dart';
 import '../proto/api.pb.dart';
@@ -93,5 +94,31 @@ class UserApi {
     final response = ResolveAnilistPreviewsResponse.fromBuffer(bytes);
     if (response.error.isNotEmpty) throw Exception(response.error);
     return response;
+  }
+
+  /// Fetches all or single-category paginated favourites for [userId].
+  static Future<UserFavourites> getUserFavourites({
+    required int userId,
+    String category = '',
+    int page = 1,
+    int perPage = 25,
+    required String token,
+  }) async {
+    final request = GetUserFavouritesRequest(
+      userId: userId,
+      category: category,
+      page: page,
+      perPage: perPage,
+    );
+    final bytes = await FfiCore.executeProtoCall(
+      'GetUserFavourites',
+      request.writeToBuffer(),
+      token,
+    );
+    final response = GetUserFavouritesResponse.fromBuffer(bytes);
+    if (response.error.isNotEmpty) throw Exception(response.error);
+    return response.hasFavourites()
+        ? UserFavourites.fromProto(response.favourites)
+        : const UserFavourites();
   }
 }

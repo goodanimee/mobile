@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/user_api.dart';
 import '../models/user_activity.dart';
+import '../models/user_favourites.dart';
 import '../models/user_profile.dart';
 import '../models/viewer.dart';
 import '../proto/api.pb.dart';
@@ -106,6 +107,23 @@ class UserService {
   ) async {
     final token = await AuthService.getRawToken() ?? '';
     return UserApi.resolveAnilistPreviews(request: request, token: token);
+  }
+
+  /// Fetches initial or single-category paginated favourites for [userId].
+  static Future<UserFavourites> getUserFavourites({
+    required int userId,
+    FavouriteCategory? category,
+    int page = 1,
+    int perPage = 25,
+  }) async {
+    final token = await AuthService.getRawToken() ?? '';
+    return UserApi.getUserFavourites(
+      userId: userId,
+      category: category?.apiKey ?? '',
+      page: page,
+      perPage: perPage,
+      token: token,
+    );
   }
 
   /// Clears user cache.
