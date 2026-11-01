@@ -34,6 +34,9 @@ class MediaReviewsTab extends StatefulWidget {
   /// Trigger for refreshing tab content
   final int refreshTrigger;
 
+  /// Callback when user profile is tapped
+  final void Function(int userId, String username)? onUserTap;
+
   /// Creates a reviews tab
   const MediaReviewsTab({
     super.key,
@@ -43,6 +46,7 @@ class MediaReviewsTab extends StatefulWidget {
     required this.mediaType,
     this.isNested = false,
     this.refreshTrigger = 0,
+    this.onUserTap,
   });
 
   @override
@@ -557,6 +561,7 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     final review = _reviews[index];
     return ReviewCard(
       review: review,
+      onUserTap: widget.onUserTap,
       onTap: () {
         showModalBottomSheet<void>(
           context: context,
@@ -565,6 +570,7 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
           builder: (context) => ReviewSheet(
             review: review,
             mediaTitle: widget.mediaName,
+            onUserTap: widget.onUserTap,
             onReviewUpdated: (updatedReview) {
               setState(() {
                 _reviews[index] = updatedReview;
