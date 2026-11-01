@@ -91,3 +91,68 @@ message SocialUser {
   bool is_following = 4;
   bool is_follower = 5;
 }
+
+message UserScoreStat {
+  int32 score = 1;
+  int32 count = 2;
+  double mean_score = 3;
+  int32 minutes_watched = 4;
+  int32 chapters_read = 5;
+  repeated int32 media_ids = 6;
+}
+
+message UserLengthStat {
+  string length = 1;
+  int32 count = 2;
+  double mean_score = 3;
+  int32 minutes_watched = 4;
+  int32 chapters_read = 5;
+  repeated int32 media_ids = 6;
+}
+
+message UserStatusStat {
+  string status = 1;
+  int32 count = 2;
+  double mean_score = 3;
+  int32 minutes_watched = 4;
+  int32 chapters_read = 5;
+  repeated int32 media_ids = 6;
+}
+
+message UserFormatStat {
+  string format = 1;
+  int32 count = 2;
+  double mean_score = 3;
+  int32 minutes_watched = 4;
+  int32 chapters_read = 5;
+  repeated int32 media_ids = 6;
+}
+
+message UserReleaseYearStat {
+  int32 release_year = 1;
+  int32 count = 2;
+  double mean_score = 3;
+  int32 minutes_watched = 4;
+  int32 chapters_read = 5;
+  repeated int32 media_ids = 6;
+}
+
+message UserMediaStatistics {
+  int32 count = 1;
+  double mean_score = 2;
+  double standard_deviation = 3;
+  int32 minutes_watched = 4;
+  int32 episodes_watched = 5;
+  int32 chapters_read = 6;
+  int32 volumes_read = 7;
+  repeated UserScoreStat scores = 8;
+  repeated UserLengthStat lengths = 9;
+  repeated UserStatusStat statuses = 10;
+  repeated UserFormatStat formats = 11;
+  repeated UserReleaseYearStat release_years = 12;
+}
+
+message UserStatistics {
+  UserMediaStatistics anime = 1;
+  UserMediaStatistics manga = 2;
+}

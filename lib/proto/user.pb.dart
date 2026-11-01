@@ -1133,6 +1133,802 @@ class SocialUser extends $pb.GeneratedMessage {
   void clearIsFollower() => $_clearField(5);
 }
 
+class UserScoreStat extends $pb.GeneratedMessage {
+  factory UserScoreStat({
+    $core.int? score,
+    $core.int? count,
+    $core.double? meanScore,
+    $core.int? minutesWatched,
+    $core.int? chaptersRead,
+    $core.Iterable<$core.int>? mediaIds,
+  }) {
+    final result = UserScoreStat._();
+    if (score != null) result.score = score;
+    if (count != null) result.count = count;
+    if (meanScore != null) result.meanScore = meanScore;
+    if (minutesWatched != null) result.minutesWatched = minutesWatched;
+    if (chaptersRead != null) result.chaptersRead = chaptersRead;
+    if (mediaIds != null) result.mediaIds.addAll(mediaIds);
+    return result;
+  }
+
+  UserScoreStat._();
+
+  factory UserScoreStat.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserScoreStat()..mergeFromBuffer(data, registry);
+  factory UserScoreStat.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserScoreStat()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UserScoreStat',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: UserScoreStat.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'score')
+    ..aI(2, _omitFieldNames ? '' : 'count')
+    ..aD(3, _omitFieldNames ? '' : 'meanScore')
+    ..aI(4, _omitFieldNames ? '' : 'minutesWatched')
+    ..aI(5, _omitFieldNames ? '' : 'chaptersRead')
+    ..p<$core.int>(6, _omitFieldNames ? '' : 'mediaIds', $pb.PbFieldType.K3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserScoreStat clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserScoreStat copyWith(void Function(UserScoreStat) updates) =>
+      super.copyWith((message) => updates(message as UserScoreStat))
+          as UserScoreStat;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use UserScoreStat() / UserScoreStat.new instead')
+  static UserScoreStat create() => UserScoreStat._();
+  static $pb.GeneratedMessage $_createMessage() => UserScoreStat._();
+  @$core.override
+  UserScoreStat createEmptyInstance() => UserScoreStat._();
+  @$core.pragma('dart2js:noInline')
+  static UserScoreStat getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserScoreStat>(
+          UserScoreStat.$_createMessage);
+  static UserScoreStat? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get score => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set score($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasScore() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearScore() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get meanScore => $_getN(2);
+  @$pb.TagNumber(3)
+  set meanScore($core.double value) => $_setDouble(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasMeanScore() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMeanScore() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get minutesWatched => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set minutesWatched($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasMinutesWatched() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMinutesWatched() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get chaptersRead => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set chaptersRead($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasChaptersRead() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearChaptersRead() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $pb.PbList<$core.int> get mediaIds => $_getList(5);
+}
+
+class UserLengthStat extends $pb.GeneratedMessage {
+  factory UserLengthStat({
+    $core.String? length,
+    $core.int? count,
+    $core.double? meanScore,
+    $core.int? minutesWatched,
+    $core.int? chaptersRead,
+    $core.Iterable<$core.int>? mediaIds,
+  }) {
+    final result = UserLengthStat._();
+    if (length != null) result.length = length;
+    if (count != null) result.count = count;
+    if (meanScore != null) result.meanScore = meanScore;
+    if (minutesWatched != null) result.minutesWatched = minutesWatched;
+    if (chaptersRead != null) result.chaptersRead = chaptersRead;
+    if (mediaIds != null) result.mediaIds.addAll(mediaIds);
+    return result;
+  }
+
+  UserLengthStat._();
+
+  factory UserLengthStat.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserLengthStat()..mergeFromBuffer(data, registry);
+  factory UserLengthStat.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserLengthStat()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UserLengthStat',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: UserLengthStat.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'length')
+    ..aI(2, _omitFieldNames ? '' : 'count')
+    ..aD(3, _omitFieldNames ? '' : 'meanScore')
+    ..aI(4, _omitFieldNames ? '' : 'minutesWatched')
+    ..aI(5, _omitFieldNames ? '' : 'chaptersRead')
+    ..p<$core.int>(6, _omitFieldNames ? '' : 'mediaIds', $pb.PbFieldType.K3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserLengthStat clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserLengthStat copyWith(void Function(UserLengthStat) updates) =>
+      super.copyWith((message) => updates(message as UserLengthStat))
+          as UserLengthStat;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use UserLengthStat() / UserLengthStat.new instead')
+  static UserLengthStat create() => UserLengthStat._();
+  static $pb.GeneratedMessage $_createMessage() => UserLengthStat._();
+  @$core.override
+  UserLengthStat createEmptyInstance() => UserLengthStat._();
+  @$core.pragma('dart2js:noInline')
+  static UserLengthStat getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserLengthStat>(
+          UserLengthStat.$_createMessage);
+  static UserLengthStat? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get length => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set length($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasLength() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLength() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get meanScore => $_getN(2);
+  @$pb.TagNumber(3)
+  set meanScore($core.double value) => $_setDouble(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasMeanScore() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMeanScore() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get minutesWatched => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set minutesWatched($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasMinutesWatched() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMinutesWatched() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get chaptersRead => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set chaptersRead($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasChaptersRead() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearChaptersRead() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $pb.PbList<$core.int> get mediaIds => $_getList(5);
+}
+
+class UserStatusStat extends $pb.GeneratedMessage {
+  factory UserStatusStat({
+    $core.String? status,
+    $core.int? count,
+    $core.double? meanScore,
+    $core.int? minutesWatched,
+    $core.int? chaptersRead,
+    $core.Iterable<$core.int>? mediaIds,
+  }) {
+    final result = UserStatusStat._();
+    if (status != null) result.status = status;
+    if (count != null) result.count = count;
+    if (meanScore != null) result.meanScore = meanScore;
+    if (minutesWatched != null) result.minutesWatched = minutesWatched;
+    if (chaptersRead != null) result.chaptersRead = chaptersRead;
+    if (mediaIds != null) result.mediaIds.addAll(mediaIds);
+    return result;
+  }
+
+  UserStatusStat._();
+
+  factory UserStatusStat.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserStatusStat()..mergeFromBuffer(data, registry);
+  factory UserStatusStat.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserStatusStat()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UserStatusStat',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: UserStatusStat.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'status')
+    ..aI(2, _omitFieldNames ? '' : 'count')
+    ..aD(3, _omitFieldNames ? '' : 'meanScore')
+    ..aI(4, _omitFieldNames ? '' : 'minutesWatched')
+    ..aI(5, _omitFieldNames ? '' : 'chaptersRead')
+    ..p<$core.int>(6, _omitFieldNames ? '' : 'mediaIds', $pb.PbFieldType.K3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserStatusStat clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserStatusStat copyWith(void Function(UserStatusStat) updates) =>
+      super.copyWith((message) => updates(message as UserStatusStat))
+          as UserStatusStat;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use UserStatusStat() / UserStatusStat.new instead')
+  static UserStatusStat create() => UserStatusStat._();
+  static $pb.GeneratedMessage $_createMessage() => UserStatusStat._();
+  @$core.override
+  UserStatusStat createEmptyInstance() => UserStatusStat._();
+  @$core.pragma('dart2js:noInline')
+  static UserStatusStat getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserStatusStat>(
+          UserStatusStat.$_createMessage);
+  static UserStatusStat? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get status => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set status($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStatus() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStatus() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get meanScore => $_getN(2);
+  @$pb.TagNumber(3)
+  set meanScore($core.double value) => $_setDouble(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasMeanScore() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMeanScore() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get minutesWatched => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set minutesWatched($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasMinutesWatched() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMinutesWatched() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get chaptersRead => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set chaptersRead($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasChaptersRead() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearChaptersRead() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $pb.PbList<$core.int> get mediaIds => $_getList(5);
+}
+
+class UserFormatStat extends $pb.GeneratedMessage {
+  factory UserFormatStat({
+    $core.String? format,
+    $core.int? count,
+    $core.double? meanScore,
+    $core.int? minutesWatched,
+    $core.int? chaptersRead,
+    $core.Iterable<$core.int>? mediaIds,
+  }) {
+    final result = UserFormatStat._();
+    if (format != null) result.format = format;
+    if (count != null) result.count = count;
+    if (meanScore != null) result.meanScore = meanScore;
+    if (minutesWatched != null) result.minutesWatched = minutesWatched;
+    if (chaptersRead != null) result.chaptersRead = chaptersRead;
+    if (mediaIds != null) result.mediaIds.addAll(mediaIds);
+    return result;
+  }
+
+  UserFormatStat._();
+
+  factory UserFormatStat.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserFormatStat()..mergeFromBuffer(data, registry);
+  factory UserFormatStat.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserFormatStat()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UserFormatStat',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: UserFormatStat.$_createMessage)
+    ..aOS(1, _omitFieldNames ? '' : 'format')
+    ..aI(2, _omitFieldNames ? '' : 'count')
+    ..aD(3, _omitFieldNames ? '' : 'meanScore')
+    ..aI(4, _omitFieldNames ? '' : 'minutesWatched')
+    ..aI(5, _omitFieldNames ? '' : 'chaptersRead')
+    ..p<$core.int>(6, _omitFieldNames ? '' : 'mediaIds', $pb.PbFieldType.K3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserFormatStat clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserFormatStat copyWith(void Function(UserFormatStat) updates) =>
+      super.copyWith((message) => updates(message as UserFormatStat))
+          as UserFormatStat;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use UserFormatStat() / UserFormatStat.new instead')
+  static UserFormatStat create() => UserFormatStat._();
+  static $pb.GeneratedMessage $_createMessage() => UserFormatStat._();
+  @$core.override
+  UserFormatStat createEmptyInstance() => UserFormatStat._();
+  @$core.pragma('dart2js:noInline')
+  static UserFormatStat getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserFormatStat>(
+          UserFormatStat.$_createMessage);
+  static UserFormatStat? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get format => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set format($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasFormat() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFormat() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get meanScore => $_getN(2);
+  @$pb.TagNumber(3)
+  set meanScore($core.double value) => $_setDouble(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasMeanScore() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMeanScore() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get minutesWatched => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set minutesWatched($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasMinutesWatched() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMinutesWatched() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get chaptersRead => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set chaptersRead($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasChaptersRead() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearChaptersRead() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $pb.PbList<$core.int> get mediaIds => $_getList(5);
+}
+
+class UserReleaseYearStat extends $pb.GeneratedMessage {
+  factory UserReleaseYearStat({
+    $core.int? releaseYear,
+    $core.int? count,
+    $core.double? meanScore,
+    $core.int? minutesWatched,
+    $core.int? chaptersRead,
+    $core.Iterable<$core.int>? mediaIds,
+  }) {
+    final result = UserReleaseYearStat._();
+    if (releaseYear != null) result.releaseYear = releaseYear;
+    if (count != null) result.count = count;
+    if (meanScore != null) result.meanScore = meanScore;
+    if (minutesWatched != null) result.minutesWatched = minutesWatched;
+    if (chaptersRead != null) result.chaptersRead = chaptersRead;
+    if (mediaIds != null) result.mediaIds.addAll(mediaIds);
+    return result;
+  }
+
+  UserReleaseYearStat._();
+
+  factory UserReleaseYearStat.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserReleaseYearStat()..mergeFromBuffer(data, registry);
+  factory UserReleaseYearStat.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserReleaseYearStat()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UserReleaseYearStat',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: UserReleaseYearStat.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'releaseYear')
+    ..aI(2, _omitFieldNames ? '' : 'count')
+    ..aD(3, _omitFieldNames ? '' : 'meanScore')
+    ..aI(4, _omitFieldNames ? '' : 'minutesWatched')
+    ..aI(5, _omitFieldNames ? '' : 'chaptersRead')
+    ..p<$core.int>(6, _omitFieldNames ? '' : 'mediaIds', $pb.PbFieldType.K3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserReleaseYearStat clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserReleaseYearStat copyWith(void Function(UserReleaseYearStat) updates) =>
+      super.copyWith((message) => updates(message as UserReleaseYearStat))
+          as UserReleaseYearStat;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use UserReleaseYearStat() / UserReleaseYearStat.new instead')
+  static UserReleaseYearStat create() => UserReleaseYearStat._();
+  static $pb.GeneratedMessage $_createMessage() => UserReleaseYearStat._();
+  @$core.override
+  UserReleaseYearStat createEmptyInstance() => UserReleaseYearStat._();
+  @$core.pragma('dart2js:noInline')
+  static UserReleaseYearStat getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UserReleaseYearStat>(
+          UserReleaseYearStat.$_createMessage);
+  static UserReleaseYearStat? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get releaseYear => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set releaseYear($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasReleaseYear() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearReleaseYear() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get meanScore => $_getN(2);
+  @$pb.TagNumber(3)
+  set meanScore($core.double value) => $_setDouble(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasMeanScore() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMeanScore() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get minutesWatched => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set minutesWatched($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasMinutesWatched() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMinutesWatched() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get chaptersRead => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set chaptersRead($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasChaptersRead() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearChaptersRead() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $pb.PbList<$core.int> get mediaIds => $_getList(5);
+}
+
+class UserMediaStatistics extends $pb.GeneratedMessage {
+  factory UserMediaStatistics({
+    $core.int? count,
+    $core.double? meanScore,
+    $core.double? standardDeviation,
+    $core.int? minutesWatched,
+    $core.int? episodesWatched,
+    $core.int? chaptersRead,
+    $core.int? volumesRead,
+    $core.Iterable<UserScoreStat>? scores,
+    $core.Iterable<UserLengthStat>? lengths,
+    $core.Iterable<UserStatusStat>? statuses,
+    $core.Iterable<UserFormatStat>? formats,
+    $core.Iterable<UserReleaseYearStat>? releaseYears,
+  }) {
+    final result = UserMediaStatistics._();
+    if (count != null) result.count = count;
+    if (meanScore != null) result.meanScore = meanScore;
+    if (standardDeviation != null) result.standardDeviation = standardDeviation;
+    if (minutesWatched != null) result.minutesWatched = minutesWatched;
+    if (episodesWatched != null) result.episodesWatched = episodesWatched;
+    if (chaptersRead != null) result.chaptersRead = chaptersRead;
+    if (volumesRead != null) result.volumesRead = volumesRead;
+    if (scores != null) result.scores.addAll(scores);
+    if (lengths != null) result.lengths.addAll(lengths);
+    if (statuses != null) result.statuses.addAll(statuses);
+    if (formats != null) result.formats.addAll(formats);
+    if (releaseYears != null) result.releaseYears.addAll(releaseYears);
+    return result;
+  }
+
+  UserMediaStatistics._();
+
+  factory UserMediaStatistics.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserMediaStatistics()..mergeFromBuffer(data, registry);
+  factory UserMediaStatistics.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserMediaStatistics()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UserMediaStatistics',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: UserMediaStatistics.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'count')
+    ..aD(2, _omitFieldNames ? '' : 'meanScore')
+    ..aD(3, _omitFieldNames ? '' : 'standardDeviation')
+    ..aI(4, _omitFieldNames ? '' : 'minutesWatched')
+    ..aI(5, _omitFieldNames ? '' : 'episodesWatched')
+    ..aI(6, _omitFieldNames ? '' : 'chaptersRead')
+    ..aI(7, _omitFieldNames ? '' : 'volumesRead')
+    ..pPM<UserScoreStat>(8, _omitFieldNames ? '' : 'scores',
+        subBuilder: UserScoreStat.$_createMessage)
+    ..pPM<UserLengthStat>(9, _omitFieldNames ? '' : 'lengths',
+        subBuilder: UserLengthStat.$_createMessage)
+    ..pPM<UserStatusStat>(10, _omitFieldNames ? '' : 'statuses',
+        subBuilder: UserStatusStat.$_createMessage)
+    ..pPM<UserFormatStat>(11, _omitFieldNames ? '' : 'formats',
+        subBuilder: UserFormatStat.$_createMessage)
+    ..pPM<UserReleaseYearStat>(12, _omitFieldNames ? '' : 'releaseYears',
+        subBuilder: UserReleaseYearStat.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserMediaStatistics clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserMediaStatistics copyWith(void Function(UserMediaStatistics) updates) =>
+      super.copyWith((message) => updates(message as UserMediaStatistics))
+          as UserMediaStatistics;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core
+      .Deprecated('Use UserMediaStatistics() / UserMediaStatistics.new instead')
+  static UserMediaStatistics create() => UserMediaStatistics._();
+  static $pb.GeneratedMessage $_createMessage() => UserMediaStatistics._();
+  @$core.override
+  UserMediaStatistics createEmptyInstance() => UserMediaStatistics._();
+  @$core.pragma('dart2js:noInline')
+  static UserMediaStatistics getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UserMediaStatistics>(
+          UserMediaStatistics.$_createMessage);
+  static UserMediaStatistics? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get count => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set count($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasCount() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCount() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get meanScore => $_getN(1);
+  @$pb.TagNumber(2)
+  set meanScore($core.double value) => $_setDouble(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasMeanScore() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMeanScore() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get standardDeviation => $_getN(2);
+  @$pb.TagNumber(3)
+  set standardDeviation($core.double value) => $_setDouble(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasStandardDeviation() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearStandardDeviation() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get minutesWatched => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set minutesWatched($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasMinutesWatched() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMinutesWatched() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get episodesWatched => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set episodesWatched($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasEpisodesWatched() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearEpisodesWatched() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.int get chaptersRead => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set chaptersRead($core.int value) => $_setSignedInt32(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasChaptersRead() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearChaptersRead() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.int get volumesRead => $_getIZ(6);
+  @$pb.TagNumber(7)
+  set volumesRead($core.int value) => $_setSignedInt32(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasVolumesRead() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearVolumesRead() => $_clearField(7);
+
+  @$pb.TagNumber(8)
+  $pb.PbList<UserScoreStat> get scores => $_getList(7);
+
+  @$pb.TagNumber(9)
+  $pb.PbList<UserLengthStat> get lengths => $_getList(8);
+
+  @$pb.TagNumber(10)
+  $pb.PbList<UserStatusStat> get statuses => $_getList(9);
+
+  @$pb.TagNumber(11)
+  $pb.PbList<UserFormatStat> get formats => $_getList(10);
+
+  @$pb.TagNumber(12)
+  $pb.PbList<UserReleaseYearStat> get releaseYears => $_getList(11);
+}
+
+class UserStatistics extends $pb.GeneratedMessage {
+  factory UserStatistics({
+    UserMediaStatistics? anime,
+    UserMediaStatistics? manga,
+  }) {
+    final result = UserStatistics._();
+    if (anime != null) result.anime = anime;
+    if (manga != null) result.manga = manga;
+    return result;
+  }
+
+  UserStatistics._();
+
+  factory UserStatistics.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserStatistics()..mergeFromBuffer(data, registry);
+  factory UserStatistics.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserStatistics()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UserStatistics',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: UserStatistics.$_createMessage)
+    ..aOM<UserMediaStatistics>(1, _omitFieldNames ? '' : 'anime',
+        subBuilder: UserMediaStatistics.$_createMessage)
+    ..aOM<UserMediaStatistics>(2, _omitFieldNames ? '' : 'manga',
+        subBuilder: UserMediaStatistics.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserStatistics clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserStatistics copyWith(void Function(UserStatistics) updates) =>
+      super.copyWith((message) => updates(message as UserStatistics))
+          as UserStatistics;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use UserStatistics() / UserStatistics.new instead')
+  static UserStatistics create() => UserStatistics._();
+  static $pb.GeneratedMessage $_createMessage() => UserStatistics._();
+  @$core.override
+  UserStatistics createEmptyInstance() => UserStatistics._();
+  @$core.pragma('dart2js:noInline')
+  static UserStatistics getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserStatistics>(
+          UserStatistics.$_createMessage);
+  static UserStatistics? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  UserMediaStatistics get anime => $_getN(0);
+  @$pb.TagNumber(1)
+  set anime(UserMediaStatistics value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasAnime() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAnime() => $_clearField(1);
+  @$pb.TagNumber(1)
+  UserMediaStatistics ensureAnime() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  UserMediaStatistics get manga => $_getN(1);
+  @$pb.TagNumber(2)
+  set manga(UserMediaStatistics value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasManga() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearManga() => $_clearField(2);
+  @$pb.TagNumber(2)
+  UserMediaStatistics ensureManga() => $_ensure(1);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

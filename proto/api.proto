@@ -417,3 +417,12 @@ message GetUserSocialResponse {
   repeated SocialUser users = 3;
   string error = 4;
 }
+
+message GetUserStatisticsRequest {
+  int32 user_id = 1;
+}
+
+message GetUserStatisticsResponse {
+  UserStatistics statistics = 1;
+  string error = 2;
+}

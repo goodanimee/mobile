@@ -5523,6 +5523,142 @@ class GetUserSocialResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(4);
 }
 
+class GetUserStatisticsRequest extends $pb.GeneratedMessage {
+  factory GetUserStatisticsRequest({
+    $core.int? userId,
+  }) {
+    final result = GetUserStatisticsRequest._();
+    if (userId != null) result.userId = userId;
+    return result;
+  }
+
+  GetUserStatisticsRequest._();
+
+  factory GetUserStatisticsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserStatisticsRequest()..mergeFromBuffer(data, registry);
+  factory GetUserStatisticsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserStatisticsRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetUserStatisticsRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: GetUserStatisticsRequest.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'userId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserStatisticsRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserStatisticsRequest copyWith(
+          void Function(GetUserStatisticsRequest) updates) =>
+      super.copyWith((message) => updates(message as GetUserStatisticsRequest))
+          as GetUserStatisticsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetUserStatisticsRequest() / GetUserStatisticsRequest.new instead')
+  static GetUserStatisticsRequest create() => GetUserStatisticsRequest._();
+  static $pb.GeneratedMessage $_createMessage() => GetUserStatisticsRequest._();
+  @$core.override
+  GetUserStatisticsRequest createEmptyInstance() =>
+      GetUserStatisticsRequest._();
+  @$core.pragma('dart2js:noInline')
+  static GetUserStatisticsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetUserStatisticsRequest>(
+          GetUserStatisticsRequest.$_createMessage);
+  static GetUserStatisticsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get userId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => $_clearField(1);
+}
+
+class GetUserStatisticsResponse extends $pb.GeneratedMessage {
+  factory GetUserStatisticsResponse({
+    $12.UserStatistics? statistics,
+    $core.String? error,
+  }) {
+    final result = GetUserStatisticsResponse._();
+    if (statistics != null) result.statistics = statistics;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  GetUserStatisticsResponse._();
+
+  factory GetUserStatisticsResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserStatisticsResponse()..mergeFromBuffer(data, registry);
+  factory GetUserStatisticsResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserStatisticsResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetUserStatisticsResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: GetUserStatisticsResponse.$_createMessage)
+    ..aOM<$12.UserStatistics>(1, _omitFieldNames ? '' : 'statistics',
+        subBuilder: $12.UserStatistics.$_createMessage)
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserStatisticsResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserStatisticsResponse copyWith(
+          void Function(GetUserStatisticsResponse) updates) =>
+      super.copyWith((message) => updates(message as GetUserStatisticsResponse))
+          as GetUserStatisticsResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetUserStatisticsResponse() / GetUserStatisticsResponse.new instead')
+  static GetUserStatisticsResponse create() => GetUserStatisticsResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      GetUserStatisticsResponse._();
+  @$core.override
+  GetUserStatisticsResponse createEmptyInstance() =>
+      GetUserStatisticsResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetUserStatisticsResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetUserStatisticsResponse>(
+          GetUserStatisticsResponse.$_createMessage);
+  static GetUserStatisticsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $12.UserStatistics get statistics => $_getN(0);
+  @$pb.TagNumber(1)
+  set statistics($12.UserStatistics value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasStatistics() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStatistics() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $12.UserStatistics ensureStatistics() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

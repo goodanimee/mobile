@@ -797,6 +797,610 @@ func (x *SocialUser) GetIsFollower() bool {
 	return false
 }
 
+type UserScoreStat struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Score          int32                  `protobuf:"varint,1,opt,name=score,proto3" json:"score,omitempty"`
+	Count          int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	MeanScore      float64                `protobuf:"fixed64,3,opt,name=mean_score,json=meanScore,proto3" json:"mean_score,omitempty"`
+	MinutesWatched int32                  `protobuf:"varint,4,opt,name=minutes_watched,json=minutesWatched,proto3" json:"minutes_watched,omitempty"`
+	ChaptersRead   int32                  `protobuf:"varint,5,opt,name=chapters_read,json=chaptersRead,proto3" json:"chapters_read,omitempty"`
+	MediaIds       []int32                `protobuf:"varint,6,rep,packed,name=media_ids,json=mediaIds,proto3" json:"media_ids,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *UserScoreStat) Reset() {
+	*x = UserScoreStat{}
+	mi := &file_user_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserScoreStat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserScoreStat) ProtoMessage() {}
+
+func (x *UserScoreStat) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserScoreStat.ProtoReflect.Descriptor instead.
+func (*UserScoreStat) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *UserScoreStat) GetScore() int32 {
+	if x != nil {
+		return x.Score
+	}
+	return 0
+}
+
+func (x *UserScoreStat) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *UserScoreStat) GetMeanScore() float64 {
+	if x != nil {
+		return x.MeanScore
+	}
+	return 0
+}
+
+func (x *UserScoreStat) GetMinutesWatched() int32 {
+	if x != nil {
+		return x.MinutesWatched
+	}
+	return 0
+}
+
+func (x *UserScoreStat) GetChaptersRead() int32 {
+	if x != nil {
+		return x.ChaptersRead
+	}
+	return 0
+}
+
+func (x *UserScoreStat) GetMediaIds() []int32 {
+	if x != nil {
+		return x.MediaIds
+	}
+	return nil
+}
+
+type UserLengthStat struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Length         string                 `protobuf:"bytes,1,opt,name=length,proto3" json:"length,omitempty"`
+	Count          int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	MeanScore      float64                `protobuf:"fixed64,3,opt,name=mean_score,json=meanScore,proto3" json:"mean_score,omitempty"`
+	MinutesWatched int32                  `protobuf:"varint,4,opt,name=minutes_watched,json=minutesWatched,proto3" json:"minutes_watched,omitempty"`
+	ChaptersRead   int32                  `protobuf:"varint,5,opt,name=chapters_read,json=chaptersRead,proto3" json:"chapters_read,omitempty"`
+	MediaIds       []int32                `protobuf:"varint,6,rep,packed,name=media_ids,json=mediaIds,proto3" json:"media_ids,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *UserLengthStat) Reset() {
+	*x = UserLengthStat{}
+	mi := &file_user_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserLengthStat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserLengthStat) ProtoMessage() {}
+
+func (x *UserLengthStat) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserLengthStat.ProtoReflect.Descriptor instead.
+func (*UserLengthStat) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *UserLengthStat) GetLength() string {
+	if x != nil {
+		return x.Length
+	}
+	return ""
+}
+
+func (x *UserLengthStat) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *UserLengthStat) GetMeanScore() float64 {
+	if x != nil {
+		return x.MeanScore
+	}
+	return 0
+}
+
+func (x *UserLengthStat) GetMinutesWatched() int32 {
+	if x != nil {
+		return x.MinutesWatched
+	}
+	return 0
+}
+
+func (x *UserLengthStat) GetChaptersRead() int32 {
+	if x != nil {
+		return x.ChaptersRead
+	}
+	return 0
+}
+
+func (x *UserLengthStat) GetMediaIds() []int32 {
+	if x != nil {
+		return x.MediaIds
+	}
+	return nil
+}
+
+type UserStatusStat struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Status         string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+	Count          int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	MeanScore      float64                `protobuf:"fixed64,3,opt,name=mean_score,json=meanScore,proto3" json:"mean_score,omitempty"`
+	MinutesWatched int32                  `protobuf:"varint,4,opt,name=minutes_watched,json=minutesWatched,proto3" json:"minutes_watched,omitempty"`
+	ChaptersRead   int32                  `protobuf:"varint,5,opt,name=chapters_read,json=chaptersRead,proto3" json:"chapters_read,omitempty"`
+	MediaIds       []int32                `protobuf:"varint,6,rep,packed,name=media_ids,json=mediaIds,proto3" json:"media_ids,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *UserStatusStat) Reset() {
+	*x = UserStatusStat{}
+	mi := &file_user_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserStatusStat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserStatusStat) ProtoMessage() {}
+
+func (x *UserStatusStat) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserStatusStat.ProtoReflect.Descriptor instead.
+func (*UserStatusStat) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *UserStatusStat) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *UserStatusStat) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *UserStatusStat) GetMeanScore() float64 {
+	if x != nil {
+		return x.MeanScore
+	}
+	return 0
+}
+
+func (x *UserStatusStat) GetMinutesWatched() int32 {
+	if x != nil {
+		return x.MinutesWatched
+	}
+	return 0
+}
+
+func (x *UserStatusStat) GetChaptersRead() int32 {
+	if x != nil {
+		return x.ChaptersRead
+	}
+	return 0
+}
+
+func (x *UserStatusStat) GetMediaIds() []int32 {
+	if x != nil {
+		return x.MediaIds
+	}
+	return nil
+}
+
+type UserFormatStat struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Format         string                 `protobuf:"bytes,1,opt,name=format,proto3" json:"format,omitempty"`
+	Count          int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	MeanScore      float64                `protobuf:"fixed64,3,opt,name=mean_score,json=meanScore,proto3" json:"mean_score,omitempty"`
+	MinutesWatched int32                  `protobuf:"varint,4,opt,name=minutes_watched,json=minutesWatched,proto3" json:"minutes_watched,omitempty"`
+	ChaptersRead   int32                  `protobuf:"varint,5,opt,name=chapters_read,json=chaptersRead,proto3" json:"chapters_read,omitempty"`
+	MediaIds       []int32                `protobuf:"varint,6,rep,packed,name=media_ids,json=mediaIds,proto3" json:"media_ids,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *UserFormatStat) Reset() {
+	*x = UserFormatStat{}
+	mi := &file_user_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFormatStat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFormatStat) ProtoMessage() {}
+
+func (x *UserFormatStat) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFormatStat.ProtoReflect.Descriptor instead.
+func (*UserFormatStat) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *UserFormatStat) GetFormat() string {
+	if x != nil {
+		return x.Format
+	}
+	return ""
+}
+
+func (x *UserFormatStat) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *UserFormatStat) GetMeanScore() float64 {
+	if x != nil {
+		return x.MeanScore
+	}
+	return 0
+}
+
+func (x *UserFormatStat) GetMinutesWatched() int32 {
+	if x != nil {
+		return x.MinutesWatched
+	}
+	return 0
+}
+
+func (x *UserFormatStat) GetChaptersRead() int32 {
+	if x != nil {
+		return x.ChaptersRead
+	}
+	return 0
+}
+
+func (x *UserFormatStat) GetMediaIds() []int32 {
+	if x != nil {
+		return x.MediaIds
+	}
+	return nil
+}
+
+type UserReleaseYearStat struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	ReleaseYear    int32                  `protobuf:"varint,1,opt,name=release_year,json=releaseYear,proto3" json:"release_year,omitempty"`
+	Count          int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	MeanScore      float64                `protobuf:"fixed64,3,opt,name=mean_score,json=meanScore,proto3" json:"mean_score,omitempty"`
+	MinutesWatched int32                  `protobuf:"varint,4,opt,name=minutes_watched,json=minutesWatched,proto3" json:"minutes_watched,omitempty"`
+	ChaptersRead   int32                  `protobuf:"varint,5,opt,name=chapters_read,json=chaptersRead,proto3" json:"chapters_read,omitempty"`
+	MediaIds       []int32                `protobuf:"varint,6,rep,packed,name=media_ids,json=mediaIds,proto3" json:"media_ids,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *UserReleaseYearStat) Reset() {
+	*x = UserReleaseYearStat{}
+	mi := &file_user_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserReleaseYearStat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserReleaseYearStat) ProtoMessage() {}
+
+func (x *UserReleaseYearStat) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserReleaseYearStat.ProtoReflect.Descriptor instead.
+func (*UserReleaseYearStat) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *UserReleaseYearStat) GetReleaseYear() int32 {
+	if x != nil {
+		return x.ReleaseYear
+	}
+	return 0
+}
+
+func (x *UserReleaseYearStat) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *UserReleaseYearStat) GetMeanScore() float64 {
+	if x != nil {
+		return x.MeanScore
+	}
+	return 0
+}
+
+func (x *UserReleaseYearStat) GetMinutesWatched() int32 {
+	if x != nil {
+		return x.MinutesWatched
+	}
+	return 0
+}
+
+func (x *UserReleaseYearStat) GetChaptersRead() int32 {
+	if x != nil {
+		return x.ChaptersRead
+	}
+	return 0
+}
+
+func (x *UserReleaseYearStat) GetMediaIds() []int32 {
+	if x != nil {
+		return x.MediaIds
+	}
+	return nil
+}
+
+type UserMediaStatistics struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Count             int32                  `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	MeanScore         float64                `protobuf:"fixed64,2,opt,name=mean_score,json=meanScore,proto3" json:"mean_score,omitempty"`
+	StandardDeviation float64                `protobuf:"fixed64,3,opt,name=standard_deviation,json=standardDeviation,proto3" json:"standard_deviation,omitempty"`
+	MinutesWatched    int32                  `protobuf:"varint,4,opt,name=minutes_watched,json=minutesWatched,proto3" json:"minutes_watched,omitempty"`
+	EpisodesWatched   int32                  `protobuf:"varint,5,opt,name=episodes_watched,json=episodesWatched,proto3" json:"episodes_watched,omitempty"`
+	ChaptersRead      int32                  `protobuf:"varint,6,opt,name=chapters_read,json=chaptersRead,proto3" json:"chapters_read,omitempty"`
+	VolumesRead       int32                  `protobuf:"varint,7,opt,name=volumes_read,json=volumesRead,proto3" json:"volumes_read,omitempty"`
+	Scores            []*UserScoreStat       `protobuf:"bytes,8,rep,name=scores,proto3" json:"scores,omitempty"`
+	Lengths           []*UserLengthStat      `protobuf:"bytes,9,rep,name=lengths,proto3" json:"lengths,omitempty"`
+	Statuses          []*UserStatusStat      `protobuf:"bytes,10,rep,name=statuses,proto3" json:"statuses,omitempty"`
+	Formats           []*UserFormatStat      `protobuf:"bytes,11,rep,name=formats,proto3" json:"formats,omitempty"`
+	ReleaseYears      []*UserReleaseYearStat `protobuf:"bytes,12,rep,name=release_years,json=releaseYears,proto3" json:"release_years,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *UserMediaStatistics) Reset() {
+	*x = UserMediaStatistics{}
+	mi := &file_user_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserMediaStatistics) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserMediaStatistics) ProtoMessage() {}
+
+func (x *UserMediaStatistics) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserMediaStatistics.ProtoReflect.Descriptor instead.
+func (*UserMediaStatistics) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *UserMediaStatistics) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *UserMediaStatistics) GetMeanScore() float64 {
+	if x != nil {
+		return x.MeanScore
+	}
+	return 0
+}
+
+func (x *UserMediaStatistics) GetStandardDeviation() float64 {
+	if x != nil {
+		return x.StandardDeviation
+	}
+	return 0
+}
+
+func (x *UserMediaStatistics) GetMinutesWatched() int32 {
+	if x != nil {
+		return x.MinutesWatched
+	}
+	return 0
+}
+
+func (x *UserMediaStatistics) GetEpisodesWatched() int32 {
+	if x != nil {
+		return x.EpisodesWatched
+	}
+	return 0
+}
+
+func (x *UserMediaStatistics) GetChaptersRead() int32 {
+	if x != nil {
+		return x.ChaptersRead
+	}
+	return 0
+}
+
+func (x *UserMediaStatistics) GetVolumesRead() int32 {
+	if x != nil {
+		return x.VolumesRead
+	}
+	return 0
+}
+
+func (x *UserMediaStatistics) GetScores() []*UserScoreStat {
+	if x != nil {
+		return x.Scores
+	}
+	return nil
+}
+
+func (x *UserMediaStatistics) GetLengths() []*UserLengthStat {
+	if x != nil {
+		return x.Lengths
+	}
+	return nil
+}
+
+func (x *UserMediaStatistics) GetStatuses() []*UserStatusStat {
+	if x != nil {
+		return x.Statuses
+	}
+	return nil
+}
+
+func (x *UserMediaStatistics) GetFormats() []*UserFormatStat {
+	if x != nil {
+		return x.Formats
+	}
+	return nil
+}
+
+func (x *UserMediaStatistics) GetReleaseYears() []*UserReleaseYearStat {
+	if x != nil {
+		return x.ReleaseYears
+	}
+	return nil
+}
+
+type UserStatistics struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Anime         *UserMediaStatistics   `protobuf:"bytes,1,opt,name=anime,proto3" json:"anime,omitempty"`
+	Manga         *UserMediaStatistics   `protobuf:"bytes,2,opt,name=manga,proto3" json:"manga,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserStatistics) Reset() {
+	*x = UserStatistics{}
+	mi := &file_user_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserStatistics) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserStatistics) ProtoMessage() {}
+
+func (x *UserStatistics) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserStatistics.ProtoReflect.Descriptor instead.
+func (*UserStatistics) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *UserStatistics) GetAnime() *UserMediaStatistics {
+	if x != nil {
+		return x.Anime
+	}
+	return nil
+}
+
+func (x *UserStatistics) GetManga() *UserMediaStatistics {
+	if x != nil {
+		return x.Manga
+	}
+	return nil
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
@@ -879,7 +1483,65 @@ const file_user_proto_rawDesc = "" +
 	"\x06avatar\x18\x03 \x01(\v2\x15.goodanime.UserAvatarR\x06avatar\x12!\n" +
 	"\fis_following\x18\x04 \x01(\bR\visFollowing\x12\x1f\n" +
 	"\vis_follower\x18\x05 \x01(\bR\n" +
-	"isFollowerB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"isFollower\"\xc5\x01\n" +
+	"\rUserScoreStat\x12\x14\n" +
+	"\x05score\x18\x01 \x01(\x05R\x05score\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\x05R\x05count\x12\x1d\n" +
+	"\n" +
+	"mean_score\x18\x03 \x01(\x01R\tmeanScore\x12'\n" +
+	"\x0fminutes_watched\x18\x04 \x01(\x05R\x0eminutesWatched\x12#\n" +
+	"\rchapters_read\x18\x05 \x01(\x05R\fchaptersRead\x12\x1b\n" +
+	"\tmedia_ids\x18\x06 \x03(\x05R\bmediaIds\"\xc8\x01\n" +
+	"\x0eUserLengthStat\x12\x16\n" +
+	"\x06length\x18\x01 \x01(\tR\x06length\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\x05R\x05count\x12\x1d\n" +
+	"\n" +
+	"mean_score\x18\x03 \x01(\x01R\tmeanScore\x12'\n" +
+	"\x0fminutes_watched\x18\x04 \x01(\x05R\x0eminutesWatched\x12#\n" +
+	"\rchapters_read\x18\x05 \x01(\x05R\fchaptersRead\x12\x1b\n" +
+	"\tmedia_ids\x18\x06 \x03(\x05R\bmediaIds\"\xc8\x01\n" +
+	"\x0eUserStatusStat\x12\x16\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\x05R\x05count\x12\x1d\n" +
+	"\n" +
+	"mean_score\x18\x03 \x01(\x01R\tmeanScore\x12'\n" +
+	"\x0fminutes_watched\x18\x04 \x01(\x05R\x0eminutesWatched\x12#\n" +
+	"\rchapters_read\x18\x05 \x01(\x05R\fchaptersRead\x12\x1b\n" +
+	"\tmedia_ids\x18\x06 \x03(\x05R\bmediaIds\"\xc8\x01\n" +
+	"\x0eUserFormatStat\x12\x16\n" +
+	"\x06format\x18\x01 \x01(\tR\x06format\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\x05R\x05count\x12\x1d\n" +
+	"\n" +
+	"mean_score\x18\x03 \x01(\x01R\tmeanScore\x12'\n" +
+	"\x0fminutes_watched\x18\x04 \x01(\x05R\x0eminutesWatched\x12#\n" +
+	"\rchapters_read\x18\x05 \x01(\x05R\fchaptersRead\x12\x1b\n" +
+	"\tmedia_ids\x18\x06 \x03(\x05R\bmediaIds\"\xd8\x01\n" +
+	"\x13UserReleaseYearStat\x12!\n" +
+	"\frelease_year\x18\x01 \x01(\x05R\vreleaseYear\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\x05R\x05count\x12\x1d\n" +
+	"\n" +
+	"mean_score\x18\x03 \x01(\x01R\tmeanScore\x12'\n" +
+	"\x0fminutes_watched\x18\x04 \x01(\x05R\x0eminutesWatched\x12#\n" +
+	"\rchapters_read\x18\x05 \x01(\x05R\fchaptersRead\x12\x1b\n" +
+	"\tmedia_ids\x18\x06 \x03(\x05R\bmediaIds\"\xad\x04\n" +
+	"\x13UserMediaStatistics\x12\x14\n" +
+	"\x05count\x18\x01 \x01(\x05R\x05count\x12\x1d\n" +
+	"\n" +
+	"mean_score\x18\x02 \x01(\x01R\tmeanScore\x12-\n" +
+	"\x12standard_deviation\x18\x03 \x01(\x01R\x11standardDeviation\x12'\n" +
+	"\x0fminutes_watched\x18\x04 \x01(\x05R\x0eminutesWatched\x12)\n" +
+	"\x10episodes_watched\x18\x05 \x01(\x05R\x0fepisodesWatched\x12#\n" +
+	"\rchapters_read\x18\x06 \x01(\x05R\fchaptersRead\x12!\n" +
+	"\fvolumes_read\x18\a \x01(\x05R\vvolumesRead\x120\n" +
+	"\x06scores\x18\b \x03(\v2\x18.goodanime.UserScoreStatR\x06scores\x123\n" +
+	"\alengths\x18\t \x03(\v2\x19.goodanime.UserLengthStatR\alengths\x125\n" +
+	"\bstatuses\x18\n" +
+	" \x03(\v2\x19.goodanime.UserStatusStatR\bstatuses\x123\n" +
+	"\aformats\x18\v \x03(\v2\x19.goodanime.UserFormatStatR\aformats\x12C\n" +
+	"\rrelease_years\x18\f \x03(\v2\x1e.goodanime.UserReleaseYearStatR\freleaseYears\"|\n" +
+	"\x0eUserStatistics\x124\n" +
+	"\x05anime\x18\x01 \x01(\v2\x1e.goodanime.UserMediaStatisticsR\x05anime\x124\n" +
+	"\x05manga\x18\x02 \x01(\v2\x1e.goodanime.UserMediaStatisticsR\x05mangaB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -893,7 +1555,7 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_user_proto_goTypes = []any{
 	(*UserAvatar)(nil),                   // 0: goodanime.UserAvatar
 	(*UserProfile)(nil),                  // 1: goodanime.UserProfile
@@ -905,37 +1567,51 @@ var file_user_proto_goTypes = []any{
 	(*FavouriteStudioConnection)(nil),    // 7: goodanime.FavouriteStudioConnection
 	(*UserFavourites)(nil),               // 8: goodanime.UserFavourites
 	(*SocialUser)(nil),                   // 9: goodanime.SocialUser
-	(*MediaMin)(nil),                     // 10: goodanime.MediaMin
-	(*PageInfo)(nil),                     // 11: goodanime.PageInfo
-	(*Character)(nil),                    // 12: goodanime.Character
-	(*Staff)(nil),                        // 13: goodanime.Staff
-	(*Studio)(nil),                       // 14: goodanime.Studio
+	(*UserScoreStat)(nil),                // 10: goodanime.UserScoreStat
+	(*UserLengthStat)(nil),               // 11: goodanime.UserLengthStat
+	(*UserStatusStat)(nil),               // 12: goodanime.UserStatusStat
+	(*UserFormatStat)(nil),               // 13: goodanime.UserFormatStat
+	(*UserReleaseYearStat)(nil),          // 14: goodanime.UserReleaseYearStat
+	(*UserMediaStatistics)(nil),          // 15: goodanime.UserMediaStatistics
+	(*UserStatistics)(nil),               // 16: goodanime.UserStatistics
+	(*MediaMin)(nil),                     // 17: goodanime.MediaMin
+	(*PageInfo)(nil),                     // 18: goodanime.PageInfo
+	(*Character)(nil),                    // 19: goodanime.Character
+	(*Staff)(nil),                        // 20: goodanime.Staff
+	(*Studio)(nil),                       // 21: goodanime.Studio
 }
 var file_user_proto_depIdxs = []int32{
 	0,  // 0: goodanime.UserProfile.avatar:type_name -> goodanime.UserAvatar
 	0,  // 1: goodanime.UserActivityUser.avatar:type_name -> goodanime.UserAvatar
 	2,  // 2: goodanime.UserActivity.user:type_name -> goodanime.UserActivityUser
 	2,  // 3: goodanime.UserActivity.recipient:type_name -> goodanime.UserActivityUser
-	10, // 4: goodanime.UserActivity.media:type_name -> goodanime.MediaMin
-	11, // 5: goodanime.FavouriteMediaConnection.page_info:type_name -> goodanime.PageInfo
-	10, // 6: goodanime.FavouriteMediaConnection.nodes:type_name -> goodanime.MediaMin
-	11, // 7: goodanime.FavouriteCharacterConnection.page_info:type_name -> goodanime.PageInfo
-	12, // 8: goodanime.FavouriteCharacterConnection.nodes:type_name -> goodanime.Character
-	11, // 9: goodanime.FavouriteStaffConnection.page_info:type_name -> goodanime.PageInfo
-	13, // 10: goodanime.FavouriteStaffConnection.nodes:type_name -> goodanime.Staff
-	11, // 11: goodanime.FavouriteStudioConnection.page_info:type_name -> goodanime.PageInfo
-	14, // 12: goodanime.FavouriteStudioConnection.nodes:type_name -> goodanime.Studio
+	17, // 4: goodanime.UserActivity.media:type_name -> goodanime.MediaMin
+	18, // 5: goodanime.FavouriteMediaConnection.page_info:type_name -> goodanime.PageInfo
+	17, // 6: goodanime.FavouriteMediaConnection.nodes:type_name -> goodanime.MediaMin
+	18, // 7: goodanime.FavouriteCharacterConnection.page_info:type_name -> goodanime.PageInfo
+	19, // 8: goodanime.FavouriteCharacterConnection.nodes:type_name -> goodanime.Character
+	18, // 9: goodanime.FavouriteStaffConnection.page_info:type_name -> goodanime.PageInfo
+	20, // 10: goodanime.FavouriteStaffConnection.nodes:type_name -> goodanime.Staff
+	18, // 11: goodanime.FavouriteStudioConnection.page_info:type_name -> goodanime.PageInfo
+	21, // 12: goodanime.FavouriteStudioConnection.nodes:type_name -> goodanime.Studio
 	4,  // 13: goodanime.UserFavourites.anime:type_name -> goodanime.FavouriteMediaConnection
 	4,  // 14: goodanime.UserFavourites.manga:type_name -> goodanime.FavouriteMediaConnection
 	5,  // 15: goodanime.UserFavourites.characters:type_name -> goodanime.FavouriteCharacterConnection
 	6,  // 16: goodanime.UserFavourites.staff:type_name -> goodanime.FavouriteStaffConnection
 	7,  // 17: goodanime.UserFavourites.studios:type_name -> goodanime.FavouriteStudioConnection
 	0,  // 18: goodanime.SocialUser.avatar:type_name -> goodanime.UserAvatar
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	10, // 19: goodanime.UserMediaStatistics.scores:type_name -> goodanime.UserScoreStat
+	11, // 20: goodanime.UserMediaStatistics.lengths:type_name -> goodanime.UserLengthStat
+	12, // 21: goodanime.UserMediaStatistics.statuses:type_name -> goodanime.UserStatusStat
+	13, // 22: goodanime.UserMediaStatistics.formats:type_name -> goodanime.UserFormatStat
+	14, // 23: goodanime.UserMediaStatistics.release_years:type_name -> goodanime.UserReleaseYearStat
+	15, // 24: goodanime.UserStatistics.anime:type_name -> goodanime.UserMediaStatistics
+	15, // 25: goodanime.UserStatistics.manga:type_name -> goodanime.UserMediaStatistics
+	26, // [26:26] is the sub-list for method output_type
+	26, // [26:26] is the sub-list for method input_type
+	26, // [26:26] is the sub-list for extension type_name
+	26, // [26:26] is the sub-list for extension extendee
+	0,  // [0:26] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -954,7 +1630,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -1677,3 +1677,38 @@ final $typed_data.Uint8List getUserSocialResponseDescriptor = $convert.base64Dec
     'ChVHZXRVc2VyU29jaWFsUmVzcG9uc2USMAoJcGFnZV9pbmZvGAEgASgLMhMuZ29vZGFuaW1lLl'
     'BhZ2VJbmZvUghwYWdlSW5mbxIUCgV0b3RhbBgCIAEoBVIFdG90YWwSKwoFdXNlcnMYAyADKAsy'
     'FS5nb29kYW5pbWUuU29jaWFsVXNlclIFdXNlcnMSFAoFZXJyb3IYBCABKAlSBWVycm9y');
+
+@$core.Deprecated('Use getUserStatisticsRequestDescriptor instead')
+const GetUserStatisticsRequest$json = {
+  '1': 'GetUserStatisticsRequest',
+  '2': [
+    {'1': 'user_id', '3': 1, '4': 1, '5': 5, '10': 'userId'},
+  ],
+};
+
+/// Descriptor for `GetUserStatisticsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserStatisticsRequestDescriptor =
+    $convert.base64Decode(
+        'ChhHZXRVc2VyU3RhdGlzdGljc1JlcXVlc3QSFwoHdXNlcl9pZBgBIAEoBVIGdXNlcklk');
+
+@$core.Deprecated('Use getUserStatisticsResponseDescriptor instead')
+const GetUserStatisticsResponse$json = {
+  '1': 'GetUserStatisticsResponse',
+  '2': [
+    {
+      '1': 'statistics',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.UserStatistics',
+      '10': 'statistics'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `GetUserStatisticsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserStatisticsResponseDescriptor =
+    $convert.base64Decode(
+        'ChlHZXRVc2VyU3RhdGlzdGljc1Jlc3BvbnNlEjkKCnN0YXRpc3RpY3MYASABKAsyGS5nb29kYW'
+        '5pbWUuVXNlclN0YXRpc3RpY3NSCnN0YXRpc3RpY3MSFAoFZXJyb3IYAiABKAlSBWVycm9y');
