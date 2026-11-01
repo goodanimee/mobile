@@ -66,6 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
   bool _isFollowLoading = false;
   bool _showStickyBar = false;
   int _selectedTabIndex = 0;
+  int _previousTabIndex = 0;
   int _refreshTrigger = 0;
   String? _error;
 
@@ -224,6 +225,9 @@ class _ProfilePageState extends State<ProfilePage> {
       selectedIndex: _selectedTabIndex,
       onSelect: (index) {
         if (_selectedTabIndex != index) {
+          if (_selectedTabIndex != 3) {
+            _previousTabIndex = _selectedTabIndex;
+          }
           setState(() => _selectedTabIndex = index);
           _notifyQuickNav();
         }
@@ -240,19 +244,37 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  void _handleOpenFollowing() {
-    setState(() {
-      _socialSegment = SocialSegment.following;
-      _selectedTabIndex = 3;
-    });
+  void _handleToggleFollowing() {
+    if (_selectedTabIndex == 3 && _socialSegment == SocialSegment.following) {
+      setState(() {
+        _selectedTabIndex = _previousTabIndex;
+      });
+    } else {
+      if (_selectedTabIndex != 3) {
+        _previousTabIndex = _selectedTabIndex;
+      }
+      setState(() {
+        _socialSegment = SocialSegment.following;
+        _selectedTabIndex = 3;
+      });
+    }
     _notifyQuickNav();
   }
 
-  void _handleOpenFollowers() {
-    setState(() {
-      _socialSegment = SocialSegment.followers;
-      _selectedTabIndex = 3;
-    });
+  void _handleToggleFollowers() {
+    if (_selectedTabIndex == 3 && _socialSegment == SocialSegment.followers) {
+      setState(() {
+        _selectedTabIndex = _previousTabIndex;
+      });
+    } else {
+      if (_selectedTabIndex != 3) {
+        _previousTabIndex = _selectedTabIndex;
+      }
+      setState(() {
+        _socialSegment = SocialSegment.followers;
+        _selectedTabIndex = 3;
+      });
+    }
     _notifyQuickNav();
   }
 
@@ -362,8 +384,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 SliverToBoxAdapter(
                   child: ProfileHeader(
                     profile: profile,
-                    onTapFollowing: _handleOpenFollowing,
-                    onTapFollowers: _handleOpenFollowers,
+                    activeSocialSegment: _selectedTabIndex == 3
+                        ? _socialSegment
+                        : null,
+                    onTapFollowing: _handleToggleFollowing,
+                    onTapFollowers: _handleToggleFollowers,
                   ),
                 ),
                 SliverToBoxAdapter(child: _buildActiveTab(profile)),

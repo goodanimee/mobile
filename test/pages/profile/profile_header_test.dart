@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:goodanime/models/social_user.dart';
 import 'package:goodanime/models/user_profile.dart';
 import 'package:goodanime/pages/profile/widgets/profile_header.dart';
 import 'package:goodanime/pages/profile/widgets/profile_sticky_header.dart';
@@ -18,6 +19,7 @@ void main() {
 
   Widget buildHeader({
     UserProfile profile = sampleProfile,
+    SocialSegment? activeSocialSegment,
     VoidCallback? onTapFollowing,
     VoidCallback? onTapFollowers,
   }) {
@@ -26,6 +28,7 @@ void main() {
         body: SingleChildScrollView(
           child: ProfileHeader(
             profile: profile,
+            activeSocialSegment: activeSocialSegment,
             onTapFollowing: onTapFollowing,
             onTapFollowers: onTapFollowers,
           ),
@@ -69,6 +72,19 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Followers'), findsOneWidget);
+    expect(find.byIcon(LucideIcons.chevronRight), findsNWidgets(2));
+
+    final avatarContainer = tester.getRect(
+      find
+          .ancestor(of: find.byType(ClipOval), matching: find.byType(Container))
+          .first,
+    );
+    final chipMaterial = tester.getRect(
+      find
+          .ancestor(of: find.text('Following'), matching: find.byType(Material))
+          .first,
+    );
+    expect(chipMaterial.bottom, equals(avatarContainer.bottom));
   });
 
   testWidgets(
@@ -90,6 +106,32 @@ void main() {
 
       await tester.tap(find.text('Followers'));
       expect(followersTapped, isTrue);
+    },
+  );
+
+  testWidgets(
+    'renders active chip with close cross icon when activeSocialSegment is set',
+    (tester) async {
+      await tester.pumpWidget(
+        buildHeader(activeSocialSegment: SocialSegment.following),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(LucideIcons.x), findsOneWidget);
+      expect(find.byIcon(LucideIcons.chevronRight), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'renders active followers chip with close cross icon when activeSocialSegment is followers',
+    (tester) async {
+      await tester.pumpWidget(
+        buildHeader(activeSocialSegment: SocialSegment.followers),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(LucideIcons.x), findsOneWidget);
+      expect(find.byIcon(LucideIcons.chevronRight), findsOneWidget);
     },
   );
 

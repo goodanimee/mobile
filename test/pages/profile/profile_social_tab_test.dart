@@ -78,7 +78,7 @@ void main() {
       expect(find.text('zoro'), findsOneWidget);
       expect(find.text('nami'), findsOneWidget);
       expect(find.text('Follows you'), findsOneWidget);
-      expect(find.text('Following'), findsNWidgets(3));
+      expect(find.text('Following'), findsNWidgets(2));
       expect(find.text('Follow'), findsOneWidget);
     },
   );
@@ -93,28 +93,19 @@ void main() {
     expect(find.text('Follow'), findsNothing);
   });
 
-  testWidgets('switches segment between Following and Followers', (
-    tester,
-  ) async {
-    SocialSegment? activeSegment;
+  testWidgets('switches segment when initialSegment updates', (tester) async {
     int followersFetchCount = 0;
 
-    await tester.pumpWidget(
-      buildSocialTab(
-        onSegmentChanged: (seg) => activeSegment = seg,
+    Widget buildWithSegment(SocialSegment segment) {
+      return buildSocialTab(
+        initialSegment: segment,
         fetchSocial: ({required userId, required isFollowers, page = 1}) async {
           if (isFollowers) {
             followersFetchCount++;
             return const SocialUserPage(
               pageInfo: PageInfo(hasNextPage: false, currentPage: 1),
               total: 1,
-              users: [
-                SocialUser(
-                  id: 201,
-                  name: 'sanji',
-                  isFollower: true,
-                ),
-              ],
+              users: [SocialUser(id: 201, name: 'sanji', isFollower: true)],
             );
           }
           return SocialUserPage(
@@ -123,16 +114,17 @@ void main() {
             users: sampleUsers,
           );
         },
-      ),
-    );
+      );
+    }
+
+    await tester.pumpWidget(buildWithSegment(SocialSegment.following));
     await tester.pumpAndSettle();
 
     expect(find.text('luffy'), findsOneWidget);
 
-    await tester.tap(find.text('Followers'));
+    await tester.pumpWidget(buildWithSegment(SocialSegment.followers));
     await tester.pumpAndSettle();
 
-    expect(activeSegment, equals(SocialSegment.followers));
     expect(followersFetchCount, equals(1));
     expect(find.text('sanji'), findsOneWidget);
     expect(find.text('luffy'), findsNothing);

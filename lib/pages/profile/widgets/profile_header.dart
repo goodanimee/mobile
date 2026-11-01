@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../components/app_network_image.dart';
+import '../../../models/social_user.dart';
 import '../../../models/user_profile.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/utils.dart';
@@ -10,6 +11,9 @@ import '../../../utils/utils.dart';
 class ProfileHeader extends StatelessWidget {
   /// User profile data to display.
   final UserProfile profile;
+
+  /// Optional active social segment when viewing the social tab.
+  final SocialSegment? activeSocialSegment;
 
   /// Optional callback when tapping following count.
   final VoidCallback? onTapFollowing;
@@ -21,6 +25,7 @@ class ProfileHeader extends StatelessWidget {
   const ProfileHeader({
     super.key,
     required this.profile,
+    this.activeSocialSegment,
     this.onTapFollowing,
     this.onTapFollowers,
   });
@@ -81,6 +86,7 @@ class ProfileHeader extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 14, 20, 16),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               _buildAvatar(avatarUrl),
               const SizedBox(width: 14),
@@ -157,19 +163,21 @@ class ProfileHeader extends StatelessWidget {
             ],
           ],
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 8),
         Wrap(
-          spacing: 16,
-          runSpacing: 4,
+          spacing: 8,
+          runSpacing: 6,
           children: [
-            _buildStat(
+            _buildStatChip(
               count: profile.followingCount,
               label: 'Following',
+              isActive: activeSocialSegment == SocialSegment.following,
               onTap: onTapFollowing,
             ),
-            _buildStat(
+            _buildStatChip(
               count: profile.followersCount,
               label: 'Followers',
+              isActive: activeSocialSegment == SocialSegment.followers,
               onTap: onTapFollowers,
             ),
           ],
@@ -178,35 +186,58 @@ class ProfileHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildStat({
+  Widget _buildStatChip({
     required int count,
     required String label,
+    bool isActive = false,
     VoidCallback? onTap,
   }) {
-    final content = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          StringUtils.formatCompactNumber(count),
-          style: const TextStyle(
-            color: textPrimary,
-            fontWeight: FontWeight.bold,
-            fontSize: 13,
+    final chip = Container(
+      padding: const EdgeInsets.fromLTRB(10, 5, 8, 5),
+      decoration: BoxDecoration(
+        color: isActive ? paletteBlue.withValues(alpha: 0.2) : hoverBgColor,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: isActive ? borderColor : cardBorderColor),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            StringUtils.formatCompactNumber(count),
+            style: const TextStyle(
+              color: textPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 12.5,
+            ),
           ),
-        ),
-        const SizedBox(width: 4),
-        Text(label, style: const TextStyle(color: textSecondary, fontSize: 13)),
-      ],
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: isActive ? textPrimary : textSecondary,
+              fontSize: 12.5,
+              fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Icon(
+            isActive ? LucideIcons.x : LucideIcons.chevronRight,
+            size: 13,
+            color: isActive ? textPrimary : textSecondary,
+          ),
+        ],
+      ),
     );
 
-    if (onTap == null) return content;
-
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
         onTap: onTap,
-        child: content,
+        borderRadius: BorderRadius.circular(20),
+        splashColor: pressBgColor,
+        highlightColor: pressBgColor,
+        child: chip,
       ),
     );
   }

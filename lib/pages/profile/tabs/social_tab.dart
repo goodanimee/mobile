@@ -355,57 +355,10 @@ class _ProfileSocialTabState extends State<ProfileSocialTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 4),
-          _buildSegmentBar(),
-          const SizedBox(height: 12),
           _buildSearchBar(),
           const SizedBox(height: 16),
           _buildBody(),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSegmentBar() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          for (var i = 0; i < SocialSegment.values.length; i++) ...[
-            if (i > 0) const SizedBox(width: 8),
-            _buildSegmentPill(SocialSegment.values[i]),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSegmentPill(SocialSegment segment) {
-    final isSelected = _selectedSegment == segment;
-    return Material(
-      color: isSelected ? paletteBlue.withValues(alpha: 0.2) : hoverBgColor,
-      borderRadius: BorderRadius.circular(20),
-      child: InkWell(
-        onTap: () => _selectSegment(segment),
-        borderRadius: BorderRadius.circular(20),
-        splashColor: pressBgColor,
-        highlightColor: pressBgColor,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: isSelected ? borderColor : cardBorderColor,
-            ),
-          ),
-          child: Text(
-            segment.label,
-            style: TextStyle(
-              color: isSelected ? textPrimary : textSecondary,
-              fontSize: 13,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-            ),
-          ),
-        ),
       ),
     );
   }
