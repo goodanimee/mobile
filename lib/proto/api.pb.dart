@@ -5164,6 +5164,178 @@ class ResolveAnilistPreviewsResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(6);
 }
 
+class GetUserFavouritesRequest extends $pb.GeneratedMessage {
+  factory GetUserFavouritesRequest({
+    $core.int? userId,
+    $core.String? category,
+    $core.int? page,
+    $core.int? perPage,
+  }) {
+    final result = GetUserFavouritesRequest._();
+    if (userId != null) result.userId = userId;
+    if (category != null) result.category = category;
+    if (page != null) result.page = page;
+    if (perPage != null) result.perPage = perPage;
+    return result;
+  }
+
+  GetUserFavouritesRequest._();
+
+  factory GetUserFavouritesRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserFavouritesRequest()..mergeFromBuffer(data, registry);
+  factory GetUserFavouritesRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserFavouritesRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetUserFavouritesRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: GetUserFavouritesRequest.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'userId')
+    ..aOS(2, _omitFieldNames ? '' : 'category')
+    ..aI(3, _omitFieldNames ? '' : 'page')
+    ..aI(4, _omitFieldNames ? '' : 'perPage')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserFavouritesRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserFavouritesRequest copyWith(
+          void Function(GetUserFavouritesRequest) updates) =>
+      super.copyWith((message) => updates(message as GetUserFavouritesRequest))
+          as GetUserFavouritesRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetUserFavouritesRequest() / GetUserFavouritesRequest.new instead')
+  static GetUserFavouritesRequest create() => GetUserFavouritesRequest._();
+  static $pb.GeneratedMessage $_createMessage() => GetUserFavouritesRequest._();
+  @$core.override
+  GetUserFavouritesRequest createEmptyInstance() =>
+      GetUserFavouritesRequest._();
+  @$core.pragma('dart2js:noInline')
+  static GetUserFavouritesRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetUserFavouritesRequest>(
+          GetUserFavouritesRequest.$_createMessage);
+  static GetUserFavouritesRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get userId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get category => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set category($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasCategory() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCategory() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get page => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set page($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasPage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPage() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get perPage => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set perPage($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasPerPage() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPerPage() => $_clearField(4);
+}
+
+class GetUserFavouritesResponse extends $pb.GeneratedMessage {
+  factory GetUserFavouritesResponse({
+    $12.UserFavourites? favourites,
+    $core.String? error,
+  }) {
+    final result = GetUserFavouritesResponse._();
+    if (favourites != null) result.favourites = favourites;
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  GetUserFavouritesResponse._();
+
+  factory GetUserFavouritesResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserFavouritesResponse()..mergeFromBuffer(data, registry);
+  factory GetUserFavouritesResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserFavouritesResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetUserFavouritesResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: GetUserFavouritesResponse.$_createMessage)
+    ..aOM<$12.UserFavourites>(1, _omitFieldNames ? '' : 'favourites',
+        subBuilder: $12.UserFavourites.$_createMessage)
+    ..aOS(2, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserFavouritesResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserFavouritesResponse copyWith(
+          void Function(GetUserFavouritesResponse) updates) =>
+      super.copyWith((message) => updates(message as GetUserFavouritesResponse))
+          as GetUserFavouritesResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetUserFavouritesResponse() / GetUserFavouritesResponse.new instead')
+  static GetUserFavouritesResponse create() => GetUserFavouritesResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      GetUserFavouritesResponse._();
+  @$core.override
+  GetUserFavouritesResponse createEmptyInstance() =>
+      GetUserFavouritesResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetUserFavouritesResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetUserFavouritesResponse>(
+          GetUserFavouritesResponse.$_createMessage);
+  static GetUserFavouritesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $12.UserFavourites get favourites => $_getN(0);
+  @$pb.TagNumber(1)
+  set favourites($12.UserFavourites value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasFavourites() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFavourites() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $12.UserFavourites ensureFavourites() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get error => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set error($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasError() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearError() => $_clearField(2);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

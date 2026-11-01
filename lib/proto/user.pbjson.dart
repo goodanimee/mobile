@@ -139,3 +139,180 @@ final $typed_data.Uint8List userActivityDescriptor = $convert.base64Decode(
     'ByaXZhdGUSLwoEdXNlchgLIAEoCzIbLmdvb2RhbmltZS5Vc2VyQWN0aXZpdHlVc2VyUgR1c2Vy'
     'EjkKCXJlY2lwaWVudBgMIAEoCzIbLmdvb2RhbmltZS5Vc2VyQWN0aXZpdHlVc2VyUglyZWNpcG'
     'llbnQSKQoFbWVkaWEYDSABKAsyEy5nb29kYW5pbWUuTWVkaWFNaW5SBW1lZGlh');
+
+@$core.Deprecated('Use favouriteMediaConnectionDescriptor instead')
+const FavouriteMediaConnection$json = {
+  '1': 'FavouriteMediaConnection',
+  '2': [
+    {
+      '1': 'page_info',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
+    {
+      '1': 'nodes',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.MediaMin',
+      '10': 'nodes'
+    },
+  ],
+};
+
+/// Descriptor for `FavouriteMediaConnection`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List favouriteMediaConnectionDescriptor = $convert.base64Decode(
+    'ChhGYXZvdXJpdGVNZWRpYUNvbm5lY3Rpb24SMAoJcGFnZV9pbmZvGAEgASgLMhMuZ29vZGFuaW'
+    '1lLlBhZ2VJbmZvUghwYWdlSW5mbxIUCgV0b3RhbBgCIAEoBVIFdG90YWwSKQoFbm9kZXMYAyAD'
+    'KAsyEy5nb29kYW5pbWUuTWVkaWFNaW5SBW5vZGVz');
+
+@$core.Deprecated('Use favouriteCharacterConnectionDescriptor instead')
+const FavouriteCharacterConnection$json = {
+  '1': 'FavouriteCharacterConnection',
+  '2': [
+    {
+      '1': 'page_info',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
+    {
+      '1': 'nodes',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.Character',
+      '10': 'nodes'
+    },
+  ],
+};
+
+/// Descriptor for `FavouriteCharacterConnection`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List favouriteCharacterConnectionDescriptor =
+    $convert.base64Decode(
+        'ChxGYXZvdXJpdGVDaGFyYWN0ZXJDb25uZWN0aW9uEjAKCXBhZ2VfaW5mbxgBIAEoCzITLmdvb2'
+        'RhbmltZS5QYWdlSW5mb1IIcGFnZUluZm8SFAoFdG90YWwYAiABKAVSBXRvdGFsEioKBW5vZGVz'
+        'GAMgAygLMhQuZ29vZGFuaW1lLkNoYXJhY3RlclIFbm9kZXM=');
+
+@$core.Deprecated('Use favouriteStaffConnectionDescriptor instead')
+const FavouriteStaffConnection$json = {
+  '1': 'FavouriteStaffConnection',
+  '2': [
+    {
+      '1': 'page_info',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
+    {
+      '1': 'nodes',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.Staff',
+      '10': 'nodes'
+    },
+  ],
+};
+
+/// Descriptor for `FavouriteStaffConnection`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List favouriteStaffConnectionDescriptor = $convert.base64Decode(
+    'ChhGYXZvdXJpdGVTdGFmZkNvbm5lY3Rpb24SMAoJcGFnZV9pbmZvGAEgASgLMhMuZ29vZGFuaW'
+    '1lLlBhZ2VJbmZvUghwYWdlSW5mbxIUCgV0b3RhbBgCIAEoBVIFdG90YWwSJgoFbm9kZXMYAyAD'
+    'KAsyEC5nb29kYW5pbWUuU3RhZmZSBW5vZGVz');
+
+@$core.Deprecated('Use favouriteStudioConnectionDescriptor instead')
+const FavouriteStudioConnection$json = {
+  '1': 'FavouriteStudioConnection',
+  '2': [
+    {
+      '1': 'page_info',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
+    {
+      '1': 'nodes',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.Studio',
+      '10': 'nodes'
+    },
+  ],
+};
+
+/// Descriptor for `FavouriteStudioConnection`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List favouriteStudioConnectionDescriptor = $convert.base64Decode(
+    'ChlGYXZvdXJpdGVTdHVkaW9Db25uZWN0aW9uEjAKCXBhZ2VfaW5mbxgBIAEoCzITLmdvb2Rhbm'
+    'ltZS5QYWdlSW5mb1IIcGFnZUluZm8SFAoFdG90YWwYAiABKAVSBXRvdGFsEicKBW5vZGVzGAMg'
+    'AygLMhEuZ29vZGFuaW1lLlN0dWRpb1IFbm9kZXM=');
+
+@$core.Deprecated('Use userFavouritesDescriptor instead')
+const UserFavourites$json = {
+  '1': 'UserFavourites',
+  '2': [
+    {
+      '1': 'anime',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.FavouriteMediaConnection',
+      '10': 'anime'
+    },
+    {
+      '1': 'manga',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.FavouriteMediaConnection',
+      '10': 'manga'
+    },
+    {
+      '1': 'characters',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.FavouriteCharacterConnection',
+      '10': 'characters'
+    },
+    {
+      '1': 'staff',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.FavouriteStaffConnection',
+      '10': 'staff'
+    },
+    {
+      '1': 'studios',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.FavouriteStudioConnection',
+      '10': 'studios'
+    },
+  ],
+};
+
+/// Descriptor for `UserFavourites`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List userFavouritesDescriptor = $convert.base64Decode(
+    'Cg5Vc2VyRmF2b3VyaXRlcxI5CgVhbmltZRgBIAEoCzIjLmdvb2RhbmltZS5GYXZvdXJpdGVNZW'
+    'RpYUNvbm5lY3Rpb25SBWFuaW1lEjkKBW1hbmdhGAIgASgLMiMuZ29vZGFuaW1lLkZhdm91cml0'
+    'ZU1lZGlhQ29ubmVjdGlvblIFbWFuZ2ESRwoKY2hhcmFjdGVycxgDIAEoCzInLmdvb2RhbmltZS'
+    '5GYXZvdXJpdGVDaGFyYWN0ZXJDb25uZWN0aW9uUgpjaGFyYWN0ZXJzEjkKBXN0YWZmGAQgASgL'
+    'MiMuZ29vZGFuaW1lLkZhdm91cml0ZVN0YWZmQ29ubmVjdGlvblIFc3RhZmYSPgoHc3R1ZGlvcx'
+    'gFIAEoCzIkLmdvb2RhbmltZS5GYXZvdXJpdGVTdHVkaW9Db25uZWN0aW9uUgdzdHVkaW9z');

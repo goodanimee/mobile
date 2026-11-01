@@ -2,7 +2,11 @@ syntax = "proto3";
 
 package goodanime;
 
+import "common.proto";
+import "media_character.proto";
 import "media_min.proto";
+import "media_staff.proto";
+import "media_studio.proto";
 
 option go_package = "goodanime/backend/proto";
 
@@ -46,4 +50,36 @@ message UserActivity {
   UserActivityUser user = 11;
   UserActivityUser recipient = 12;
   MediaMin media = 13;
+}
+
+message FavouriteMediaConnection {
+  PageInfo page_info = 1;
+  int32 total = 2;
+  repeated MediaMin nodes = 3;
+}
+
+message FavouriteCharacterConnection {
+  PageInfo page_info = 1;
+  int32 total = 2;
+  repeated Character nodes = 3;
+}
+
+message FavouriteStaffConnection {
+  PageInfo page_info = 1;
+  int32 total = 2;
+  repeated Staff nodes = 3;
+}
+
+message FavouriteStudioConnection {
+  PageInfo page_info = 1;
+  int32 total = 2;
+  repeated Studio nodes = 3;
+}
+
+message UserFavourites {
+  FavouriteMediaConnection anime = 1;
+  FavouriteMediaConnection manga = 2;
+  FavouriteCharacterConnection characters = 3;
+  FavouriteStaffConnection staff = 4;
+  FavouriteStudioConnection studios = 5;
 }

@@ -391,3 +391,15 @@ message ResolveAnilistPreviewsResponse {
   string error = 6;
 }
 
+message GetUserFavouritesRequest {
+  int32 user_id = 1;
+  string category = 2;
+  int32 page = 3;
+  int32 per_page = 4;
+}
+
+message GetUserFavouritesResponse {
+  UserFavourites favourites = 1;
+  string error = 2;
+}
+

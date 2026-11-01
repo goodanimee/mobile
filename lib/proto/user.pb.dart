@@ -14,7 +14,11 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'common.pb.dart' as $1;
+import 'media_character.pb.dart' as $2;
 import 'media_min.pb.dart' as $0;
+import 'media_staff.pb.dart' as $3;
+import 'media_studio.pb.dart' as $4;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
@@ -569,6 +573,458 @@ class UserActivity extends $pb.GeneratedMessage {
   void clearMedia() => $_clearField(13);
   @$pb.TagNumber(13)
   $0.MediaMin ensureMedia() => $_ensure(12);
+}
+
+class FavouriteMediaConnection extends $pb.GeneratedMessage {
+  factory FavouriteMediaConnection({
+    $1.PageInfo? pageInfo,
+    $core.int? total,
+    $core.Iterable<$0.MediaMin>? nodes,
+  }) {
+    final result = FavouriteMediaConnection._();
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (total != null) result.total = total;
+    if (nodes != null) result.nodes.addAll(nodes);
+    return result;
+  }
+
+  FavouriteMediaConnection._();
+
+  factory FavouriteMediaConnection.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FavouriteMediaConnection()..mergeFromBuffer(data, registry);
+  factory FavouriteMediaConnection.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FavouriteMediaConnection()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FavouriteMediaConnection',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: FavouriteMediaConnection.$_createMessage)
+    ..aOM<$1.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $1.PageInfo.$_createMessage)
+    ..aI(2, _omitFieldNames ? '' : 'total')
+    ..pPM<$0.MediaMin>(3, _omitFieldNames ? '' : 'nodes',
+        subBuilder: $0.MediaMin.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FavouriteMediaConnection clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FavouriteMediaConnection copyWith(
+          void Function(FavouriteMediaConnection) updates) =>
+      super.copyWith((message) => updates(message as FavouriteMediaConnection))
+          as FavouriteMediaConnection;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FavouriteMediaConnection() / FavouriteMediaConnection.new instead')
+  static FavouriteMediaConnection create() => FavouriteMediaConnection._();
+  static $pb.GeneratedMessage $_createMessage() => FavouriteMediaConnection._();
+  @$core.override
+  FavouriteMediaConnection createEmptyInstance() =>
+      FavouriteMediaConnection._();
+  @$core.pragma('dart2js:noInline')
+  static FavouriteMediaConnection getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FavouriteMediaConnection>(
+          FavouriteMediaConnection.$_createMessage);
+  static FavouriteMediaConnection? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.PageInfo get pageInfo => $_getN(0);
+  @$pb.TagNumber(1)
+  set pageInfo($1.PageInfo value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPageInfo() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPageInfo() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $1.PageInfo ensurePageInfo() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.int get total => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set total($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasTotal() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTotal() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$0.MediaMin> get nodes => $_getList(2);
+}
+
+class FavouriteCharacterConnection extends $pb.GeneratedMessage {
+  factory FavouriteCharacterConnection({
+    $1.PageInfo? pageInfo,
+    $core.int? total,
+    $core.Iterable<$2.Character>? nodes,
+  }) {
+    final result = FavouriteCharacterConnection._();
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (total != null) result.total = total;
+    if (nodes != null) result.nodes.addAll(nodes);
+    return result;
+  }
+
+  FavouriteCharacterConnection._();
+
+  factory FavouriteCharacterConnection.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FavouriteCharacterConnection()..mergeFromBuffer(data, registry);
+  factory FavouriteCharacterConnection.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FavouriteCharacterConnection()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FavouriteCharacterConnection',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: FavouriteCharacterConnection.$_createMessage)
+    ..aOM<$1.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $1.PageInfo.$_createMessage)
+    ..aI(2, _omitFieldNames ? '' : 'total')
+    ..pPM<$2.Character>(3, _omitFieldNames ? '' : 'nodes',
+        subBuilder: $2.Character.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FavouriteCharacterConnection clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FavouriteCharacterConnection copyWith(
+          void Function(FavouriteCharacterConnection) updates) =>
+      super.copyWith(
+              (message) => updates(message as FavouriteCharacterConnection))
+          as FavouriteCharacterConnection;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FavouriteCharacterConnection() / FavouriteCharacterConnection.new instead')
+  static FavouriteCharacterConnection create() =>
+      FavouriteCharacterConnection._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FavouriteCharacterConnection._();
+  @$core.override
+  FavouriteCharacterConnection createEmptyInstance() =>
+      FavouriteCharacterConnection._();
+  @$core.pragma('dart2js:noInline')
+  static FavouriteCharacterConnection getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FavouriteCharacterConnection>(
+          FavouriteCharacterConnection.$_createMessage);
+  static FavouriteCharacterConnection? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.PageInfo get pageInfo => $_getN(0);
+  @$pb.TagNumber(1)
+  set pageInfo($1.PageInfo value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPageInfo() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPageInfo() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $1.PageInfo ensurePageInfo() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.int get total => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set total($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasTotal() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTotal() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$2.Character> get nodes => $_getList(2);
+}
+
+class FavouriteStaffConnection extends $pb.GeneratedMessage {
+  factory FavouriteStaffConnection({
+    $1.PageInfo? pageInfo,
+    $core.int? total,
+    $core.Iterable<$3.Staff>? nodes,
+  }) {
+    final result = FavouriteStaffConnection._();
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (total != null) result.total = total;
+    if (nodes != null) result.nodes.addAll(nodes);
+    return result;
+  }
+
+  FavouriteStaffConnection._();
+
+  factory FavouriteStaffConnection.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FavouriteStaffConnection()..mergeFromBuffer(data, registry);
+  factory FavouriteStaffConnection.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FavouriteStaffConnection()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FavouriteStaffConnection',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: FavouriteStaffConnection.$_createMessage)
+    ..aOM<$1.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $1.PageInfo.$_createMessage)
+    ..aI(2, _omitFieldNames ? '' : 'total')
+    ..pPM<$3.Staff>(3, _omitFieldNames ? '' : 'nodes',
+        subBuilder: $3.Staff.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FavouriteStaffConnection clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FavouriteStaffConnection copyWith(
+          void Function(FavouriteStaffConnection) updates) =>
+      super.copyWith((message) => updates(message as FavouriteStaffConnection))
+          as FavouriteStaffConnection;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FavouriteStaffConnection() / FavouriteStaffConnection.new instead')
+  static FavouriteStaffConnection create() => FavouriteStaffConnection._();
+  static $pb.GeneratedMessage $_createMessage() => FavouriteStaffConnection._();
+  @$core.override
+  FavouriteStaffConnection createEmptyInstance() =>
+      FavouriteStaffConnection._();
+  @$core.pragma('dart2js:noInline')
+  static FavouriteStaffConnection getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FavouriteStaffConnection>(
+          FavouriteStaffConnection.$_createMessage);
+  static FavouriteStaffConnection? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.PageInfo get pageInfo => $_getN(0);
+  @$pb.TagNumber(1)
+  set pageInfo($1.PageInfo value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPageInfo() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPageInfo() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $1.PageInfo ensurePageInfo() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.int get total => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set total($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasTotal() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTotal() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$3.Staff> get nodes => $_getList(2);
+}
+
+class FavouriteStudioConnection extends $pb.GeneratedMessage {
+  factory FavouriteStudioConnection({
+    $1.PageInfo? pageInfo,
+    $core.int? total,
+    $core.Iterable<$4.Studio>? nodes,
+  }) {
+    final result = FavouriteStudioConnection._();
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (total != null) result.total = total;
+    if (nodes != null) result.nodes.addAll(nodes);
+    return result;
+  }
+
+  FavouriteStudioConnection._();
+
+  factory FavouriteStudioConnection.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FavouriteStudioConnection()..mergeFromBuffer(data, registry);
+  factory FavouriteStudioConnection.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      FavouriteStudioConnection()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'FavouriteStudioConnection',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: FavouriteStudioConnection.$_createMessage)
+    ..aOM<$1.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $1.PageInfo.$_createMessage)
+    ..aI(2, _omitFieldNames ? '' : 'total')
+    ..pPM<$4.Studio>(3, _omitFieldNames ? '' : 'nodes',
+        subBuilder: $4.Studio.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FavouriteStudioConnection clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  FavouriteStudioConnection copyWith(
+          void Function(FavouriteStudioConnection) updates) =>
+      super.copyWith((message) => updates(message as FavouriteStudioConnection))
+          as FavouriteStudioConnection;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use FavouriteStudioConnection() / FavouriteStudioConnection.new instead')
+  static FavouriteStudioConnection create() => FavouriteStudioConnection._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      FavouriteStudioConnection._();
+  @$core.override
+  FavouriteStudioConnection createEmptyInstance() =>
+      FavouriteStudioConnection._();
+  @$core.pragma('dart2js:noInline')
+  static FavouriteStudioConnection getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<FavouriteStudioConnection>(
+          FavouriteStudioConnection.$_createMessage);
+  static FavouriteStudioConnection? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.PageInfo get pageInfo => $_getN(0);
+  @$pb.TagNumber(1)
+  set pageInfo($1.PageInfo value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPageInfo() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPageInfo() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $1.PageInfo ensurePageInfo() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.int get total => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set total($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasTotal() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTotal() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $pb.PbList<$4.Studio> get nodes => $_getList(2);
+}
+
+class UserFavourites extends $pb.GeneratedMessage {
+  factory UserFavourites({
+    FavouriteMediaConnection? anime,
+    FavouriteMediaConnection? manga,
+    FavouriteCharacterConnection? characters,
+    FavouriteStaffConnection? staff,
+    FavouriteStudioConnection? studios,
+  }) {
+    final result = UserFavourites._();
+    if (anime != null) result.anime = anime;
+    if (manga != null) result.manga = manga;
+    if (characters != null) result.characters = characters;
+    if (staff != null) result.staff = staff;
+    if (studios != null) result.studios = studios;
+    return result;
+  }
+
+  UserFavourites._();
+
+  factory UserFavourites.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserFavourites()..mergeFromBuffer(data, registry);
+  factory UserFavourites.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      UserFavourites()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UserFavourites',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: UserFavourites.$_createMessage)
+    ..aOM<FavouriteMediaConnection>(1, _omitFieldNames ? '' : 'anime',
+        subBuilder: FavouriteMediaConnection.$_createMessage)
+    ..aOM<FavouriteMediaConnection>(2, _omitFieldNames ? '' : 'manga',
+        subBuilder: FavouriteMediaConnection.$_createMessage)
+    ..aOM<FavouriteCharacterConnection>(3, _omitFieldNames ? '' : 'characters',
+        subBuilder: FavouriteCharacterConnection.$_createMessage)
+    ..aOM<FavouriteStaffConnection>(4, _omitFieldNames ? '' : 'staff',
+        subBuilder: FavouriteStaffConnection.$_createMessage)
+    ..aOM<FavouriteStudioConnection>(5, _omitFieldNames ? '' : 'studios',
+        subBuilder: FavouriteStudioConnection.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserFavourites clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UserFavourites copyWith(void Function(UserFavourites) updates) =>
+      super.copyWith((message) => updates(message as UserFavourites))
+          as UserFavourites;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use UserFavourites() / UserFavourites.new instead')
+  static UserFavourites create() => UserFavourites._();
+  static $pb.GeneratedMessage $_createMessage() => UserFavourites._();
+  @$core.override
+  UserFavourites createEmptyInstance() => UserFavourites._();
+  @$core.pragma('dart2js:noInline')
+  static UserFavourites getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserFavourites>(
+          UserFavourites.$_createMessage);
+  static UserFavourites? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  FavouriteMediaConnection get anime => $_getN(0);
+  @$pb.TagNumber(1)
+  set anime(FavouriteMediaConnection value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasAnime() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAnime() => $_clearField(1);
+  @$pb.TagNumber(1)
+  FavouriteMediaConnection ensureAnime() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  FavouriteMediaConnection get manga => $_getN(1);
+  @$pb.TagNumber(2)
+  set manga(FavouriteMediaConnection value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasManga() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearManga() => $_clearField(2);
+  @$pb.TagNumber(2)
+  FavouriteMediaConnection ensureManga() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  FavouriteCharacterConnection get characters => $_getN(2);
+  @$pb.TagNumber(3)
+  set characters(FavouriteCharacterConnection value) => $_setField(3, value);
+  @$pb.TagNumber(3)
+  $core.bool hasCharacters() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearCharacters() => $_clearField(3);
+  @$pb.TagNumber(3)
+  FavouriteCharacterConnection ensureCharacters() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  FavouriteStaffConnection get staff => $_getN(3);
+  @$pb.TagNumber(4)
+  set staff(FavouriteStaffConnection value) => $_setField(4, value);
+  @$pb.TagNumber(4)
+  $core.bool hasStaff() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearStaff() => $_clearField(4);
+  @$pb.TagNumber(4)
+  FavouriteStaffConnection ensureStaff() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  FavouriteStudioConnection get studios => $_getN(4);
+  @$pb.TagNumber(5)
+  set studios(FavouriteStudioConnection value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasStudios() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearStudios() => $_clearField(5);
+  @$pb.TagNumber(5)
+  FavouriteStudioConnection ensureStudios() => $_ensure(4);
 }
 
 const $core.bool _omitFieldNames =

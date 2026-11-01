@@ -1590,3 +1590,42 @@ final $typed_data.Uint8List resolveAnilistPreviewsResponseDescriptor = $convert.
     'FmZhIrCgdzdHVkaW9zGAQgAygLMhEuZ29vZGFuaW1lLlN0dWRpb1IHc3R1ZGlvcxIsCgV1c2Vy'
     'cxgFIAMoCzIWLmdvb2RhbmltZS5Vc2VyUHJvZmlsZVIFdXNlcnMSFAoFZXJyb3IYBiABKAlSBW'
     'Vycm9y');
+
+@$core.Deprecated('Use getUserFavouritesRequestDescriptor instead')
+const GetUserFavouritesRequest$json = {
+  '1': 'GetUserFavouritesRequest',
+  '2': [
+    {'1': 'user_id', '3': 1, '4': 1, '5': 5, '10': 'userId'},
+    {'1': 'category', '3': 2, '4': 1, '5': 9, '10': 'category'},
+    {'1': 'page', '3': 3, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'per_page', '3': 4, '4': 1, '5': 5, '10': 'perPage'},
+  ],
+};
+
+/// Descriptor for `GetUserFavouritesRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserFavouritesRequestDescriptor = $convert.base64Decode(
+    'ChhHZXRVc2VyRmF2b3VyaXRlc1JlcXVlc3QSFwoHdXNlcl9pZBgBIAEoBVIGdXNlcklkEhoKCG'
+    'NhdGVnb3J5GAIgASgJUghjYXRlZ29yeRISCgRwYWdlGAMgASgFUgRwYWdlEhkKCHBlcl9wYWdl'
+    'GAQgASgFUgdwZXJQYWdl');
+
+@$core.Deprecated('Use getUserFavouritesResponseDescriptor instead')
+const GetUserFavouritesResponse$json = {
+  '1': 'GetUserFavouritesResponse',
+  '2': [
+    {
+      '1': 'favourites',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.UserFavourites',
+      '10': 'favourites'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `GetUserFavouritesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserFavouritesResponseDescriptor =
+    $convert.base64Decode(
+        'ChlHZXRVc2VyRmF2b3VyaXRlc1Jlc3BvbnNlEjkKCmZhdm91cml0ZXMYASABKAsyGS5nb29kYW'
+        '5pbWUuVXNlckZhdm91cml0ZXNSCmZhdm91cml0ZXMSFAoFZXJyb3IYAiABKAlSBWVycm9y');

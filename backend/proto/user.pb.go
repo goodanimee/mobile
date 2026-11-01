@@ -405,12 +405,328 @@ func (x *UserActivity) GetMedia() *MediaMin {
 	return nil
 }
 
+type FavouriteMediaConnection struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageInfo      *PageInfo              `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Nodes         []*MediaMin            `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FavouriteMediaConnection) Reset() {
+	*x = FavouriteMediaConnection{}
+	mi := &file_user_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FavouriteMediaConnection) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FavouriteMediaConnection) ProtoMessage() {}
+
+func (x *FavouriteMediaConnection) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FavouriteMediaConnection.ProtoReflect.Descriptor instead.
+func (*FavouriteMediaConnection) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *FavouriteMediaConnection) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *FavouriteMediaConnection) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *FavouriteMediaConnection) GetNodes() []*MediaMin {
+	if x != nil {
+		return x.Nodes
+	}
+	return nil
+}
+
+type FavouriteCharacterConnection struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageInfo      *PageInfo              `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Nodes         []*Character           `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FavouriteCharacterConnection) Reset() {
+	*x = FavouriteCharacterConnection{}
+	mi := &file_user_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FavouriteCharacterConnection) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FavouriteCharacterConnection) ProtoMessage() {}
+
+func (x *FavouriteCharacterConnection) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FavouriteCharacterConnection.ProtoReflect.Descriptor instead.
+func (*FavouriteCharacterConnection) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *FavouriteCharacterConnection) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *FavouriteCharacterConnection) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *FavouriteCharacterConnection) GetNodes() []*Character {
+	if x != nil {
+		return x.Nodes
+	}
+	return nil
+}
+
+type FavouriteStaffConnection struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageInfo      *PageInfo              `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Nodes         []*Staff               `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FavouriteStaffConnection) Reset() {
+	*x = FavouriteStaffConnection{}
+	mi := &file_user_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FavouriteStaffConnection) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FavouriteStaffConnection) ProtoMessage() {}
+
+func (x *FavouriteStaffConnection) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FavouriteStaffConnection.ProtoReflect.Descriptor instead.
+func (*FavouriteStaffConnection) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *FavouriteStaffConnection) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *FavouriteStaffConnection) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *FavouriteStaffConnection) GetNodes() []*Staff {
+	if x != nil {
+		return x.Nodes
+	}
+	return nil
+}
+
+type FavouriteStudioConnection struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageInfo      *PageInfo              `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Nodes         []*Studio              `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FavouriteStudioConnection) Reset() {
+	*x = FavouriteStudioConnection{}
+	mi := &file_user_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FavouriteStudioConnection) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FavouriteStudioConnection) ProtoMessage() {}
+
+func (x *FavouriteStudioConnection) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FavouriteStudioConnection.ProtoReflect.Descriptor instead.
+func (*FavouriteStudioConnection) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *FavouriteStudioConnection) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *FavouriteStudioConnection) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *FavouriteStudioConnection) GetNodes() []*Studio {
+	if x != nil {
+		return x.Nodes
+	}
+	return nil
+}
+
+type UserFavourites struct {
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	Anime         *FavouriteMediaConnection     `protobuf:"bytes,1,opt,name=anime,proto3" json:"anime,omitempty"`
+	Manga         *FavouriteMediaConnection     `protobuf:"bytes,2,opt,name=manga,proto3" json:"manga,omitempty"`
+	Characters    *FavouriteCharacterConnection `protobuf:"bytes,3,opt,name=characters,proto3" json:"characters,omitempty"`
+	Staff         *FavouriteStaffConnection     `protobuf:"bytes,4,opt,name=staff,proto3" json:"staff,omitempty"`
+	Studios       *FavouriteStudioConnection    `protobuf:"bytes,5,opt,name=studios,proto3" json:"studios,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserFavourites) Reset() {
+	*x = UserFavourites{}
+	mi := &file_user_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFavourites) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFavourites) ProtoMessage() {}
+
+func (x *UserFavourites) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFavourites.ProtoReflect.Descriptor instead.
+func (*UserFavourites) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *UserFavourites) GetAnime() *FavouriteMediaConnection {
+	if x != nil {
+		return x.Anime
+	}
+	return nil
+}
+
+func (x *UserFavourites) GetManga() *FavouriteMediaConnection {
+	if x != nil {
+		return x.Manga
+	}
+	return nil
+}
+
+func (x *UserFavourites) GetCharacters() *FavouriteCharacterConnection {
+	if x != nil {
+		return x.Characters
+	}
+	return nil
+}
+
+func (x *UserFavourites) GetStaff() *FavouriteStaffConnection {
+	if x != nil {
+		return x.Staff
+	}
+	return nil
+}
+
+func (x *UserFavourites) GetStudios() *FavouriteStudioConnection {
+	if x != nil {
+		return x.Studios
+	}
+	return nil
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"user.proto\x12\tgoodanime\x1a\x0fmedia_min.proto\":\n" +
+	"user.proto\x12\tgoodanime\x1a\fcommon.proto\x1a\x15media_character.proto\x1a\x0fmedia_min.proto\x1a\x11media_staff.proto\x1a\x12media_studio.proto\":\n" +
 	"\n" +
 	"UserAvatar\x12\x14\n" +
 	"\x05large\x18\x01 \x01(\tR\x05large\x12\x16\n" +
@@ -455,7 +771,31 @@ const file_user_proto_rawDesc = "" +
 	" \x01(\bR\tisPrivate\x12/\n" +
 	"\x04user\x18\v \x01(\v2\x1b.goodanime.UserActivityUserR\x04user\x129\n" +
 	"\trecipient\x18\f \x01(\v2\x1b.goodanime.UserActivityUserR\trecipient\x12)\n" +
-	"\x05media\x18\r \x01(\v2\x13.goodanime.MediaMinR\x05mediaB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x05media\x18\r \x01(\v2\x13.goodanime.MediaMinR\x05media\"\x8d\x01\n" +
+	"\x18FavouriteMediaConnection\x120\n" +
+	"\tpage_info\x18\x01 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12)\n" +
+	"\x05nodes\x18\x03 \x03(\v2\x13.goodanime.MediaMinR\x05nodes\"\x92\x01\n" +
+	"\x1cFavouriteCharacterConnection\x120\n" +
+	"\tpage_info\x18\x01 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12*\n" +
+	"\x05nodes\x18\x03 \x03(\v2\x14.goodanime.CharacterR\x05nodes\"\x8a\x01\n" +
+	"\x18FavouriteStaffConnection\x120\n" +
+	"\tpage_info\x18\x01 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12&\n" +
+	"\x05nodes\x18\x03 \x03(\v2\x10.goodanime.StaffR\x05nodes\"\x8c\x01\n" +
+	"\x19FavouriteStudioConnection\x120\n" +
+	"\tpage_info\x18\x01 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12'\n" +
+	"\x05nodes\x18\x03 \x03(\v2\x11.goodanime.StudioR\x05nodes\"\xca\x02\n" +
+	"\x0eUserFavourites\x129\n" +
+	"\x05anime\x18\x01 \x01(\v2#.goodanime.FavouriteMediaConnectionR\x05anime\x129\n" +
+	"\x05manga\x18\x02 \x01(\v2#.goodanime.FavouriteMediaConnectionR\x05manga\x12G\n" +
+	"\n" +
+	"characters\x18\x03 \x01(\v2'.goodanime.FavouriteCharacterConnectionR\n" +
+	"characters\x129\n" +
+	"\x05staff\x18\x04 \x01(\v2#.goodanime.FavouriteStaffConnectionR\x05staff\x12>\n" +
+	"\astudios\x18\x05 \x01(\v2$.goodanime.FavouriteStudioConnectionR\astudiosB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -469,25 +809,47 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_user_proto_goTypes = []any{
-	(*UserAvatar)(nil),       // 0: goodanime.UserAvatar
-	(*UserProfile)(nil),      // 1: goodanime.UserProfile
-	(*UserActivityUser)(nil), // 2: goodanime.UserActivityUser
-	(*UserActivity)(nil),     // 3: goodanime.UserActivity
-	(*MediaMin)(nil),         // 4: goodanime.MediaMin
+	(*UserAvatar)(nil),                   // 0: goodanime.UserAvatar
+	(*UserProfile)(nil),                  // 1: goodanime.UserProfile
+	(*UserActivityUser)(nil),             // 2: goodanime.UserActivityUser
+	(*UserActivity)(nil),                 // 3: goodanime.UserActivity
+	(*FavouriteMediaConnection)(nil),     // 4: goodanime.FavouriteMediaConnection
+	(*FavouriteCharacterConnection)(nil), // 5: goodanime.FavouriteCharacterConnection
+	(*FavouriteStaffConnection)(nil),     // 6: goodanime.FavouriteStaffConnection
+	(*FavouriteStudioConnection)(nil),    // 7: goodanime.FavouriteStudioConnection
+	(*UserFavourites)(nil),               // 8: goodanime.UserFavourites
+	(*MediaMin)(nil),                     // 9: goodanime.MediaMin
+	(*PageInfo)(nil),                     // 10: goodanime.PageInfo
+	(*Character)(nil),                    // 11: goodanime.Character
+	(*Staff)(nil),                        // 12: goodanime.Staff
+	(*Studio)(nil),                       // 13: goodanime.Studio
 }
 var file_user_proto_depIdxs = []int32{
-	0, // 0: goodanime.UserProfile.avatar:type_name -> goodanime.UserAvatar
-	0, // 1: goodanime.UserActivityUser.avatar:type_name -> goodanime.UserAvatar
-	2, // 2: goodanime.UserActivity.user:type_name -> goodanime.UserActivityUser
-	2, // 3: goodanime.UserActivity.recipient:type_name -> goodanime.UserActivityUser
-	4, // 4: goodanime.UserActivity.media:type_name -> goodanime.MediaMin
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	0,  // 0: goodanime.UserProfile.avatar:type_name -> goodanime.UserAvatar
+	0,  // 1: goodanime.UserActivityUser.avatar:type_name -> goodanime.UserAvatar
+	2,  // 2: goodanime.UserActivity.user:type_name -> goodanime.UserActivityUser
+	2,  // 3: goodanime.UserActivity.recipient:type_name -> goodanime.UserActivityUser
+	9,  // 4: goodanime.UserActivity.media:type_name -> goodanime.MediaMin
+	10, // 5: goodanime.FavouriteMediaConnection.page_info:type_name -> goodanime.PageInfo
+	9,  // 6: goodanime.FavouriteMediaConnection.nodes:type_name -> goodanime.MediaMin
+	10, // 7: goodanime.FavouriteCharacterConnection.page_info:type_name -> goodanime.PageInfo
+	11, // 8: goodanime.FavouriteCharacterConnection.nodes:type_name -> goodanime.Character
+	10, // 9: goodanime.FavouriteStaffConnection.page_info:type_name -> goodanime.PageInfo
+	12, // 10: goodanime.FavouriteStaffConnection.nodes:type_name -> goodanime.Staff
+	10, // 11: goodanime.FavouriteStudioConnection.page_info:type_name -> goodanime.PageInfo
+	13, // 12: goodanime.FavouriteStudioConnection.nodes:type_name -> goodanime.Studio
+	4,  // 13: goodanime.UserFavourites.anime:type_name -> goodanime.FavouriteMediaConnection
+	4,  // 14: goodanime.UserFavourites.manga:type_name -> goodanime.FavouriteMediaConnection
+	5,  // 15: goodanime.UserFavourites.characters:type_name -> goodanime.FavouriteCharacterConnection
+	6,  // 16: goodanime.UserFavourites.staff:type_name -> goodanime.FavouriteStaffConnection
+	7,  // 17: goodanime.UserFavourites.studios:type_name -> goodanime.FavouriteStudioConnection
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -495,14 +857,18 @@ func file_user_proto_init() {
 	if File_user_proto != nil {
 		return
 	}
+	file_common_proto_init()
+	file_media_character_proto_init()
 	file_media_min_proto_init()
+	file_media_staff_proto_init()
+	file_media_studio_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
