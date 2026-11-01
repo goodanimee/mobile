@@ -360,3 +360,16 @@ message ToggleFollowResponse {
   string error = 3;
 }
 
+message GetUserActivitiesRequest {
+  int32 user_id = 1;
+  int32 page = 2;
+  int32 per_page = 3;
+  repeated string type_in = 4;
+}
+
+message GetUserActivitiesResponse {
+  PageInfo page_info = 1;
+  repeated UserActivity activities = 2;
+  string error = 3;
+}
+

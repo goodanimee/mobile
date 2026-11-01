@@ -1466,3 +1466,50 @@ const ToggleFollowResponse$json = {
 final $typed_data.Uint8List toggleFollowResponseDescriptor = $convert.base64Decode(
     'ChRUb2dnbGVGb2xsb3dSZXNwb25zZRIXCgd1c2VyX2lkGAEgASgFUgZ1c2VySWQSIQoMaXNfZm'
     '9sbG93aW5nGAIgASgIUgtpc0ZvbGxvd2luZxIUCgVlcnJvchgDIAEoCVIFZXJyb3I=');
+
+@$core.Deprecated('Use getUserActivitiesRequestDescriptor instead')
+const GetUserActivitiesRequest$json = {
+  '1': 'GetUserActivitiesRequest',
+  '2': [
+    {'1': 'user_id', '3': 1, '4': 1, '5': 5, '10': 'userId'},
+    {'1': 'page', '3': 2, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'per_page', '3': 3, '4': 1, '5': 5, '10': 'perPage'},
+    {'1': 'type_in', '3': 4, '4': 3, '5': 9, '10': 'typeIn'},
+  ],
+};
+
+/// Descriptor for `GetUserActivitiesRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserActivitiesRequestDescriptor = $convert.base64Decode(
+    'ChhHZXRVc2VyQWN0aXZpdGllc1JlcXVlc3QSFwoHdXNlcl9pZBgBIAEoBVIGdXNlcklkEhIKBH'
+    'BhZ2UYAiABKAVSBHBhZ2USGQoIcGVyX3BhZ2UYAyABKAVSB3BlclBhZ2USFwoHdHlwZV9pbhgE'
+    'IAMoCVIGdHlwZUlu');
+
+@$core.Deprecated('Use getUserActivitiesResponseDescriptor instead')
+const GetUserActivitiesResponse$json = {
+  '1': 'GetUserActivitiesResponse',
+  '2': [
+    {
+      '1': 'page_info',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {
+      '1': 'activities',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.UserActivity',
+      '10': 'activities'
+    },
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `GetUserActivitiesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getUserActivitiesResponseDescriptor = $convert.base64Decode(
+    'ChlHZXRVc2VyQWN0aXZpdGllc1Jlc3BvbnNlEjAKCXBhZ2VfaW5mbxgBIAEoCzITLmdvb2Rhbm'
+    'ltZS5QYWdlSW5mb1IIcGFnZUluZm8SNwoKYWN0aXZpdGllcxgCIAMoCzIXLmdvb2RhbmltZS5V'
+    'c2VyQWN0aXZpdHlSCmFjdGl2aXRpZXMSFAoFZXJyb3IYAyABKAlSBWVycm9y');

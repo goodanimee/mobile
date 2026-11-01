@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package goodanime;
 
+import "media_min.proto";
+
 option go_package = "goodanime/backend/proto";
 
 message UserAvatar {
@@ -22,4 +24,26 @@ message UserProfile {
   int32 following_count = 10;
   int32 anime_count = 11;
   int32 manga_count = 12;
+}
+
+message UserActivityUser {
+  int32 id = 1;
+  string name = 2;
+  UserAvatar avatar = 3;
+}
+
+message UserActivity {
+  int32 id = 1;
+  string type = 2;
+  int32 created_at = 3;
+  bool is_liked = 4;
+  int32 like_count = 5;
+  int32 reply_count = 6;
+  string status = 7;
+  string progress = 8;
+  string text_html = 9;
+  bool is_private = 10;
+  UserActivityUser user = 11;
+  UserActivityUser recipient = 12;
+  MediaMin media = 13;
 }

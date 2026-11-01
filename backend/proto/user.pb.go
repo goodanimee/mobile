@@ -205,12 +205,212 @@ func (x *UserProfile) GetMangaCount() int32 {
 	return 0
 }
 
+type UserActivityUser struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Avatar        *UserAvatar            `protobuf:"bytes,3,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserActivityUser) Reset() {
+	*x = UserActivityUser{}
+	mi := &file_user_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserActivityUser) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserActivityUser) ProtoMessage() {}
+
+func (x *UserActivityUser) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserActivityUser.ProtoReflect.Descriptor instead.
+func (*UserActivityUser) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *UserActivityUser) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UserActivityUser) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *UserActivityUser) GetAvatar() *UserAvatar {
+	if x != nil {
+		return x.Avatar
+	}
+	return nil
+}
+
+type UserActivity struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	CreatedAt     int32                  `protobuf:"varint,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	IsLiked       bool                   `protobuf:"varint,4,opt,name=is_liked,json=isLiked,proto3" json:"is_liked,omitempty"`
+	LikeCount     int32                  `protobuf:"varint,5,opt,name=like_count,json=likeCount,proto3" json:"like_count,omitempty"`
+	ReplyCount    int32                  `protobuf:"varint,6,opt,name=reply_count,json=replyCount,proto3" json:"reply_count,omitempty"`
+	Status        string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
+	Progress      string                 `protobuf:"bytes,8,opt,name=progress,proto3" json:"progress,omitempty"`
+	TextHtml      string                 `protobuf:"bytes,9,opt,name=text_html,json=textHtml,proto3" json:"text_html,omitempty"`
+	IsPrivate     bool                   `protobuf:"varint,10,opt,name=is_private,json=isPrivate,proto3" json:"is_private,omitempty"`
+	User          *UserActivityUser      `protobuf:"bytes,11,opt,name=user,proto3" json:"user,omitempty"`
+	Recipient     *UserActivityUser      `protobuf:"bytes,12,opt,name=recipient,proto3" json:"recipient,omitempty"`
+	Media         *MediaMin              `protobuf:"bytes,13,opt,name=media,proto3" json:"media,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserActivity) Reset() {
+	*x = UserActivity{}
+	mi := &file_user_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserActivity) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserActivity) ProtoMessage() {}
+
+func (x *UserActivity) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserActivity.ProtoReflect.Descriptor instead.
+func (*UserActivity) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *UserActivity) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UserActivity) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *UserActivity) GetCreatedAt() int32 {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return 0
+}
+
+func (x *UserActivity) GetIsLiked() bool {
+	if x != nil {
+		return x.IsLiked
+	}
+	return false
+}
+
+func (x *UserActivity) GetLikeCount() int32 {
+	if x != nil {
+		return x.LikeCount
+	}
+	return 0
+}
+
+func (x *UserActivity) GetReplyCount() int32 {
+	if x != nil {
+		return x.ReplyCount
+	}
+	return 0
+}
+
+func (x *UserActivity) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *UserActivity) GetProgress() string {
+	if x != nil {
+		return x.Progress
+	}
+	return ""
+}
+
+func (x *UserActivity) GetTextHtml() string {
+	if x != nil {
+		return x.TextHtml
+	}
+	return ""
+}
+
+func (x *UserActivity) GetIsPrivate() bool {
+	if x != nil {
+		return x.IsPrivate
+	}
+	return false
+}
+
+func (x *UserActivity) GetUser() *UserActivityUser {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+func (x *UserActivity) GetRecipient() *UserActivityUser {
+	if x != nil {
+		return x.Recipient
+	}
+	return nil
+}
+
+func (x *UserActivity) GetMedia() *MediaMin {
+	if x != nil {
+		return x.Media
+	}
+	return nil
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"user.proto\x12\tgoodanime\":\n" +
+	"user.proto\x12\tgoodanime\x1a\x0fmedia_min.proto\":\n" +
 	"\n" +
 	"UserAvatar\x12\x14\n" +
 	"\x05large\x18\x01 \x01(\tR\x05large\x12\x16\n" +
@@ -232,7 +432,30 @@ const file_user_proto_rawDesc = "" +
 	"\vanime_count\x18\v \x01(\x05R\n" +
 	"animeCount\x12\x1f\n" +
 	"\vmanga_count\x18\f \x01(\x05R\n" +
-	"mangaCountB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"mangaCount\"e\n" +
+	"\x10UserActivityUser\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12-\n" +
+	"\x06avatar\x18\x03 \x01(\v2\x15.goodanime.UserAvatarR\x06avatar\"\xb3\x03\n" +
+	"\fUserActivity\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x03 \x01(\x05R\tcreatedAt\x12\x19\n" +
+	"\bis_liked\x18\x04 \x01(\bR\aisLiked\x12\x1d\n" +
+	"\n" +
+	"like_count\x18\x05 \x01(\x05R\tlikeCount\x12\x1f\n" +
+	"\vreply_count\x18\x06 \x01(\x05R\n" +
+	"replyCount\x12\x16\n" +
+	"\x06status\x18\a \x01(\tR\x06status\x12\x1a\n" +
+	"\bprogress\x18\b \x01(\tR\bprogress\x12\x1b\n" +
+	"\ttext_html\x18\t \x01(\tR\btextHtml\x12\x1d\n" +
+	"\n" +
+	"is_private\x18\n" +
+	" \x01(\bR\tisPrivate\x12/\n" +
+	"\x04user\x18\v \x01(\v2\x1b.goodanime.UserActivityUserR\x04user\x129\n" +
+	"\trecipient\x18\f \x01(\v2\x1b.goodanime.UserActivityUserR\trecipient\x12)\n" +
+	"\x05media\x18\r \x01(\v2\x13.goodanime.MediaMinR\x05mediaB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -246,18 +469,25 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_user_proto_goTypes = []any{
-	(*UserAvatar)(nil),  // 0: goodanime.UserAvatar
-	(*UserProfile)(nil), // 1: goodanime.UserProfile
+	(*UserAvatar)(nil),       // 0: goodanime.UserAvatar
+	(*UserProfile)(nil),      // 1: goodanime.UserProfile
+	(*UserActivityUser)(nil), // 2: goodanime.UserActivityUser
+	(*UserActivity)(nil),     // 3: goodanime.UserActivity
+	(*MediaMin)(nil),         // 4: goodanime.MediaMin
 }
 var file_user_proto_depIdxs = []int32{
 	0, // 0: goodanime.UserProfile.avatar:type_name -> goodanime.UserAvatar
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // 1: goodanime.UserActivityUser.avatar:type_name -> goodanime.UserAvatar
+	2, // 2: goodanime.UserActivity.user:type_name -> goodanime.UserActivityUser
+	2, // 3: goodanime.UserActivity.recipient:type_name -> goodanime.UserActivityUser
+	4, // 4: goodanime.UserActivity.media:type_name -> goodanime.MediaMin
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -265,13 +495,14 @@ func file_user_proto_init() {
 	if File_user_proto != nil {
 		return
 	}
+	file_media_min_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

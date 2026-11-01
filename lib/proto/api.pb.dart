@@ -4806,6 +4806,179 @@ class ToggleFollowResponse extends $pb.GeneratedMessage {
   void clearError() => $_clearField(3);
 }
 
+class GetUserActivitiesRequest extends $pb.GeneratedMessage {
+  factory GetUserActivitiesRequest({
+    $core.int? userId,
+    $core.int? page,
+    $core.int? perPage,
+    $core.Iterable<$core.String>? typeIn,
+  }) {
+    final result = GetUserActivitiesRequest._();
+    if (userId != null) result.userId = userId;
+    if (page != null) result.page = page;
+    if (perPage != null) result.perPage = perPage;
+    if (typeIn != null) result.typeIn.addAll(typeIn);
+    return result;
+  }
+
+  GetUserActivitiesRequest._();
+
+  factory GetUserActivitiesRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserActivitiesRequest()..mergeFromBuffer(data, registry);
+  factory GetUserActivitiesRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserActivitiesRequest()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetUserActivitiesRequest',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: GetUserActivitiesRequest.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'userId')
+    ..aI(2, _omitFieldNames ? '' : 'page')
+    ..aI(3, _omitFieldNames ? '' : 'perPage')
+    ..pPS(4, _omitFieldNames ? '' : 'typeIn')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserActivitiesRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserActivitiesRequest copyWith(
+          void Function(GetUserActivitiesRequest) updates) =>
+      super.copyWith((message) => updates(message as GetUserActivitiesRequest))
+          as GetUserActivitiesRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetUserActivitiesRequest() / GetUserActivitiesRequest.new instead')
+  static GetUserActivitiesRequest create() => GetUserActivitiesRequest._();
+  static $pb.GeneratedMessage $_createMessage() => GetUserActivitiesRequest._();
+  @$core.override
+  GetUserActivitiesRequest createEmptyInstance() =>
+      GetUserActivitiesRequest._();
+  @$core.pragma('dart2js:noInline')
+  static GetUserActivitiesRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetUserActivitiesRequest>(
+          GetUserActivitiesRequest.$_createMessage);
+  static GetUserActivitiesRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get userId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get page => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set page($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasPage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPage() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get perPage => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set perPage($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasPerPage() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPerPage() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $pb.PbList<$core.String> get typeIn => $_getList(3);
+}
+
+class GetUserActivitiesResponse extends $pb.GeneratedMessage {
+  factory GetUserActivitiesResponse({
+    $5.PageInfo? pageInfo,
+    $core.Iterable<$12.UserActivity>? activities,
+    $core.String? error,
+  }) {
+    final result = GetUserActivitiesResponse._();
+    if (pageInfo != null) result.pageInfo = pageInfo;
+    if (activities != null) result.activities.addAll(activities);
+    if (error != null) result.error = error;
+    return result;
+  }
+
+  GetUserActivitiesResponse._();
+
+  factory GetUserActivitiesResponse.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserActivitiesResponse()..mergeFromBuffer(data, registry);
+  factory GetUserActivitiesResponse.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      GetUserActivitiesResponse()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'GetUserActivitiesResponse',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: GetUserActivitiesResponse.$_createMessage)
+    ..aOM<$5.PageInfo>(1, _omitFieldNames ? '' : 'pageInfo',
+        subBuilder: $5.PageInfo.$_createMessage)
+    ..pPM<$12.UserActivity>(2, _omitFieldNames ? '' : 'activities',
+        subBuilder: $12.UserActivity.$_createMessage)
+    ..aOS(3, _omitFieldNames ? '' : 'error')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserActivitiesResponse clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  GetUserActivitiesResponse copyWith(
+          void Function(GetUserActivitiesResponse) updates) =>
+      super.copyWith((message) => updates(message as GetUserActivitiesResponse))
+          as GetUserActivitiesResponse;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated(
+      'Use GetUserActivitiesResponse() / GetUserActivitiesResponse.new instead')
+  static GetUserActivitiesResponse create() => GetUserActivitiesResponse._();
+  static $pb.GeneratedMessage $_createMessage() =>
+      GetUserActivitiesResponse._();
+  @$core.override
+  GetUserActivitiesResponse createEmptyInstance() =>
+      GetUserActivitiesResponse._();
+  @$core.pragma('dart2js:noInline')
+  static GetUserActivitiesResponse getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetUserActivitiesResponse>(
+          GetUserActivitiesResponse.$_createMessage);
+  static GetUserActivitiesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $5.PageInfo get pageInfo => $_getN(0);
+  @$pb.TagNumber(1)
+  set pageInfo($5.PageInfo value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasPageInfo() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPageInfo() => $_clearField(1);
+  @$pb.TagNumber(1)
+  $5.PageInfo ensurePageInfo() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $pb.PbList<$12.UserActivity> get activities => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $core.String get error => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set error($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasError() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearError() => $_clearField(3);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =
