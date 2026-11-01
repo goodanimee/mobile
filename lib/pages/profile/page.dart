@@ -8,6 +8,7 @@ import '../../models/social_user.dart';
 import '../../models/user_activity.dart';
 import '../../models/user_favourites.dart';
 import '../../models/user_profile.dart';
+import '../../models/user_statistics.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import '../../theme/theme.dart';
@@ -16,6 +17,7 @@ import 'tabs/activity_tab.dart';
 import 'tabs/favourites_tab.dart';
 import 'tabs/info_tab.dart';
 import 'tabs/social_tab.dart';
+import 'tabs/statistics_tab.dart';
 import 'widgets/profile_fab.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/profile_sticky_header.dart';
@@ -59,6 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
   UserFavourites? _cachedFavourites;
   SocialUserPage? _cachedFollowingPage;
   SocialUserPage? _cachedFollowersPage;
+  UserStatistics? _cachedStatistics;
   int? _viewerId;
   SocialSegment _socialSegment = SocialSegment.following;
   bool _isLoading = true;
@@ -109,6 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
       _cachedFavourites = null;
       _cachedFollowingPage = null;
       _cachedFollowersPage = null;
+      _cachedStatistics = null;
       _socialSegment = SocialSegment.following;
       _refreshTrigger++;
     });
@@ -221,6 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
         (icon: LucideIcons.activity, label: 'Activity'),
         (icon: LucideIcons.heart, label: 'Favourites'),
         (icon: LucideIcons.users, label: 'Social'),
+        (icon: LucideIcons.barChart2, label: 'Stats'),
       ],
       selectedIndex: _selectedTabIndex,
       onSelect: (index) {
@@ -338,6 +343,12 @@ class _ProfilePageState extends State<ProfilePage> {
             });
           }
         },
+      ),
+      4 => ProfileStatisticsTab(
+        userId: profile.id,
+        refreshTrigger: _refreshTrigger,
+        initialStats: _cachedStatistics,
+        onStatsChanged: (stats) => _cachedStatistics = stats,
       ),
       _ => ProfileInfoTab(
         profile: profile,
