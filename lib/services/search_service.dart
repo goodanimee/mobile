@@ -4,6 +4,7 @@ import '../models/media_character.dart';
 import '../models/media_min.dart';
 import '../models/media_staff.dart';
 import '../models/media_studio.dart';
+import '../models/social_user.dart';
 import '../proto/api.pb.dart';
 import 'auth_service.dart';
 
@@ -58,6 +59,18 @@ class StaffSearchResult {
   const StaffSearchResult({required this.staff, required this.pageInfo});
 }
 
+/// Represents the paginated results of a user search.
+class UserSearchResult {
+  /// The list of user results.
+  final List<SocialUser> users;
+
+  /// The pagination information.
+  final PageInfo pageInfo;
+
+  /// Creates a user search result.
+  const UserSearchResult({required this.users, required this.pageInfo});
+}
+
 /// Service for executing AniList media searches.
 class SearchService {
   /// Searches for media with given filters.
@@ -102,5 +115,16 @@ class SearchService {
     final staff = response.staff.map(Staff.fromProto).toList();
     final pageInfo = PageInfo.fromProto(response.pageInfo);
     return StaffSearchResult(staff: staff, pageInfo: pageInfo);
+  }
+
+  /// Searches for users with given parameters.
+  static Future<UserSearchResult> searchUsers(
+    FetchUserSearchRequest request,
+  ) async {
+    final token = await AuthService.getRawToken() ?? '';
+    final response = await SearchApi.fetchUserSearch(request, token);
+    final users = response.users.map(SocialUser.fromProto).toList();
+    final pageInfo = PageInfo.fromProto(response.pageInfo);
+    return UserSearchResult(users: users, pageInfo: pageInfo);
   }
 }

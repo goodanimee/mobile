@@ -51,7 +51,7 @@ FetchMediaSearchRequest _buildDefaultMediaRequest({
   );
 }
 
-/// Unit tests for search request builders across media, characters, staff, and studios.
+/// Unit tests for search request builders across media, characters, staff, studios, and users.
 void main() {
   group('buildSearchRequest (Media)', () {
     test(
@@ -99,91 +99,118 @@ void main() {
       },
     );
 
-    test(
-      'uses singular format and formatNot when exactly one format is selected',
-      () {
-        final req = _buildDefaultMediaRequest(
-          formats: {'TV': true, 'MOVIE': false, 'OVA': null},
-        );
-
-        expect(req.format, 'TV');
-        expect(req.formatIn, isEmpty);
-        expect(req.formatNot, 'MOVIE');
-        expect(req.formatNotIn, isEmpty);
-      },
-    );
-
-    test(
-      'uses formatIn and formatNotIn when multiple formats are selected',
-      () {
-        final req = _buildDefaultMediaRequest(
-          formats: {
-            'TV': true,
-            'TV_SHORT': true,
-            'MOVIE': false,
-            'SPECIAL': false,
-          },
-        );
-
-        expect(req.hasFormat(), isFalse);
-        expect(req.formatIn, ['TV', 'TV_SHORT']);
-        expect(req.hasFormatNot(), isFalse);
-        expect(req.formatNotIn, ['MOVIE', 'SPECIAL']);
-      },
-    );
-
-    test(
-      'resolves tag IDs to tag names and sets minimumTagRank only when tags active',
-      () {
-        const catalog = [
+    test('maps single format, tags, status, and sort filters accurately', () {
+      final req = _buildDefaultMediaRequest(
+        query: 'Steins;Gate',
+        sortBy: 'score_desc',
+        formats: {'TV': true, 'MOVIE': false},
+        status: 'FINISHED',
+        onList: true,
+        tags: {10: true, 20: false},
+        allTags: const [
           MediaTag(
-            id: 101,
-            name: 'Time Manipulation',
+            id: 10,
+            name: 'Time Travel',
+            isGeneralSpoiler: false,
+            isMediaSpoiler: false,
+            rank: 90,
+          ),
+          MediaTag(
+            id: 20,
+            name: 'Isekai',
             isGeneralSpoiler: false,
             isMediaSpoiler: false,
             rank: 80,
           ),
-          MediaTag(
-            id: 202,
-            name: 'Cyberpunk',
-            isGeneralSpoiler: false,
-            isMediaSpoiler: false,
-            rank: 70,
-          ),
-        ];
+        ],
+        minTagPercentage: 25,
+      );
 
-        final reqWithTags = _buildDefaultMediaRequest(
-          tags: {101: true, 202: false, 999: true},
-          allTags: catalog,
-          minTagPercentage: 35,
-        );
+      expect(req.query, 'Steins;Gate');
+      expect(req.sort, ['SCORE_DESC']);
+      expect(req.format, 'TV');
+      expect(req.formatNot, 'MOVIE');
+      expect(req.status, 'FINISHED');
+      expect(req.onList, isTrue);
+      expect(req.tagIn, ['Time Travel']);
+      expect(req.tagNotIn, ['Isekai']);
+      expect(req.minimumTagRank, 25);
+    });
 
-        expect(reqWithTags.tagIn, ['Time Manipulation']);
-        expect(reqWithTags.tagNotIn, ['Cyberpunk']);
-        expect(reqWithTags.minimumTagRank, 35);
+    test('maps multiple included and excluded formats to In/NotIn lists', () {
+      final req = _buildDefaultMediaRequest(
+        formats: {'TV': true, 'OVA': true, 'MOVIE': false, 'SPECIAL': false},
+      );
 
-        final reqWithoutTags = _buildDefaultMediaRequest(
-          allTags: catalog,
-          minTagPercentage: 35,
-        );
+      expect(req.formatIn, ['TV', 'OVA']);
+      expect(req.formatNotIn, ['MOVIE', 'SPECIAL']);
+      expect(req.hasFormat(), isFalse);
+      expect(req.hasFormatNot(), isFalse);
+    });
 
-        expect(reqWithoutTags.tagIn, isEmpty);
-        expect(reqWithoutTags.tagNotIn, isEmpty);
-        expect(reqWithoutTags.hasMinimumTagRank(), isFalse);
-      },
-    );
+    test('handles empty search query and null filters cleanly', () {
+      final req = _buildDefaultMediaRequest();
+
+      expect(req.hasQuery(), isFalse);
+      expect(req.sort, isEmpty);
+      expect(req.formatIn, isEmpty);
+      expect(req.formatNotIn, isEmpty);
+      expect(req.hasStatus(), isFalse);
+      expect(req.hasOnList(), isFalse);
+      expect(req.hasMinAverageScore(), isFalse);
+      expect(req.hasMaxAverageScore(), isFalse);
+      expect(req.hasSeason(), isFalse);
+      expect(req.hasMinStartDate(), isFalse);
+      expect(req.hasMaxStartDate(), isFalse);
+      expect(req.hasMinEpisodes(), isFalse);
+      expect(req.hasMaxEpisodes(), isFalse);
+      expect(req.hasMinDuration(), isFalse);
+      expect(req.hasMaxDuration(), isFalse);
+      expect(req.hasIsAdult(), isFalse);
+      expect(req.genreIn, isEmpty);
+      expect(req.genreNotIn, isEmpty);
+      expect(req.tagIn, isEmpty);
+      expect(req.tagNotIn, isEmpty);
+      expect(req.hasMinimumTagRank(), isFalse);
+    });
+
+    test('maps title and trending sorts correctly', () {
+      expect(_buildDefaultMediaRequest(sortBy: 'title_romaji').sort, [
+        'TITLE_ROMAJI',
+      ]);
+      expect(_buildDefaultMediaRequest(sortBy: 'title_romaji_desc').sort, [
+        'TITLE_ROMAJI_DESC',
+      ]);
+      expect(_buildDefaultMediaRequest(sortBy: 'episodes_desc').sort, [
+        'EPISODES_DESC',
+      ]);
+      expect(_buildDefaultMediaRequest(sortBy: 'chapters_desc').sort, [
+        'CHAPTERS_DESC',
+      ]);
+      expect(_buildDefaultMediaRequest(sortBy: 'popularity_desc').sort, [
+        'POPULARITY_DESC',
+      ]);
+      expect(_buildDefaultMediaRequest(sortBy: 'trending_desc').sort, [
+        'TRENDING_DESC',
+      ]);
+    });
+
+    test('ignores tag entries when tag is missing in allTags', () {
+      final req = _buildDefaultMediaRequest(
+        tags: {999: true},
+      );
+
+      expect(req.tagIn, isEmpty);
+      expect(req.tagNotIn, isEmpty);
+      expect(req.hasMinimumTagRank(), isFalse);
+    });
 
     test(
-      'populates genres, score range, years, season, status, onList, and sort',
+      'maps score ranges, season, start dates, adult flag, and genres correctly',
       () {
         final req = _buildDefaultMediaRequest(
-          page: 3,
-          query: 'Steins;Gate',
-          sortBy: 'score_desc',
-          status: 'FINISHED',
-          onList: true,
-          scoreMin: 74.6,
-          scoreMax: 95.2,
+          scoreMin: 70.4,
+          scoreMax: 94.6,
           season: 'SPRING',
           startYearMin: 2010,
           startYearMax: 2020,
@@ -191,12 +218,7 @@ void main() {
           genres: {'Sci-Fi': true, 'Thriller': true, 'Horror': false},
         );
 
-        expect(req.page, 3);
-        expect(req.query, 'Steins;Gate');
-        expect(req.sort, ['SCORE_DESC']);
-        expect(req.status, 'FINISHED');
-        expect(req.onList, isTrue);
-        expect(req.minAverageScore, 75);
+        expect(req.minAverageScore, 70);
         expect(req.maxAverageScore, 95);
         expect(req.season, 'SPRING');
         expect(req.minStartDate, 2010);
@@ -271,6 +293,54 @@ void main() {
       expect(mapStudioSortOption('name'), 'NAME');
       expect(mapStudioSortOption('name_desc'), 'NAME_DESC');
       expect(mapStudioSortOption('favourites'), 'FAVOURITES');
+    });
+  });
+
+  group('User Search Builder', () {
+    test('buildUserSearchRequest maps query, page, and sort options', () {
+      final browseReq = buildUserSearchRequest(
+        page: 1,
+        query: '',
+        sortBy: 'search_match',
+      );
+      expect(browseReq.page, 1);
+      expect(browseReq.hasQuery(), isFalse);
+      expect(browseReq.sort, isEmpty);
+
+      final searchReq = buildUserSearchRequest(
+        page: 2,
+        query: 'TheDrone7',
+        sortBy: 'search_match',
+      );
+      expect(searchReq.page, 2);
+      expect(searchReq.query, 'TheDrone7');
+      expect(searchReq.sort, ['SEARCH_MATCH']);
+
+      final watchedTimeReq = buildUserSearchRequest(
+        page: 1,
+        query: '',
+        sortBy: 'watched_time_desc',
+      );
+      expect(watchedTimeReq.sort, ['WATCHED_TIME_DESC']);
+
+      expect(mapUserSortOption('username', hasQuery: false), 'USERNAME');
+      expect(
+        mapUserSortOption('username_desc', hasQuery: false),
+        'USERNAME_DESC',
+      );
+      expect(
+        mapUserSortOption('watched_time', hasQuery: false),
+        'WATCHED_TIME',
+      );
+      expect(
+        mapUserSortOption('chapters_read_desc', hasQuery: false),
+        'CHAPTERS_READ_DESC',
+      );
+      expect(
+        mapUserSortOption('chapters_read', hasQuery: false),
+        'CHAPTERS_READ',
+      );
+      expect(mapUserSortOption('unknown', hasQuery: false), isNull);
     });
   });
 }

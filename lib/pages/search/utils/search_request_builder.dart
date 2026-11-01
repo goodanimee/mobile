@@ -249,6 +249,23 @@ FetchStaffSearchRequest buildStaffSearchRequest({
   return req;
 }
 
+/// Builds a [FetchUserSearchRequest] from search and sort states.
+FetchUserSearchRequest buildUserSearchRequest({
+  required int page,
+  required String query,
+  required String sortBy,
+}) {
+  final req = FetchUserSearchRequest(page: page);
+  if (query.isNotEmpty) {
+    req.query = query;
+  }
+  final mappedSort = mapUserSortOption(sortBy, hasQuery: query.isNotEmpty);
+  if (mappedSort != null) {
+    req.sort.add(mappedSort);
+  }
+  return req;
+}
+
 /// Maps a studio sort key to its AniList GraphQL enum string.
 String? mapStudioSortOption(String sortBy) {
   switch (sortBy) {
@@ -276,6 +293,31 @@ String? mapEntitySortOption(String sortBy, {required bool hasQuery}) {
         return 'SEARCH_MATCH';
       }
       return 'FAVOURITES_DESC';
+    default:
+      return null;
+  }
+}
+
+/// Maps a user sort key to its AniList GraphQL enum string.
+String? mapUserSortOption(String sortBy, {required bool hasQuery}) {
+  switch (sortBy) {
+    case 'search_match':
+      if (hasQuery) {
+        return 'SEARCH_MATCH';
+      }
+      return null;
+    case 'username':
+      return 'USERNAME';
+    case 'username_desc':
+      return 'USERNAME_DESC';
+    case 'watched_time_desc':
+      return 'WATCHED_TIME_DESC';
+    case 'watched_time':
+      return 'WATCHED_TIME';
+    case 'chapters_read_desc':
+      return 'CHAPTERS_READ_DESC';
+    case 'chapters_read':
+      return 'CHAPTERS_READ';
     default:
       return null;
   }
