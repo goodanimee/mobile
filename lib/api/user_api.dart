@@ -1,3 +1,4 @@
+import '../models/social_user.dart';
 import '../models/user_activity.dart';
 import '../models/user_favourites.dart';
 import '../models/user_profile.dart';
@@ -120,5 +121,29 @@ class UserApi {
     return response.hasFavourites()
         ? UserFavourites.fromProto(response.favourites)
         : const UserFavourites();
+  }
+
+  /// Fetches paginated following or followers for [userId].
+  static Future<SocialUserPage> getUserSocial({
+    required int userId,
+    required bool isFollowers,
+    int page = 1,
+    int perPage = 30,
+    required String token,
+  }) async {
+    final request = GetUserSocialRequest(
+      userId: userId,
+      isFollowers: isFollowers,
+      page: page,
+      perPage: perPage,
+    );
+    final bytes = await FfiCore.executeProtoCall(
+      'GetUserSocial',
+      request.writeToBuffer(),
+      token,
+    );
+    final response = GetUserSocialResponse.fromBuffer(bytes);
+    if (response.error.isNotEmpty) throw Exception(response.error);
+    return SocialUserPage.fromProto(response);
   }
 }

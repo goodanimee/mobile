@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/user_api.dart';
+import '../models/social_user.dart';
 import '../models/user_activity.dart';
 import '../models/user_favourites.dart';
 import '../models/user_profile.dart';
@@ -120,6 +121,23 @@ class UserService {
     return UserApi.getUserFavourites(
       userId: userId,
       category: category?.apiKey ?? '',
+      page: page,
+      perPage: perPage,
+      token: token,
+    );
+  }
+
+  /// Fetches paginated following or followers for [userId].
+  static Future<SocialUserPage> getUserSocial({
+    required int userId,
+    required bool isFollowers,
+    int page = 1,
+    int perPage = 30,
+  }) async {
+    final token = await AuthService.getRawToken() ?? '';
+    return UserApi.getUserSocial(
+      userId: userId,
+      isFollowers: isFollowers,
       page: page,
       perPage: perPage,
       token: token,
