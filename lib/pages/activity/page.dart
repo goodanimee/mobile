@@ -10,7 +10,6 @@ import '../../services/activity_service.dart';
 import '../../services/media_service.dart';
 import '../../theme/theme.dart';
 import '../../utils/app_navigation.dart';
-import '../../utils/utils.dart';
 import '../profile/widgets/user_activity_card.dart';
 
 /// Full screen view for displaying a single activity post and its interactions.
@@ -208,56 +207,27 @@ class _ActivityPageState extends State<ActivityPage> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        AppFab(
+        AppFab.stat(
           onTap: _isTogglingLike ? null : _handleToggleLike,
           tooltip: isLiked ? 'Unlike' : 'Like',
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LucideHeartIcon(
-                isFilled: isLiked,
-                color: isLiked ? paletteRed : textPrimary,
-                size: iconSize,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                StringUtils.formatCompactNumber(likeCount),
-                style: TextStyle(
-                  color: isLiked ? paletteRed : textSecondary,
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w600,
-                  height: 1.1,
-                ),
-              ),
-            ],
+          icon: LucideHeartIcon(
+            isFilled: isLiked,
+            color: isLiked ? paletteRed : textPrimary,
+            size: iconSize,
           ),
+          count: likeCount,
+          countColor: isLiked ? paletteRed : null,
         ),
         const SizedBox(height: 8),
-        AppFab(
+        AppFab.stat(
           onTap: () {},
           tooltip: 'Comments',
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                LucideIcons.messageSquare,
-                size: iconSize,
-                color: textPrimary,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                StringUtils.formatCompactNumber(replyCount),
-                style: const TextStyle(
-                  color: textSecondary,
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w600,
-                  height: 1.1,
-                ),
-              ),
-            ],
+          icon: Icon(
+            LucideIcons.messageSquare,
+            size: iconSize,
+            color: textPrimary,
           ),
+          count: replyCount,
         ),
         const SizedBox(height: 8),
         FloatingNav(

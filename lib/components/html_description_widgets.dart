@@ -28,17 +28,92 @@ class HtmlInlineSpoiler extends StatefulWidget {
   State<HtmlInlineSpoiler> createState() => _HtmlInlineSpoilerState();
 }
 
+/// A reusable spoiler toggle button for inline and block spoilers.
+class HtmlSpoilerButton extends StatelessWidget {
+  /// Whether the spoiler is currently revealed.
+  final bool isRevealed;
+
+  /// Callback when the button is tapped.
+  final VoidCallback onTap;
+
+  /// Base text style for sizing and font metrics.
+  final TextStyle style;
+
+  /// Whether this button is rendered in an inline context.
+  final bool isInline;
+
+  /// Creates a spoiler button.
+  const HtmlSpoilerButton({
+    super.key,
+    required this.isRevealed,
+    required this.onTap,
+    required this.style,
+    this.isInline = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final baseFontSize = style.fontSize ?? fontMedium(context);
+    final iconSize = isRevealed ? baseFontSize * 0.9 : baseFontSize;
+    final fontSize = isRevealed ? baseFontSize * 0.85 : baseFontSize;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: isInline ? 6 : 10,
+            vertical: isInline ? 2 : 6,
+          ),
+          decoration: BoxDecoration(
+            color: spoilerColor.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(isInline ? 4 : 6),
+            border: Border.all(color: spoilerColor.withValues(alpha: 0.3)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                isRevealed ? LucideIcons.eyeOff : LucideIcons.eye,
+                size: iconSize,
+                color: spoilerColor,
+              ),
+              SizedBox(width: isInline ? 4 : 6),
+              Text(
+                isRevealed ? 'Hide Spoiler' : 'Spoiler',
+                style: style.copyWith(
+                  color: spoilerColor,
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _HtmlInlineSpoilerState extends State<HtmlInlineSpoiler> {
   bool _isRevealed = false;
 
   @override
   Widget build(BuildContext context) {
-    final spoilerBtnTextSize = widget.style.fontSize ?? fontMedium(context);
+    if (!_isRevealed) {
+      return HtmlSpoilerButton(
+        isRevealed: false,
+        onTap: () => setState(() => _isRevealed = true),
+        style: widget.style,
+        isInline: true,
+      );
+    }
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () => setState(() => _isRevealed = !_isRevealed),
+        onTap: () => setState(() => _isRevealed = false),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
           decoration: BoxDecoration(
@@ -46,29 +121,10 @@ class _HtmlInlineSpoilerState extends State<HtmlInlineSpoiler> {
             borderRadius: BorderRadius.circular(4),
             border: Border.all(color: spoilerColor.withValues(alpha: 0.3)),
           ),
-          child: _isRevealed
-              ? Text.rich(
-                  TextSpan(children: widget.childrenSpans),
-                  style: widget.revealedStyle.copyWith(color: spoilerColor),
-                )
-              : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      LucideIcons.eye,
-                      size: spoilerBtnTextSize,
-                      color: spoilerColor,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Spoiler',
-                      style: widget.style.copyWith(
-                        color: spoilerColor,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
+          child: Text.rich(
+            TextSpan(children: widget.childrenSpans),
+            style: widget.revealedStyle.copyWith(color: spoilerColor),
+          ),
         ),
       ),
     );
@@ -99,42 +155,63 @@ class _HtmlBlockSpoilerState extends State<HtmlBlockSpoiler> {
 
   @override
   Widget build(BuildContext context) {
-    final spoilerBtnTextSize = widget.style.fontSize ?? fontMedium(context);
+    if (!_isRevealed) {
+      return HtmlSpoilerButton(
+        isRevealed: false,
+        onTap: () => setState(() => _isRevealed = true),
+        style: widget.style,
+      );
+    }
 
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () => setState(() => _isRevealed = !_isRevealed),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            color: spoilerColor.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: spoilerColor.withValues(alpha: 0.3)),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: spoilerColor.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: spoilerColor.withValues(alpha: 0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          HtmlSpoilerButton(
+            isRevealed: true,
+            onTap: () => setState(() => _isRevealed = false),
+            style: widget.style,
           ),
-          child: _isRevealed
-              ? widget.revealedBuilder(
-                  widget.style.copyWith(color: spoilerColor),
-                )
-              : Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      LucideIcons.eye,
-                      size: spoilerBtnTextSize,
-                      color: spoilerColor,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      'Spoiler',
-                      style: widget.style.copyWith(
-                        color: spoilerColor,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-        ),
+          const SizedBox(height: 8),
+          widget.revealedBuilder(widget.style),
+        ],
+      ),
+    );
+  }
+}
+
+/// Renders a preformatted code block in a scrollable container with monospace styling.
+class HtmlCodeBlock extends StatelessWidget {
+  /// The spans to render inside the code block.
+  final List<InlineSpan> spans;
+
+  /// The text style for the code block.
+  final TextStyle style;
+
+  /// Creates a code block widget.
+  const HtmlCodeBlock({super.key, required this.spans, required this.style});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: hoverBgColor,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: cardBorderColor),
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Text.rich(TextSpan(children: spans, style: style)),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/theme.dart';
+import '../utils/utils.dart';
 
 /// Standard floating action button matching the application design language.
 class AppFab extends StatelessWidget {
@@ -32,6 +33,39 @@ class AppFab extends StatelessWidget {
     this.tooltip,
     this.size = 52.0,
   });
+
+  /// Creates an application floating action button displaying an icon with a stat count below it.
+  AppFab.stat({
+    super.key,
+    required this.onTap,
+    required Widget icon,
+    required int count,
+    Color? countColor,
+    this.backgroundColor,
+    this.borderColor,
+    this.tooltip,
+    this.size = 52.0,
+  }) : child = Builder(
+         builder: (context) {
+           return Column(
+             mainAxisSize: MainAxisSize.min,
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+               icon,
+               const SizedBox(height: 4),
+               Text(
+                 StringUtils.formatCompactNumber(count),
+                 style: TextStyle(
+                   color: countColor ?? textSecondary,
+                   fontSize: 10.5,
+                   fontWeight: FontWeight.w600,
+                   height: 1.1,
+                 ),
+               ),
+             ],
+           );
+         },
+       );
 
   @override
   Widget build(BuildContext context) {
