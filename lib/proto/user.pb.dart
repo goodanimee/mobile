@@ -575,6 +575,150 @@ class UserActivity extends $pb.GeneratedMessage {
   $0.MediaMin ensureMedia() => $_ensure(12);
 }
 
+class ActivityReply extends $pb.GeneratedMessage {
+  factory ActivityReply({
+    $core.int? id,
+    $core.int? userId,
+    $core.int? activityId,
+    $core.String? text,
+    $core.int? createdAt,
+    $core.int? likeCount,
+    $core.bool? isLiked,
+    UserActivityUser? user,
+  }) {
+    final result = ActivityReply._();
+    if (id != null) result.id = id;
+    if (userId != null) result.userId = userId;
+    if (activityId != null) result.activityId = activityId;
+    if (text != null) result.text = text;
+    if (createdAt != null) result.createdAt = createdAt;
+    if (likeCount != null) result.likeCount = likeCount;
+    if (isLiked != null) result.isLiked = isLiked;
+    if (user != null) result.user = user;
+    return result;
+  }
+
+  ActivityReply._();
+
+  factory ActivityReply.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ActivityReply()..mergeFromBuffer(data, registry);
+  factory ActivityReply.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      ActivityReply()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ActivityReply',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'goodanime'),
+      createEmptyInstance: ActivityReply.$_createMessage)
+    ..aI(1, _omitFieldNames ? '' : 'id')
+    ..aI(2, _omitFieldNames ? '' : 'userId')
+    ..aI(3, _omitFieldNames ? '' : 'activityId')
+    ..aOS(4, _omitFieldNames ? '' : 'text')
+    ..aI(5, _omitFieldNames ? '' : 'createdAt')
+    ..aI(6, _omitFieldNames ? '' : 'likeCount')
+    ..aOB(7, _omitFieldNames ? '' : 'isLiked')
+    ..aOM<UserActivityUser>(8, _omitFieldNames ? '' : 'user',
+        subBuilder: UserActivityUser.$_createMessage)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ActivityReply clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ActivityReply copyWith(void Function(ActivityReply) updates) =>
+      super.copyWith((message) => updates(message as ActivityReply))
+          as ActivityReply;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  @$core.Deprecated('Use ActivityReply() / ActivityReply.new instead')
+  static ActivityReply create() => ActivityReply._();
+  static $pb.GeneratedMessage $_createMessage() => ActivityReply._();
+  @$core.override
+  ActivityReply createEmptyInstance() => ActivityReply._();
+  @$core.pragma('dart2js:noInline')
+  static ActivityReply getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ActivityReply>(
+          ActivityReply.$_createMessage);
+  static ActivityReply? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get id => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set id($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get userId => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set userId($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasUserId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearUserId() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get activityId => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set activityId($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasActivityId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearActivityId() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get text => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set text($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasText() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearText() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get createdAt => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set createdAt($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasCreatedAt() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCreatedAt() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.int get likeCount => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set likeCount($core.int value) => $_setSignedInt32(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasLikeCount() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearLikeCount() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.bool get isLiked => $_getBF(6);
+  @$pb.TagNumber(7)
+  set isLiked($core.bool value) => $_setBool(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasIsLiked() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearIsLiked() => $_clearField(7);
+
+  @$pb.TagNumber(8)
+  UserActivityUser get user => $_getN(7);
+  @$pb.TagNumber(8)
+  set user(UserActivityUser value) => $_setField(8, value);
+  @$pb.TagNumber(8)
+  $core.bool hasUser() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearUser() => $_clearField(8);
+  @$pb.TagNumber(8)
+  UserActivityUser ensureUser() => $_ensure(7);
+}
+
 class FavouriteMediaConnection extends $pb.GeneratedMessage {
   factory FavouriteMediaConnection({
     $1.PageInfo? pageInfo,

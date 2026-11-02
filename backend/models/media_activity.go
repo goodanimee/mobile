@@ -4,13 +4,14 @@ import pb "goodanime-backend/proto"
 
 // ListActivity represents a list activity node.
 type ListActivity struct {
-	ID        int32   `json:"id"`
-	CreatedAt int32   `json:"createdAt"`
-	IsLiked   bool    `json:"isLiked"`
-	LikeCount int32   `json:"likeCount"`
-	Progress  string  `json:"progress"`
-	Status    string  `json:"status"`
-	User      *Viewer `json:"user"`
+	ID         int32   `json:"id"`
+	CreatedAt  int32   `json:"createdAt"`
+	IsLiked    bool    `json:"isLiked"`
+	LikeCount  int32   `json:"likeCount"`
+	ReplyCount int32   `json:"replyCount"`
+	Progress   string  `json:"progress"`
+	Status     string  `json:"status"`
+	User       *Viewer `json:"user"`
 }
 
 // ToProto converts ListActivity to its protobuf representation.
@@ -19,13 +20,14 @@ func (la *ListActivity) ToProto() *pb.ListActivity {
 		return nil
 	}
 	return &pb.ListActivity{
-		Id:        la.ID,
-		CreatedAt: la.CreatedAt,
-		IsLiked:   la.IsLiked,
-		LikeCount: la.LikeCount,
-		Progress:  la.Progress,
-		Status:    la.Status,
-		User:      la.User.ToProto(),
+		Id:         la.ID,
+		CreatedAt:  la.CreatedAt,
+		IsLiked:    la.IsLiked,
+		LikeCount:  la.LikeCount,
+		ReplyCount: la.ReplyCount,
+		Progress:   la.Progress,
+		Status:     la.Status,
+		User:       la.User.ToProto(),
 	}
 }
 

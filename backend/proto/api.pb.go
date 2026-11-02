@@ -4209,6 +4209,446 @@ func (x *GetUserStatisticsResponse) GetError() string {
 	return ""
 }
 
+type GetActivityByIdRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ActivityId    int32                  `protobuf:"varint,1,opt,name=activity_id,json=activityId,proto3" json:"activity_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetActivityByIdRequest) Reset() {
+	*x = GetActivityByIdRequest{}
+	mi := &file_api_proto_msgTypes[69]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetActivityByIdRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetActivityByIdRequest) ProtoMessage() {}
+
+func (x *GetActivityByIdRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[69]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetActivityByIdRequest.ProtoReflect.Descriptor instead.
+func (*GetActivityByIdRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{69}
+}
+
+func (x *GetActivityByIdRequest) GetActivityId() int32 {
+	if x != nil {
+		return x.ActivityId
+	}
+	return 0
+}
+
+type GetActivityByIdResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Activity      *UserActivity          `protobuf:"bytes,1,opt,name=activity,proto3" json:"activity,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetActivityByIdResponse) Reset() {
+	*x = GetActivityByIdResponse{}
+	mi := &file_api_proto_msgTypes[70]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetActivityByIdResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetActivityByIdResponse) ProtoMessage() {}
+
+func (x *GetActivityByIdResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[70]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetActivityByIdResponse.ProtoReflect.Descriptor instead.
+func (*GetActivityByIdResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{70}
+}
+
+func (x *GetActivityByIdResponse) GetActivity() *UserActivity {
+	if x != nil {
+		return x.Activity
+	}
+	return nil
+}
+
+func (x *GetActivityByIdResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type GetActivityRepliesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ActivityId    int32                  `protobuf:"varint,1,opt,name=activity_id,json=activityId,proto3" json:"activity_id,omitempty"`
+	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	PerPage       int32                  `protobuf:"varint,3,opt,name=per_page,json=perPage,proto3" json:"per_page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetActivityRepliesRequest) Reset() {
+	*x = GetActivityRepliesRequest{}
+	mi := &file_api_proto_msgTypes[71]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetActivityRepliesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetActivityRepliesRequest) ProtoMessage() {}
+
+func (x *GetActivityRepliesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[71]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetActivityRepliesRequest.ProtoReflect.Descriptor instead.
+func (*GetActivityRepliesRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{71}
+}
+
+func (x *GetActivityRepliesRequest) GetActivityId() int32 {
+	if x != nil {
+		return x.ActivityId
+	}
+	return 0
+}
+
+func (x *GetActivityRepliesRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *GetActivityRepliesRequest) GetPerPage() int32 {
+	if x != nil {
+		return x.PerPage
+	}
+	return 0
+}
+
+type GetActivityRepliesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PageInfo      *PageInfo              `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Replies       []*ActivityReply       `protobuf:"bytes,3,rep,name=replies,proto3" json:"replies,omitempty"`
+	Error         string                 `protobuf:"bytes,4,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetActivityRepliesResponse) Reset() {
+	*x = GetActivityRepliesResponse{}
+	mi := &file_api_proto_msgTypes[72]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetActivityRepliesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetActivityRepliesResponse) ProtoMessage() {}
+
+func (x *GetActivityRepliesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[72]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetActivityRepliesResponse.ProtoReflect.Descriptor instead.
+func (*GetActivityRepliesResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{72}
+}
+
+func (x *GetActivityRepliesResponse) GetPageInfo() *PageInfo {
+	if x != nil {
+		return x.PageInfo
+	}
+	return nil
+}
+
+func (x *GetActivityRepliesResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *GetActivityRepliesResponse) GetReplies() []*ActivityReply {
+	if x != nil {
+		return x.Replies
+	}
+	return nil
+}
+
+func (x *GetActivityRepliesResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type SaveActivityReplyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ActivityId    int32                  `protobuf:"varint,1,opt,name=activity_id,json=activityId,proto3" json:"activity_id,omitempty"`
+	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	ReplyId       *int32                 `protobuf:"varint,3,opt,name=reply_id,json=replyId,proto3,oneof" json:"reply_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SaveActivityReplyRequest) Reset() {
+	*x = SaveActivityReplyRequest{}
+	mi := &file_api_proto_msgTypes[73]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SaveActivityReplyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SaveActivityReplyRequest) ProtoMessage() {}
+
+func (x *SaveActivityReplyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[73]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SaveActivityReplyRequest.ProtoReflect.Descriptor instead.
+func (*SaveActivityReplyRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{73}
+}
+
+func (x *SaveActivityReplyRequest) GetActivityId() int32 {
+	if x != nil {
+		return x.ActivityId
+	}
+	return 0
+}
+
+func (x *SaveActivityReplyRequest) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+func (x *SaveActivityReplyRequest) GetReplyId() int32 {
+	if x != nil && x.ReplyId != nil {
+		return *x.ReplyId
+	}
+	return 0
+}
+
+type SaveActivityReplyResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Reply         *ActivityReply         `protobuf:"bytes,1,opt,name=reply,proto3" json:"reply,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SaveActivityReplyResponse) Reset() {
+	*x = SaveActivityReplyResponse{}
+	mi := &file_api_proto_msgTypes[74]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SaveActivityReplyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SaveActivityReplyResponse) ProtoMessage() {}
+
+func (x *SaveActivityReplyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[74]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SaveActivityReplyResponse.ProtoReflect.Descriptor instead.
+func (*SaveActivityReplyResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{74}
+}
+
+func (x *SaveActivityReplyResponse) GetReply() *ActivityReply {
+	if x != nil {
+		return x.Reply
+	}
+	return nil
+}
+
+func (x *SaveActivityReplyResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type ToggleActivityReplyLikeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReplyId       int32                  `protobuf:"varint,1,opt,name=reply_id,json=replyId,proto3" json:"reply_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleActivityReplyLikeRequest) Reset() {
+	*x = ToggleActivityReplyLikeRequest{}
+	mi := &file_api_proto_msgTypes[75]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleActivityReplyLikeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleActivityReplyLikeRequest) ProtoMessage() {}
+
+func (x *ToggleActivityReplyLikeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[75]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleActivityReplyLikeRequest.ProtoReflect.Descriptor instead.
+func (*ToggleActivityReplyLikeRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{75}
+}
+
+func (x *ToggleActivityReplyLikeRequest) GetReplyId() int32 {
+	if x != nil {
+		return x.ReplyId
+	}
+	return 0
+}
+
+type ToggleActivityReplyLikeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReplyId       int32                  `protobuf:"varint,1,opt,name=reply_id,json=replyId,proto3" json:"reply_id,omitempty"`
+	LikedUserIds  []int32                `protobuf:"varint,2,rep,packed,name=liked_user_ids,json=likedUserIds,proto3" json:"liked_user_ids,omitempty"`
+	Error         string                 `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleActivityReplyLikeResponse) Reset() {
+	*x = ToggleActivityReplyLikeResponse{}
+	mi := &file_api_proto_msgTypes[76]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleActivityReplyLikeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleActivityReplyLikeResponse) ProtoMessage() {}
+
+func (x *ToggleActivityReplyLikeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_msgTypes[76]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleActivityReplyLikeResponse.ProtoReflect.Descriptor instead.
+func (*ToggleActivityReplyLikeResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_rawDescGZIP(), []int{76}
+}
+
+func (x *ToggleActivityReplyLikeResponse) GetReplyId() int32 {
+	if x != nil {
+		return x.ReplyId
+	}
+	return 0
+}
+
+func (x *ToggleActivityReplyLikeResponse) GetLikedUserIds() []int32 {
+	if x != nil {
+		return x.LikedUserIds
+	}
+	return nil
+}
+
+func (x *ToggleActivityReplyLikeResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_api_proto protoreflect.FileDescriptor
 
 const file_api_proto_rawDesc = "" +
@@ -4577,7 +5017,38 @@ const file_api_proto_rawDesc = "" +
 	"\n" +
 	"statistics\x18\x01 \x01(\v2\x19.goodanime.UserStatisticsR\n" +
 	"statistics\x12\x14\n" +
-	"\x05error\x18\x02 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x05error\x18\x02 \x01(\tR\x05error\"9\n" +
+	"\x16GetActivityByIdRequest\x12\x1f\n" +
+	"\vactivity_id\x18\x01 \x01(\x05R\n" +
+	"activityId\"d\n" +
+	"\x17GetActivityByIdResponse\x123\n" +
+	"\bactivity\x18\x01 \x01(\v2\x17.goodanime.UserActivityR\bactivity\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"k\n" +
+	"\x19GetActivityRepliesRequest\x12\x1f\n" +
+	"\vactivity_id\x18\x01 \x01(\x05R\n" +
+	"activityId\x12\x12\n" +
+	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x19\n" +
+	"\bper_page\x18\x03 \x01(\x05R\aperPage\"\xae\x01\n" +
+	"\x1aGetActivityRepliesResponse\x120\n" +
+	"\tpage_info\x18\x01 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x122\n" +
+	"\areplies\x18\x03 \x03(\v2\x18.goodanime.ActivityReplyR\areplies\x12\x14\n" +
+	"\x05error\x18\x04 \x01(\tR\x05error\"|\n" +
+	"\x18SaveActivityReplyRequest\x12\x1f\n" +
+	"\vactivity_id\x18\x01 \x01(\x05R\n" +
+	"activityId\x12\x12\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\x12\x1e\n" +
+	"\breply_id\x18\x03 \x01(\x05H\x00R\areplyId\x88\x01\x01B\v\n" +
+	"\t_reply_id\"a\n" +
+	"\x19SaveActivityReplyResponse\x12.\n" +
+	"\x05reply\x18\x01 \x01(\v2\x18.goodanime.ActivityReplyR\x05reply\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\";\n" +
+	"\x1eToggleActivityReplyLikeRequest\x12\x19\n" +
+	"\breply_id\x18\x01 \x01(\x05R\areplyId\"x\n" +
+	"\x1fToggleActivityReplyLikeResponse\x12\x19\n" +
+	"\breply_id\x18\x01 \x01(\x05R\areplyId\x12$\n" +
+	"\x0eliked_user_ids\x18\x02 \x03(\x05R\flikedUserIds\x12\x14\n" +
+	"\x05error\x18\x03 \x01(\tR\x05errorB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_api_proto_rawDescOnce sync.Once
@@ -4591,7 +5062,7 @@ func file_api_proto_rawDescGZIP() []byte {
 	return file_api_proto_rawDescData
 }
 
-var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 69)
+var file_api_proto_msgTypes = make([]protoimpl.MessageInfo, 77)
 var file_api_proto_goTypes = []any{
 	(*FetchMediaListRequest)(nil),             // 0: goodanime.FetchMediaListRequest
 	(*FetchMediaListResponse)(nil),            // 1: goodanime.FetchMediaListResponse
@@ -4662,72 +5133,85 @@ var file_api_proto_goTypes = []any{
 	(*GetUserSocialResponse)(nil),             // 66: goodanime.GetUserSocialResponse
 	(*GetUserStatisticsRequest)(nil),          // 67: goodanime.GetUserStatisticsRequest
 	(*GetUserStatisticsResponse)(nil),         // 68: goodanime.GetUserStatisticsResponse
-	(*MediaListCollection)(nil),               // 69: goodanime.MediaListCollection
-	(*Viewer)(nil),                            // 70: goodanime.Viewer
-	(*MediaListEntry)(nil),                    // 71: goodanime.MediaListEntry
-	(*Media)(nil),                             // 72: goodanime.Media
-	(ReviewUserRating)(0),                     // 73: goodanime.ReviewUserRating
-	(*ReviewNode)(nil),                        // 74: goodanime.ReviewNode
-	(*PageInfo)(nil),                          // 75: goodanime.PageInfo
-	(*ListActivity)(nil),                      // 76: goodanime.ListActivity
-	(*Studio)(nil),                            // 77: goodanime.Studio
-	(*Staff)(nil),                             // 78: goodanime.Staff
-	(*MediaTag)(nil),                          // 79: goodanime.MediaTag
-	(*MediaMin)(nil),                          // 80: goodanime.MediaMin
-	(*Character)(nil),                         // 81: goodanime.Character
-	(*SocialUser)(nil),                        // 82: goodanime.SocialUser
-	(*UserProfile)(nil),                       // 83: goodanime.UserProfile
-	(*UserActivity)(nil),                      // 84: goodanime.UserActivity
-	(*UserFavourites)(nil),                    // 85: goodanime.UserFavourites
-	(*UserStatistics)(nil),                    // 86: goodanime.UserStatistics
+	(*GetActivityByIdRequest)(nil),            // 69: goodanime.GetActivityByIdRequest
+	(*GetActivityByIdResponse)(nil),           // 70: goodanime.GetActivityByIdResponse
+	(*GetActivityRepliesRequest)(nil),         // 71: goodanime.GetActivityRepliesRequest
+	(*GetActivityRepliesResponse)(nil),        // 72: goodanime.GetActivityRepliesResponse
+	(*SaveActivityReplyRequest)(nil),          // 73: goodanime.SaveActivityReplyRequest
+	(*SaveActivityReplyResponse)(nil),         // 74: goodanime.SaveActivityReplyResponse
+	(*ToggleActivityReplyLikeRequest)(nil),    // 75: goodanime.ToggleActivityReplyLikeRequest
+	(*ToggleActivityReplyLikeResponse)(nil),   // 76: goodanime.ToggleActivityReplyLikeResponse
+	(*MediaListCollection)(nil),               // 77: goodanime.MediaListCollection
+	(*Viewer)(nil),                            // 78: goodanime.Viewer
+	(*MediaListEntry)(nil),                    // 79: goodanime.MediaListEntry
+	(*Media)(nil),                             // 80: goodanime.Media
+	(ReviewUserRating)(0),                     // 81: goodanime.ReviewUserRating
+	(*ReviewNode)(nil),                        // 82: goodanime.ReviewNode
+	(*PageInfo)(nil),                          // 83: goodanime.PageInfo
+	(*ListActivity)(nil),                      // 84: goodanime.ListActivity
+	(*Studio)(nil),                            // 85: goodanime.Studio
+	(*Staff)(nil),                             // 86: goodanime.Staff
+	(*MediaTag)(nil),                          // 87: goodanime.MediaTag
+	(*MediaMin)(nil),                          // 88: goodanime.MediaMin
+	(*Character)(nil),                         // 89: goodanime.Character
+	(*SocialUser)(nil),                        // 90: goodanime.SocialUser
+	(*UserProfile)(nil),                       // 91: goodanime.UserProfile
+	(*UserActivity)(nil),                      // 92: goodanime.UserActivity
+	(*UserFavourites)(nil),                    // 93: goodanime.UserFavourites
+	(*UserStatistics)(nil),                    // 94: goodanime.UserStatistics
+	(*ActivityReply)(nil),                     // 95: goodanime.ActivityReply
 }
 var file_api_proto_depIdxs = []int32{
-	69, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
-	70, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
+	77, // 0: goodanime.FetchMediaListResponse.collection:type_name -> goodanime.MediaListCollection
+	78, // 1: goodanime.FetchViewerResponse.viewer:type_name -> goodanime.Viewer
 	3,  // 2: goodanime.SaveMediaListEntryRequest.started_at:type_name -> goodanime.FuzzyDateInput
 	3,  // 3: goodanime.SaveMediaListEntryRequest.completed_at:type_name -> goodanime.FuzzyDateInput
 	4,  // 4: goodanime.SaveMediaListEntryRequest.custom_lists:type_name -> goodanime.CustomListsInput
-	71, // 5: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
-	72, // 6: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
-	72, // 7: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
-	72, // 8: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
-	72, // 9: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
-	72, // 10: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
-	73, // 11: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
-	74, // 12: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
-	75, // 13: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
-	76, // 14: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
-	77, // 15: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
-	78, // 16: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
-	79, // 17: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
-	80, // 18: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
-	75, // 19: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
-	77, // 20: goodanime.FetchStudioSearchResponse.studios:type_name -> goodanime.Studio
-	75, // 21: goodanime.FetchStudioSearchResponse.page_info:type_name -> goodanime.PageInfo
-	81, // 22: goodanime.FetchCharacterDetailsResponse.character:type_name -> goodanime.Character
-	81, // 23: goodanime.FetchCharacterSearchResponse.characters:type_name -> goodanime.Character
-	75, // 24: goodanime.FetchCharacterSearchResponse.page_info:type_name -> goodanime.PageInfo
-	78, // 25: goodanime.FetchStaffSearchResponse.staff:type_name -> goodanime.Staff
-	75, // 26: goodanime.FetchStaffSearchResponse.page_info:type_name -> goodanime.PageInfo
-	82, // 27: goodanime.FetchUserSearchResponse.users:type_name -> goodanime.SocialUser
-	75, // 28: goodanime.FetchUserSearchResponse.page_info:type_name -> goodanime.PageInfo
-	83, // 29: goodanime.GetUserProfileResponse.profile:type_name -> goodanime.UserProfile
-	75, // 30: goodanime.GetUserActivitiesResponse.page_info:type_name -> goodanime.PageInfo
-	84, // 31: goodanime.GetUserActivitiesResponse.activities:type_name -> goodanime.UserActivity
-	80, // 32: goodanime.ResolveAnilistPreviewsResponse.media:type_name -> goodanime.MediaMin
-	81, // 33: goodanime.ResolveAnilistPreviewsResponse.characters:type_name -> goodanime.Character
-	78, // 34: goodanime.ResolveAnilistPreviewsResponse.staff:type_name -> goodanime.Staff
-	77, // 35: goodanime.ResolveAnilistPreviewsResponse.studios:type_name -> goodanime.Studio
-	83, // 36: goodanime.ResolveAnilistPreviewsResponse.users:type_name -> goodanime.UserProfile
-	85, // 37: goodanime.GetUserFavouritesResponse.favourites:type_name -> goodanime.UserFavourites
-	75, // 38: goodanime.GetUserSocialResponse.page_info:type_name -> goodanime.PageInfo
-	82, // 39: goodanime.GetUserSocialResponse.users:type_name -> goodanime.SocialUser
-	86, // 40: goodanime.GetUserStatisticsResponse.statistics:type_name -> goodanime.UserStatistics
-	41, // [41:41] is the sub-list for method output_type
-	41, // [41:41] is the sub-list for method input_type
-	41, // [41:41] is the sub-list for extension type_name
-	41, // [41:41] is the sub-list for extension extendee
-	0,  // [0:41] is the sub-list for field type_name
+	79, // 5: goodanime.SaveMediaListEntryResponse.entry:type_name -> goodanime.MediaListEntry
+	80, // 6: goodanime.FetchMediaDetailsResponse.media:type_name -> goodanime.Media
+	80, // 7: goodanime.FetchMediaStaffResponse.media:type_name -> goodanime.Media
+	80, // 8: goodanime.FetchMediaCharactersResponse.media:type_name -> goodanime.Media
+	80, // 9: goodanime.FetchMediaRecommendationsResponse.media:type_name -> goodanime.Media
+	80, // 10: goodanime.FetchMediaReviewsResponse.media:type_name -> goodanime.Media
+	81, // 11: goodanime.RateReviewRequest.rating:type_name -> goodanime.ReviewUserRating
+	82, // 12: goodanime.RateReviewResponse.review:type_name -> goodanime.ReviewNode
+	83, // 13: goodanime.FetchMediaActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	84, // 14: goodanime.FetchMediaActivitiesResponse.activities:type_name -> goodanime.ListActivity
+	85, // 15: goodanime.FetchStudioDetailsResponse.studio:type_name -> goodanime.Studio
+	86, // 16: goodanime.FetchStaffDetailsResponse.staff:type_name -> goodanime.Staff
+	87, // 17: goodanime.FetchTagsResponse.tags:type_name -> goodanime.MediaTag
+	88, // 18: goodanime.FetchMediaSearchResponse.media:type_name -> goodanime.MediaMin
+	83, // 19: goodanime.FetchMediaSearchResponse.page_info:type_name -> goodanime.PageInfo
+	85, // 20: goodanime.FetchStudioSearchResponse.studios:type_name -> goodanime.Studio
+	83, // 21: goodanime.FetchStudioSearchResponse.page_info:type_name -> goodanime.PageInfo
+	89, // 22: goodanime.FetchCharacterDetailsResponse.character:type_name -> goodanime.Character
+	89, // 23: goodanime.FetchCharacterSearchResponse.characters:type_name -> goodanime.Character
+	83, // 24: goodanime.FetchCharacterSearchResponse.page_info:type_name -> goodanime.PageInfo
+	86, // 25: goodanime.FetchStaffSearchResponse.staff:type_name -> goodanime.Staff
+	83, // 26: goodanime.FetchStaffSearchResponse.page_info:type_name -> goodanime.PageInfo
+	90, // 27: goodanime.FetchUserSearchResponse.users:type_name -> goodanime.SocialUser
+	83, // 28: goodanime.FetchUserSearchResponse.page_info:type_name -> goodanime.PageInfo
+	91, // 29: goodanime.GetUserProfileResponse.profile:type_name -> goodanime.UserProfile
+	83, // 30: goodanime.GetUserActivitiesResponse.page_info:type_name -> goodanime.PageInfo
+	92, // 31: goodanime.GetUserActivitiesResponse.activities:type_name -> goodanime.UserActivity
+	88, // 32: goodanime.ResolveAnilistPreviewsResponse.media:type_name -> goodanime.MediaMin
+	89, // 33: goodanime.ResolveAnilistPreviewsResponse.characters:type_name -> goodanime.Character
+	86, // 34: goodanime.ResolveAnilistPreviewsResponse.staff:type_name -> goodanime.Staff
+	85, // 35: goodanime.ResolveAnilistPreviewsResponse.studios:type_name -> goodanime.Studio
+	91, // 36: goodanime.ResolveAnilistPreviewsResponse.users:type_name -> goodanime.UserProfile
+	93, // 37: goodanime.GetUserFavouritesResponse.favourites:type_name -> goodanime.UserFavourites
+	83, // 38: goodanime.GetUserSocialResponse.page_info:type_name -> goodanime.PageInfo
+	90, // 39: goodanime.GetUserSocialResponse.users:type_name -> goodanime.SocialUser
+	94, // 40: goodanime.GetUserStatisticsResponse.statistics:type_name -> goodanime.UserStatistics
+	92, // 41: goodanime.GetActivityByIdResponse.activity:type_name -> goodanime.UserActivity
+	83, // 42: goodanime.GetActivityRepliesResponse.page_info:type_name -> goodanime.PageInfo
+	95, // 43: goodanime.GetActivityRepliesResponse.replies:type_name -> goodanime.ActivityReply
+	95, // 44: goodanime.SaveActivityReplyResponse.reply:type_name -> goodanime.ActivityReply
+	45, // [45:45] is the sub-list for method output_type
+	45, // [45:45] is the sub-list for method input_type
+	45, // [45:45] is the sub-list for extension type_name
+	45, // [45:45] is the sub-list for extension extendee
+	0,  // [0:45] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_init() }
@@ -4755,13 +5239,14 @@ func file_api_proto_init() {
 	file_api_proto_msgTypes[47].OneofWrappers = []any{}
 	file_api_proto_msgTypes[49].OneofWrappers = []any{}
 	file_api_proto_msgTypes[51].OneofWrappers = []any{}
+	file_api_proto_msgTypes[73].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_rawDesc), len(file_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   69,
+			NumMessages:   77,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

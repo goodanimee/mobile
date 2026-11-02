@@ -27,6 +27,7 @@ class ListActivity extends $pb.GeneratedMessage {
     $core.String? progress,
     $core.String? status,
     $0.Viewer? user,
+    $core.int? replyCount,
   }) {
     final result = ListActivity._();
     if (id != null) result.id = id;
@@ -36,6 +37,7 @@ class ListActivity extends $pb.GeneratedMessage {
     if (progress != null) result.progress = progress;
     if (status != null) result.status = status;
     if (user != null) result.user = user;
+    if (replyCount != null) result.replyCount = replyCount;
     return result;
   }
 
@@ -60,6 +62,7 @@ class ListActivity extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'status')
     ..aOM<$0.Viewer>(7, _omitFieldNames ? '' : 'user',
         subBuilder: $0.Viewer.$_createMessage)
+    ..aI(8, _omitFieldNames ? '' : 'replyCount')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -148,6 +151,15 @@ class ListActivity extends $pb.GeneratedMessage {
   void clearUser() => $_clearField(7);
   @$pb.TagNumber(7)
   $0.Viewer ensureUser() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  $core.int get replyCount => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set replyCount($core.int value) => $_setSignedInt32(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasReplyCount() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearReplyCount() => $_clearField(8);
 }
 
 const $core.bool _omitFieldNames =

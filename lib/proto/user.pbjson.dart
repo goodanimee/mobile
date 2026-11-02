@@ -140,6 +140,36 @@ final $typed_data.Uint8List userActivityDescriptor = $convert.base64Decode(
     'EjkKCXJlY2lwaWVudBgMIAEoCzIbLmdvb2RhbmltZS5Vc2VyQWN0aXZpdHlVc2VyUglyZWNpcG'
     'llbnQSKQoFbWVkaWEYDSABKAsyEy5nb29kYW5pbWUuTWVkaWFNaW5SBW1lZGlh');
 
+@$core.Deprecated('Use activityReplyDescriptor instead')
+const ActivityReply$json = {
+  '1': 'ActivityReply',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
+    {'1': 'user_id', '3': 2, '4': 1, '5': 5, '10': 'userId'},
+    {'1': 'activity_id', '3': 3, '4': 1, '5': 5, '10': 'activityId'},
+    {'1': 'text', '3': 4, '4': 1, '5': 9, '10': 'text'},
+    {'1': 'created_at', '3': 5, '4': 1, '5': 5, '10': 'createdAt'},
+    {'1': 'like_count', '3': 6, '4': 1, '5': 5, '10': 'likeCount'},
+    {'1': 'is_liked', '3': 7, '4': 1, '5': 8, '10': 'isLiked'},
+    {
+      '1': 'user',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.UserActivityUser',
+      '10': 'user'
+    },
+  ],
+};
+
+/// Descriptor for `ActivityReply`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List activityReplyDescriptor = $convert.base64Decode(
+    'Cg1BY3Rpdml0eVJlcGx5Eg4KAmlkGAEgASgFUgJpZBIXCgd1c2VyX2lkGAIgASgFUgZ1c2VySW'
+    'QSHwoLYWN0aXZpdHlfaWQYAyABKAVSCmFjdGl2aXR5SWQSEgoEdGV4dBgEIAEoCVIEdGV4dBId'
+    'CgpjcmVhdGVkX2F0GAUgASgFUgljcmVhdGVkQXQSHQoKbGlrZV9jb3VudBgGIAEoBVIJbGlrZU'
+    'NvdW50EhkKCGlzX2xpa2VkGAcgASgIUgdpc0xpa2VkEi8KBHVzZXIYCCABKAsyGy5nb29kYW5p'
+    'bWUuVXNlckFjdGl2aXR5VXNlclIEdXNlcg==');
+
 @$core.Deprecated('Use favouriteMediaConnectionDescriptor instead')
 const FavouriteMediaConnection$json = {
   '1': 'FavouriteMediaConnection',
