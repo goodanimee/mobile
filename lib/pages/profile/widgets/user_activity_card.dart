@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../components/app_network_image.dart';
+import '../../../components/clamped_feed_content.dart';
 import '../../../components/html_description.dart';
 import '../../../components/lucide_icons_helper.dart';
 import '../../../models/user_activity.dart';
@@ -14,7 +15,7 @@ import '../../../utils/utils.dart';
 typedef ActivityUserTapCallback = void Function(int userId, String username);
 
 /// Card widget rendering a single [UserActivity] (`ListActivity`, `TextActivity`, or `MessageActivity`).
-class UserActivityCard extends StatelessWidget {
+class UserActivityCard extends StatefulWidget {
   /// Activity data to display.
   final UserActivity activity;
 
@@ -30,6 +31,21 @@ class UserActivityCard extends StatelessWidget {
   /// Optional override for opening a user profile page.
   final ActivityUserTapCallback? onOpenUser;
 
+  /// Optional callback invoked when the comment button is tapped.
+  final VoidCallback? onOpenComments;
+
+  /// Optional callback invoked when opening the full post page.
+  final VoidCallback? onOpenPost;
+
+  /// Whether this card is rendered in a feed (enabling content clamping).
+  final bool isFeedMode;
+
+  /// Maximum allowed vertical height before content clamping.
+  final double maxContentHeight;
+
+  /// Whether to display footer actions (Show more, comments, likes).
+  final bool showFooterActions;
+
   /// Creates a user activity card.
   const UserActivityCard({
     super.key,
@@ -38,7 +54,19 @@ class UserActivityCard extends StatelessWidget {
     this.isTogglingLike = false,
     this.onOpenMedia,
     this.onOpenUser,
+    this.onOpenComments,
+    this.onOpenPost,
+    this.isFeedMode = true,
+    this.maxContentHeight = 240.0,
+    this.showFooterActions = true,
   });
+
+  @override
+  State<UserActivityCard> createState() => _UserActivityCardState();
+}
+
+class _UserActivityCardState extends State<UserActivityCard> {
+  bool _isOverflowing = false;
 
   String _formatRelativeTime(int timestampSeconds) {
     if (timestampSeconds <= 0) return '';
@@ -49,8 +77,8 @@ class UserActivityCard extends StatelessWidget {
 
   void _openMedia(BuildContext context, int mediaId) {
     if (mediaId <= 0) return;
-    if (onOpenMedia != null) {
-      onOpenMedia!(mediaId);
+    if (widget.onOpenMedia != null) {
+      widget.onOpenMedia!(mediaId);
       return;
     }
     AppNavigation.toMedia(context, mediaId);
@@ -58,8 +86,8 @@ class UserActivityCard extends StatelessWidget {
 
   void _openUser(BuildContext context, UserActivityAuthor author) {
     if (author.id <= 0 && author.name.isEmpty) return;
-    if (onOpenUser != null) {
-      onOpenUser!(author.id, author.name);
+    if (widget.onOpenUser != null) {
+      widget.onOpenUser!(author.id, author.name);
       return;
     }
     AppNavigation.toProfile(
@@ -69,24 +97,49 @@ class UserActivityCard extends StatelessWidget {
     );
   }
 
+  void _openPost(BuildContext context) {
+    if (widget.onOpenPost != null) {
+      widget.onOpenPost!();
+      return;
+    }
+    AppNavigation.toActivity(context, initialActivity: widget.activity);
+  }
+
+  void _openComments(BuildContext context) {
+    if (widget.onOpenComments != null) {
+      widget.onOpenComments!();
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final card = Container(
       decoration: BoxDecoration(
         color: hoverBgColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: cardBorderColor),
       ),
-      child: switch (activity.kind) {
+      child: switch (widget.activity.kind) {
         UserActivityKind.list => _buildListCard(context),
         UserActivityKind.text => _buildTextCard(context),
         UserActivityKind.message => _buildMessageCard(context),
       },
     );
+
+    if (widget.isFeedMode) {
+      return GestureDetector(
+        onTap: () => _openPost(context),
+        behavior: HitTestBehavior.opaque,
+        child: card,
+      );
+    }
+
+    return card;
   }
 
   Widget _buildListCard(BuildContext context) {
-    final media = activity.media;
+    final media = widget.activity.media;
     final coverUrl = media == null
         ? ''
         : (media.coverImage.large.isNotEmpty
@@ -94,7 +147,7 @@ class UserActivityCard extends StatelessWidget {
               : media.coverImage.medium);
     final accentColor = ColorUtils.fromHex(media?.coverImage.color);
     final formatLabel = media?.format.replaceAll('_', ' ') ?? '';
-    final timeStr = _formatRelativeTime(activity.createdAt);
+    final timeStr = _formatRelativeTime(widget.activity.createdAt);
 
     return Padding(
       padding: const EdgeInsets.all(12),
@@ -171,9 +224,11 @@ class UserActivityCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 6),
                       GestureDetector(
-                        onTap: media != null
-                            ? () => _openMedia(context, media.id)
-                            : null,
+                        onTap: widget.isFeedMode
+                            ? () => _openPost(context)
+                            : (media != null
+                                  ? () => _openMedia(context, media.id)
+                                  : null),
                         behavior: HitTestBehavior.opaque,
                         child: Text.rich(
                           TextSpan(
@@ -183,11 +238,16 @@ class UserActivityCard extends StatelessWidget {
                               color: textSecondary,
                             ),
                             children: [
-                              TextSpan(text: activity.formattedListPrefix),
-                              if (activity.mediaDisplayTitle.isNotEmpty) ...[
+                              TextSpan(
+                                text: widget.activity.formattedListPrefix,
+                              ),
+                              if (widget
+                                  .activity
+                                  .mediaDisplayTitle
+                                  .isNotEmpty) ...[
                                 const TextSpan(text: ' '),
                                 TextSpan(
-                                  text: activity.mediaDisplayTitle,
+                                  text: widget.activity.mediaDisplayTitle,
                                   style: const TextStyle(
                                     color: textPrimary,
                                     fontWeight: FontWeight.w600,
@@ -202,8 +262,10 @@ class UserActivityCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  _buildFooterActions(),
+                  if (widget.showFooterActions) ...[
+                    const SizedBox(height: 8),
+                    _buildFooterRow(context),
+                  ],
                 ],
               ),
             ),
@@ -214,8 +276,8 @@ class UserActivityCard extends StatelessWidget {
   }
 
   Widget _buildTextCard(BuildContext context) {
-    final author = activity.user;
-    final timeStr = _formatRelativeTime(activity.createdAt);
+    final author = widget.activity.user;
+    final timeStr = _formatRelativeTime(widget.activity.createdAt);
 
     return Padding(
       padding: const EdgeInsets.all(14),
@@ -261,21 +323,36 @@ class UserActivityCard extends StatelessWidget {
                 ),
             ],
           ),
-          if (activity.textHtml.trim().isNotEmpty) ...[
+          if (widget.activity.textHtml.trim().isNotEmpty) ...[
             const SizedBox(height: 10),
-            HtmlDescription(html: activity.textHtml),
+            GestureDetector(
+              onTap: widget.isFeedMode ? () => _openPost(context) : null,
+              behavior: HitTestBehavior.opaque,
+              child: ClampedFeedContent(
+                maxHeight: widget.maxContentHeight,
+                enabled: widget.isFeedMode,
+                onOverflowChanged: (val) {
+                  if (_isOverflowing != val) {
+                    setState(() => _isOverflowing = val);
+                  }
+                },
+                child: HtmlDescription(html: widget.activity.textHtml),
+              ),
+            ),
           ],
-          const SizedBox(height: 10),
-          _buildFooterActions(),
+          if (widget.showFooterActions) ...[
+            const SizedBox(height: 10),
+            _buildFooterRow(context),
+          ],
         ],
       ),
     );
   }
 
   Widget _buildMessageCard(BuildContext context) {
-    final messenger = activity.user;
-    final recipient = activity.recipient;
-    final timeStr = _formatRelativeTime(activity.createdAt);
+    final messenger = widget.activity.user;
+    final recipient = widget.activity.recipient;
+    final timeStr = _formatRelativeTime(widget.activity.createdAt);
 
     return Padding(
       padding: const EdgeInsets.all(14),
@@ -334,7 +411,7 @@ class UserActivityCard extends StatelessWidget {
                         ),
                       ),
                     ],
-                    if (activity.isPrivate)
+                    if (widget.activity.isPrivate)
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 6,
@@ -379,59 +456,100 @@ class UserActivityCard extends StatelessWidget {
               ],
             ],
           ),
-          if (activity.textHtml.trim().isNotEmpty) ...[
+          if (widget.activity.textHtml.trim().isNotEmpty) ...[
             const SizedBox(height: 10),
-            HtmlDescription(html: activity.textHtml),
+            GestureDetector(
+              onTap: widget.isFeedMode ? () => _openPost(context) : null,
+              behavior: HitTestBehavior.opaque,
+              child: ClampedFeedContent(
+                maxHeight: widget.maxContentHeight,
+                enabled: widget.isFeedMode,
+                onOverflowChanged: (val) {
+                  if (_isOverflowing != val) {
+                    setState(() => _isOverflowing = val);
+                  }
+                },
+                child: HtmlDescription(html: widget.activity.textHtml),
+              ),
+            ),
           ],
-          const SizedBox(height: 10),
-          _buildFooterActions(),
+          if (widget.showFooterActions) ...[
+            const SizedBox(height: 10),
+            _buildFooterRow(context),
+          ],
         ],
       ),
     );
   }
 
-  Widget _buildFooterActions() {
+  Widget _buildFooterRow(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if (activity.replyCount > 0) ...[
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(LucideIcons.messageSquare, size: 14, color: textMuted),
-              const SizedBox(width: 4),
-              Text(
-                StringUtils.formatCompactNumber(activity.replyCount),
-                style: const TextStyle(
-                  color: textMuted,
-                  fontSize: 12,
+        if (_isOverflowing)
+          GestureDetector(
+            onTap: () => _openPost(context),
+            behavior: HitTestBehavior.opaque,
+            child: const Padding(
+              padding: EdgeInsets.symmetric(vertical: 4),
+              child: Text(
+                'Show more',
+                style: TextStyle(
+                  color: paletteBlue,
+                  fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-            ],
+            ),
           ),
-          const SizedBox(width: 16),
-        ],
+        const Spacer(),
         GestureDetector(
-          key: ValueKey('activity-like-${activity.id}'),
-          onTap: isTogglingLike ? null : onToggleLike,
+          key: ValueKey('activity-comment-${widget.activity.id}'),
+          onTap: widget.onOpenComments ?? () => _openComments(context),
           behavior: HitTestBehavior.opaque,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  LucideIcons.messageSquare,
+                  size: 18,
+                  color: textMuted,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  StringUtils.formatCompactNumber(widget.activity.replyCount),
+                  style: const TextStyle(
+                    color: textMuted,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        GestureDetector(
+          key: ValueKey('activity-like-${widget.activity.id}'),
+          onTap: widget.isTogglingLike ? null : widget.onToggleLike,
+          behavior: HitTestBehavior.opaque,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 LucideHeartIcon(
-                  isFilled: activity.isLiked,
-                  color: activity.isLiked ? paletteRed : textMuted,
-                  size: 16,
+                  isFilled: widget.activity.isLiked,
+                  color: widget.activity.isLiked ? paletteRed : textMuted,
+                  size: 18,
                 ),
-                const SizedBox(width: 5),
+                const SizedBox(width: 6),
                 Text(
-                  StringUtils.formatCompactNumber(activity.likeCount),
+                  StringUtils.formatCompactNumber(widget.activity.likeCount),
                   style: TextStyle(
-                    color: activity.isLiked ? paletteRed : textMuted,
-                    fontSize: 12,
+                    color: widget.activity.isLiked ? paletteRed : textMuted,
+                    fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

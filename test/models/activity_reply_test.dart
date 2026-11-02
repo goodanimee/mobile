@@ -53,8 +53,6 @@ void main() {
         userId: 2,
         activityId: 3,
         text: 'Hello',
-        likeCount: 0,
-        isLiked: false,
       );
 
       final liked = unliked.toggleLikeOptimistic();
@@ -70,7 +68,6 @@ void main() {
         userId: 2,
         activityId: 3,
         text: 'Hello',
-        likeCount: 0,
         isLiked: true,
       );
       expect(zeroLiked.toggleLikeOptimistic().likeCount, 0);

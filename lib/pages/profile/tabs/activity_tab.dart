@@ -7,6 +7,7 @@ import '../../../models/user_activity.dart';
 import '../../../services/media_service.dart';
 import '../../../services/user_service.dart';
 import '../../../theme/theme.dart';
+import '../../../utils/app_navigation.dart';
 import '../widgets/user_activity_card.dart';
 
 /// Signature for fetching a page of user activities.
@@ -100,8 +101,7 @@ class _ProfileActivityTabState extends State<ProfileActivityTab> {
       oldWidget.scrollController?.removeListener(_onScroll);
       widget.scrollController?.addListener(_onScroll);
     }
-    if (oldWidget.userId != widget.userId ||
-        oldWidget.refreshTrigger != widget.refreshTrigger) {
+    if (oldWidget.refreshTrigger != widget.refreshTrigger) {
       _loadFirstPage();
     }
   }
@@ -115,15 +115,19 @@ class _ProfileActivityTabState extends State<ProfileActivityTab> {
   void _onScroll() {
     final controller = widget.scrollController;
     if (controller == null || !controller.hasClients) return;
-    if (controller.position.extentAfter < 300) {
-      _loadMore();
+    if (_isLoading || _isLoadingMore || !_hasNextPage) return;
+
+    final maxScroll = controller.position.maxScrollExtent;
+    final currentScroll = controller.position.pixels;
+    if (maxScroll - currentScroll <= 300) {
+      _loadNextPage();
     }
   }
 
   Future<UserActivityPage> _performFetch({
     required int page,
     required List<String> typeIn,
-  }) {
+  }) async {
     final fetcher = widget.fetchActivities;
     if (fetcher != null) {
       return fetcher(userId: widget.userId, page: page, typeIn: typeIn);
@@ -180,28 +184,27 @@ class _ProfileActivityTabState extends State<ProfileActivityTab> {
     }
   }
 
-  Future<void> _loadMore() async {
-    if (_isLoading || _isLoadingMore || !_hasNextPage || _error != null) return;
+  Future<void> _loadNextPage() async {
+    if (_isLoadingMore || !_hasNextPage) return;
     final token = _requestToken;
     setState(() => _isLoadingMore = true);
 
     try {
-      final nextPage = _currentPage + 1;
+      final nextPageNum = _currentPage + 1;
       final page = await _performFetch(
-        page: nextPage,
+        page: nextPageNum,
         typeIn: _selectedFilter.apiTypes,
       );
       if (!mounted || token != _requestToken) return;
-      final existingIds = _activities.map((a) => a.id).toSet();
-      final freshItems = page.activities.where(
-        (a) => !existingIds.contains(a.id),
-      );
       setState(() {
-        _activities.addAll(freshItems);
-        _currentPage = nextPage;
+        _activities.addAll(page.activities);
+        _currentPage = page.pageInfo.currentPage > 0
+            ? page.pageInfo.currentPage
+            : nextPageNum;
         _hasNextPage = page.pageInfo.hasNextPage;
         _isLoadingMore = false;
       });
+      _syncCachedAllPage();
     } catch (_) {
       if (!mounted || token != _requestToken) return;
       setState(() => _isLoadingMore = false);
@@ -216,6 +219,7 @@ class _ProfileActivityTabState extends State<ProfileActivityTab> {
 
   Future<void> _handleToggleLike(UserActivity activity) async {
     if (_togglingIds.contains(activity.id)) return;
+
     final index = _activities.indexWhere((a) => a.id == activity.id);
     if (index == -1) return;
 
@@ -246,6 +250,22 @@ class _ProfileActivityTabState extends State<ProfileActivityTab> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Failed to update like: $e')));
+    }
+  }
+
+  Future<void> _handleOpenPost(UserActivity activity) async {
+    final updated = await AppNavigation.toActivity(
+      context,
+      initialActivity: activity,
+    );
+    if (updated != null && mounted) {
+      final index = _activities.indexWhere((a) => a.id == updated.id);
+      if (index != -1 && _activities[index] != updated) {
+        setState(() {
+          _activities[index] = updated;
+        });
+        _syncCachedAllPage();
+      }
     }
   }
 
@@ -369,6 +389,7 @@ class _ProfileActivityTabState extends State<ProfileActivityTab> {
             onToggleLike: () => _handleToggleLike(_activities[i]),
             onOpenMedia: widget.onOpenMedia,
             onOpenUser: widget.onOpenUser,
+            onOpenPost: () => _handleOpenPost(_activities[i]),
           ),
         ],
         if (_isLoadingMore)
