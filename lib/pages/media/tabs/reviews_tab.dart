@@ -15,6 +15,7 @@ import '../../../services/media_service.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../utils/utils.dart';
+import '../../activity/widgets/activity_comments_sheet.dart';
 import '../widgets/social/review_sheet.dart';
 
 /// Tab displaying paginated reviews for a media item
@@ -491,7 +492,21 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
       widget.onOpenComments!(activity.id);
       return;
     }
-    _openActivity(activity);
+    ActivityCommentsSheet.show(
+      context,
+      activityId: activity.id,
+      initialReplyCount: activity.replyCount,
+      onReplyCountChanged: (newCount) {
+        setState(() {
+          final index = _activities.indexWhere((a) => a.id == activity.id);
+          if (index != -1) {
+            _activities[index] = _activities[index].copyWith(
+              replyCount: newCount,
+            );
+          }
+        });
+      },
+    );
   }
 
   Widget _buildStatActionColumn({

@@ -10,6 +10,7 @@ import '../../../models/user_activity.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/app_navigation.dart';
 import '../../../utils/utils.dart';
+import '../../activity/widgets/activity_comments_sheet.dart';
 
 /// Callback signature for navigating to a user profile from an activity card.
 typedef ActivityUserTapCallback = void Function(int userId, String username);
@@ -110,6 +111,11 @@ class _UserActivityCardState extends State<UserActivityCard> {
       widget.onOpenComments!();
       return;
     }
+    ActivityCommentsSheet.show(
+      context,
+      activityId: widget.activity.id,
+      initialReplyCount: widget.activity.replyCount,
+    );
   }
 
   @override

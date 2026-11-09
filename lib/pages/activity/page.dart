@@ -11,6 +11,7 @@ import '../../services/media_service.dart';
 import '../../theme/theme.dart';
 import '../../utils/app_navigation.dart';
 import '../profile/widgets/user_activity_card.dart';
+import 'widgets/activity_comments_sheet.dart';
 
 /// Full screen view for displaying a single activity post and its interactions.
 class ActivityPage extends StatefulWidget {
@@ -220,7 +221,18 @@ class _ActivityPageState extends State<ActivityPage> {
         ),
         const SizedBox(height: 8),
         AppFab.stat(
-          onTap: () {},
+          onTap: act != null
+              ? () => ActivityCommentsSheet.show(
+                  context,
+                  activityId: act.id,
+                  initialReplyCount: act.replyCount,
+                  onReplyCountChanged: (newCount) {
+                    setState(() {
+                      _activity = _activity?.copyWith(replyCount: newCount);
+                    });
+                  },
+                )
+              : null,
           tooltip: 'Comments',
           icon: Icon(
             LucideIcons.messageSquare,
