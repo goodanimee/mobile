@@ -4,6 +4,7 @@
 *.pyc
 *.swp
 .DS_Store
+.agents/
 .atom/
 .build/
 .buildlog/
@@ -11,6 +12,9 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
 
 # IntelliJ / Android Studio
 *.iml
