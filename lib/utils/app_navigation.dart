@@ -98,6 +98,10 @@ class AppNavigation {
           userId: target.id,
           username: target.username,
         );
+      case AnilistEntityType.activity:
+        if (target.id != null) {
+          await toActivity(navContext, activityId: target.id!);
+        }
     }
   }
 

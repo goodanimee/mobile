@@ -86,5 +86,58 @@ void main() {
       expect(find.text('15'), findsOneWidget);
       expect(find.text('3'), findsOneWidget);
     });
+
+    testWidgets('loads activity by ID via fetchActivity mock', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: ActivityPage(
+            activityId: 42,
+            fetchActivity: (id) async => dummyTextActivity,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Activity'), findsOneWidget);
+      expect(find.text('Testing feed activity text'), findsOneWidget);
+      expect(find.text('15'), findsOneWidget);
+      expect(find.text('3'), findsOneWidget);
+    });
+
+    testWidgets('toggles like via Like FAB optimistically', (tester) async {
+      int? toggledId;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: ActivityPage(
+            initialActivity: dummyTextActivity,
+            toggleLike: (id) async => toggledId = id,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('15'), findsOneWidget);
+
+      await tester.tap(find.byTooltip('Like'));
+      await tester.pump();
+
+      expect(find.text('16'), findsOneWidget);
+      expect(toggledId, equals(42));
+    });
+
+    testWidgets('opens comments bottom sheet when Comment FAB is tapped', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(home: ActivityPage(initialActivity: dummyTextActivity)),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip('Comments'));
+      await tester.pump();
+
+      expect(find.text('Comments (3)'), findsOneWidget);
+    });
   });
 }

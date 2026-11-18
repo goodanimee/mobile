@@ -17,6 +17,9 @@ enum AnilistEntityType {
 
   /// User profile entity.
   user,
+
+  /// Activity post entity.
+  activity,
 }
 
 /// Resolved navigation target parsed from an AniList URL.
@@ -136,6 +139,8 @@ class AnilistUrlParser {
         return AnilistEntityType.studio;
       case 'user':
         return AnilistEntityType.user;
+      case 'activity':
+        return AnilistEntityType.activity;
       default:
         return null;
     }

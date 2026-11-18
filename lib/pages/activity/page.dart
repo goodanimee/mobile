@@ -21,12 +21,23 @@ class ActivityPage extends StatefulWidget {
   /// Optional preloaded activity data.
   final UserActivity? initialActivity;
 
+  /// Optional test override for fetching an activity by ID.
+  final Future<UserActivity> Function(int activityId)? fetchActivity;
+
+  /// Optional test override for toggling activity like.
+  final Future<void> Function(int activityId)? toggleLike;
+
   /// Creates an activity details page.
-  const ActivityPage({super.key, this.activityId, this.initialActivity})
-    : assert(
-        activityId != null || initialActivity != null,
-        'Must provide either activityId or initialActivity',
-      );
+  const ActivityPage({
+    super.key,
+    this.activityId,
+    this.initialActivity,
+    this.fetchActivity,
+    this.toggleLike,
+  }) : assert(
+         activityId != null || initialActivity != null,
+         'Must provide either activityId or initialActivity',
+       );
 
   @override
   State<ActivityPage> createState() => _ActivityPageState();
@@ -56,7 +67,9 @@ class _ActivityPageState extends State<ActivityPage> {
     });
 
     try {
-      final act = await ActivityService.getActivityById(id);
+      final act = widget.fetchActivity != null
+          ? await widget.fetchActivity!(id)
+          : await ActivityService.getActivityById(id);
       if (!mounted) return;
       setState(() {
         _activity = act;
@@ -82,7 +95,11 @@ class _ActivityPageState extends State<ActivityPage> {
     });
 
     try {
-      await MediaService.toggleActivityLike(act.id);
+      if (widget.toggleLike != null) {
+        await widget.toggleLike!(act.id);
+      } else {
+        await MediaService.toggleActivityLike(act.id);
+      }
       if (mounted) {
         setState(() => _isTogglingLike = false);
       }
