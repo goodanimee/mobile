@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:goodanime/components/lucide_icons_helper.dart';
 import 'package:goodanime/models/activity_reply.dart';
@@ -7,6 +6,7 @@ import 'package:goodanime/models/user_activity.dart';
 import 'package:goodanime/pages/activity/widgets/activity_comments_sheet.dart';
 import 'package:goodanime/proto/api.pb.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   const dummyUser1 = UserActivityAuthor(id: 101, name: 'Kurisu');

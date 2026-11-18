@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A widget that listens to scroll notifications and invokes a callback when reaching the end of the content.
 class PagedScrollListener extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
+import 'package:material_ui/material_ui.dart';
 
 import '../theme/theme.dart';
 import '../utils/anilist_url_parser.dart';

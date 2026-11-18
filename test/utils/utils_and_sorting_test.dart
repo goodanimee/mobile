@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart' hide Title;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:goodanime/models/common.dart';
 import 'package:goodanime/models/media_list.dart';
 import 'package:goodanime/models/media_min.dart';
 import 'package:goodanime/utils/utils.dart';
+import 'package:material_ui/material_ui.dart' hide Title;
 
 MediaListEntryWithMedia _createSortEntry({
   required int id,

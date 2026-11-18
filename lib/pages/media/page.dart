@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:goodanime/utils/app_navigation.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../components/error_view.dart';
 import '../../components/floating_nav.dart';

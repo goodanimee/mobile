@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:goodanime/components/html_anilist_link_card.dart';
 import 'package:goodanime/components/html_description.dart';
 import 'package:goodanime/components/html_description_widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   group('HtmlDescription.unpackAccidentalCodeBlocks', () {

@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../components/section.dart';
 import '../../../models/user_statistics.dart';
@@ -120,8 +120,7 @@ class _ReleaseYearChartState extends State<ReleaseYearChart> {
           widget.isAnime
               ? (y.minutesWatched / 60.0)
               : y.chaptersRead.toDouble(),
-        YearMetricType.score =>
-          StatisticsMathUtils.normalizeScore(y.meanScore),
+        YearMetricType.score => StatisticsMathUtils.normalizeScore(y.meanScore),
       };
     }).toList();
 

@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:goodanime/components/app_fab.dart';
 import 'package:goodanime/models/user_activity.dart';
 import 'package:goodanime/pages/activity/page.dart';
 import 'package:goodanime/pages/profile/widgets/user_activity_card.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   const dummyAuthor = UserActivityAuthor(id: 101, name: 'MakiseKurisu');

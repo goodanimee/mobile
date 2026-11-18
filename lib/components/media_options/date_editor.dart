@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../theme/theme.dart';
 
 /// Editor component for editing start and finish dates of a list entry

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:goodanime/components/lucide_icons_helper.dart';
 import 'package:goodanime/models/common.dart';
@@ -7,6 +6,7 @@ import 'package:goodanime/models/viewer.dart';
 import 'package:goodanime/pages/activity/page.dart';
 import 'package:goodanime/pages/media/tabs/reviews_tab.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   final sampleActivity = ListActivity(

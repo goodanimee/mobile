@@ -41,6 +41,10 @@ android {
             path = file("CMakeLists.txt")
         }
     }
+
+    androidResources {
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }
 }
 
 flutter {
