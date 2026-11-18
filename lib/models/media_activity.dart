@@ -16,6 +16,9 @@ class ListActivity {
   /// The number of likes.
   final int likeCount;
 
+  /// Total number of replies.
+  final int replyCount;
+
   /// The progress made.
   final String progress;
 
@@ -33,6 +36,7 @@ class ListActivity {
     required this.likeCount,
     required this.progress,
     required this.status,
+    this.replyCount = 0,
     this.user,
   });
 
@@ -43,6 +47,7 @@ class ListActivity {
       createdAt: pbObj.createdAt,
       isLiked: pbObj.isLiked,
       likeCount: pbObj.likeCount,
+      replyCount: pbObj.replyCount,
       progress: pbObj.progress,
       status: pbObj.status,
       user: pbObj.hasUser() ? Viewer.fromProto(pbObj.user) : null,
@@ -55,6 +60,7 @@ class ListActivity {
     int? createdAt,
     bool? isLiked,
     int? likeCount,
+    int? replyCount,
     String? progress,
     String? status,
     Viewer? user,
@@ -64,6 +70,7 @@ class ListActivity {
       createdAt: createdAt ?? this.createdAt,
       isLiked: isLiked ?? this.isLiked,
       likeCount: likeCount ?? this.likeCount,
+      replyCount: replyCount ?? this.replyCount,
       progress: progress ?? this.progress,
       status: status ?? this.status,
       user: user ?? this.user,
@@ -77,6 +84,7 @@ class ListActivity {
       createdAt: createdAt,
       isLiked: isLiked,
       likeCount: likeCount,
+      replyCount: replyCount,
       progress: progress,
       status: status,
     );

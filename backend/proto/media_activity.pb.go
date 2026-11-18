@@ -30,6 +30,7 @@ type ListActivity struct {
 	Progress      string                 `protobuf:"bytes,5,opt,name=progress,proto3" json:"progress,omitempty"`
 	Status        string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
 	User          *Viewer                `protobuf:"bytes,7,opt,name=user,proto3" json:"user,omitempty"`
+	ReplyCount    int32                  `protobuf:"varint,8,opt,name=reply_count,json=replyCount,proto3" json:"reply_count,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -113,11 +114,18 @@ func (x *ListActivity) GetUser() *Viewer {
 	return nil
 }
 
+func (x *ListActivity) GetReplyCount() int32 {
+	if x != nil {
+		return x.ReplyCount
+	}
+	return 0
+}
+
 var File_media_activity_proto protoreflect.FileDescriptor
 
 const file_media_activity_proto_rawDesc = "" +
 	"\n" +
-	"\x14media_activity.proto\x12\tgoodanime\x1a\fviewer.proto\"\xd2\x01\n" +
+	"\x14media_activity.proto\x12\tgoodanime\x1a\fviewer.proto\"\xf3\x01\n" +
 	"\fListActivity\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x1d\n" +
 	"\n" +
@@ -127,7 +135,9 @@ const file_media_activity_proto_rawDesc = "" +
 	"like_count\x18\x04 \x01(\x05R\tlikeCount\x12\x1a\n" +
 	"\bprogress\x18\x05 \x01(\tR\bprogress\x12\x16\n" +
 	"\x06status\x18\x06 \x01(\tR\x06status\x12%\n" +
-	"\x04user\x18\a \x01(\v2\x11.goodanime.ViewerR\x04userB\x19Z\x17goodanime/backend/protob\x06proto3"
+	"\x04user\x18\a \x01(\v2\x11.goodanime.ViewerR\x04user\x12\x1f\n" +
+	"\vreply_count\x18\b \x01(\x05R\n" +
+	"replyCountB\x19Z\x17goodanime/backend/protob\x06proto3"
 
 var (
 	file_media_activity_proto_rawDescOnce sync.Once

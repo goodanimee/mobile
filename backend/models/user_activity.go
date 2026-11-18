@@ -103,3 +103,8 @@ type UserActivitiesPageDTO struct {
 		Activities []UserActivityDTO `json:"activities"`
 	} `json:"Page"`
 }
+
+// ActivityDTO represents the single activity GraphQL response.
+type ActivityDTO struct {
+	Activity *UserActivityDTO `json:"Activity"`
+}

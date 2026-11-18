@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../components/app_network_image.dart';
@@ -14,6 +14,8 @@ import '../../../models/viewer.dart';
 import '../../../services/media_service.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/app_navigation.dart';
+import '../../../utils/utils.dart';
+import '../../activity/widgets/activity_comments_sheet.dart';
 import '../widgets/social/review_sheet.dart';
 
 /// Tab displaying paginated reviews for a media item
@@ -46,6 +48,9 @@ class MediaReviewsTab extends StatefulWidget {
   /// Optional callback to toggle activity like
   final Future<bool> Function(int activityId)? toggleActivityLike;
 
+  /// Optional callback when comments are opened for an activity
+  final void Function(int activityId)? onOpenComments;
+
   /// Creates a reviews tab
   const MediaReviewsTab({
     super.key,
@@ -58,6 +63,7 @@ class MediaReviewsTab extends StatefulWidget {
     this.onUserTap,
     this.fetchActivities,
     this.toggleActivityLike,
+    this.onOpenComments,
   });
 
   @override
@@ -229,7 +235,7 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final cardWidth = screenWidth * 0.68;
+    final cardWidth = (screenWidth * 0.84).clamp(280.0, 420.0);
     const carouselHeight = 270.0;
     const spacing = 12.0;
     final rowHeight = (carouselHeight - spacing) / 2;
@@ -368,7 +374,7 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     }
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final cardWidth = screenWidth * 0.68;
+    final cardWidth = (screenWidth * 0.84).clamp(280.0, 420.0);
     const carouselHeight = 172.0;
     const spacing = 12.0;
     final rowHeight = (carouselHeight - spacing) / 2;
@@ -462,6 +468,79 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     }
   }
 
+  Future<void> _openActivity(ListActivity activity) async {
+    final updated = await AppNavigation.toActivity(
+      context,
+      activityId: activity.id,
+    );
+    if (updated != null && mounted) {
+      setState(() {
+        final index = _activities.indexWhere((a) => a.id == updated.id);
+        if (index != -1) {
+          _activities[index] = _activities[index].copyWith(
+            isLiked: updated.isLiked,
+            likeCount: updated.likeCount,
+            replyCount: updated.replyCount,
+          );
+        }
+      });
+    }
+  }
+
+  void _handleCommentTap(ListActivity activity) {
+    if (widget.onOpenComments != null) {
+      widget.onOpenComments!(activity.id);
+      return;
+    }
+    ActivityCommentsSheet.show(
+      context,
+      activityId: activity.id,
+      initialReplyCount: activity.replyCount,
+      onReplyCountChanged: (newCount) {
+        setState(() {
+          final index = _activities.indexWhere((a) => a.id == activity.id);
+          if (index != -1) {
+            _activities[index] = _activities[index].copyWith(
+              replyCount: newCount,
+            );
+          }
+        });
+      },
+    );
+  }
+
+  Widget _buildStatActionColumn({
+    required Widget icon,
+    required int count,
+    required VoidCallback onTap,
+    Color? countColor,
+  }) {
+    final double colWidth = getResponsiveSize(context, 36.0);
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: SizedBox(
+        width: colWidth,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            const SizedBox(height: 4),
+            Text(
+              StringUtils.formatCompactNumber(count),
+              style: TextStyle(
+                color: countColor ?? textMuted,
+                fontSize: getResponsiveFontSize(context, 12.0),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildActivityCard(ListActivity activity) {
     final avatarUrl = activity.user?.avatarMedium ?? '';
     final username = activity.user?.name ?? 'Anonymous';
@@ -475,135 +554,145 @@ class _MediaReviewsTabState extends State<MediaReviewsTab> {
     final double vPadding = getResponsiveSize(context, 8.0);
     final double avatarSize = getResponsiveSize(context, 38.0);
     final double gap = getResponsiveSize(context, 12.0);
-    final double likeColWidth = getResponsiveSize(context, 48.0);
-    final double heartIconSize = getResponsiveSize(context, 20.0);
+    final double iconSize = getResponsiveSize(context, 18.0);
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: vPadding),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.03),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: cardBorderColor),
-      ),
-      child: Row(
-        children: [
-          MouseRegion(
-            cursor: activity.user != null
-                ? SystemMouseCursors.click
-                : SystemMouseCursors.basic,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: activity.user != null
-                  ? () => _handleUserTap(context, activity.user)
-                  : null,
-              child: AppNetworkImage(
-                imageUrl: avatarUrl,
-                width: avatarSize,
-                height: avatarSize,
-                borderRadius: BorderRadius.circular(avatarSize / 2),
-                fallbackIcon: LucideIcons.user,
-                checkDefault: true,
-              ),
-            ),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _openActivity(activity),
+        child: Container(
+          key: ValueKey('activity_card_${activity.id}'),
+          padding: EdgeInsets.symmetric(
+            horizontal: hPadding,
+            vertical: vPadding,
           ),
-          SizedBox(width: gap),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.03),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: cardBorderColor),
+          ),
+          child: Row(
+            children: [
+              MouseRegion(
+                cursor: activity.user != null
+                    ? SystemMouseCursors.click
+                    : SystemMouseCursors.basic,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: activity.user != null
+                      ? () => _handleUserTap(context, activity.user)
+                      : null,
+                  child: AppNetworkImage(
+                    imageUrl: avatarUrl,
+                    width: avatarSize,
+                    height: avatarSize,
+                    borderRadius: BorderRadius.circular(avatarSize / 2),
+                    fallbackIcon: LucideIcons.user,
+                    checkDefault: true,
+                  ),
+                ),
+              ),
+              SizedBox(width: gap),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Flexible(
-                      child: MouseRegion(
-                        cursor: activity.user != null
-                            ? SystemMouseCursors.click
-                            : SystemMouseCursors.basic,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: activity.user != null
-                              ? () => _handleUserTap(context, activity.user)
-                              : null,
-                          child: Text(
-                            username,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: textSecondary,
-                              fontWeight: FontWeight.bold,
-                              fontSize: getResponsiveFontSize(context, 14.0),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Flexible(
+                          child: MouseRegion(
+                            cursor: activity.user != null
+                                ? SystemMouseCursors.click
+                                : SystemMouseCursors.basic,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: activity.user != null
+                                  ? () => _handleUserTap(context, activity.user)
+                                  : null,
+                              child: Text(
+                                username,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: textSecondary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: getResponsiveFontSize(
+                                    context,
+                                    14.0,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            timeStr,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: textHint,
+                              fontSize: getResponsiveFontSize(context, 11.5),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(height: 4),
                     Text(
-                      timeStr,
+                      actionText,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: textHint,
-                        fontSize: getResponsiveFontSize(context, 11.5),
+                        color: textMuted,
+                        fontSize: getResponsiveFontSize(context, 13.5),
+                        height: 1.3,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  actionText,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: textMuted,
-                    fontSize: getResponsiveFontSize(context, 13.5),
-                    height: 1.3,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(width: gap),
-          GestureDetector(
-            onTap: () => _handleToggleLike(activity),
-            behavior: HitTestBehavior.opaque,
-            child: SizedBox(
-              width: likeColWidth,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _togglingActivities.contains(activity.id)
-                      ? SizedBox(
-                          width: heartIconSize,
-                          height: heartIconSize,
-                          child: const Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: textSecondary,
-                            ),
-                          ),
-                        )
-                      : LucideHeartIcon(
-                          isFilled: activity.isLiked,
-                          color: activity.isLiked ? paletteRed : textMuted,
-                          size: heartIconSize,
-                        ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${activity.likeCount}',
-                    style: TextStyle(
-                      color: activity.isLiked ? paletteRed : textMuted,
-                      fontSize: getResponsiveFontSize(context, 12.0),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
               ),
-            ),
+              SizedBox(width: gap),
+              _buildStatActionColumn(
+                icon: Icon(
+                  LucideIcons.messageSquare,
+                  color: textMuted,
+                  size: iconSize,
+                ),
+                count: activity.replyCount,
+                onTap: () => _handleCommentTap(activity),
+              ),
+              const SizedBox(width: 6),
+              _buildStatActionColumn(
+                icon: _togglingActivities.contains(activity.id)
+                    ? SizedBox(
+                        width: iconSize,
+                        height: iconSize,
+                        child: const Padding(
+                          padding: EdgeInsets.all(2.0),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: textSecondary,
+                          ),
+                        ),
+                      )
+                    : LucideHeartIcon(
+                        isFilled: activity.isLiked,
+                        color: activity.isLiked ? paletteRed : textMuted,
+                        size: iconSize,
+                      ),
+                count: activity.likeCount,
+                countColor: activity.isLiked ? paletteRed : textMuted,
+                onTap: () => _handleToggleLike(activity),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

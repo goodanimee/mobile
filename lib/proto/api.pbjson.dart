@@ -1761,3 +1761,167 @@ final $typed_data.Uint8List getUserStatisticsResponseDescriptor =
     $convert.base64Decode(
         'ChlHZXRVc2VyU3RhdGlzdGljc1Jlc3BvbnNlEjkKCnN0YXRpc3RpY3MYASABKAsyGS5nb29kYW'
         '5pbWUuVXNlclN0YXRpc3RpY3NSCnN0YXRpc3RpY3MSFAoFZXJyb3IYAiABKAlSBWVycm9y');
+
+@$core.Deprecated('Use getActivityByIdRequestDescriptor instead')
+const GetActivityByIdRequest$json = {
+  '1': 'GetActivityByIdRequest',
+  '2': [
+    {'1': 'activity_id', '3': 1, '4': 1, '5': 5, '10': 'activityId'},
+  ],
+};
+
+/// Descriptor for `GetActivityByIdRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getActivityByIdRequestDescriptor =
+    $convert.base64Decode(
+        'ChZHZXRBY3Rpdml0eUJ5SWRSZXF1ZXN0Eh8KC2FjdGl2aXR5X2lkGAEgASgFUgphY3Rpdml0eU'
+        'lk');
+
+@$core.Deprecated('Use getActivityByIdResponseDescriptor instead')
+const GetActivityByIdResponse$json = {
+  '1': 'GetActivityByIdResponse',
+  '2': [
+    {
+      '1': 'activity',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.UserActivity',
+      '10': 'activity'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `GetActivityByIdResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getActivityByIdResponseDescriptor =
+    $convert.base64Decode(
+        'ChdHZXRBY3Rpdml0eUJ5SWRSZXNwb25zZRIzCghhY3Rpdml0eRgBIAEoCzIXLmdvb2RhbmltZS'
+        '5Vc2VyQWN0aXZpdHlSCGFjdGl2aXR5EhQKBWVycm9yGAIgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use getActivityRepliesRequestDescriptor instead')
+const GetActivityRepliesRequest$json = {
+  '1': 'GetActivityRepliesRequest',
+  '2': [
+    {'1': 'activity_id', '3': 1, '4': 1, '5': 5, '10': 'activityId'},
+    {'1': 'page', '3': 2, '4': 1, '5': 5, '10': 'page'},
+    {'1': 'per_page', '3': 3, '4': 1, '5': 5, '10': 'perPage'},
+  ],
+};
+
+/// Descriptor for `GetActivityRepliesRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getActivityRepliesRequestDescriptor =
+    $convert.base64Decode(
+        'ChlHZXRBY3Rpdml0eVJlcGxpZXNSZXF1ZXN0Eh8KC2FjdGl2aXR5X2lkGAEgASgFUgphY3Rpdm'
+        'l0eUlkEhIKBHBhZ2UYAiABKAVSBHBhZ2USGQoIcGVyX3BhZ2UYAyABKAVSB3BlclBhZ2U=');
+
+@$core.Deprecated('Use getActivityRepliesResponseDescriptor instead')
+const GetActivityRepliesResponse$json = {
+  '1': 'GetActivityRepliesResponse',
+  '2': [
+    {
+      '1': 'page_info',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.PageInfo',
+      '10': 'pageInfo'
+    },
+    {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
+    {
+      '1': 'replies',
+      '3': 3,
+      '4': 3,
+      '5': 11,
+      '6': '.goodanime.ActivityReply',
+      '10': 'replies'
+    },
+    {'1': 'error', '3': 4, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `GetActivityRepliesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getActivityRepliesResponseDescriptor = $convert.base64Decode(
+    'ChpHZXRBY3Rpdml0eVJlcGxpZXNSZXNwb25zZRIwCglwYWdlX2luZm8YASABKAsyEy5nb29kYW'
+    '5pbWUuUGFnZUluZm9SCHBhZ2VJbmZvEhQKBXRvdGFsGAIgASgFUgV0b3RhbBIyCgdyZXBsaWVz'
+    'GAMgAygLMhguZ29vZGFuaW1lLkFjdGl2aXR5UmVwbHlSB3JlcGxpZXMSFAoFZXJyb3IYBCABKA'
+    'lSBWVycm9y');
+
+@$core.Deprecated('Use saveActivityReplyRequestDescriptor instead')
+const SaveActivityReplyRequest$json = {
+  '1': 'SaveActivityReplyRequest',
+  '2': [
+    {'1': 'activity_id', '3': 1, '4': 1, '5': 5, '10': 'activityId'},
+    {'1': 'text', '3': 2, '4': 1, '5': 9, '10': 'text'},
+    {
+      '1': 'reply_id',
+      '3': 3,
+      '4': 1,
+      '5': 5,
+      '9': 0,
+      '10': 'replyId',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_reply_id'},
+  ],
+};
+
+/// Descriptor for `SaveActivityReplyRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List saveActivityReplyRequestDescriptor = $convert.base64Decode(
+    'ChhTYXZlQWN0aXZpdHlSZXBseVJlcXVlc3QSHwoLYWN0aXZpdHlfaWQYASABKAVSCmFjdGl2aX'
+    'R5SWQSEgoEdGV4dBgCIAEoCVIEdGV4dBIeCghyZXBseV9pZBgDIAEoBUgAUgdyZXBseUlkiAEB'
+    'QgsKCV9yZXBseV9pZA==');
+
+@$core.Deprecated('Use saveActivityReplyResponseDescriptor instead')
+const SaveActivityReplyResponse$json = {
+  '1': 'SaveActivityReplyResponse',
+  '2': [
+    {
+      '1': 'reply',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.goodanime.ActivityReply',
+      '10': 'reply'
+    },
+    {'1': 'error', '3': 2, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `SaveActivityReplyResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List saveActivityReplyResponseDescriptor =
+    $convert.base64Decode(
+        'ChlTYXZlQWN0aXZpdHlSZXBseVJlc3BvbnNlEi4KBXJlcGx5GAEgASgLMhguZ29vZGFuaW1lLk'
+        'FjdGl2aXR5UmVwbHlSBXJlcGx5EhQKBWVycm9yGAIgASgJUgVlcnJvcg==');
+
+@$core.Deprecated('Use toggleActivityReplyLikeRequestDescriptor instead')
+const ToggleActivityReplyLikeRequest$json = {
+  '1': 'ToggleActivityReplyLikeRequest',
+  '2': [
+    {'1': 'reply_id', '3': 1, '4': 1, '5': 5, '10': 'replyId'},
+  ],
+};
+
+/// Descriptor for `ToggleActivityReplyLikeRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleActivityReplyLikeRequestDescriptor =
+    $convert.base64Decode(
+        'Ch5Ub2dnbGVBY3Rpdml0eVJlcGx5TGlrZVJlcXVlc3QSGQoIcmVwbHlfaWQYASABKAVSB3JlcG'
+        'x5SWQ=');
+
+@$core.Deprecated('Use toggleActivityReplyLikeResponseDescriptor instead')
+const ToggleActivityReplyLikeResponse$json = {
+  '1': 'ToggleActivityReplyLikeResponse',
+  '2': [
+    {'1': 'reply_id', '3': 1, '4': 1, '5': 5, '10': 'replyId'},
+    {'1': 'liked_user_ids', '3': 2, '4': 3, '5': 5, '10': 'likedUserIds'},
+    {'1': 'error', '3': 3, '4': 1, '5': 9, '10': 'error'},
+  ],
+};
+
+/// Descriptor for `ToggleActivityReplyLikeResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List toggleActivityReplyLikeResponseDescriptor =
+    $convert.base64Decode(
+        'Ch9Ub2dnbGVBY3Rpdml0eVJlcGx5TGlrZVJlc3BvbnNlEhkKCHJlcGx5X2lkGAEgASgFUgdyZX'
+        'BseUlkEiQKDmxpa2VkX3VzZXJfaWRzGAIgAygFUgxsaWtlZFVzZXJJZHMSFAoFZXJyb3IYAyAB'
+        'KAlSBWVycm9y');

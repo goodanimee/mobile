@@ -1,0 +1,19 @@
+mutation SaveActivityReply($activityId: Int, $text: String, $replyId: Int) {
+  SaveActivityReply(activityId: $activityId, text: $text, id: $replyId) {
+    id
+    userId
+    activityId
+    text(asHtml: true)
+    likeCount
+    isLiked
+    createdAt
+    user {
+      id
+      name
+      avatar {
+        large
+        medium
+      }
+    }
+  }
+}

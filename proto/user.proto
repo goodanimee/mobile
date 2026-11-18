@@ -52,6 +52,17 @@ message UserActivity {
   MediaMin media = 13;
 }
 
+message ActivityReply {
+  int32 id = 1;
+  int32 user_id = 2;
+  int32 activity_id = 3;
+  string text = 4;
+  int32 created_at = 5;
+  int32 like_count = 6;
+  bool is_liked = 7;
+  UserActivityUser user = 8;
+}
+
 message FavouriteMediaConnection {
   PageInfo page_info = 1;
   int32 total = 2;

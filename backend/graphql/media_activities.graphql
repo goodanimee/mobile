@@ -10,6 +10,7 @@ query Media($page: Int, $perPage: Int, $mediaId: Int) {
         createdAt
         isLiked
         likeCount
+        replyCount
         progress
         status
         user {

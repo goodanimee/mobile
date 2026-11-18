@@ -405,6 +405,106 @@ func (x *UserActivity) GetMedia() *MediaMin {
 	return nil
 }
 
+type ActivityReply struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId        int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	ActivityId    int32                  `protobuf:"varint,3,opt,name=activity_id,json=activityId,proto3" json:"activity_id,omitempty"`
+	Text          string                 `protobuf:"bytes,4,opt,name=text,proto3" json:"text,omitempty"`
+	CreatedAt     int32                  `protobuf:"varint,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	LikeCount     int32                  `protobuf:"varint,6,opt,name=like_count,json=likeCount,proto3" json:"like_count,omitempty"`
+	IsLiked       bool                   `protobuf:"varint,7,opt,name=is_liked,json=isLiked,proto3" json:"is_liked,omitempty"`
+	User          *UserActivityUser      `protobuf:"bytes,8,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivityReply) Reset() {
+	*x = ActivityReply{}
+	mi := &file_user_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivityReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivityReply) ProtoMessage() {}
+
+func (x *ActivityReply) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivityReply.ProtoReflect.Descriptor instead.
+func (*ActivityReply) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ActivityReply) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *ActivityReply) GetUserId() int32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *ActivityReply) GetActivityId() int32 {
+	if x != nil {
+		return x.ActivityId
+	}
+	return 0
+}
+
+func (x *ActivityReply) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+func (x *ActivityReply) GetCreatedAt() int32 {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return 0
+}
+
+func (x *ActivityReply) GetLikeCount() int32 {
+	if x != nil {
+		return x.LikeCount
+	}
+	return 0
+}
+
+func (x *ActivityReply) GetIsLiked() bool {
+	if x != nil {
+		return x.IsLiked
+	}
+	return false
+}
+
+func (x *ActivityReply) GetUser() *UserActivityUser {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
 type FavouriteMediaConnection struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PageInfo      *PageInfo              `protobuf:"bytes,1,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
@@ -416,7 +516,7 @@ type FavouriteMediaConnection struct {
 
 func (x *FavouriteMediaConnection) Reset() {
 	*x = FavouriteMediaConnection{}
-	mi := &file_user_proto_msgTypes[4]
+	mi := &file_user_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -428,7 +528,7 @@ func (x *FavouriteMediaConnection) String() string {
 func (*FavouriteMediaConnection) ProtoMessage() {}
 
 func (x *FavouriteMediaConnection) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[4]
+	mi := &file_user_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -441,7 +541,7 @@ func (x *FavouriteMediaConnection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FavouriteMediaConnection.ProtoReflect.Descriptor instead.
 func (*FavouriteMediaConnection) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{4}
+	return file_user_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *FavouriteMediaConnection) GetPageInfo() *PageInfo {
@@ -476,7 +576,7 @@ type FavouriteCharacterConnection struct {
 
 func (x *FavouriteCharacterConnection) Reset() {
 	*x = FavouriteCharacterConnection{}
-	mi := &file_user_proto_msgTypes[5]
+	mi := &file_user_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -488,7 +588,7 @@ func (x *FavouriteCharacterConnection) String() string {
 func (*FavouriteCharacterConnection) ProtoMessage() {}
 
 func (x *FavouriteCharacterConnection) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[5]
+	mi := &file_user_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -501,7 +601,7 @@ func (x *FavouriteCharacterConnection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FavouriteCharacterConnection.ProtoReflect.Descriptor instead.
 func (*FavouriteCharacterConnection) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{5}
+	return file_user_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *FavouriteCharacterConnection) GetPageInfo() *PageInfo {
@@ -536,7 +636,7 @@ type FavouriteStaffConnection struct {
 
 func (x *FavouriteStaffConnection) Reset() {
 	*x = FavouriteStaffConnection{}
-	mi := &file_user_proto_msgTypes[6]
+	mi := &file_user_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -548,7 +648,7 @@ func (x *FavouriteStaffConnection) String() string {
 func (*FavouriteStaffConnection) ProtoMessage() {}
 
 func (x *FavouriteStaffConnection) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[6]
+	mi := &file_user_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -561,7 +661,7 @@ func (x *FavouriteStaffConnection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FavouriteStaffConnection.ProtoReflect.Descriptor instead.
 func (*FavouriteStaffConnection) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{6}
+	return file_user_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *FavouriteStaffConnection) GetPageInfo() *PageInfo {
@@ -596,7 +696,7 @@ type FavouriteStudioConnection struct {
 
 func (x *FavouriteStudioConnection) Reset() {
 	*x = FavouriteStudioConnection{}
-	mi := &file_user_proto_msgTypes[7]
+	mi := &file_user_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -608,7 +708,7 @@ func (x *FavouriteStudioConnection) String() string {
 func (*FavouriteStudioConnection) ProtoMessage() {}
 
 func (x *FavouriteStudioConnection) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[7]
+	mi := &file_user_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -621,7 +721,7 @@ func (x *FavouriteStudioConnection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FavouriteStudioConnection.ProtoReflect.Descriptor instead.
 func (*FavouriteStudioConnection) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{7}
+	return file_user_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *FavouriteStudioConnection) GetPageInfo() *PageInfo {
@@ -658,7 +758,7 @@ type UserFavourites struct {
 
 func (x *UserFavourites) Reset() {
 	*x = UserFavourites{}
-	mi := &file_user_proto_msgTypes[8]
+	mi := &file_user_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -670,7 +770,7 @@ func (x *UserFavourites) String() string {
 func (*UserFavourites) ProtoMessage() {}
 
 func (x *UserFavourites) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[8]
+	mi := &file_user_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -683,7 +783,7 @@ func (x *UserFavourites) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserFavourites.ProtoReflect.Descriptor instead.
 func (*UserFavourites) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{8}
+	return file_user_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *UserFavourites) GetAnime() *FavouriteMediaConnection {
@@ -734,7 +834,7 @@ type SocialUser struct {
 
 func (x *SocialUser) Reset() {
 	*x = SocialUser{}
-	mi := &file_user_proto_msgTypes[9]
+	mi := &file_user_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -746,7 +846,7 @@ func (x *SocialUser) String() string {
 func (*SocialUser) ProtoMessage() {}
 
 func (x *SocialUser) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[9]
+	mi := &file_user_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -759,7 +859,7 @@ func (x *SocialUser) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SocialUser.ProtoReflect.Descriptor instead.
 func (*SocialUser) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{9}
+	return file_user_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *SocialUser) GetId() int32 {
@@ -811,7 +911,7 @@ type UserScoreStat struct {
 
 func (x *UserScoreStat) Reset() {
 	*x = UserScoreStat{}
-	mi := &file_user_proto_msgTypes[10]
+	mi := &file_user_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -823,7 +923,7 @@ func (x *UserScoreStat) String() string {
 func (*UserScoreStat) ProtoMessage() {}
 
 func (x *UserScoreStat) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[10]
+	mi := &file_user_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -836,7 +936,7 @@ func (x *UserScoreStat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserScoreStat.ProtoReflect.Descriptor instead.
 func (*UserScoreStat) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{10}
+	return file_user_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *UserScoreStat) GetScore() int32 {
@@ -895,7 +995,7 @@ type UserLengthStat struct {
 
 func (x *UserLengthStat) Reset() {
 	*x = UserLengthStat{}
-	mi := &file_user_proto_msgTypes[11]
+	mi := &file_user_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -907,7 +1007,7 @@ func (x *UserLengthStat) String() string {
 func (*UserLengthStat) ProtoMessage() {}
 
 func (x *UserLengthStat) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[11]
+	mi := &file_user_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -920,7 +1020,7 @@ func (x *UserLengthStat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserLengthStat.ProtoReflect.Descriptor instead.
 func (*UserLengthStat) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{11}
+	return file_user_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *UserLengthStat) GetLength() string {
@@ -979,7 +1079,7 @@ type UserStatusStat struct {
 
 func (x *UserStatusStat) Reset() {
 	*x = UserStatusStat{}
-	mi := &file_user_proto_msgTypes[12]
+	mi := &file_user_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -991,7 +1091,7 @@ func (x *UserStatusStat) String() string {
 func (*UserStatusStat) ProtoMessage() {}
 
 func (x *UserStatusStat) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[12]
+	mi := &file_user_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1004,7 +1104,7 @@ func (x *UserStatusStat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserStatusStat.ProtoReflect.Descriptor instead.
 func (*UserStatusStat) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{12}
+	return file_user_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *UserStatusStat) GetStatus() string {
@@ -1063,7 +1163,7 @@ type UserFormatStat struct {
 
 func (x *UserFormatStat) Reset() {
 	*x = UserFormatStat{}
-	mi := &file_user_proto_msgTypes[13]
+	mi := &file_user_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1075,7 +1175,7 @@ func (x *UserFormatStat) String() string {
 func (*UserFormatStat) ProtoMessage() {}
 
 func (x *UserFormatStat) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[13]
+	mi := &file_user_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1088,7 +1188,7 @@ func (x *UserFormatStat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserFormatStat.ProtoReflect.Descriptor instead.
 func (*UserFormatStat) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{13}
+	return file_user_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *UserFormatStat) GetFormat() string {
@@ -1147,7 +1247,7 @@ type UserReleaseYearStat struct {
 
 func (x *UserReleaseYearStat) Reset() {
 	*x = UserReleaseYearStat{}
-	mi := &file_user_proto_msgTypes[14]
+	mi := &file_user_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1159,7 +1259,7 @@ func (x *UserReleaseYearStat) String() string {
 func (*UserReleaseYearStat) ProtoMessage() {}
 
 func (x *UserReleaseYearStat) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[14]
+	mi := &file_user_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1172,7 +1272,7 @@ func (x *UserReleaseYearStat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserReleaseYearStat.ProtoReflect.Descriptor instead.
 func (*UserReleaseYearStat) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{14}
+	return file_user_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *UserReleaseYearStat) GetReleaseYear() int32 {
@@ -1237,7 +1337,7 @@ type UserMediaStatistics struct {
 
 func (x *UserMediaStatistics) Reset() {
 	*x = UserMediaStatistics{}
-	mi := &file_user_proto_msgTypes[15]
+	mi := &file_user_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1249,7 +1349,7 @@ func (x *UserMediaStatistics) String() string {
 func (*UserMediaStatistics) ProtoMessage() {}
 
 func (x *UserMediaStatistics) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[15]
+	mi := &file_user_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1262,7 +1362,7 @@ func (x *UserMediaStatistics) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserMediaStatistics.ProtoReflect.Descriptor instead.
 func (*UserMediaStatistics) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{15}
+	return file_user_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *UserMediaStatistics) GetCount() int32 {
@@ -1359,7 +1459,7 @@ type UserStatistics struct {
 
 func (x *UserStatistics) Reset() {
 	*x = UserStatistics{}
-	mi := &file_user_proto_msgTypes[16]
+	mi := &file_user_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1371,7 +1471,7 @@ func (x *UserStatistics) String() string {
 func (*UserStatistics) ProtoMessage() {}
 
 func (x *UserStatistics) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[16]
+	mi := &file_user_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1384,7 +1484,7 @@ func (x *UserStatistics) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserStatistics.ProtoReflect.Descriptor instead.
 func (*UserStatistics) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{16}
+	return file_user_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *UserStatistics) GetAnime() *UserMediaStatistics {
@@ -1451,7 +1551,19 @@ const file_user_proto_rawDesc = "" +
 	" \x01(\bR\tisPrivate\x12/\n" +
 	"\x04user\x18\v \x01(\v2\x1b.goodanime.UserActivityUserR\x04user\x129\n" +
 	"\trecipient\x18\f \x01(\v2\x1b.goodanime.UserActivityUserR\trecipient\x12)\n" +
-	"\x05media\x18\r \x01(\v2\x13.goodanime.MediaMinR\x05media\"\x8d\x01\n" +
+	"\x05media\x18\r \x01(\v2\x13.goodanime.MediaMinR\x05media\"\xf7\x01\n" +
+	"\rActivityReply\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x05R\x06userId\x12\x1f\n" +
+	"\vactivity_id\x18\x03 \x01(\x05R\n" +
+	"activityId\x12\x12\n" +
+	"\x04text\x18\x04 \x01(\tR\x04text\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\x05R\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"like_count\x18\x06 \x01(\x05R\tlikeCount\x12\x19\n" +
+	"\bis_liked\x18\a \x01(\bR\aisLiked\x12/\n" +
+	"\x04user\x18\b \x01(\v2\x1b.goodanime.UserActivityUserR\x04user\"\x8d\x01\n" +
 	"\x18FavouriteMediaConnection\x120\n" +
 	"\tpage_info\x18\x01 \x01(\v2\x13.goodanime.PageInfoR\bpageInfo\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\x12)\n" +
@@ -1555,63 +1667,65 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_user_proto_goTypes = []any{
 	(*UserAvatar)(nil),                   // 0: goodanime.UserAvatar
 	(*UserProfile)(nil),                  // 1: goodanime.UserProfile
 	(*UserActivityUser)(nil),             // 2: goodanime.UserActivityUser
 	(*UserActivity)(nil),                 // 3: goodanime.UserActivity
-	(*FavouriteMediaConnection)(nil),     // 4: goodanime.FavouriteMediaConnection
-	(*FavouriteCharacterConnection)(nil), // 5: goodanime.FavouriteCharacterConnection
-	(*FavouriteStaffConnection)(nil),     // 6: goodanime.FavouriteStaffConnection
-	(*FavouriteStudioConnection)(nil),    // 7: goodanime.FavouriteStudioConnection
-	(*UserFavourites)(nil),               // 8: goodanime.UserFavourites
-	(*SocialUser)(nil),                   // 9: goodanime.SocialUser
-	(*UserScoreStat)(nil),                // 10: goodanime.UserScoreStat
-	(*UserLengthStat)(nil),               // 11: goodanime.UserLengthStat
-	(*UserStatusStat)(nil),               // 12: goodanime.UserStatusStat
-	(*UserFormatStat)(nil),               // 13: goodanime.UserFormatStat
-	(*UserReleaseYearStat)(nil),          // 14: goodanime.UserReleaseYearStat
-	(*UserMediaStatistics)(nil),          // 15: goodanime.UserMediaStatistics
-	(*UserStatistics)(nil),               // 16: goodanime.UserStatistics
-	(*MediaMin)(nil),                     // 17: goodanime.MediaMin
-	(*PageInfo)(nil),                     // 18: goodanime.PageInfo
-	(*Character)(nil),                    // 19: goodanime.Character
-	(*Staff)(nil),                        // 20: goodanime.Staff
-	(*Studio)(nil),                       // 21: goodanime.Studio
+	(*ActivityReply)(nil),                // 4: goodanime.ActivityReply
+	(*FavouriteMediaConnection)(nil),     // 5: goodanime.FavouriteMediaConnection
+	(*FavouriteCharacterConnection)(nil), // 6: goodanime.FavouriteCharacterConnection
+	(*FavouriteStaffConnection)(nil),     // 7: goodanime.FavouriteStaffConnection
+	(*FavouriteStudioConnection)(nil),    // 8: goodanime.FavouriteStudioConnection
+	(*UserFavourites)(nil),               // 9: goodanime.UserFavourites
+	(*SocialUser)(nil),                   // 10: goodanime.SocialUser
+	(*UserScoreStat)(nil),                // 11: goodanime.UserScoreStat
+	(*UserLengthStat)(nil),               // 12: goodanime.UserLengthStat
+	(*UserStatusStat)(nil),               // 13: goodanime.UserStatusStat
+	(*UserFormatStat)(nil),               // 14: goodanime.UserFormatStat
+	(*UserReleaseYearStat)(nil),          // 15: goodanime.UserReleaseYearStat
+	(*UserMediaStatistics)(nil),          // 16: goodanime.UserMediaStatistics
+	(*UserStatistics)(nil),               // 17: goodanime.UserStatistics
+	(*MediaMin)(nil),                     // 18: goodanime.MediaMin
+	(*PageInfo)(nil),                     // 19: goodanime.PageInfo
+	(*Character)(nil),                    // 20: goodanime.Character
+	(*Staff)(nil),                        // 21: goodanime.Staff
+	(*Studio)(nil),                       // 22: goodanime.Studio
 }
 var file_user_proto_depIdxs = []int32{
 	0,  // 0: goodanime.UserProfile.avatar:type_name -> goodanime.UserAvatar
 	0,  // 1: goodanime.UserActivityUser.avatar:type_name -> goodanime.UserAvatar
 	2,  // 2: goodanime.UserActivity.user:type_name -> goodanime.UserActivityUser
 	2,  // 3: goodanime.UserActivity.recipient:type_name -> goodanime.UserActivityUser
-	17, // 4: goodanime.UserActivity.media:type_name -> goodanime.MediaMin
-	18, // 5: goodanime.FavouriteMediaConnection.page_info:type_name -> goodanime.PageInfo
-	17, // 6: goodanime.FavouriteMediaConnection.nodes:type_name -> goodanime.MediaMin
-	18, // 7: goodanime.FavouriteCharacterConnection.page_info:type_name -> goodanime.PageInfo
-	19, // 8: goodanime.FavouriteCharacterConnection.nodes:type_name -> goodanime.Character
-	18, // 9: goodanime.FavouriteStaffConnection.page_info:type_name -> goodanime.PageInfo
-	20, // 10: goodanime.FavouriteStaffConnection.nodes:type_name -> goodanime.Staff
-	18, // 11: goodanime.FavouriteStudioConnection.page_info:type_name -> goodanime.PageInfo
-	21, // 12: goodanime.FavouriteStudioConnection.nodes:type_name -> goodanime.Studio
-	4,  // 13: goodanime.UserFavourites.anime:type_name -> goodanime.FavouriteMediaConnection
-	4,  // 14: goodanime.UserFavourites.manga:type_name -> goodanime.FavouriteMediaConnection
-	5,  // 15: goodanime.UserFavourites.characters:type_name -> goodanime.FavouriteCharacterConnection
-	6,  // 16: goodanime.UserFavourites.staff:type_name -> goodanime.FavouriteStaffConnection
-	7,  // 17: goodanime.UserFavourites.studios:type_name -> goodanime.FavouriteStudioConnection
-	0,  // 18: goodanime.SocialUser.avatar:type_name -> goodanime.UserAvatar
-	10, // 19: goodanime.UserMediaStatistics.scores:type_name -> goodanime.UserScoreStat
-	11, // 20: goodanime.UserMediaStatistics.lengths:type_name -> goodanime.UserLengthStat
-	12, // 21: goodanime.UserMediaStatistics.statuses:type_name -> goodanime.UserStatusStat
-	13, // 22: goodanime.UserMediaStatistics.formats:type_name -> goodanime.UserFormatStat
-	14, // 23: goodanime.UserMediaStatistics.release_years:type_name -> goodanime.UserReleaseYearStat
-	15, // 24: goodanime.UserStatistics.anime:type_name -> goodanime.UserMediaStatistics
-	15, // 25: goodanime.UserStatistics.manga:type_name -> goodanime.UserMediaStatistics
-	26, // [26:26] is the sub-list for method output_type
-	26, // [26:26] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	18, // 4: goodanime.UserActivity.media:type_name -> goodanime.MediaMin
+	2,  // 5: goodanime.ActivityReply.user:type_name -> goodanime.UserActivityUser
+	19, // 6: goodanime.FavouriteMediaConnection.page_info:type_name -> goodanime.PageInfo
+	18, // 7: goodanime.FavouriteMediaConnection.nodes:type_name -> goodanime.MediaMin
+	19, // 8: goodanime.FavouriteCharacterConnection.page_info:type_name -> goodanime.PageInfo
+	20, // 9: goodanime.FavouriteCharacterConnection.nodes:type_name -> goodanime.Character
+	19, // 10: goodanime.FavouriteStaffConnection.page_info:type_name -> goodanime.PageInfo
+	21, // 11: goodanime.FavouriteStaffConnection.nodes:type_name -> goodanime.Staff
+	19, // 12: goodanime.FavouriteStudioConnection.page_info:type_name -> goodanime.PageInfo
+	22, // 13: goodanime.FavouriteStudioConnection.nodes:type_name -> goodanime.Studio
+	5,  // 14: goodanime.UserFavourites.anime:type_name -> goodanime.FavouriteMediaConnection
+	5,  // 15: goodanime.UserFavourites.manga:type_name -> goodanime.FavouriteMediaConnection
+	6,  // 16: goodanime.UserFavourites.characters:type_name -> goodanime.FavouriteCharacterConnection
+	7,  // 17: goodanime.UserFavourites.staff:type_name -> goodanime.FavouriteStaffConnection
+	8,  // 18: goodanime.UserFavourites.studios:type_name -> goodanime.FavouriteStudioConnection
+	0,  // 19: goodanime.SocialUser.avatar:type_name -> goodanime.UserAvatar
+	11, // 20: goodanime.UserMediaStatistics.scores:type_name -> goodanime.UserScoreStat
+	12, // 21: goodanime.UserMediaStatistics.lengths:type_name -> goodanime.UserLengthStat
+	13, // 22: goodanime.UserMediaStatistics.statuses:type_name -> goodanime.UserStatusStat
+	14, // 23: goodanime.UserMediaStatistics.formats:type_name -> goodanime.UserFormatStat
+	15, // 24: goodanime.UserMediaStatistics.release_years:type_name -> goodanime.UserReleaseYearStat
+	16, // 25: goodanime.UserStatistics.anime:type_name -> goodanime.UserMediaStatistics
+	16, // 26: goodanime.UserStatistics.manga:type_name -> goodanime.UserMediaStatistics
+	27, // [27:27] is the sub-list for method output_type
+	27, // [27:27] is the sub-list for method input_type
+	27, // [27:27] is the sub-list for extension type_name
+	27, // [27:27] is the sub-list for extension extendee
+	0,  // [0:27] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -1630,7 +1744,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   17,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

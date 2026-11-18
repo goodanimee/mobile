@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:material_ui/material_ui.dart';
 
+import '../../../components/app_fab.dart';
 import '../../../theme/theme.dart';
 
 /// Floating action button for user profile actions such as follow and sign out.
@@ -123,74 +124,41 @@ class ProfileFab extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final double fabSize = getResponsiveSize(context, 52.0);
     final double iconSize = getResponsiveSize(context, 22.0);
 
     if (isSelf) {
-      return Container(
-        width: fabSize,
-        height: fabSize,
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: cardBorderColor),
-        ),
-        child: GestureDetector(
-          onTap: () => _handleSignOutTap(context),
-          behavior: HitTestBehavior.opaque,
-          child: Center(
-            child: Icon(
-              LucideIcons.logOut,
-              color: Colors.redAccent,
-              size: iconSize,
-            ),
-          ),
+      return AppFab(
+        onTap: () => _handleSignOutTap(context),
+        tooltip: 'Sign Out',
+        child: Icon(
+          LucideIcons.logOut,
+          color: Colors.redAccent,
+          size: iconSize,
         ),
       );
     }
 
     if (isFollowLoading) {
-      return Container(
-        width: fabSize,
-        height: fabSize,
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: cardBorderColor),
-        ),
-        child: Center(
-          child: SizedBox(
-            width: iconSize * 0.85,
-            height: iconSize * 0.85,
-            child: const CircularProgressIndicator(
-              strokeWidth: 2,
-              color: paletteBlue,
-            ),
+      return AppFab(
+        onTap: null,
+        child: SizedBox(
+          width: iconSize * 0.85,
+          height: iconSize * 0.85,
+          child: const CircularProgressIndicator(
+            strokeWidth: 2,
+            color: paletteBlue,
           ),
         ),
       );
     }
 
-    final boxDecoration = BoxDecoration(
-      color: bgColor,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: cardBorderColor),
-    );
-
     final iconColor = isFollowing ? paletteBlue : textPrimary;
     final iconData = isFollowing ? LucideIcons.userCheck : LucideIcons.userPlus;
 
-    return Container(
-      width: fabSize,
-      height: fabSize,
-      decoration: boxDecoration,
-      child: GestureDetector(
-        onTap: onToggleFollow,
-        behavior: HitTestBehavior.opaque,
-        child: Center(
-          child: Icon(iconData, color: iconColor, size: iconSize),
-        ),
-      ),
+    return AppFab(
+      onTap: onToggleFollow,
+      tooltip: isFollowing ? 'Unfollow' : 'Follow',
+      child: Icon(iconData, color: iconColor, size: iconSize),
     );
   }
 }

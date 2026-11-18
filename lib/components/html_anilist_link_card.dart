@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../models/media_character.dart';
 import '../models/media_min.dart';
@@ -213,6 +213,8 @@ class HtmlAnilistLinkCard extends StatefulWidget {
               target.username!.trim().isNotEmpty) {
             request.usernames.add(target.username!.trim());
           }
+        case AnilistEntityType.activity:
+          break;
       }
     }
 
@@ -272,6 +274,7 @@ class HtmlAnilistLinkCard extends StatefulWidget {
           final UserProfile u => AnilistUserPreview(u),
           null => null,
         },
+        AnilistEntityType.activity => null,
       };
       if (preview != null) {
         results[target] = preview;
@@ -814,6 +817,7 @@ class _HtmlAnilistLinkCardState extends State<HtmlAnilistLinkCard> {
       AnilistEntityType.staff => 'STAFF',
       AnilistEntityType.studio => 'STUDIO',
       AnilistEntityType.user => 'USER',
+      AnilistEntityType.activity => 'ACTIVITY',
     };
   }
 
@@ -825,6 +829,7 @@ class _HtmlAnilistLinkCardState extends State<HtmlAnilistLinkCard> {
       AnilistEntityType.staff => 'Staff',
       AnilistEntityType.studio => 'Studio',
       AnilistEntityType.user => 'User',
+      AnilistEntityType.activity => 'Activity',
     };
   }
 
@@ -836,6 +841,7 @@ class _HtmlAnilistLinkCardState extends State<HtmlAnilistLinkCard> {
       AnilistEntityType.staff => LucideIcons.clapperboard,
       AnilistEntityType.studio => LucideIcons.clapperboard,
       AnilistEntityType.user => LucideIcons.user,
+      AnilistEntityType.activity => LucideIcons.messageSquare,
     };
   }
 }

@@ -1,0 +1,5 @@
+mutation ToggleActivityReplyLike($replyId: Int) {
+  ToggleLike(id: $replyId, type: ACTIVITY_REPLY) {
+    id
+  }
+}

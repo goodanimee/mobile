@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../components/section.dart';
 import '../../../models/user_statistics.dart';
@@ -123,8 +123,9 @@ class _EpisodeDistributionChartState extends State<EpisodeDistributionChart> {
           widget.isAnime
               ? (l.minutesWatched / 60.0)
               : l.chaptersRead.toDouble(),
-        LengthMetricType.score =>
-          StatisticsMathUtils.normalizeScore(l.meanScore),
+        LengthMetricType.score => StatisticsMathUtils.normalizeScore(
+          l.meanScore,
+        ),
       };
     }).toList();
 

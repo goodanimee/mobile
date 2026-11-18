@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../../theme/theme.dart';
 
 /// A manager and widget for displaying premium stat tooltips with a pointed beak.

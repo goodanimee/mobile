@@ -33,6 +33,7 @@ const ListActivity$json = {
       '6': '.goodanime.Viewer',
       '10': 'user'
     },
+    {'1': 'reply_count', '3': 8, '4': 1, '5': 5, '10': 'replyCount'},
   ],
 };
 
@@ -41,4 +42,5 @@ final $typed_data.Uint8List listActivityDescriptor = $convert.base64Decode(
     'CgxMaXN0QWN0aXZpdHkSDgoCaWQYASABKAVSAmlkEh0KCmNyZWF0ZWRfYXQYAiABKAVSCWNyZW'
     'F0ZWRBdBIZCghpc19saWtlZBgDIAEoCFIHaXNMaWtlZBIdCgpsaWtlX2NvdW50GAQgASgFUgls'
     'aWtlQ291bnQSGgoIcHJvZ3Jlc3MYBSABKAlSCHByb2dyZXNzEhYKBnN0YXR1cxgGIAEoCVIGc3'
-    'RhdHVzEiUKBHVzZXIYByABKAsyES5nb29kYW5pbWUuVmlld2VyUgR1c2Vy');
+    'RhdHVzEiUKBHVzZXIYByABKAsyES5nb29kYW5pbWUuVmlld2VyUgR1c2VyEh8KC3JlcGx5X2Nv'
+    'dW50GAggASgFUgpyZXBseUNvdW50');

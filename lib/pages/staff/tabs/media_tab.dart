@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../components/loading_indicator.dart';
 import '../../../components/relation_card.dart';

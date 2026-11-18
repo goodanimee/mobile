@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/media_character.dart';
 import '../models/media_staff.dart';
+import '../models/user_activity.dart';
+import '../pages/activity/page.dart';
 import '../pages/characters/page.dart';
 import '../pages/media/page.dart';
 import '../pages/profile/page.dart';
@@ -96,6 +98,10 @@ class AppNavigation {
           userId: target.id,
           username: target.username,
         );
+      case AnilistEntityType.activity:
+        if (target.id != null) {
+          await toActivity(navContext, activityId: target.id!);
+        }
     }
   }
 
@@ -202,6 +208,20 @@ class AppNavigation {
           username: username,
           mediaType: mediaType,
         ),
+      ),
+    );
+  }
+
+  /// Navigates to dedicated activity post page.
+  static Future<UserActivity?> toActivity(
+    BuildContext context, {
+    int? activityId,
+    UserActivity? initialActivity,
+  }) async {
+    return Navigator.push<UserActivity>(
+      context,
+      _buildPageRoute(
+        ActivityPage(activityId: activityId, initialActivity: initialActivity),
       ),
     );
   }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A placeholder tab for content that is not yet implemented
 class PlaceholderTab extends StatelessWidget {
